@@ -108,6 +108,14 @@ p b {
     align-items: center;
 }
 
+.squish {
+    justify-content: flex-start;
+}
+
+.selectable {
+    min-height: 5vh;
+}
+
 .panel {
     background: rgb(80, 100, 80);
     box-shadow: 0 3px 3px -2px rgba(0, 0, 0, .2), 0 3px 4px 0 rgba(0, 0, 0, .14), 0 1px 8px 0 rgba(0, 0, 0, .12);
@@ -118,8 +126,8 @@ p b {
     justify-content: flex-start;
     align-items: stretch;
     flex-grow: 2;
-    margin-bottom: 1em;
-    padding: 0 1em;
+    margin-top: 1em;
+    padding: 0 .5em;
 
     min-height: 5vh;
 }
@@ -130,21 +138,14 @@ p b {
     border: 1px solid rgba(255, 210, 50, .5);
 }
 
-.panel.row {
+.row {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-
-    padding: 0;
-    padding-left: 1em;
 }
 
-.panel.row .col {
-    display: flex;
+.col {
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 30%;
 }
 
 /*
@@ -158,11 +159,13 @@ p b {
     margin: 0 auto;
 }
 
-.headerContainer {
-    margin-top: 2em;
-    margin-bottom: .5em;
-    padding-right: 1em;
+.headerContainer {    
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
 }
+
 
 form {
     width: 100%;
@@ -178,8 +181,7 @@ form {
 }
 
 
-form .actions,
-.mat-dialog-container .actions {
+form .actions {
     width: 100%;
     margin-top: 2em;
     padding-bottom: 1em;
@@ -435,7 +437,7 @@ table {
 
 
     router-outlet~* {
-        width: 720px;
+        width: 95%;
     }
 
 

@@ -43,6 +43,10 @@ export class DetailComponent implements OnInit {
 
   }
 
+  actionClick($event){
+    
+  }
+
   editLeague() {
     this.dialog.open(EditComponent, {
       data: { league: this.league }

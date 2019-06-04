@@ -1,19 +1,14 @@
-<p>
-  line-settings works!
-</p>
+<app-section-header title="Chart Settings" [buttons]="backButton" (actionClick)="actionClick($event)"></app-section-header>
 
-<p>
-  POPUP
-
-  TEAM FORMAT
-
-  PLAYER LIST
-
-
-</p>
+<div class="col">
+  <div *ngFor="let option of colList; index as i" class="row squish selectable" [style.color]='availableColors[i]'>
+    <mat-checkbox [value]="option" >
+        <label>{{ option }}</label>
+    </mat-checkbox>
+  </div>
+</div>
 
 
-<div>
-
-  
+<div class="actions">
+  <a mat-raised-button color="accent" (click)="updateChart()" >Update</a>
 </div>

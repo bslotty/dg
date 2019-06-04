@@ -403,17 +403,17 @@ export class StatsBackend {
       teams = this.populateTeamScores(teams, players, session);
       teams.map((v, i) => {
         //  Column Names
-        columns.push(name);
+        columns.push(v.name);
 
         //  Hole Count Data Setup
-        v[session.format]["scoreArray"].map((s, i) => {
+        v["teamScore"][session.format]["scoreArray"].map((s, i) => {
           if (data[i] == undefined) {
             data[i] = [];
           }
         });
 
         //  Scores
-        for (var h = 0; h < v["scoreArray"].length; h++) {
+        for (var h = 0; h < v["teamScore"][session.format]["scoreArray"].length; h++) {
 
           //  Initiate Array with hole Count
           if (data[h].length == 0) {
@@ -421,7 +421,7 @@ export class StatsBackend {
           }
 
           //  Enter Player scores Data;
-          data[h].push(v["scoreArray"][h]);
+          data[h].push(v["teamScore"][session.format]["scoreArray"][h]);
         }
 
       });

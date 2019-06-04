@@ -13,7 +13,11 @@
   <div *ngIf="resolve; else loader" @flyInPanelRow>
     <div class="panel row" *ngFor="let league of savedLeagues">
       <div>
-        <span class="{{ league.visibility | leagueVisibilityIcon }}"></span>
+        
+        <a mat-flat-button color="transparent-primary" routerLink="/leagues/{{ league.id }}">
+          <span class="{{ league.visibility | leagueVisibilityIcon }}"></span>
+        </a>
+        
         <label>{{ league.name }}</label>
         <label>{{ league.nextSession }}</label>
       </div>

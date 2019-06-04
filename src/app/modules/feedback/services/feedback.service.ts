@@ -24,7 +24,7 @@ export class FeedbackService {
     //  Scale Duration based on message length
     var length = payload.msg.length;
     var scale = (length * 2) / 1000;
-    var duration = 30000 * (scale + 1);
+    var duration = 3000 * (scale + 1);
 
     this.snackBar.open(payload.msg, "Close", {
       panelClass: payload.status,
