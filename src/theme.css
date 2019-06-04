@@ -2468,3 +2468,18 @@ span.mat-button-wrapper {
     color: rgb(255, 210, 50);
 }
 
+
+
+
+
+.mat-pseudo-checkbox {
+    width: 32px !important;
+    height: 32px !important;
+}
+
+.mat-pseudo-checkbox-checked::after {
+    top: 4px !important;
+    left: 2px !important;
+    width: 18px !important;
+    height: 9px !important;
+}

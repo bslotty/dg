@@ -175,6 +175,7 @@ export class StatsBackend {
               team["id"],
               team["name"],
               team["color"],
+              this.getHex(team["color"]),
             ));
           });
 
@@ -360,9 +361,7 @@ export class StatsBackend {
    */
   formatChart(teams, players, session): Object {
     var columns = ["Hole"];
-    var data = [
-
-    ];
+    var data = [];
     var par = session.par;
 
     //  Format Player Data
@@ -436,6 +435,51 @@ export class StatsBackend {
       par: session.par
     };
   }
+
+
+  /*  Return Color Codes from String for Chart Color Consistancy  */
+  getHex(color) {
+    var hex;
+    switch (color) {
+      case "red":
+        hex = "#e66969";
+        break;
+
+      case "blue":
+        hex = "#6ab9e8";
+        break;
+
+      case "green":
+        hex = "#60df60";
+        break;
+
+      case "yellow":
+        hex = "#d6d05d";
+        break;
+
+      case "orange":
+        hex = "#d8a95d";
+        break;
+
+      case "purple":
+        hex = "#9461e0";
+        break;
+
+      case "pink":
+        hex = "#cf58c5";
+        break;
+
+      case "white":
+        hex = "#FFFFFF";
+        break;
+
+      default:
+        hex = "#000000"
+        break;
+    }
+
+    return hex;
+  }
 }
 
 
@@ -455,7 +499,8 @@ export class Team {
   constructor(
     public id: string,
     public name?: string,
-    public color?: string
+    public color?: string,
+    public hex?: string,
   ) { }
 }
 

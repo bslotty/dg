@@ -1,16 +1,6 @@
 <div>
-  <div class="headerContainer">
-    <h1>
-      <label>Sessions</label>
-
-      <div class="actions">
-        <a mat-icon-button color="primary" (click)="createSession()" [disabled]="!resolve">
-          <span class="icon-plus"></span>
-        </a>
-      </div>
-
-    </h1>
-  </div>
+  
+<app-section-header title="Sessions" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header>
 
   <div *ngIf="resolve; else loader" @flyInPanelRow>
 

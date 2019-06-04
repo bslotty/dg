@@ -1,28 +1,4 @@
-<div class="headerContainer">
-  <h1>
-    <label>Stats</label>
-  </h1>
-
-  <div class="panelActions">
-    <button mat-flat-button color="transparent-primary" (click)="openSettings()">
-      <span class="icon-settings"></span>
-    </button>
-
-
-    <!--
-    <mat-select multiple (selectionChange)="filterData($event)" [value]="columnNames" class="tinySelect">
-      <mat-option *ngFor="let option of colList; index as i" [value]="option" [style.background]='availableColors[i]'>
-        {{ option }}
-      </mat-option>
-    </mat-select>
-    -->
-
-
-    <button mat-flat-button color="transparent-primary" (click)="rotateChart()">
-      <span class="icon-rotate-cw"></span>
-    </button>
-  </div>
-</div>
+<app-section-header title="stats" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header>
 
 <div class="full-center-content {{ orientation }}">
   <google-chart #chart [title]="title" [type]="type" [data]="chartData" [columnNames]="columnNames" [options]="options"

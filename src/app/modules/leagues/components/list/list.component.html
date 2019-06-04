@@ -1,45 +1,32 @@
-<div>
-  <div class="headerContainer">
-    <h1>
-      <label>Saved Leagues</label>
-      <div class="actions">
-        <a mat-flat-button color="transparent-primary" (click)="createLeague()">
-          <span class=icon-plus-square></span>
-        </a>
-      </div>
-    </h1>
-  </div>
+<app-section-header title="Saved Leagues" [buttons]="headerButtons" (actionClick)="actionClick($event)">
+</app-section-header>
 
-  <div *ngIf="resolve; else loader" @flyInPanelRow>
-    <div class="panel row" *ngFor="let league of savedLeagues">
-      <div>
-        
-        <a mat-flat-button color="transparent-primary" routerLink="/leagues/{{ league.id }}">
-          <span class="{{ league.visibility | leagueVisibilityIcon }}"></span>
-        </a>
-        
-        <label>{{ league.name }}</label>
-        <label>{{ league.nextSession }}</label>
-      </div>
+<div *ngIf="resolve; else loader" @flyInPanelRow>
+  <div class="panel row" *ngFor="let league of savedLeagues">
+    <div>
 
-      <div>
-        <a mat-flat-button color="primary" routerLink="/leagues/{{ league.id }}">
-          <span class="icon-external-link"></span>
-        </a>
-      </div>
+      <a mat-flat-button color="transparent-primary" routerLink="/leagues/{{ league.id }}">
+        <span class="{{ league.visibility | leagueVisibilityIcon }}"></span>
+      </a>
+
+      <label>{{ league.name }}</label>
+      <label>{{ league.nextSession }}</label>
     </div>
 
-    <div class="message">
-      <p>Looking to join a league?
-        <a mat-raised-button color="primary" routerLink="/leagues/search">
-          Search </a> for one.</p>
+    <div>
+      <a mat-flat-button color="primary" routerLink="/leagues/{{ league.id }}">
+        <span class="icon-link-2"></span>
+      </a>
     </div>
   </div>
 
-
-
-
+  <div class="message">
+    <p>Looking to join a league?
+      <a mat-raised-button color="primary" routerLink="/leagues/search">
+        Search </a> for one.</p>
+  </div>
 </div>
+
 
 
 <ng-template #loader>

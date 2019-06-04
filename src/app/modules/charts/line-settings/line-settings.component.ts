@@ -24,18 +24,18 @@ export class LineSettingsComponent implements OnInit {
     icon: 'icon-x',
   }];
 
+
+  // mat-select: throws | score
+  playerFormat:string = "scores"; 
+  teamFormat: string = this.data.team ? "scores" : null ;
+  playerList = this.colList;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<LineSettingsComponent>,
   ) { }
 
-  ngOnInit() {
-    console.log ("settings.data", this.data);
-    console.log ("settings.colList", this.colList);
-    console.log ("settings.availableColors", this.availableColors);
-
-  }
-
+  ngOnInit() {  }
 
   actionClick($event){
     console.log ("ActionClick.Event: ", $event);
@@ -44,8 +44,31 @@ export class LineSettingsComponent implements OnInit {
     }
   }
 
-  updateChart() {
+  close(data){
+    this.dialogRef.close(data);
+  }
 
+
+  updateFormat($event) {
+    this.playerFormat = $event.value;
+  }
+
+  updatePlayers ($event) {
+    this.playerList = $event.value;
+  }
+
+  updateTeamFormat($event) {
+    this.teamFormat = $event.value;
+  }
+
+  updateChart() {
+    var data = {
+      players: this.playerList,
+      format: this.playerFormat,
+      teamFormat: this.teamFormat,
+    };
+
+    this.close(data);
   }
 
 }

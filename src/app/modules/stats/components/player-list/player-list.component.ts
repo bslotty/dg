@@ -35,6 +35,12 @@ export class PlayerListComponent implements OnInit {
 
   chartData: { };
 
+  headerButtons = [{
+    action: "create",
+    icon: "icon-plus",
+    color: "transparent-primary",
+  }];
+
   constructor(
     public route: ActivatedRoute,
     public stats: StatsBackend,
@@ -51,8 +57,12 @@ export class PlayerListComponent implements OnInit {
     this.stats.update$.subscribe((update) => {
       this.populateData();
     });
+  }
 
-
+  actionClick($event) {
+    if ($event == "create") {
+      this.addPlayer();
+    }
   }
 
   populateData() {
@@ -102,7 +112,7 @@ export class PlayerListComponent implements OnInit {
 
         //  Data Store
         this.memberList = members;
-        this.playerList = this.stats.populatePlayerScores(players, this.session);;
+        this.playerList = this.stats.populatePlayerScores(players, this.session);
         this.teamList = teams;
 
 

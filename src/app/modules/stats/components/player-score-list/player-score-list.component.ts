@@ -25,9 +25,6 @@ export class PlayerScoreListComponent implements OnInit {
   public dataSource = [];
   public displayedColumns = ["name", "throws"];
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
   public tabIndex: number = 1;
   public par: Array<any> = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
 

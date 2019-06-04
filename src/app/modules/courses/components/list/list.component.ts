@@ -3,6 +3,7 @@ import { CourseBackend } from './../../services/backend.service';
 import { Component, OnInit } from '@angular/core';
 import { Course } from '../../services/backend.service';
 import { ViewChild } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-list',
@@ -12,29 +13,41 @@ import { ViewChild } from '@angular/core';
 })
 export class ListComponent implements OnInit {
 
-  public loading: number = 1;
-  public courseList: Course[] = [];
-
+  courseList;
+  resolve: boolean = false;
 
   constructor(
     public courses: CourseBackend
-    
   ) { }
 
 
 
 
   ngOnInit() {
-    this.getCourseList("asc");
+    this.courses.list$.subscribe((courses) => {
+      if (courses.length > 0) {
+        console.log("list$.courses: ", courses);
+        this.courseList = courses;
+        this.resolve = true;
+      }
+
+    }, (e) => {
+      console.warn("list$.error: ", e);
+    });
+
+    if (this.courseList == undefined) {
+      this.getCourseList("asc");
+    }
+
   }
 
 
 
 
   getCourseList(sort) {
+    this.resolve = false;
 
-    this.loading = 1;
-
+    /*
     this.courses.getList(sort).subscribe((v: Course[])=>{
       v.forEach((e, i)=>{
         setTimeout(() => {
@@ -44,8 +57,12 @@ export class ListComponent implements OnInit {
 
       this.loading = 0;
     });
+    */
+
+    //this.courses.getList(sort);
+    this.courses.genList(sort);
   }
 
-  
+
 
 }

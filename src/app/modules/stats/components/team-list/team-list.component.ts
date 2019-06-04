@@ -27,6 +27,12 @@ export class TeamListComponent implements OnInit {
   @Input() session: Session;
   @Input() league: League;
 
+  headerButtons = [{
+    action: "create",
+    icon: "icon-plus",
+    color: "transparent-primary"
+  }];
+
   constructor(
     public dialog: MatDialog,
     public route: ActivatedRoute,

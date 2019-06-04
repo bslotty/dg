@@ -1,16 +1,12 @@
-<div class="headerContainer">
-  <h1>
-    <label>Participants</label>
-
+  <!--
     <div class="actions" *ngIf="hasAccess">
-
-      <a mat-flat-button color="transparent-primary" (click)="addPlayer()"
+        <a mat-flat-button color="transparent-primary" (click)="addPlayer()"
         [disabled]='status == "disabled" ? true : false'>
         <span class="icon-plus-square"></span>
       </a>
     </div>
-  </h1>
-</div>
+  -->
+<app-section-header title="Participants" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header>
 
 
 <div class="panel row" @flyInPanelRow *ngFor="let player of playerList">
@@ -39,7 +35,7 @@
     </div>
 
     <a mat-flat-button color="warn" (click)='removePlayer(player)'>
-      <span class="icon-trash"></span>
+      <span class="icon-trash-2"></span>
     </a>
   </div>
 </div>

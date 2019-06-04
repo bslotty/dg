@@ -9,6 +9,18 @@ import { LineSettingsComponent } from '../line-settings/line-settings.component'
 })
 export class LineComponent implements OnInit {
 
+  headerButtons = [
+    {
+      action: "edit",
+      icon: "icon-settings",
+      color: "transparent-primary"
+    }, {
+      action: "rotate",
+      icon: "icon-rotate-cw",
+      color: "transparent-primary"
+    }
+  ];
+
   @Input() data;
 
   availableColors = [
@@ -121,25 +133,40 @@ export class LineComponent implements OnInit {
 
   ngOnInit() {
 
+    //  Defaults
     this.columnNames = this.data['columns'];
     this.chartData = this.data['scores'];
 
-    this.colList = this.columnNames.filter((v, i )=>{
+    //  this.formatChart(this.data['columns'], this.data['scores']);
+
+    this.colList = this.columnNames.filter((v, i) => {
       return i > 0;
     });
     this.initialHeaders = this.columnNames;
-    
-    this.initialData = this.chartData;
 
- 
+    this.initialData = this.chartData;
+  }
+
+  actionClick($event) {
+    if ($event == "edit") {
+      this.openSettings();
+    } else if ($event == "rotate") {
+      this.rotateChart();
+    } 
   }
 
   /*  Return array(n) colors from bank for data */
   getColorsFromBank() {
     var colors = [];
-    for (var i = 0; i < this.data["scores"][0].length; i++) {
-      colors.push(this.availableColors[i]);
+    //  Grab Team Colors First
+    if (this.data["teams"]) {
+
+    } else {
+      for (var i = 0; i < this.data["scores"][0].length; i++) {
+        colors.push(this.availableColors[i]);
+      }
     }
+    
     return colors;
   }
 
@@ -215,7 +242,7 @@ export class LineComponent implements OnInit {
   }
 
   initializeOrientation() {
-    
+
     if (window.innerWidth < window.innerHeight) {
 
     } else {
@@ -223,13 +250,20 @@ export class LineComponent implements OnInit {
     }
   }
 
-  openSettings(){
+  openSettings() {
     const settingsDialog = this.dialog.open(LineSettingsComponent, {
       data: this.data
     });
 
     settingsDialog.afterClosed().subscribe((diag) => {
-      this.formatChart(diag["data"]);
+      console.log ("popup.Data: ", diag);
+
+      if (diag) {
+        diag[""]
+
+
+        this.formatChart(diag["data"]);
+      }
     });
   }
 
@@ -238,6 +272,12 @@ export class LineComponent implements OnInit {
     //  set chart columnHeaders, and Data array from import;
     //  Fire upon settingspopup close
     //  settings will handle and return the filtered data into this, to show the data;
+
+    //  Teams y/n?
+
+    if (true) {}
+
+
   }
 
 

@@ -22,6 +22,12 @@ export class ListComponent implements OnInit {
   sessionList$: Session[];
   emptySessions: boolean = false;
 
+  headerButtons = [{
+    action: "create",
+    icon: "icon-plus",
+    color: "transparent-primary"
+  }];
+
   constructor(
     public route: ActivatedRoute,
     public sessions: SessionBackend,
@@ -31,6 +37,13 @@ export class ListComponent implements OnInit {
   ngOnInit() {
     this.populateData();
   }
+
+  actionClick($event){ 
+    if ($event == 'create') {
+      this.createSession();
+    }
+  }
+
 
   populateData() {
 

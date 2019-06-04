@@ -21,6 +21,18 @@ export class DetailComponent implements OnInit {
   league: League = new League(this.route.snapshot.paramMap.get("league"));
   resolve: boolean = false;
 
+  headerButtons = [
+    {
+      icon: "icon-settings",
+      color: "transparent-primary",
+      action: "edit",
+    }, {
+      icon: "icon-trash-2",
+      color: "transparent-warn",
+      action: "delete",
+    }
+  ];
+
   constructor(
     public leagues: LeagueBackend,
     public route: ActivatedRoute,
@@ -28,11 +40,9 @@ export class DetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     //  Subscribe to Required Observables
-      this.leagues.getDetail(this.league).subscribe((league)=>{
+    this.leagues.getDetail(this.league).subscribe((league) => {
 
-      console.log ("league: ", league);
 
       //  Store Data For Children
       this.league = league as League;
@@ -43,8 +53,12 @@ export class DetailComponent implements OnInit {
 
   }
 
-  actionClick($event){
-    
+  actionClick($event) {
+    if ($event == "edit") {
+      this.editLeague();
+    } else if ($event == "delete") {
+      this.deleteLeague();
+    }
   }
 
   editLeague() {

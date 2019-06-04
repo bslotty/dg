@@ -1,30 +1,29 @@
-<div>
-  <div class="headerContainer">
-    <h1>
-      <label>Courses</label>
-    </h1>
-  </div>
+<app-section-header title="Courses"></app-section-header>
 
-  <div *ngFor="let course of courseList">
-    <div class="panel row" @flyInPanelRow>
-      <div class="col">
+<div *ngIf="resolve; else loader" @flyInPanelRow>
+  <div *ngFor="let course of courseList" class="panel">
+    <div class="col">
+      <div class="row">
         <label>{{ course.name }}</label>
+        <div>
+          <a mat-flat-button color="primary" routerLink="/courses/{{ course.id }}">
+            <span class="icon-external-link"></span>
+          </a>
+        </div>
+      </div>
+      <div class="row">
+
         <div class="subText row">
           <label><i>{{ course.parkName }} </i></label>
           <label><i>{{ course.city }}, </i></label>
           <label><i>{{ course.state }} </i></label>
-          <label><i>{{ course.zip }}</i></label>
+          <label><i>{{ course.zip }} </i></label>
         </div>
       </div>
 
-      <div>
-        <a mat-flat-button color="primary" routerLink="/courses/{{ course.id }}">
-          <span class="icon-external-link"></span>
-        </a>
-      </div>
     </div>
-
   </div>
+
 
 
   <div class="actionPanel">
@@ -37,3 +36,8 @@
   </div>
 
 </div>
+
+
+<ng-template #loader>
+  <app-feedback></app-feedback>
+</ng-template>

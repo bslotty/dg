@@ -16,6 +16,12 @@ export class ListComponent implements OnInit {
   savedLeagues: League[];
   resolve: boolean = false;
 
+  headerButtons = [{
+    color: "transparent-primary",
+    icon: "icon-plus",
+    action: "create"
+  }]
+
   constructor(
     public leagues: LeagueBackend,
     public dialog: MatDialog,
@@ -26,6 +32,12 @@ export class ListComponent implements OnInit {
       this.savedLeagues = leagues;
       this.resolve = true;
     });
+  }
+
+  actionClick($event) {
+    if ($event == "create") {
+      this.createLeague();
+    }
   }
 
   createLeague() {

@@ -1,17 +1,18 @@
 <div>
-    <div class="headerContainer">
-        <h1>
-            <label>Members</label>
-            <a mat-raised-button color="primary" 
-                *ngIf="admin" 
-                [disabled]="recruitCount == 0"
-                (click)="viewPending()">
-                <label>{{ recruitCount }} </label>
-                <label *ngIf="recruitCount == 1">Request</label>
-                <label *ngIf="recruitCount != 1">Requests</label>
-            </a>
-        </h1>
-    </div>
+    <!--
+        <label>Members</label>
+        <a mat-raised-button color="primary" 
+            *ngIf="admin" 
+            [disabled]="recruitCount == 0"
+            (click)="viewPending()">
+            <label>{{ recruitCount }} </label>
+            <label *ngIf="recruitCount == 1">Request</label>
+            <label *ngIf="recruitCount != 1">Requests</label>
+        </a>
+
+    -->
+
+    <app-section-header title="Members" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header>
 
 
 
@@ -27,12 +28,12 @@
 
 
         <div class="actions" *ngIf="(permission.user.id != account.user.id) && admin">
-            <a mat-icon-button color="primary" (click)="editMember(permission)">
-                <span class="icon-edit"></span>
+            <a mat-flat-button color="primary" (click)="editMember(permission)">
+                <span class="icon-settings"></span>
             </a>
 
-            <a mat-icon-button color="warn" (click)="removeMember(permission)">
-                <span class="icon-trash"></span>
+            <a mat-flat-button color="warn" (click)="removeMember(permission)">
+                <span class="icon-trash-2"></span>
             </a>
 
         </div>

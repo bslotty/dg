@@ -114,7 +114,8 @@ export class CreatePlayerComponent implements OnInit {
         this.data.league, 
         this.data.session, 
         this.form.get('player').value['user'], 
-        this.form.get('team').value).subscribe((data) => {
+        this.form.get('team').value
+      ).subscribe((data) => {
         console.log("createTeam.Complete!", data);
         this.feed.finializeLoading(data, true);
 

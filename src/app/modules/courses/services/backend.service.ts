@@ -15,7 +15,7 @@ export class CourseBackend {
     distinctUntilChanged(),
   );
 
-  list$: Subject<Course[]> = new Subject();
+  list$: BehaviorSubject<Course[]> = new BehaviorSubject([]);
   /*  Error handling
     Timeout
     HTTP Error
@@ -29,7 +29,7 @@ export class CourseBackend {
 
   getList(sort: string) {
     let url = environment.apiUrl + "/courses/list.php";
-    return this.http.post<Course[]>(url, {"sort": sort}).pipe(this.serverPipe, 
+    return this.http.post(url, {"sort": sort}).pipe(this.serverPipe, 
       map((res: ServerPayload) => {
         if (res.status == "success") {
           var result:Course[] = [];
@@ -51,8 +51,10 @@ export class CourseBackend {
               course['holeCount'],
             ))
           });
+          this.list$.next(result);
           return result;
         } else {
+          this.list$.next([]);
           return [];
         }
       }),
@@ -60,6 +62,12 @@ export class CourseBackend {
         (error)=> of(`Bad Request ${error}`)
       )
     );
+  }
+
+  genList(sort: string = "asc") {
+    this.getList(sort).subscribe((courses)=>{
+      return courses;
+    });
   }
 
   getDetail(course: Course) {

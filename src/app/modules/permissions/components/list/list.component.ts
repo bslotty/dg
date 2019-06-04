@@ -27,6 +27,12 @@ export class ListComponent implements OnInit {
   recruitList: Permission[];
   recruitCount: number = 0;
 
+  headerButtons = [{
+    action: "create",
+    icon: "icon-plus",
+    color: "transparent-primary"
+  }]
+
   constructor(
     public route: ActivatedRoute,
     public permissions: PermissionBackend,
@@ -37,9 +43,12 @@ export class ListComponent implements OnInit {
 
   ngOnInit() {
     this.populateData();
+  }
 
-   
-
+  actionClick($event) {
+    if ($event == "create") {
+      this.viewPending();
+    }
   }
 
   populateData(){
