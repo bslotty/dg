@@ -1,0 +1,30 @@
+<div class="headerContainer">
+    <h1>
+      <label>Session Format</label>
+      <a mat-icon-button color="primary" (click)="close()">
+        <span class="icon-x"></span>
+      </a>
+    </h1>
+</div>
+
+<div>
+  <p class="warn">If you change the format, it will reset the scores.</p>
+</div>
+
+
+<div *ngFor="let format of types;" class='format'>
+  <div>
+    <h2>{{ format.name }}</h2>
+    <div>
+      <a *ngIf="selected == format.enum" mat-flat-button color="accent">
+        <label>Selected</label>
+      </a>
+      <a *ngIf="selected != format.enum && hasAccess" mat-stroked-button (click)="setFormat(format)">
+        <label>Click to Set</label>
+      </a>
+    </div>
+  </div>
+
+  <p>{{ format.desc }}</p>
+
+</div>

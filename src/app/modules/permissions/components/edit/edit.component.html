@@ -1,0 +1,26 @@
+<div class="headerContainer">
+  <h1>
+    <label>Member Properties</label>
+    <a mat-icon-button (click)="close()">
+      <span class="icon-x"></span>
+    </a>
+  </h1>
+</div>
+
+<div class="row">
+  <div>
+    <label>{{ recruit.user.first }} {{ recruit.user.last }}</label>
+  </div>
+
+  <div *ngIf="recruit.level != 'creator'">
+    <a mat-flat-button color="warn" (click)="update(recruit, 'moderator')" 
+      *ngIf="recruit.level != 'moderator'">
+      <label>Promote to Moderator</label>
+    </a>
+    <a mat-flat-button color="accent" (click)="update(recruit, 'member')" 
+      *ngIf="recruit.level != 'member'">
+      <label>Demote to Member</label>
+    </a>
+  </div>
+
+</div>

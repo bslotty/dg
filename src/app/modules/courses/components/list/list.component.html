@@ -1,0 +1,39 @@
+<div>
+  <div class="headerContainer">
+    <h1>
+      <label>Courses</label>
+    </h1>
+  </div>
+
+  <div class="panel row" *ngFor="let course of courseList" @flyInPanelRow>
+    <div>
+      <label>{{ course.name }}</label>
+
+    </div>
+
+    <div>
+      <label><i>{{ course.parkName }}</i></label>
+      <label><i>{{ course.city }}</i></label>
+      <label><i>{{ course.state }}</i></label>
+      <label><i>{{ course.zip }}</i></label>
+    </div>
+
+    <div>
+
+      <a mat-icon-button color="primary" routerLink="/courses/{{ course.id }}">
+        <span class="icon-external-link"></span>
+      </a>
+    </div>
+  </div>
+
+
+  <div class="actionPanel">
+    <p>Looking for a Course that isnt listed? Search for one!</p>
+    <div class="actions">
+      <a mat-raised-button color="primary" routerLink="/courses/search">
+        Search
+      </a>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,65 @@
+<div *ngIf="resolve; else loader">
+  <app-section-header title="session" back="/leagues/{{ league?.id }}"></app-section-header>
+
+
+
+  <div class="panel row" @flyInPanelRow>
+    <div>
+      <label> {{ +(session.start + "000") | date:"E" }} </label>
+      <label> {{ +(session.start + "000") | date:"MMM d" }} </label>
+      <label> {{ +(session.start + "000") | date:"h:mm a" }} </label>
+    </div>
+
+    <div>
+      <a mat-flat-button color="primary" (click)="editSession()">
+        <span class="icon-settings"></span>
+      </a>
+
+      <a mat-flat-button color="warn" (click)="deleteSession()">
+        <span class="icon-trash-2"></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="panel row" @flyInPanelRow>
+    <div>
+      <label>Course</label>
+    </div>
+
+    <div>
+      <a mat-flat-button color="accent" routerLink="/courses/{{ session.course.id }}">
+        <span class='icon-map-pin'></span>
+        {{ session.course.name }}
+      </a>
+    </div>
+
+  </div>
+
+
+  <div class="panel row" @flyInPanelRow>
+    <div>
+      <label> Format </label>
+    </div>
+
+    <div>
+      <a mat-flat-button color="primary" (click)="changeFormat()">
+        <label>{{ format }}</label>
+      </a>
+    </div>
+
+  </div>
+
+  <app-team-list *ngIf="session.format?.indexOf('team') > -1" [league]="league" [session]="session">
+  </app-team-list>
+
+  <app-player-list [league]="league" [session]="session">
+  </app-player-list>
+
+
+
+</div>
+
+
+<ng-template #loader>
+  <app-feedback></app-feedback>
+</ng-template>

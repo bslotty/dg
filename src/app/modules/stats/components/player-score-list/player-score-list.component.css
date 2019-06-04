@@ -1,0 +1,11 @@
+h1 .scores label {
+    font-size: 16px;
+}
+
+h1 .scores {
+    margin-right: 1em;
+}
+
+.headerContainer {
+    padding-right: 1em;
+}

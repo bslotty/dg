@@ -1,0 +1,24 @@
+<div class="headerContainer">
+  <h1>
+    <label>Requests</label>
+    <a mat-icon-button (click)="close()">
+      <span class="icon-x"></span>
+    </a>
+  </h1>
+</div>
+
+<div *ngFor="let recruit of recruitList" class="row">
+  <div>
+    <label>{{ recruit.user.first }} {{ recruit.user.last }}</label>
+  </div>
+
+  <div>
+    <a mat-flat-button color="warn" (click)="update(recruit, 'rejected')">
+      <label>Reject</label>
+    </a>
+    <a mat-flat-button color="accent" (click)="update(recruit, 'approved')">
+      <label>Approve</label>
+    </a>
+  </div>
+
+</div>

@@ -1,0 +1,35 @@
+<div *ngIf="resolve; else loader">
+
+  <div class="headerContainer">
+    <h1>
+      <a mat-flat-button color="transparent-primary" routerLink="/leagues">
+        <span class="icon-pocket rotate-90"></span>
+      </a>
+
+      <label>{{ league.name }}</label>
+
+      <div class="actions">
+        <a mat-flat-button color="transparent-primary" (click)="editLeague()">
+          <span class="icon-edit"></span>
+        </a>
+
+        <a mat-flat-button color="transparent-warn" (click)="deleteLeague()" *ngIf="league.name != 'Your Solo League'">
+          <span class="icon-trash"></span>
+        </a>
+
+      </div>
+
+
+    </h1>
+  </div>
+
+  <app-session-list></app-session-list>
+
+  <app-perm-list></app-perm-list>
+
+</div>
+
+
+<ng-template #loader>
+  <app-feedback></app-feedback>
+</ng-template>

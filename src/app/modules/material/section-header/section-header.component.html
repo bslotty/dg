@@ -1,0 +1,17 @@
+<div class="headerContainer">
+  <h1>
+    <div *ngIf="back">
+      <a mat-flat-button color="transparent-primary" routerLink="/leagues/{{ league?.id }}">
+        <span class="icon-pocket rotate-90"></span>
+      </a>
+    </div>
+
+    <label>{{ title | titlecase }}</label>
+
+    <div class="actions">
+      <a *ngFor="let button of buttons" mat-flat-button color="{{ button.color }}" (click)="emit( button.action )">
+        <span class="{{ button.icon }}}"></span>
+      </a>
+    </div>
+  </h1>
+</div>

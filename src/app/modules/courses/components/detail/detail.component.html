@@ -1,0 +1,46 @@
+<div class="headerContainer">
+  <h1>
+    <label>{{ course.name }}</label>
+    <button mat-button (click)="back()">Back</button>
+  </h1>
+</div>
+
+
+<div class="panel row">
+  <div>
+    <label>Park</label>
+  </div>
+  <div>
+    <label>{{ course.parkName }}</label>
+  </div>
+</div>
+
+<div class="panel row">
+  <div>
+    <label>Holes</label>
+  </div>
+  <div>
+    <label>{{ course.holes }}</label>
+  </div>
+</div>
+
+<div class="panel row">
+  <div>
+    <label>Difficulty</label>
+  </div>
+  <div>
+    <label>{{ course.difficulty }}</label>
+  </div>
+</div>
+
+<div class="headerContainer">
+  <h1>
+    <label>GoogleMap</label>
+  </h1>
+</div>
+
+<div id="map" class="panel">
+  <agm-map [latitude]="course.lat" [longitude]="course.lng" [zoom]="zoom">
+    <agm-marker [latitude]="course.lat" [longitude]="course.lng"></agm-marker>
+  </agm-map>
+</div>

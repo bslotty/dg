@@ -1,0 +1,38 @@
+<div class="headerContainer">
+  <h1>
+    <label>Delete League</label>
+    <a mat-icon-button color="primary" (click)="close()">
+      <span class="icon-x"></span>
+    </a>
+  </h1>
+</div>
+
+<div class="message">
+  <p><b>Note:</b> If you delete the league, it will delete <i>all sessions</i>, <i>all memberships</i>, and <i>all
+    stats</i>.
+</div>
+
+<div class="message" *ngIf="deleteConfirm">
+  <p>Are you absolutely sure you want to delete <i>{{ league.name }}</i>?</p>
+</div>
+
+<div class="message warn" *ngIf="deleteConfirm">
+  <p>This action is not reversable!</p>
+</div>
+
+<div class="actions">
+  <div class="row">
+    <a mat-raised-button color='primary' (click)="close()">
+      Cancel
+    </a>
+
+    <a mat-raised-button color='warn' (click)="confirmDelete()" *ngIf="!deleteConfirm">
+      Confirm
+    </a>
+
+    <a mat-raised-button color='warn' (click)="deleteLeague()" *ngIf="deleteConfirm">
+      Yes, I want to delete {{ league.name }}.
+    </a>
+  </div>
+
+</div>

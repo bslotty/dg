@@ -1,0 +1,53 @@
+<div [@flyInPanelRow]>
+
+
+
+  <div class="headerContainer small">
+    <h1>
+      <label>Edit</label>
+      <a mat-button (click)="back()">Back</a>
+    </h1>
+  </div>
+
+
+  <div class="panel small">
+
+
+    <!--    Form    -->
+    <form [formGroup]="form">
+
+      <!--  First   -->
+      <mat-form-field>
+        <input matInput placeholder="First Name" formControlName='first' name='first'>
+        <mat-error *ngIf="
+        form.get('first').touched && 
+        form.get('first').invalid">
+          Invalid First Name
+        </mat-error>
+      </mat-form-field>
+
+      <!--  Last   -->
+      <mat-form-field>
+        <input matInput placeholder="Last Name" formControlName='last' name='last'>
+        <mat-error *ngIf="
+        form.get('last').touched && 
+        form.get('last').invalid">
+          Invalid Last Name
+        </mat-error>
+      </mat-form-field>
+
+      <div class="actions">
+        <div class="row">
+          <a mat-raised-button color="primary" (click)="onFormSubmit()">
+            <label>Update Account</label>
+          </a>
+        </div>
+      </div>
+
+    </form>
+
+    <ng-template #notFound>
+      <p>There was an error retrieving your account information</p>
+    </ng-template>
+  </div>
+</div>

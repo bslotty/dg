@@ -1,0 +1,44 @@
+<div>
+  <div class="headerContainer">
+    <h1>
+      <label>Teams</label>
+
+      <div class="actions">
+        <a mat-flat-button color="transparent-primary" (click)="createTeam()">
+          <span class="icon-plus-square"></span>
+        </a>
+      </div>
+
+    </h1>
+  </div>
+
+  <div class="panel row" @flyInPanelRow *ngFor="let team of teamList; trackBy:itemTrackBy">
+    <div class="colorChoice">
+      <div class="colorIcon {{ team.color }}"></div>
+      <label>{{ team.name | titlecase }}</label>
+    </div>
+
+
+
+
+    <div class="panelActions">
+      <div class="scores">
+        <label> {{ team.teamScore }} </label>
+      </div>
+
+      <a mat-flat-button color="primary" (click)='editTeam(team)'>
+        <span class="icon-edit"></span>
+      </a>
+
+      <a mat-flat-button color="warn" (click)='deleteTeam(team)'>
+        <span class="icon-trash"></span>
+      </a>
+
+
+    </div>
+  </div>
+
+  <div class="panel center warn" @flyInPanelRow *ngIf="status == 'warn'">
+    <p class="message">Teams not yet Setup.</p>
+  </div>
+</div>

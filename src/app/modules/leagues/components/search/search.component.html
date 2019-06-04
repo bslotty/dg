@@ -1,0 +1,79 @@
+<div class="headerContainer">
+  <h1>
+    <a mat-icon-button color="primary" routerLink="/leagues">
+      <span class="icon-pocket rotate-90"></span>
+    </a>
+
+    <label>Search for a League</label>
+  </h1>
+</div>
+
+<div class="panel row">
+  <form [formGroup]="form">
+    <mat-form-field>
+      <input matInput formControlName="term" placeholder="Enter a League Name" />
+    </mat-form-field>
+  </form>
+</div>
+
+
+
+<div class="headerContainer">
+  <h1>
+    <label>Results</label>
+  </h1>
+</div>
+
+
+
+
+
+<div *ngIf="resolve; else loader">
+
+  <div *ngIf="status == 'fresh'" class="panel row">
+    <p class="message">Search a League's name, or a Course name you play at.</p>
+  </div>
+
+  <div *ngIf="status == 'empty'" class="panel row warn">
+    <p class="message"><i>{{ form.get('term').value }}</i> returned no results.</p>
+  </div>
+
+  <div *ngIf="status == 'error'">
+    <div class="panel row warn">
+      <p class="message">Error: {{ message }}</p>
+    </div>
+
+    <div *ngIf="message == 'Request Timed Out.'" class="panel row">
+      <p class="message">Retry this request.
+        <a mat-icon-button color="primary" (click)="search(this.form.get('term').value)">
+          <span class="icon-rotate-ccw"></span>
+        </a>
+      </p>
+    </div>
+
+
+  </div>
+
+  <div *ngIf="status == 'success'">
+    <div class="panel row" *ngFor="let league of results" @flyInPanelRow>
+      <div>
+        <label>
+          {{ league.name }}
+        </label>
+      </div>
+
+      <div>
+        <a mat-icon-button color="primary" routerLink="/leagues/{{ league.id }}/join">
+          <span class="icon-external-link"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+<ng-template #loader>
+  <app-feedback></app-feedback>
+</ng-template>

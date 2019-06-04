@@ -1,0 +1,67 @@
+<!--    Heading   -->
+<div class="headerContainer">
+  <h1>
+    <label>Edit League</label>
+    <a mat-icon-button color="primary" (click)="close()">
+      <span class="icon-x"></span>
+    </a>
+  </h1>
+</div>
+
+
+<div>
+
+  <!--    Form   -->
+  <form [formGroup]='form'>
+
+    <!-- Name  -->
+    <mat-form-field>
+      <input matInput placeholder="Name" formControlName='name' name='name'>
+      <mat-error *ngIf=" 
+          form.get('name').touched && 
+          form.get('name').invalid">
+        Invalid Name
+      </mat-error>
+    </mat-form-field>
+
+    <!--  Visibility Toggle -->
+    <div class="split">
+      <mat-label>Visible in Search?</mat-label>
+      <mat-checkbox formControlName='visibility'></mat-checkbox>
+    </div>
+
+
+    <!--  Description -->
+    <mat-form-field>
+      <textarea matInput placeholder="Description" formControlName='description'>
+      </textarea>
+      <mat-hint>
+        (optional)
+      </mat-hint>
+    </mat-form-field>
+
+
+    <!--  Requirements  -->
+    <mat-form-field>
+      <textarea matInput placeholder="Restrictions" formControlName='restrictions'>
+      </textarea>
+      <mat-hint>
+        (optional)
+      </mat-hint>
+    </mat-form-field>
+
+    <!--    Actions   /!-->
+    <div class="actions">
+      <div class="row">
+        <a mat-raised-button color="primary" (click)="onFormSubmit()" [class.disabled]="form.invalid || form.pristine">
+          <label>Update</label>
+        </a>
+      </div>
+    </div>
+
+  </form>
+
+
+
+
+</div>

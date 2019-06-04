@@ -1,0 +1,3 @@
+.panel.row label:not(:first-of-type) {
+    margin-left: 1em;
+}

@@ -1,0 +1,71 @@
+<div class="headerContainer">
+  <h1>
+    <label>Participants</label>
+
+    <div class="actions" *ngIf="hasAccess">
+
+      <a mat-flat-button color="transparent-primary" (click)="addPlayer()"
+        [disabled]='status == "disabled" ? true : false'>
+        <span class="icon-plus-square"></span>
+      </a>
+    </div>
+  </h1>
+</div>
+
+
+<div class="panel row" @flyInPanelRow *ngFor="let player of playerList">
+
+  <div>
+    <label *ngIf="player.user.last == 'temp'"> {{ player.user.first }} </label>
+    <label *ngIf="player.user.last != 'temp'"> {{ player.user.first }} {{ player.user.last }} </label>
+    <label *ngIf="session.format != 'ffa'" class="player {{ player.team.color }}">
+      {{ player.team.name | titlecase }}
+    </label>
+  </div>
+
+
+
+  <div class="panelActions">
+    <!--
+      <a mat-icon-button color="primary" (click)='editPlayer(player)'>
+        <span class="icon-edit"></span>
+      </a>
+    -->
+
+    <div class="scores {{ player.spread }}">
+      <label> {{ player.score }} </label>
+      <label *ngIf="player.spread == 'Leader'"> {{ player.spread }} </label>
+      <label *ngIf="player.spread != 'Leader'"> +{{ player.spread }} </label>
+    </div>
+
+    <a mat-flat-button color="warn" (click)='removePlayer(player)'>
+      <span class="icon-trash"></span>
+    </a>
+  </div>
+</div>
+
+<div class="panel center warn" @flyInPanelRow *ngIf="status == 'warn'">
+  <p class="message">Participants not yet setup</p>
+</div>
+
+<div class="panel center warn" @flyInPanelRow *ngIf="status == 'disabled'">
+  <p class="message">Setup Teams before you add Participants.</p>
+</div>
+
+<div class="row">
+  <a mat-raised-button color="primary" (click)="mergePlayer()" [disabled]="tempMembers.length == 0">
+    Merge Temporary Player
+  </a>
+
+  <a mat-raised-button color="accent" [disabled]="playerList.length == 0" routerLink="play">
+    Enter Scores
+  </a>
+</div>
+
+<div *ngIf="chartData?.columns?.length > 0; else loader">
+  <app-line [data]="chartData"></app-line>
+</div>
+
+<ng-template #chart>
+  <app-feedback></app-feedback>
+</ng-template>

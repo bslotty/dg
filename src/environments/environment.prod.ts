@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  apiUrl: "http://www.brandonslotty.com/api/disc",
 };

@@ -1,0 +1,19 @@
+.format > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.format {
+    margin-top: 3em;
+}
+
+.format:first-of-type {
+    margin-top: 0;
+}
+
+.format > p {
+    margin: 0;
+}
+

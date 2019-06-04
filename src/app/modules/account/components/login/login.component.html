@@ -1,0 +1,57 @@
+<div [@flyInPanelRow]>
+
+  <!--    Heading   -->
+  <app-section-header title="login"></app-section-header>
+
+
+
+  <div class="panel small">
+
+
+    <!--    Form    -->
+    <form [formGroup]="form">
+
+      <!--  Email   -->
+      <mat-form-field>
+        <input matInput placeholder="Email" formControlName='email' name='email'>
+        <mat-error *ngIf="
+               form.get('email').touched && 
+               form.get('email').invalid">
+          Invalid Email
+        </mat-error>
+      </mat-form-field>
+
+
+      <!--  Password  -->
+      <mat-form-field>
+        <input matInput placeholder="Password" formControlName='password' name='password' type="password">
+        <mat-error *ngIf="
+             form.get('password').touched && 
+             form.get('password').invalid">
+          Invalid Password
+        </mat-error>
+      </mat-form-field>
+
+      <!--    Actions    -->
+      <div class="actions">
+        <div class="row">
+          <a mat-raised-button color="primary" class="large" (click)="onFormSubmit()" (keyup.enter)="onFormSubmit()" [disabled]="form.invalid || form.pristine || form.disabled">
+            <label>{{ submitText }}</label>
+          </a>
+        </div>
+        <div class="row">
+          <a mat-button routerLink="/account/register">
+            <label>Register</label>
+          </a>
+          <a mat-button routerLink="/account/forgot">
+            <label>Forgot?</label>
+          </a>
+        </div>
+      </div>
+    </form>
+
+
+
+  </div>
+
+</div>

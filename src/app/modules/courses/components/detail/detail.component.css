@@ -1,0 +1,22 @@
+.cardHolder {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    margin: .5em 0;
+}
+
+.card:not(:first-of-type) {
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 2;
+}
+
+.card h1 {
+    font-weight: 100;
+}

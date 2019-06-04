@@ -1,0 +1,27 @@
+.full-center-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+
+.tinySelect {
+    width: 25%;
+}
+
+
+
+.horizontal {
+    transform: rotate(0deg);
+}
+
+.vertical {
+    transform: rotate(90deg);
+}
+
+
+
+.mat-pseudo-checkbox-checked {
+    
+}
