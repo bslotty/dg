@@ -1,29 +1,51 @@
 <app-section-header title="Chart Settings" [buttons]="backButton" (actionClick)="actionClick($event)">
 </app-section-header>
 
-<div class="row">
-  <mat-select placeholder="Data" [value]="playerFormat" (selectionChange)="updateFormat($event)">
-    <mat-option value="scores"> Total Scores </mat-option>
-    <mat-option value="throws"> Throw Count </mat-option>
-  </mat-select>
-</div>
-
-<div class="row">
-  <mat-select multiple  placeholder="Visibility" [value]="colList" (selectionChange)="updatePlayers($event)">
-    <mat-option *ngFor="let option of colList; index as i" [style.color]='availableColors[i]' [value]="option">
-      {{ option }}</mat-option>
-  </mat-select>
-</div>
+<mat-tab-group mat-align-tabs="center">
+  <mat-tab label="Visibility">
+    <label>Visibility</label>
+    <!--
+      <mat-select multiple placeholder="Visibility" [value]="colList" (selectionChange)="updatePlayers($event)">
+      <mat-option [style.color]='availableColors[i]' [value]="option" [disabled]="colList.length == 1">
+        {{ option }}</mat-option>
+    </mat-select>
 
 
-<div *ngIf="data?.teams?.length > 0" class="row">
-  <mat-select placeholder="Format" [value]="teamFormat" (selectionChange)="updateTeamFormat($event)">
-    <mat-option value="team-avg">Team-Average</mat-option>
-    <mat-option value="team-best">Team-Best</mat-option>
-    <mat-option value="team-sum">Team-Sum</mat-option>
-  </mat-select>
-</div>
+    -->
 
+    <div class="col center buttonToggle">
+      <div *ngFor="let option of colList; index as i">
+        <button mat-stroked-button (click)="toggleVisibility(i)">
+          {{ option }}
+        </button>
+
+        <button mat-flat-button (click)="toggleVisibility(i)">
+          {{ option }}
+        </button>
+      </div>
+    </div>
+
+  </mat-tab>
+
+
+  <mat-tab label="Players">
+    <mat-label>Data</mat-label>
+    <mat-select placeholder="Data" [value]="playerFormat" (selectionChange)="updateFormat($event)">
+      <mat-option value="scores"> Total Scores </mat-option>
+      <mat-option value="throws"> Throw Count </mat-option>
+    </mat-select>
+  </mat-tab>
+
+
+  <mat-tab label="Teams" *ngIf="data?.teams?.length > 0">
+    <mat-label>Format</mat-label>
+    <mat-select placeholder="Format" [value]="teamFormat" (selectionChange)="updateTeamFormat($event)">
+      <mat-option value="team-avg">Team-Average</mat-option>
+      <mat-option value="team-best">Team-Best</mat-option>
+      <mat-option value="team-sum">Team-Sum</mat-option>
+    </mat-select>
+  </mat-tab>
+</mat-tab-group>
 
 <div class="actions">
   <a mat-raised-button color="accent" (click)="updateChart()">Update</a>

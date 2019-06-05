@@ -1,4 +1,4 @@
-  <!--
+<!--
     <div class="actions" *ngIf="hasAccess">
         <a mat-flat-button color="transparent-primary" (click)="addPlayer()"
         [disabled]='status == "disabled" ? true : false'>
@@ -6,18 +6,23 @@
       </a>
     </div>
   -->
-<app-section-header title="Participants" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header>
+<app-section-header title="Participants" [buttons]="headerButtons" (actionClick)="actionClick($event)">
+</app-section-header>
 
 
 <div class="panel row" @flyInPanelRow *ngFor="let player of playerList">
 
-  <div>
-    <label *ngIf="player.user.last == 'temp'"> {{ player.user.first }} </label>
-    <label *ngIf="player.user.last != 'temp'"> {{ player.user.first }} {{ player.user.last }} </label>
-    <label *ngIf="session.format != 'ffa'" class="player {{ player.team.color }}">
-      {{ player.team.name | titlecase }}
-    </label>
+  <div class="row squish">
+    <div class="colorChoice" *ngIf="player.team.id != null">
+      <div class="colorIcon {{ player.team?.color }}"></div>
+    </div>
+
+    <div [style.color]="player.team?.hex">
+      <label *ngIf="player.user.last == 'temp'"> {{ player.user.first }} </label>
+      <label *ngIf="player.user.last != 'temp'"> {{ player.user.first }} {{ player.user.last }} </label>
+    </div>
   </div>
+
 
 
 

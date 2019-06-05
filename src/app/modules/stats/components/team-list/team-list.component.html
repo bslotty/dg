@@ -5,7 +5,7 @@
   <div class="panel row" @flyInPanelRow *ngFor="let team of teamList; trackBy:itemTrackBy">
     <div class="colorChoice">
       <div class="colorIcon {{ team.color }}"></div>
-      <label>{{ team.name | titlecase }}</label>
+      <label [style.color]="team.hex">{{ team.name | titlecase }}</label>
     </div>
 
 

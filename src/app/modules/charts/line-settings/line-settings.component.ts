@@ -12,6 +12,7 @@ export class LineSettingsComponent implements OnInit {
   colList = this.data.columns.filter((v, i)=>{
     return v.toLowerCase() != "hole";
   });
+  playerList = this.colList;
 
   availableColors = [
     "#e66969", "#6ab9e8", "#60df60",
@@ -24,11 +25,10 @@ export class LineSettingsComponent implements OnInit {
     icon: 'icon-x',
   }];
 
-
   // mat-select: throws | score
   playerFormat:string = "scores"; 
   teamFormat: string = this.data.team ? "scores" : null ;
-  playerList = this.colList;
+  
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -69,6 +69,11 @@ export class LineSettingsComponent implements OnInit {
     };
 
     this.close(data);
+  }
+
+
+  toggleVisibility(i) {
+    console.log (i)
   }
 
 }
