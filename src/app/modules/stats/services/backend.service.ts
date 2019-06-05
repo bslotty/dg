@@ -17,6 +17,13 @@ export class StatsBackend {
   list$: BehaviorSubject<Stats[]> = new BehaviorSubject([]);
   update$: Subject<Boolean> = new Subject();
 
+  /*  Used For Chart  */
+  availableColors = [
+    "#e66969", "#6ab9e8", "#60df60",
+    "#d6d05d", "#d8a95d", "#9461e0",
+    "#cf58c5"];
+
+
   constructor(
     private http: HttpClient,
     private account: AccountBackend,
@@ -208,7 +215,7 @@ export class StatsBackend {
         "session": session,
         "league": leauge,
         "user": this.account.user,
-        "team": team,
+        "team": team, 
       }
     );
   }
@@ -226,7 +233,17 @@ export class StatsBackend {
   }
 
 
-  populateTeamScores(teams, players, session) {
+
+
+
+
+  /**
+   * 
+   * @param teams 
+   * @param players 
+   * @param session 
+   */
+  populateTeamScores(teams, players, par) {
     //  Calculate Score
     teams.filter((team) => {
       var scores = [];
@@ -242,12 +259,12 @@ export class StatsBackend {
 
           //  Push Team Scores
           if (player.team.id == team.id) {
-            scores[index].push(attempt - session.par[index]);
+            scores[index].push(attempt - par[index]);
           }
         });
       });
 
-      var formats = ["team-sum", "team-average", "team-best"];
+      var formats = ["team-sum", "team-avg", "team-best"];
       team['teamScore'] = [];
       formats.map((v, i) => {
 
@@ -268,7 +285,7 @@ export class StatsBackend {
               team['teamScore'][v]["throwArray"].push(total);
               break;
 
-            case "team-average":
+            case "team-avg":
               var total = hole.reduce((total, item) => { return total + item });
               var avg = Math.round((total / hole.length) * 10) / 10;
               teamScore = teamScore + avg;
@@ -307,7 +324,13 @@ export class StatsBackend {
     return teams;
   }
 
-  populatePlayerScores(players, session) {
+
+  /**
+   * 
+   * @param players 
+   * @param session 
+   */
+  populatePlayerScores(players, par) {
 
     //  Calculate Score
     players.filter((player) => {
@@ -316,7 +339,7 @@ export class StatsBackend {
       var throwArray = []
 
       player['throws'].filter((attempt, index) => {
-        var t = (attempt - session.par[index]);
+        var t = (attempt - par[index]);
         score = score + t;
         throwArray.push(t);
         scoreArray.push(score);
@@ -351,22 +374,57 @@ export class StatsBackend {
   }
 
 
+  /** 
+   * Returns an array of colors for the google charts to use.
+   * @param players Array of player objects from Stats.Backend
+   * @param teams Array of team objects from Stats.Backend    
+   */
+  getColorsFromBank(players, teams = null) {
+    var colors = [];
+    var teamColors = [];
+
+    //  Reserve Team Colors
+    if (teams) {
+      teams.map((v, i)=>{
+
+        //  Steal Team Colors From Bank
+        teamColors.push(v["hex"]);
+
+        //  Remove Stolen Colors
+        this.availableColors = this.availableColors.filter((c)=>{ 
+          return c.toLowerCase() != v['hex'].toLowerCase()
+        });
+      });
+    }
+
+    //  Assign Colors
+    players.map((pv,pi) =>{
+      pv.color = this.availableColors[pi];
+      colors.push(this.availableColors[pi]);
+    })
+ 
+    //  Assign Teams; FormatData Assigns Teams Last -> .push();
+    teamColors.map((t)=>{
+      colors.push(t);
+    });
+
+    return colors;
+  }
+
 
   /**
    *  Return: ['ColName', prop, prop, prop, ...]
-   * 
-   * @param teams 
-   * @param players 
-   * @param session 
+   * @param players Instanceof Stats (PlayerList)
+   * @param format FFA | BEST | SUM | AVG
+   * @param measure Scores | Throws
+   * @param teams Instanceof Teams
    */
-  formatChart(teams, players, session): Object {
+  formatChart(players, format, measure = "scores", teams = null,): Object {
     var columns = ["Hole"];
     var data = [];
-    var par = session.par;
+    var measure = measure == "throws" ? "throwArray" : "scoreArray";
 
     //  Format Player Data
-    players = this.populatePlayerScores(players, session);
-
     //  Populate Names
     players.map((v, i) => {
       var name = v["user"]["first"] + " " + v["user"]["last"].substr(0, 3);
@@ -375,14 +433,14 @@ export class StatsBackend {
       columns.push(name);
 
       //  Hole Count Data Setup
-      v["scoreArray"].map((s, i) => {
+      v[measure].map((s, i) => {
         if (data[i] == undefined) {
           data[i] = [];
         }
       });
 
       //  Scores
-      for (var h = 0; h < v["scoreArray"].length; h++) {
+      for (var h = 0; h < v[measure].length; h++) {
 
         //  Initiate Array with hole Count
         if (data[h].length == 0) {
@@ -390,7 +448,7 @@ export class StatsBackend {
         }
 
         //  Enter Player scores Data;
-        data[h].push(v["scoreArray"][h]);
+        data[h].push(v[measure][h]);
       }
     });
 
@@ -398,21 +456,24 @@ export class StatsBackend {
 
 
     //  Format Team Data
-    if (session.format != "ffa") {
-      teams = this.populateTeamScores(teams, players, session);
+    if (format != "ffa") {
+      /*
+      teams = this.populateTeamScores(teams, players, session.par);
+      */
+
       teams.map((v, i) => {
         //  Column Names
         columns.push(v.name);
 
         //  Hole Count Data Setup
-        v["teamScore"][session.format]["scoreArray"].map((s, i) => {
+        v["teamScore"][format][measure].map((s, i) => {
           if (data[i] == undefined) {
             data[i] = [];
           }
         });
 
         //  Scores
-        for (var h = 0; h < v["teamScore"][session.format]["scoreArray"].length; h++) {
+        for (var h = 0; h < v["teamScore"][format][measure].length; h++) {
 
           //  Initiate Array with hole Count
           if (data[h].length == 0) {
@@ -420,7 +481,7 @@ export class StatsBackend {
           }
 
           //  Enter Player scores Data;
-          data[h].push(v["teamScore"][session.format]["scoreArray"][h]);
+          data[h].push(v["teamScore"][format][measure][h]);
         }
 
       });
@@ -430,9 +491,6 @@ export class StatsBackend {
     return {
       columns: columns,
       scores: data,
-      teams: teams,
-      players: players,
-      par: session.par
     };
   }
 
@@ -484,6 +542,8 @@ export class StatsBackend {
 
 
 export class Stats {
+  
+
   constructor(
     public id: string,
     public user?: User,
@@ -491,11 +551,13 @@ export class Stats {
     public throws?: Array<any>,
     public score?: number,
     public spread?: string,
+    public color?:string,
   ) { }
 }
 
 
 export class Team {
+  
   constructor(
     public id: string,
     public name?: string,

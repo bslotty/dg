@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { LineSettingsComponent } from '../line-settings/line-settings.component';
+import { StatsBackend } from '../../stats/services/backend.service';
 
 @Component({
   selector: 'app-line',
@@ -22,13 +23,10 @@ export class LineComponent implements OnInit {
   ];
 
   @Input() data;
-
-  availableColors = [
-    "#e66969", "#6ab9e8", "#60df60",
-    "#d6d05d", "#d8a95d", "#9461e0",
-    "#cf58c5"];
-
-  //  holeLabel = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
+  @Input() format;
+  @Input() par;
+  @Input() teams;
+  @Input() players;
 
   fontColor = "#EFEFEF";
 
@@ -70,11 +68,11 @@ export class LineComponent implements OnInit {
 
     /*  Design  */
     backgroundColor: "transparent",
-    colors: this.availableColors,
+    colors: [],
     pointsVisible: true,
     pointShape: "circle",
-    pointSize: 13,
-    lineWidth: 2,
+    pointSize: 15,
+    lineWidth: 3,
 
     series: {
       0: {},
@@ -89,62 +87,49 @@ export class LineComponent implements OnInit {
       }
     },
     hAxis: {
+      /*  title: "Hole",  */
       textStyle: {
         color: this.fontColor,
       },
       textPosition: "out",
+      baseline: 9,
       baselineColor: "#fafaf0",
       gridlines: {
         color: "#506450",
-        count: 9,
+        count: -1,
       }
     },
     vAxis: {
+      /*  title: "Score", */
       textStyle: {
         color: this.fontColor,
       },
       textPosition: "in",
+      baseline: 0,
       baselineColor: "#fafaf0",
       gridlines: {
         color: "#506450",
-        count: 6,
+        count: -1,
       }
     },
-
-    /*  Doesnt Show  
-    trendlines: {
-      0: {
-        type: 'polynomial',
-        degree: 3,
-        color: '#FF00FF',
-        lineWidth: 7,
-        opacity: 1,
-        visibleInLegend: true,
-        pointSize: 5,
-      }
-    },
-    */
-
 
   };
   constructor(
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private stats: StatsBackend,
   ) { }
 
   ngOnInit() {
-
     //  Defaults
     this.columnNames = this.data['columns'];
     this.chartData = this.data['scores'];
+    this.options.colors = this.stats.getColorsFromBank(this.players, this.teams);
 
     //  this.formatChart(this.data['columns'], this.data['scores']);
 
-    this.colList = this.columnNames.filter((v, i) => {
-      return i > 0;
-    });
     this.initialHeaders = this.columnNames;
-
     this.initialData = this.chartData;
+
   }
 
   actionClick($event) {
@@ -155,20 +140,7 @@ export class LineComponent implements OnInit {
     } 
   }
 
-  /*  Return array(n) colors from bank for data */
-  getColorsFromBank() {
-    var colors = [];
-    //  Grab Team Colors First
-    if (this.data["teams"]) {
-
-    } else {
-      for (var i = 0; i < this.data["scores"][0].length; i++) {
-        colors.push(this.availableColors[i]);
-      }
-    }
-    
-    return colors;
-  }
+  
 
   /*  Change orientation onClick */
   rotateChart() {
@@ -183,41 +155,29 @@ export class LineComponent implements OnInit {
     }
   }
 
-  filterData($event) {
-    //  console.log("Chart: ", this.chart);
-    //  console.log ("eventTarget", $event)
+  filterData(selectedColumns) {
 
-    /**
-     *  Get Stuff to Save
+    /** Get Stuff to Save
      */
     var keep = [0];
-    //  console.log ("$event.value: ", $event.value);
-    $event.value.map((ev, ei) => {
+    selectedColumns.map((ev, ei) => {
       this.initialHeaders.map((cv, ci) => {
         if (cv == ev) {
           keep.push(ci);
         }
       })
     });
-    //  console.log("keep[ci]: ", keep);
-    //  console.log("ColumnHeaders: ", this.columnNames);
-
-
-
-    /**
-     *  Filter Columns
+ 
+    /** Filter Columns
      */
     this.columnNames = this.initialHeaders.filter((hv, hi) => {
       return keep.indexOf(hi) > -1;
     });
-    //  console.log("AdjustedColumnHeaders: ", this.columnNames);
 
 
-    /**
-     *  Filter Data
+    /** Filter Data
      */
     this.chartData = this.initialData.map((ia, ii) => {
-      //  console.log("\n New Itteration: [", ii, "]:", ia);
       ia = ia.filter((v, i) => {
         if (keep.indexOf(i) != -1) {
           return true;
@@ -225,60 +185,82 @@ export class LineComponent implements OnInit {
           return false;
         }
       });
-      //  console.log("postFilter[", ii, "]:", ia);
       return ia;
     });
-    //  console.log("Data: ", this.data);
-    //  console.log("initialData: ", this.initialData);
-
-
-    /**
-     *  Update Options
-    */
-    this.options.colors = this.availableColors.filter((cv, ci) => {
-      //  +1 due to vAxis Label
-      return keep.indexOf(ci + 1) > -1;
-    });
-  }
-
-  initializeOrientation() {
-
-    if (window.innerWidth < window.innerHeight) {
-
-    } else {
-
-    }
   }
 
   openSettings() {
     const settingsDialog = this.dialog.open(LineSettingsComponent, {
-      data: this.data
+      data: {
+        scores: this.data,
+        format: this.format,
+        colors: this.stats.getColorsFromBank(this.players, this.teams),
+        teams: this.teams,
+        players: this.players,
+      }
     });
 
     settingsDialog.afterClosed().subscribe((diag) => {
       console.log ("popup.Data: ", diag);
 
       if (diag) {
-        diag[""]
+
+        //  Re-Format Data From Arrays;
+        //  Get Teams for Repop
+        var teams = this.teams.filter((t)=>{
+          return diag['selectedColumns'].indexOf(t.name) > -1;
+        }); 
+
+        //  Get Players for Repop
+        var players = this.players.filter((p)=>{
+
+          //  Shorten Name;
+          var name = p.user.first + " " + p.user.last.substr(0, 3);
+          return diag['selectedColumns'].indexOf(name) > -1;
+        });
+
+    
+        //  Exception to Show Team Only
+        if (players.length == 0 && teams.length > 0) {
+          players = this.players;
+        } 
+        //  Rework Above player reset to account for Partial Team Selection
+        //  Team 1 No players with team 2 any players gets around the above filter and Errors
+        //    Need to count for players on teams, if teams exist
+        //      If Teams -> Loop ->
+        //        Roster Player Count vs Selected Player Count for this team
+        //        If Blank-> Assign full team roster temporarily
+        //
+        //        Then we need to account for visibility. Which will not be accounted for 
+        //        if we replace the player array with the initial array...
+        //
+        //        Worth?
 
 
-        this.formatChart(diag["data"]);
+        //  Add a sub-display to the title to show Scores/Throws
+
+        this.options.colors = this.stats.getColorsFromBank(players, teams);
+
+        //  Data Store
+        players = this.stats.populatePlayerScores(players, this.par);
+        teams = this.stats.populateTeamScores(teams, players, this.par);
+
+        console.log ("AfterCheck: players: ", players, "teams: ", teams, "colors: ", this.options.colors);
+
+        //  Format Chart Data;
+        var results = this.stats.formatChart(players, diag["teamFormat"], diag["format"], teams);
+   
+        this.chartData = results['scores'];
+        this.columnNames = results["columns"];
+
+        //  Toggles Visibility
+        //  this.filterData(diag['selectedColumns']);
+
+        console.log ("results: ", results, this.chartData);
       }
     });
   }
 
-
-  formatChart(data) {
-    //  set chart columnHeaders, and Data array from import;
-    //  Fire upon settingspopup close
-    //  settings will handle and return the filtered data into this, to show the data;
-
-    //  Teams y/n?
-
-    if (true) {}
-
-
-  }
 
 
 }

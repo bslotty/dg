@@ -1,8 +1,38 @@
 .row {
     min-height: 5vh;
+    display: flex;
+    flex-direction: row;
 }
 
 
 .buttonToggle {
-    margin-top: .2em;
+    margin-top: .5em;
+    width: 70%;
+}
+
+.buttonToggle button {
+    width: 100%;
+}
+
+.col.center {
+    justify-content: stretch;
+    align-items: center;
+}
+
+
+/*  Move    */
+.actions {
+    margin-top: 1em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.mat-tab-label {
+    height: 1em !important;
+    padding: .3em 1.2em  !important;
+    opacity: 1  !important; 
+    font-size: 1.3em  !important;
 }

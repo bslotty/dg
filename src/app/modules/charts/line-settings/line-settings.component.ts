@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { Stats, Team } from '../../stats/services/backend.service';
 
 @Component({
   selector: 'app-line-settings',
@@ -9,42 +9,55 @@ import { connectableObservableDescriptor } from 'rxjs/internal/observable/Connec
 })
 export class LineSettingsComponent implements OnInit {
 
-  colList = this.data.columns.filter((v, i)=>{
+  colList = this.data.scores.columns.filter((v, i) => {
     return v.toLowerCase() != "hole";
   });
-  playerList = this.colList;
+  selectedColumns = this.colList;
 
-  availableColors = [
-    "#e66969", "#6ab9e8", "#60df60",
-    "#d6d05d", "#d8a95d", "#9461e0",
-    "#cf58c5"];
+  teamList;
+  playerList;
+
+  activePlayerList;
+  activeTeamList;
+
+
+  availableColors = this.data["colors"];
 
   backButton = [{
-    action: 'close', 
-    color: 'transparent-primary', 
+    action: 'close',
+    color: 'transparent-primary',
     icon: 'icon-x',
   }];
 
   // mat-select: throws | score
-  playerFormat:string = "scores"; 
-  teamFormat: string = this.data.team ? "scores" : null ;
-  
+  playerFormat: string = "scores";
+  teamFormat: string = this.data.format;
+
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<LineSettingsComponent>,
   ) { }
 
-  ngOnInit() {  }
+  ngOnInit() {
+    console.log("settings.data: ", this.data);
+  }
 
-  actionClick($event){
-    console.log ("ActionClick.Event: ", $event);
+  actionClick($event) {
     if ($event == "close") {
       this.dialogRef.close();
     }
   }
 
-  close(data){
+  getColor(ent) {
+    if (ent instanceof Stats) {
+      return ent.color;
+    } else if (ent instanceof Team) {
+      return ent.hex;
+    }
+  }
+
+  close(data) {
     this.dialogRef.close(data);
   }
 
@@ -53,8 +66,8 @@ export class LineSettingsComponent implements OnInit {
     this.playerFormat = $event.value;
   }
 
-  updatePlayers ($event) {
-    this.playerList = $event.value;
+  updatePlayers($event) {
+    this.selectedColumns = $event.value;
   }
 
   updateTeamFormat($event) {
@@ -63,7 +76,7 @@ export class LineSettingsComponent implements OnInit {
 
   updateChart() {
     var data = {
-      players: this.playerList,
+      selectedColumns: this.selectedColumns,
       format: this.playerFormat,
       teamFormat: this.teamFormat,
     };
@@ -72,8 +85,13 @@ export class LineSettingsComponent implements OnInit {
   }
 
 
-  toggleVisibility(i) {
-    console.log (i)
+  toggleVisibility(person, action) {
+    if (action == "remove") {
+      this.selectedColumns = this.selectedColumns.filter((v) => { return person != v; });
+    } else if (action == "add") {
+      this.selectedColumns.push(person);
+    }
+    console.log("selectedColumns: ", this.selectedColumns);
   }
 
 }

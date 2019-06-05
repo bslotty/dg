@@ -64,7 +64,13 @@
 </div>
 
 <div *ngIf="chartData?.columns?.length > 0; else loader">
-  <app-line [data]="chartData"></app-line>
+  <app-line 
+    [data]="chartData"
+    [teams]="teamList"
+    [players]="playerList"
+    [par]="session.par"
+    [format]="session.format">
+  </app-line>
 </div>
 
 <ng-template #chart>

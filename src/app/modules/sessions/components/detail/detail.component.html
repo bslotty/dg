@@ -27,9 +27,9 @@
     </div>
 
     <div>
-      <a mat-flat-button color="accent" routerLink="/courses/{{ session.course.id }}">
+      <a mat-flat-button color="accent" routerLink="/courses/{{ session?.course?.id }}">
         <span class='icon-map-pin'></span>
-        {{ session.course.name }}
+        {{ session?.course?.name }}
       </a>
     </div>
 

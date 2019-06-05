@@ -2361,8 +2361,8 @@ mat-footer-row, mat-header-row, mat-row, td.mat-cell, td.mat-footer-cell, th.mat
     color: rgb(250, 250, 240);
     margin-top: 10% !important;
     width: 100%;
-    min-width: 80%;
-    max-width: 100%;
+    min-width: 80% !important;
+    max-width: 100% !important;
     font-size: 28px !important;
 }
 

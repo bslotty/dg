@@ -1,27 +1,72 @@
 <app-section-header title="Chart Settings" [buttons]="backButton" (actionClick)="actionClick($event)">
 </app-section-header>
 
-<mat-tab-group mat-align-tabs="center">
+<mat-tab-group mat-align-tabs="center" dynamicHeight="true">
+
+  <!--
+      <mat-tab label="Presets">
+        <button>Player Scores</button>
+        <button>Player Throws</button>
+        <button>Team Sum</button>
+        <button>Team Best</button>
+        <button>Team Average</button>
+      </mat-tab>
+  -->
+
   <mat-tab label="Visibility">
-    <label>Visibility</label>
-    <!--
-      <mat-select multiple placeholder="Visibility" [value]="colList" (selectionChange)="updatePlayers($event)">
-      <mat-option [style.color]='availableColors[i]' [value]="option" [disabled]="colList.length == 1">
-        {{ option }}</mat-option>
-    </mat-select>
 
+    <div class="col center" *ngIf="data.teams.length > 0">
+      <h2> Team Vis Format</h2>
 
-    -->
-
-    <div class="col center buttonToggle">
-      <div *ngFor="let option of colList; index as i">
-        <button mat-stroked-button (click)="toggleVisibility(i)">
-          {{ option }}
+      <div class="teamList buttonToggle" *ngFor="let team of data.teams; index as ti">
+        <button mat-stroked-button [style.color]='getColor(team)' (click)="toggleVisibility(team.name, 'add')"
+          *ngIf="selectedColumns.indexOf(team.name) == -1">
+          {{ team.name }}
         </button>
 
-        <button mat-flat-button (click)="toggleVisibility(i)">
-          {{ option }}
+        <button mat-flat-button [style.background]='getColor(team)' (click)="toggleVisibility(team.name, 'remove')"
+          *ngIf="selectedColumns.indexOf(team.name) > -1">
+          {{ team.name }}
         </button>
+
+        <div *ngFor="let player of data.players; index as pi" class="buttonToggle">
+          <div *ngIf="player.team.id == team.id" class="row">
+            <div class="colorChoice">
+              <div class="colorIcon {{ player.team?.color }}"></div>
+            </div>
+            <button mat-stroked-button [style.color]='getColor(player)'
+              (click)="toggleVisibility(player.user.first + ' ' + player.user.last.substr(0, 3), 'add')"
+              *ngIf="selectedColumns.indexOf(player.user.first + ' ' + player.user.last.substr(0, 3)) == -1">
+              <label>{{ player.user.first }} {{ player.user.last }}</label>
+            </button>
+
+            <button mat-flat-button class="row" [style.background]='getColor(player)'
+              (click)="toggleVisibility(player.user.first + ' ' + player.user.last.substr(0, 3), 'remove')"
+              *ngIf="selectedColumns.indexOf(player.user.first + ' ' + player.user.last.substr(0, 3)) > -1">
+              <label>{{ player.user.first }} {{ player.user.last }}</label>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col center" *ngIf="data.teams.length == 0">
+      <h2> FFA Vis Format</h2>
+      <div class="col center">
+        <div *ngFor="let option of colList; index as i" class="buttonToggle">
+          <button mat-stroked-button [style.color]='availableColors[i]' (click)="toggleVisibility(option, 'add')"
+            *ngIf="selectedColumns.indexOf(option) == -1">
+            <div>
+
+            </div>
+            {{ option }}
+          </button>
+
+          <button mat-flat-button [style.background]='availableColors[i]' (click)="toggleVisibility(option, 'remove')"
+            *ngIf="selectedColumns.indexOf(option) > -1">
+            {{ option }}
+          </button>
+        </div>
       </div>
     </div>
 
@@ -48,5 +93,5 @@
 </mat-tab-group>
 
 <div class="actions">
-  <a mat-raised-button color="accent" (click)="updateChart()">Update</a>
+  <a mat-raised-button color="accent" (click)="updateChart()" [disabled]="selectedColumns.length == 0">Update</a>
 </div>

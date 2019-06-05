@@ -51,6 +51,11 @@
             $valid   = true;
             $hash    = hash("sha512", getRealIpAddr());
 
+            //  Remove IP Validation for now
+            $trusted = true;
+            $valid = true;
+
+            /*  Remove IP Validation for now
             //  Query System For Account Flags
             $query = "SELECT * FROM `Flags` WHERE `Account ID`=:account;";
 
@@ -74,6 +79,7 @@
                     $valid = false;
                 }
             }
+            */
 
             // If Validation already pending
             if ($valid == false) {

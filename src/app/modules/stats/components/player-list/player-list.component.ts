@@ -112,12 +112,11 @@ export class PlayerListComponent implements OnInit {
 
         //  Data Store
         this.memberList = members;
-        this.playerList = this.stats.populatePlayerScores(players, this.session);
-        this.teamList = teams;
-
+        this.playerList = this.stats.populatePlayerScores(players, this.session.par);
+        this.teamList = this.stats.populateTeamScores(teams, players, this.session.par);
 
         //  Format Chart Data;
-        this.chartData = this.stats.formatChart(this.teamList, this.playerList, this.session);
+        this.chartData = this.stats.formatChart(this.playerList, this.session.format,  "scores", this.teamList,);
 
         console.log ("player.list.chartData: ", this.chartData);
       }
@@ -178,8 +177,6 @@ export class PlayerListComponent implements OnInit {
   }
 
   removePlayer(user) {
-    console.log("User: ", user);
-
     const removeDiag = this.dialog.open(DeletePlayerComponent, {
       width: "500px",
       data: {
