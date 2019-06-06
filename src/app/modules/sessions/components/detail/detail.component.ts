@@ -36,6 +36,7 @@ export class DetailComponent implements OnInit {
   ngOnInit() {
     this.populateData();
 
+    console.log ("session.detail.session: ", this.session);
   }
 
   populateData() {

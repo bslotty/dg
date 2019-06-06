@@ -24,6 +24,12 @@ export class CreatePlayerComponent implements OnInit {
   availablePlayers: Permission[] = [];
   teamList: Team[] = this.data.teamList;
 
+  resolve: boolean = false;
+  headerButtons = [{
+    icon: "icon-x",
+    action: "close",
+    color: "transparent-primary",
+  }];
 
   constructor(
     public permissions: PermissionBackend,
@@ -39,11 +45,12 @@ export class CreatePlayerComponent implements OnInit {
   ngOnInit() {
     this.initForm();
 
+    /*
     console.log("league: ", this.data.league);
     console.log("session: ", this.data.session);
     console.log("members: ", this.data.memberList);
     console.log("players: ", this.data.playerList);
-
+    */
 
     this.getAvailablePlayers();
   }
@@ -51,6 +58,14 @@ export class CreatePlayerComponent implements OnInit {
   populateData() {
 
   }
+
+  actionClick($event) {
+    if ($event == "close"){ 
+      this.close();
+    }
+  }
+
+
 
   close() {
     this.dialogRef.close();
@@ -106,19 +121,13 @@ export class CreatePlayerComponent implements OnInit {
   saveRoster() {
     if (this.form.valid && this.form.dirty) {
 
-      console.log ("this.form", this.form);
-      console.log ("player: ", this.form.get('player').value['user']);
-      console.log ("team: ", this.form.get('team').value);
-
       this.stats.createPlayer(
         this.data.league, 
         this.data.session, 
         this.form.get('player').value['user'], 
         this.form.get('team').value
       ).subscribe((data) => {
-        console.log("createTeam.Complete!", data);
         this.feed.finializeLoading(data, true);
-
         this.close();
       });
     }
@@ -135,9 +144,6 @@ export class CreatePlayerComponent implements OnInit {
     });
 
     tempPlayerDiag.afterClosed().subscribe((res) => {
-
-      console.log ("temporary Player Added: ", res);
-
       //  Set New Player into Form
       this.availablePlayers.push(res);
 
@@ -145,8 +151,6 @@ export class CreatePlayerComponent implements OnInit {
 
       this.form.get('player').setValue(res);
       this.form.get('player').markAsDirty();
-
-      console.log ("formCheck: ", this.form)
     });
   }
 }

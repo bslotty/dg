@@ -35,10 +35,14 @@
       <!--    Actions    -->
       <div class="actions">
         <div class="row">
-          <a mat-raised-button color="primary" class="large" (click)="onFormSubmit()" (keyup.enter)="onFormSubmit()" [disabled]="form.invalid || form.pristine || form.disabled">
+          <a mat-raised-button color="primary" class="large" (click)="onFormSubmit()" (keyup.enter)="onFormSubmit()"
+            [disabled]="form.invalid || form.pristine || form.disabled">
             <label>{{ submitText }}</label>
           </a>
         </div>
+      </div>
+
+      <div class="actions secondary">
         <div class="row">
           <a mat-button routerLink="/account/register">
             <label>Register</label>
@@ -48,6 +52,8 @@
           </a>
         </div>
       </div>
+
+
     </form>
 
 

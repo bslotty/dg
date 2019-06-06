@@ -54,6 +54,8 @@ export class CreateComponent implements OnInit {
     */
   }
 
+ 
+
   joinRequest() {
     this.feed.initiateLoading();
     this.permissions.joinRequest(this.league).subscribe((res: ServerPayload) => {

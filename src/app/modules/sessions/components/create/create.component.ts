@@ -26,6 +26,12 @@ export class CreateComponent implements OnInit {
 
   public league: League = new League (this.data.league.id);
 
+  headerButtons = [{
+    icon: "icon-x",
+    color: "transparent-primary",
+    action: "close",
+  }];
+
   constructor(
     public courses: CourseBackend, 
     public leagues: LeagueBackend,
@@ -42,6 +48,12 @@ export class CreateComponent implements OnInit {
     this.feed.initiateLoading();
     this.initForm();
     this.getCourseList();
+  }
+
+  actionClick($event) {
+    if ($event == "close"){ 
+      this.close();
+    }
   }
 
   initForm() {

@@ -1,7 +1,6 @@
+<app-section-header title="session" back="true"></app-section-header>
+
 <div *ngIf="resolve; else loader">
-  <app-section-header title="session" back="/leagues/{{ league?.id }}"></app-section-header>
-
-
 
   <div class="panel row" @flyInPanelRow>
     <div>
@@ -13,10 +12,6 @@
     <div>
       <a mat-flat-button color="primary" (click)="editSession()">
         <span class="icon-settings"></span>
-      </a>
-
-      <a mat-flat-button color="warn" (click)="deleteSession()">
-        <span class="icon-trash-2"></span>
       </a>
     </div>
   </div>
@@ -54,8 +49,6 @@
 
   <app-player-list [league]="league" [session]="session">
   </app-player-list>
-
-
 
 </div>
 

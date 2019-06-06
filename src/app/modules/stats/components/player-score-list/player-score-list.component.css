@@ -1,11 +1,7 @@
-h1 .scores label {
-    font-size: 16px;
+.scores label {
+    width: 3em;
 }
 
-h1 .scores {
-    margin-right: 1em;
-}
-
-.headerContainer {
-    padding-right: 1em;
+.scores div{
+    overflow: hidden;
 }

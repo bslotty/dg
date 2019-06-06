@@ -1,11 +1,4 @@
-<h1>
-  <label>Delete Team</label>
-
-  <a mat-icon-button color="primary" (click)="close()">
-    <span class="icon-x"></span>
-  </a>
-
-</h1>
+<app-section-header title="Delete Team" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header> 
 
 <div *ngIf="!playerListEmpty">
   <p>No players can belong to a team if you want to delete the team.</p>

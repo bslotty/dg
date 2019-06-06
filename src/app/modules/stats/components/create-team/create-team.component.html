@@ -1,9 +1,4 @@
-<h1>
-  <label>Create Team</label>
-  <a mat-icon-button (click)="close()">
-    <span class="icon-x"></span>
-  </a>
-</h1>
+<app-section-header title="Create Team" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header> 
 
 <form [formGroup]="form">
   <mat-form-field>

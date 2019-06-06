@@ -15,9 +15,16 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 })
 
 export class CreateComponent implements OnInit {
+  resolve: boolean = false;
 
-  public form: FormGroup;
-  public league: League = new League("0");
+  form: FormGroup;
+  league: League = new League("0");
+
+  headerButtons = [{
+    action: "close",
+    icon: "icon-x",
+    color: "transparent-primary",
+  }];
 
   constructor(
     public builder: FormBuilder,
@@ -31,6 +38,8 @@ export class CreateComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
+
+    this.resolve = true;
   }
 
 
@@ -48,8 +57,15 @@ export class CreateComponent implements OnInit {
     });
   }
 
+  actionClick($event) {
+    if ($event == "close") {
+      this.close();
+    }
+  }
+
   onFormSubmit() {
     if (this.form.valid && this.form.dirty) {
+      this.resolve = false;
 
       this.feed.initiateLoading();
 
@@ -64,6 +80,7 @@ export class CreateComponent implements OnInit {
       this.leagues.create(this.league).subscribe((res: ServerPayload) => {
         
         this.feed.finializeLoading(res, true);
+        this.resolve = true;
 
         if (res.status == "success") {
           this.router.navigate(["leagues", res["insertID"]]);
@@ -71,10 +88,6 @@ export class CreateComponent implements OnInit {
         }
       });
     }
-  }
-
-  back() {
-    this.location.back();
   }
 
   close(){

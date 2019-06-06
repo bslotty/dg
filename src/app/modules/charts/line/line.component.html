@@ -1,6 +1,7 @@
 <app-section-header title="stats" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header>
 
-<div class="full-center-content {{ orientation }}">
+
+<div class="full-center-content {{ orientation }}" *ngIf="resolve; else loader" @flyInPanelRow>
   <google-chart #chart [title]="title" [type]="type" [data]="chartData" [columnNames]="columnNames" [options]="options"
     [width]="width" [height]="height">
   </google-chart>
@@ -21,3 +22,8 @@
   -->
 
 </div>
+
+
+<ng-template #loader>
+  <app-feedback></app-feedback>
+</ng-template>

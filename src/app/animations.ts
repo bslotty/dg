@@ -84,6 +84,51 @@ export const flyIn = trigger('flyIn', [
 ]);
 
 
+export const scorecardSlide = trigger('scorecardSlide', [
+  transition(':increment', [
+      style({
+      transform: 'translateX(1em)', opacity: 0,
+    }),
+    animate('0.3s ease-out', style({transform: 'translateX(0)', opacity: 1,}))
+  ]), 
+  transition(':decrement', [
+      style({
+      transform: 'translateX(-1em)', opacity: 0,
+    }),
+    animate('0.3s ease-out', style({transform: 'translateX(0)', opacity: 1,}))
+  ])
+  /*
+  transition(':increment', group([
+    query(':enter', [
+      style({
+        transform: 'translateX(3em)'
+      }),
+      animate('0.5s ease-out', style({transform: 'translateX(0)'}))
+    ], { optional: true }),
+    query(':leave', [
+      animate('0.5s ease-out', style({
+        transform: 'translateX(-3em)'
+      }))
+    ], { optional: true })
+  ])),
+  transition(':decrement', group([
+    query(':enter', [
+      style({
+        transform: 'translateX(-3em)'
+      }),
+      animate('0.5s ease-out', style({transform: 'translateX(0)'}))
+    ], { optional: true }),
+    query(':leave', [
+      animate('0.5s ease-out', style({
+        transform: 'translateX(3em)'
+      }))
+    ], { optional: true })
+  ]))
+  */
+]);
+
+
+
 /*  Failed Stagger attempt; unused
 export const flyInPanelRow = trigger('flyInPanelRow', [
   transition(':enter', [

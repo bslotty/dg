@@ -21,6 +21,8 @@ export class SearchComponent implements OnInit {
 
   status: string = "fresh";
 
+
+
   constructor(
     public builder: FormBuilder,
     public leagues: LeagueBackend,
@@ -47,7 +49,6 @@ export class SearchComponent implements OnInit {
   search(term) {
 
     this.resolve = false;
-    console.log("form.term: ", this.form.get("term"));
 
 
     //  Only If Valid and Dirty
@@ -59,9 +60,7 @@ export class SearchComponent implements OnInit {
         distinctUntilChanged(),
         timeout(1000),
       ).subscribe((res) => {
-        console.log(res);
-
-
+        
         this.resolve = true;
 
         if (res.length == 0) {

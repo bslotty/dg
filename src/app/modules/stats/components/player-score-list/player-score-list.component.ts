@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Session, SessionBackend } from 'src/app/modules/sessions/services/backend.service';
 import { League } from 'src/app/modules/leagues/services/backend.service';
 import { MatSort, MatPaginator } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { StatsBackend, Stats, Team } from '../../services/backend.service';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
-import { combineLatest } from 'rxjs';
-import { flyInPanelRow } from 'src/app/animations';
+import { combineLatest, interval, of, Observable } from 'rxjs';
+import { flyInPanelRow, scorecardSlide } from 'src/app/animations';
 import { PermissionBackend, Permission } from 'src/app/modules/permissions/services/backend.service';
 import { AccountBackend } from 'src/app/modules/account/services/backend.service';
 
@@ -14,9 +14,9 @@ import { AccountBackend } from 'src/app/modules/account/services/backend.service
   selector: 'app-player-score-list',
   templateUrl: './player-score-list.component.html',
   styleUrls: ['./player-score-list.component.css'],
-  animations: [flyInPanelRow]
+  animations: [flyInPanelRow, scorecardSlide]
 })
-export class PlayerScoreListComponent implements OnInit {
+export class PlayerScoreListComponent implements OnInit,OnDestroy {
 
   public league: League = new League(this.route.snapshot.paramMap.get("league"));
   public session: Session = new Session(this.route.snapshot.paramMap.get("session"));
@@ -35,6 +35,8 @@ export class PlayerScoreListComponent implements OnInit {
   teamList: Team[] = [];
   tempMembers: Permission[] = [];
 
+  autoSave;
+
   constructor(
     public route: ActivatedRoute,
     public account: AccountBackend,
@@ -47,18 +49,19 @@ export class PlayerScoreListComponent implements OnInit {
 
   ngOnInit() {
     this.populateData();
+
+    //  Save every 60 secs;
+    this.autoSave = interval(60000).subscribe((res)=>{
+      this.saveRoster();
+    });
+  }
+
+  ngOnDestroy() {
+    this.autoSave.unsubscribe();
   }
 
   populateData() {
-    //teams
-
-    //players
-
-    //score
-
-    //sort
-
-    //
+   
     combineLatest(
       this.stats.getList(this.session),
       this.permissions.memberList(this.league),
@@ -132,6 +135,8 @@ export class PlayerScoreListComponent implements OnInit {
   }
 
   saveRoster() {
+
+
     var playerList = this.playerList.filter((player) => {
       player["throwString"] = JSON.stringify(player.throws);
       return player;
@@ -139,6 +144,8 @@ export class PlayerScoreListComponent implements OnInit {
 
     var session = this.session;
     session["parString"] = JSON.stringify(session.par);
+
+
 
     //  update pars and stats
     this.stats.updateStats(this.league, session, playerList).subscribe((res) => {
@@ -174,7 +181,7 @@ export class PlayerScoreListComponent implements OnInit {
   }
 
   decHole() {
-    if (this.tabIndex > 0) {
+    if (this.tabIndex > 1) {
       this.tabIndex--;
     }
   }

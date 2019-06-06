@@ -66,7 +66,7 @@ h1 {
 }
 
 label {
-    padding: .5em;
+    padding: 0 .5em;
 }
 
 
@@ -119,10 +119,10 @@ p b {
     justify-content: flex-start;
     align-items: stretch;
     flex-grow: 2;
-    margin-bottom: 1em;
+    margin-bottom: .3em;
     padding: 0;
 
-    min-height: 5vh;
+    min-height: 10vh;
 }
 
 .panel.warn {
@@ -177,7 +177,7 @@ form {
     justify-content: flex-start;
     align-items: center;
     flex-grow: 1;
-    padding-top: 1em;
+    padding: .3em;
 }
 
 
@@ -186,6 +186,12 @@ form .actions {
     margin-top: 2em;
     padding-bottom: 1em;
 }
+
+.actions.secondary {
+    margin-top: 0;
+    padding-bottom: 0;
+}
+
 
 .actions .row {
     display: flex;
@@ -221,15 +227,6 @@ router-outlet~* {
     margin-top: 2em;
 }
 
-
-
-/*
-app-root {
-    min-width: 360px;
-    max-width: 720px;
-    position: relative;
-}
-*/
 
 .rotate {
     animation: rotate 2s infinite;
@@ -293,7 +290,9 @@ table {
 
 
 
-
+.article {
+    padding: .5em;
+}
 
 
 
@@ -302,9 +301,8 @@ table {
 /*      Team Color Classes      */
 .colorChoice .colorIcon {
     width: 2vw;
-    height: 5vh;
+    height: 10vh;
     display: inline-block;
-    margin-right: 1em;
 }
 
 .colorChoice {
@@ -423,12 +421,26 @@ table {
 
 @media only screen and (max-width: 1100px) {
 
-
     router-outlet~* {
         width: 95%;
     }
 
+    .panel {
+        min-height: 5vh;
+    }
 
+    button, a  {
+        min-height: 5vh;
+        line-height: 5vh;
+    }
+
+    .mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button, .mat-raised-button {
+        line-height: 5vh !important;
+    }
+
+    .colorChoice .colorIcon {
+        height: 5vh;
+    }
 
 }
 

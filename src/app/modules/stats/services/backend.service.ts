@@ -215,7 +215,7 @@ export class StatsBackend {
         "session": session,
         "league": leauge,
         "user": this.account.user,
-        "team": team, 
+        "team": team,
       }
     );
   }
@@ -273,36 +273,40 @@ export class StatsBackend {
           scoreArray: [],
           throwArray: [],
         };
+
         scores.filter((hole) => {
 
-          switch (v) {
-            case "team-sum":
-              //  Reduce to sum score array
-              var total = hole.reduce((total, item) => { return total + item });
-              teamScore = teamScore + total;
+          if (hole.length > 0) {
+            switch (v) {
+              case "team-sum":
+                //  Reduce to sum score array
+                var total = hole.reduce((total, item) => { return total + item });
+                teamScore = teamScore + total;
 
-              team['teamScore'][v]["scoreArray"].push(teamScore);
-              team['teamScore'][v]["throwArray"].push(total);
-              break;
+                team['teamScore'][v]["scoreArray"].push(teamScore);
+                team['teamScore'][v]["throwArray"].push(total);
+                break;
 
-            case "team-avg":
-              var total = hole.reduce((total, item) => { return total + item });
-              var avg = Math.round((total / hole.length) * 10) / 10;
-              teamScore = teamScore + avg;
+              case "team-avg":
+                var total = hole.reduce((total, item) => { return total + item });
+                var avg = Math.round((total / hole.length) * 10) / 10;
+                teamScore = teamScore + avg;
 
-              team['teamScore'][v]["scoreArray"].push(teamScore);
-              team['teamScore'][v]["throwArray"].push(avg);
-              break;
+                team['teamScore'][v]["scoreArray"].push(teamScore);
+                team['teamScore'][v]["throwArray"].push(avg);
+                break;
 
-            case "team-best":
-              //  Sort score array low-high and only add lowest
-              hole.sort((a, b) => { return a - b });
-              teamScore = teamScore + hole[0];
+              case "team-best":
+                //  Sort score array low-high and only add lowest
+                hole.sort((a, b) => { return a - b });
+                teamScore = teamScore + hole[0];
 
-              team['teamScore'][v]["scoreArray"].push(teamScore);
-              team['teamScore'][v]["throwArray"].push(hole[0]);
-              break;
+                team['teamScore'][v]["scoreArray"].push(teamScore);
+                team['teamScore'][v]["throwArray"].push(hole[0]);
+                break;
+            }
           }
+
 
 
         });
@@ -385,26 +389,26 @@ export class StatsBackend {
 
     //  Reserve Team Colors
     if (teams) {
-      teams.map((v, i)=>{
+      teams.map((v, i) => {
 
         //  Steal Team Colors From Bank
         teamColors.push(v["hex"]);
 
         //  Remove Stolen Colors
-        this.availableColors = this.availableColors.filter((c)=>{ 
+        this.availableColors = this.availableColors.filter((c) => {
           return c.toLowerCase() != v['hex'].toLowerCase()
         });
       });
     }
 
     //  Assign Colors
-    players.map((pv,pi) =>{
+    players.map((pv, pi) => {
       pv.color = this.availableColors[pi];
       colors.push(this.availableColors[pi]);
     })
- 
+
     //  Assign Teams; FormatData Assigns Teams Last -> .push();
-    teamColors.map((t)=>{
+    teamColors.map((t) => {
       colors.push(t);
     });
 
@@ -419,7 +423,7 @@ export class StatsBackend {
    * @param measure Scores | Throws
    * @param teams Instanceof Teams
    */
-  formatChart(players, format, measure = "scores", teams = null,): Object {
+  formatChart(players, format, measure = "scores", teams = null, ): Object {
     var columns = ["Hole"];
     var data = [];
     var measure = measure == "throws" ? "throwArray" : "scoreArray";
@@ -473,7 +477,11 @@ export class StatsBackend {
         });
 
         //  Scores
-        for (var h = 0; h < v["teamScore"][format][measure].length; h++) {
+        var limit = v["teamScore"][format][measure].length;
+        if (limit == 0) { 
+          limit = 18 
+        }
+        for (var h = 0; h < limit; h++) {
 
           //  Initiate Array with hole Count
           if (data[h].length == 0) {
@@ -481,6 +489,9 @@ export class StatsBackend {
           }
 
           //  Enter Player scores Data;
+          if (v["teamScore"][format][measure][h] == undefined) {
+            v["teamScore"][format][measure][h] = 0
+          }
           data[h].push(v["teamScore"][format][measure][h]);
         }
 
@@ -542,7 +553,7 @@ export class StatsBackend {
 
 
 export class Stats {
-  
+
 
   constructor(
     public id: string,
@@ -551,13 +562,13 @@ export class Stats {
     public throws?: Array<any>,
     public score?: number,
     public spread?: string,
-    public color?:string,
+    public color?: string,
   ) { }
 }
 
 
 export class Team {
-  
+
   constructor(
     public id: string,
     public name?: string,

@@ -28,6 +28,14 @@ export class EditComponent implements OnInit {
   public league: League = new League (this.data.league.id);
   public session: Session = new Session (this.data.session.id);
 
+
+  headerButtons = [{
+    icon: "icon-x",
+    color: "transparent-primary",
+    action: "close",
+  }];
+
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialogRef<EditComponent>,
@@ -60,6 +68,12 @@ export class EditComponent implements OnInit {
     }); 
 
     this.setForm();
+  }
+
+  actionClick($event) {
+    if ($event == "close"){ 
+      this.close();
+    }
   }
 
   getCourseList() {
@@ -103,7 +117,7 @@ export class EditComponent implements OnInit {
       this.feed.finializeLoading(res, true);
       
       if (res.status == "success") {
-        //  this.router.navigate(["leagues", this.league.id]);
+        this.location.back();
       }
     })
   }
@@ -148,10 +162,7 @@ export class EditComponent implements OnInit {
       this.sessions.updateSession(this.league, session).subscribe((res: ServerPayload)=>{
         if (res['status'] == 'success') {
           this.feed.finializeLoading(res, true);
-
-          //  Goto Session; No Need for extra action. Yay Lazy!
-          //  this.router.navigate(["leagues", this.league.id, "sessions", this.session.id])
-          this.closeForm();
+          this.close();
         }
       });
     }
@@ -161,7 +172,7 @@ export class EditComponent implements OnInit {
     this.location.back();
   }
 
-  closeForm() {
+  close() {
     this.dialog.close(this.session);
   }
 

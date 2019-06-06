@@ -74,6 +74,7 @@ export class ListComponent implements OnInit {
     });
 
     diagRef.afterClosed().subscribe(()=>{
+      this.resolve = false;
       this.populateData();
     });
   }

@@ -15,6 +15,12 @@ export class DeleteTeamComponent implements OnInit {
   resolve: boolean = false;
   playerListEmpty: boolean = true;
 
+  headerButtons = [{
+    icon: "icon-x",
+    action: "close",
+    color: "transparent-primary",
+  }];
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialogRef<DeleteTeamComponent>,
@@ -24,6 +30,12 @@ export class DeleteTeamComponent implements OnInit {
 
   ngOnInit() {
     this.populateData();
+  }
+
+  actionClick($event) {
+    if ($event == "close"){ 
+      this.close();
+    }
   }
 
   populateData() {

@@ -12,9 +12,16 @@ import { Router } from '@angular/router';
 })
 export class DeleteComponent implements OnInit {
 
-  public deleteConfirm: boolean = false;
-  public league: League = this.data.league;
+  resolve: boolean = false;
+  deleteConfirm: boolean = false;
+  league: League = this.data.league;
   
+  headerButtons = [{
+    action: "close",
+    icon: "icon-x",
+    color: "transparent-primary",
+  }];
+
   constructor(
     public leagues: LeagueBackend,
     public feed: FeedbackService,
@@ -23,10 +30,18 @@ export class DeleteComponent implements OnInit {
     public router: Router,
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.resolve = true;
+  }
 
   close () {
     this.dialog.close();
+  }
+
+  actionClick($event) {
+    if ($event == "close") {
+      this.close();
+    }
   }
 
   confirmDelete() {
@@ -34,12 +49,11 @@ export class DeleteComponent implements OnInit {
   }
 
   deleteLeague() {
-    console.warn ("Delete League.");
+    this.resolve = false;
 
     this.leagues.delete(this.league).subscribe((res:ServerPayload)=>{
       this.feed.finializeLoading(res, true);
-      
-      console.log ("league.delete.response: ", res);
+      this.resolve = true;
 
       if (res.status == "success") {
         this.router.navigate(["leagues"]);

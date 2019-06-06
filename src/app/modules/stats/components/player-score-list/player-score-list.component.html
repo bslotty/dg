@@ -1,91 +1,92 @@
-<div>
-  <div class="headerContainer">
-    <h1>
-      <a mat-icon-button color="primary" routerLink="/leagues/{{ league.id }}/sessions/{{ session.id }}">
-        <span class="icon-pocket rotate-90"></span>
+<app-section-header title="Scorecard" back="true"></app-section-header>
+
+
+<div *ngIf="resolve; else loader">
+  <!--  Hole  -->
+  <div class="panel row warn" @flyInPanelRow>
+    <div>
+      <label>Hole </label>
+    </div>
+    <div class="scores">
+
+      <a mat-flat-button color="transparent-primary" (click)="decHole(row)" [disabled]="tabIndex <= 1">
+        <span class="icon-minus"></span>
       </a>
 
-      <label>Scorecard</label>
+      <label [@scorecardSlide]="tabIndex">{{ tabIndex }}</label>
 
-      <div>
-        <label>Hole: </label>
-      </div>
-      <div class="scores row">
+      <a mat-flat-button color="transparent-primary" (click)="incHole(row)" [disabled]="tabIndex >= 18">
+        <span class="icon-plus"></span>
+      </a>
+    </div>
 
-        <a mat-icon-button color="primary" (click)="decHole(row)" [disabled]="tabIndex <= 1">
-          <span class="icon-minus"></span>
-        </a>
-
-        <label>{{ tabIndex }}</label>
-
-        <a mat-icon-button color="primary" (click)="incHole(row)" [disabled]="tabIndex >= 18">
-          <span class="icon-plus"></span>
-        </a>
-      </div>
-    </h1>
   </div>
 
 
-  <div *ngIf="resolve; else loader">
-    <div class="panel row warn" @flyInPanelRow>
-      <div>
-        <label>Par</label>
-      </div>
-
-
-      <div class="scores">
-        <a mat-icon-button color="primary" (click)="decPar()" [disabled]="session.par[tabIndex-1] == 1">
-          <span class="icon-minus"></span>
-        </a>
-
-        <label>{{ session.par[tabIndex-1] }}</label>
-
-        <a mat-icon-button color="primary" (click)="incPar()">
-          <span class="icon-plus"></span>
-        </a>
-      </div>
-
-    </div>
-
-    <div class="panel row" @flyInPanelRow *ngFor="let player of playerList">
-
-      <div>
-        <label *ngIf="player.user.last == 'temp'"> {{ player.user.first }} </label>
-        <label *ngIf="player.user.last != 'temp'"> {{ player.user.first }} {{ player.user.last }} </label>
-        <label *ngIf="session.format != 'ffa'" class="player {{ player.team.color }}">
-          {{ player.team.name | titlecase }}
-        </label>
-      </div>
-
-      <div class="scores {{ player.spread }}">
-        <label> {{ player.score }} </label>
-      </div>
-
-      <div class="scores {{ player.spread }}">
-        <a mat-icon-button color="primary" (click)="decThrow(player)" [disabled]="player.throws[tabIndex-1] == 1">
-          <span class="icon-minus"></span>
-        </a>
-
-        <label>{{ player.throws[tabIndex-1] }}</label>
-
-        <a mat-icon-button color="primary" (click)="incThrow(player)">
-          <span class="icon-plus"></span>
-        </a>
-      </div>
-
+  <!--  Par   -->
+  <div class="panel row warn" @flyInPanelRow>
+    <div>
+      <label>Par</label>
     </div>
 
 
-    <div class="actions">
-      <div class="row">
-        <a mat-raised-button color="primary" (click)="saveRoster()">
-          <label>Save</label>
-        </a>
-      </div>
+    <div class="scores">
+      <a mat-flat-button color="transparent-primary" (click)="decPar()" [disabled]="session.par[tabIndex-1] == 1">
+        <span class="icon-minus"></span>
+      </a>
+
+      <label [@scorecardSlide]="tabIndex">{{ session.par[tabIndex-1] }}</label>
+
+      <a mat-flat-button color="transparent-primary" (click)="incPar()">
+        <span class="icon-plus"></span>
+      </a>
     </div>
+
   </div>
 
+
+  <!--  Players   -->
+  <div class="panel row" @flyInPanelRow *ngFor="let player of playerList">
+
+    <div class="row">
+      <div class="colorChoice" *ngIf="player?.team.id != null">
+        <div class="colorIcon {{ player.team?.color }}"></div>
+      </div>
+      <label *ngIf="player.user.last == 'temp'"> {{ player.user.first }} </label>
+      <label *ngIf="player.user.last != 'temp'"> {{ player.user.first }} {{ player.user.last }} </label>
+    </div>
+
+
+
+    <div class="scores {{ player.spread }}">
+      <div>
+        <label [@scorecardSlide]="player.score"> {{ player.score }} </label>
+      </div>
+
+      <a mat-flat-button color="transparent-primary" (click)="decThrow(player)"
+        [disabled]="player.throws[tabIndex-1] == 1">
+        <span class="icon-minus"></span>
+      </a>
+
+      <label>{{ player.throws[tabIndex-1] }}</label>
+
+      <a mat-flat-button color="transparent-primary" (click)="incThrow(player)">
+        <span class="icon-plus"></span>
+      </a>
+    </div>
+
+  </div>
+
+
+  <div class="actions">
+    <div class="row">
+      <a mat-raised-button color="primary" (click)="saveRoster()">
+        <label>Save</label>
+      </a>
+    </div>
+  </div>
 </div>
+
 
 
 

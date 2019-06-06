@@ -1,12 +1,5 @@
-<div class="headerContainer">
-  <h1>
-    <a mat-icon-button color="primary" routerLink="/leagues">
-      <span class="icon-pocket rotate-90"></span>
-    </a>
+<app-section-header title="Search Leagues" back="true"></app-section-header>
 
-    <label>Search for a League</label>
-  </h1>
-</div>
 
 <div class="panel row">
   <form [formGroup]="form">
@@ -18,11 +11,8 @@
 
 
 
-<div class="headerContainer">
-  <h1>
-    <label>Results</label>
-  </h1>
-</div>
+<app-section-header title="Results"></app-section-header>
+
 
 
 
@@ -45,7 +35,7 @@
 
     <div *ngIf="message == 'Request Timed Out.'" class="panel row">
       <p class="message">Retry this request.
-        <a mat-icon-button color="primary" (click)="search(this.form.get('term').value)">
+        <a mat-flat-button color="primary" (click)="search(this.form.get('term').value)">
           <span class="icon-rotate-ccw"></span>
         </a>
       </p>
@@ -63,7 +53,7 @@
       </div>
 
       <div>
-        <a mat-icon-button color="primary" routerLink="/leagues/{{ league.id }}/join">
+        <a mat-flat-button color="primary" routerLink="/leagues/{{ league.id }}/join">
           <span class="icon-external-link"></span>
         </a>
       </div>

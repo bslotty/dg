@@ -1,6 +1,7 @@
 <app-section-header title="Chart Settings" [buttons]="backButton" (actionClick)="actionClick($event)">
 </app-section-header>
 
+
 <mat-tab-group mat-align-tabs="center" dynamicHeight="true">
 
   <!--
@@ -13,36 +14,40 @@
       </mat-tab>
   -->
 
-  <mat-tab label="Visibility">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      Visibility
+    </ng-template>
 
-    <div class="col center" *ngIf="data.teams.length > 0">
-      <h2> Team Vis Format</h2>
-
-      <div class="teamList buttonToggle" *ngFor="let team of data.teams; index as ti">
-        <button mat-stroked-button [style.color]='getColor(team)' (click)="toggleVisibility(team.name, 'add')"
-          *ngIf="selectedColumns.indexOf(team.name) == -1">
+    <div *ngIf="data.teams.length > 0" class="col center">
+      <div *ngFor="let team of data.teams; index as ti" class="teams col buttonToggle">
+        <button mat-stroked-button color="transparent-primary" [style.color]='getColor(team)'
+          (click)="toggleVisibility(team.name, 'add')" *ngIf="selectedColumns.indexOf(team.name) == -1">
           {{ team.name }}
         </button>
 
-        <button mat-flat-button [style.background]='getColor(team)' (click)="toggleVisibility(team.name, 'remove')"
-          *ngIf="selectedColumns.indexOf(team.name) > -1">
+        <button mat-flat-button color="transparent-primary" [style.background]='getColor(team)'
+          (click)="toggleVisibility(team.name, 'remove')" *ngIf="selectedColumns.indexOf(team.name) > -1">
           {{ team.name }}
         </button>
 
-        <div *ngFor="let player of data.players; index as pi" class="buttonToggle">
+        <div *ngFor="let player of data.players; index as pi" class="players">
           <div *ngIf="player.team.id == team.id" class="row">
-            <div class="colorChoice">
-              <div class="colorIcon {{ player.team?.color }}"></div>
-            </div>
-            <button mat-stroked-button [style.color]='getColor(player)'
-              (click)="toggleVisibility(player.user.first + ' ' + player.user.last.substr(0, 3), 'add')"
-              *ngIf="selectedColumns.indexOf(player.user.first + ' ' + player.user.last.substr(0, 3)) == -1">
+            <!--
+              <div class="colorChoice">
+                <div class="colorIcon {{ player.team?.color }}"></div>
+              </div>
+            -->
+
+            <button *ngIf="selectedColumns.indexOf(player.user.first + ' ' + player.user.last.substr(0, 3)) == -1"
+              mat-stroked-button color="transparent-primary" [style.color]='getColor(player)'
+              (click)="toggleVisibility(player.user.first + ' ' + player.user.last.substr(0, 3), 'add')">
               <label>{{ player.user.first }} {{ player.user.last }}</label>
             </button>
 
-            <button mat-flat-button class="row" [style.background]='getColor(player)'
-              (click)="toggleVisibility(player.user.first + ' ' + player.user.last.substr(0, 3), 'remove')"
-              *ngIf="selectedColumns.indexOf(player.user.first + ' ' + player.user.last.substr(0, 3)) > -1">
+            <button *ngIf="selectedColumns.indexOf(player.user.first + ' ' + player.user.last.substr(0, 3)) > -1"
+              mat-flat-button color="transparent-primary" [style.background]='getColor(player)'
+              (click)="toggleVisibility(player.user.first + ' ' + player.user.last.substr(0, 3), 'remove')">
               <label>{{ player.user.first }} {{ player.user.last }}</label>
             </button>
           </div>
@@ -51,7 +56,6 @@
     </div>
 
     <div class="col center" *ngIf="data.teams.length == 0">
-      <h2> FFA Vis Format</h2>
       <div class="col center">
         <div *ngFor="let option of colList; index as i" class="buttonToggle">
           <button mat-stroked-button [style.color]='availableColors[i]' (click)="toggleVisibility(option, 'add')"
@@ -73,22 +77,33 @@
   </mat-tab>
 
 
-  <mat-tab label="Players">
-    <mat-label>Data</mat-label>
-    <mat-select placeholder="Data" [value]="playerFormat" (selectionChange)="updateFormat($event)">
-      <mat-option value="scores"> Total Scores </mat-option>
-      <mat-option value="throws"> Throw Count </mat-option>
-    </mat-select>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      Players
+    </ng-template>
+    <div class="small">
+      <mat-label>Data</mat-label>
+      <mat-select placeholder="Data" [value]="playerFormat" (selectionChange)="updateFormat($event)">
+        <mat-option value="scores"> Total Scores </mat-option>
+        <mat-option value="throws"> Throw Count </mat-option>
+      </mat-select>
+    </div>
+
   </mat-tab>
 
 
-  <mat-tab label="Teams" *ngIf="data?.teams?.length > 0">
-    <mat-label>Format</mat-label>
-    <mat-select placeholder="Format" [value]="teamFormat" (selectionChange)="updateTeamFormat($event)">
-      <mat-option value="team-avg">Team-Average</mat-option>
-      <mat-option value="team-best">Team-Best</mat-option>
-      <mat-option value="team-sum">Team-Sum</mat-option>
-    </mat-select>
+  <mat-tab *ngIf="data?.teams?.length > 0">
+    <ng-template mat-tab-label>
+      Teams
+    </ng-template>
+    <div class="small">
+      <mat-label>Format</mat-label>
+      <mat-select placeholder="Format" [value]="teamFormat" (selectionChange)="updateTeamFormat($event)">
+        <mat-option value="team-avg">Team-Average</mat-option>
+        <mat-option value="team-best">Team-Best</mat-option>
+        <mat-option value="team-sum">Team-Sum</mat-option>
+      </mat-select>
+    </div>
   </mat-tab>
 </mat-tab-group>
 

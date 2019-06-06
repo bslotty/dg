@@ -15,6 +15,12 @@ export class EditComponent implements OnInit {
   recruit = this.data.permission;
   league = this.data.league;
 
+  headerButtons = [{
+    action: "close",
+    icon: "icon-x",
+    color: "transparent-primary",
+  }];
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialogRef<EditComponent>,
@@ -25,11 +31,17 @@ export class EditComponent implements OnInit {
 
   ngOnInit() { }
 
+  actionClick($event) {
+    if ($event == "close") {
+      this.close();
+    }
+  }
+
   close() {
     this.dialog.close();
   }
 
-  update (permission, level) {
+  update(permission, level) {
     permission.level = level;
 
     this.permissions.update(this.data.league, permission).subscribe((res: ServerPayload) => {

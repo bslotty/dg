@@ -14,6 +14,7 @@ import { flyInPanelRow } from 'src/app/animations';
 import { EditPlayerComponent } from '../edit-player/edit-player.component';
 import { DeletePlayerComponent } from '../delete-player/delete-player.component';
 import { MergeTempUsersComponent } from '../merge-temp-users/merge-temp-users.component';
+import { Chart } from 'src/app/modules/charts/line/line.component';
 
 @Component({
   selector: 'app-player-list',
@@ -22,7 +23,9 @@ import { MergeTempUsersComponent } from '../merge-temp-users/merge-temp-users.co
   animations: [flyInPanelRow]
 })
 export class PlayerListComponent implements OnInit {
+  
   hasAccess: boolean = false;
+  resolve: boolean = false;
   status: string;
 
   memberList: Permission[] = [];
@@ -33,7 +36,7 @@ export class PlayerListComponent implements OnInit {
   @Input() session: Session;
   @Input() league: League;
 
-  chartData: { };
+  chartData;
 
   headerButtons = [{
     action: "create",
@@ -120,6 +123,8 @@ export class PlayerListComponent implements OnInit {
 
         console.log ("player.list.chartData: ", this.chartData);
       }
+
+      this.resolve = true;
     });
   }
 

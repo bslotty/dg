@@ -47,6 +47,14 @@ export class CreateTeamComponent implements OnInit {
     available: true,
   },];
 
+  resolve: boolean = false;
+  headerButtons = [{
+    icon: "icon-x",
+    action: "close",
+    color: "transparent-primary",
+  }];
+
+  
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialogRef<CreateTeamComponent>,
@@ -58,6 +66,12 @@ export class CreateTeamComponent implements OnInit {
   ngOnInit() {
     this.initForm();
     this.populateData();
+  }
+
+  actionClick($event) {
+    if ($event == "close"){ 
+      this.close();
+    }
   }
 
   populateData() {
@@ -75,7 +89,8 @@ export class CreateTeamComponent implements OnInit {
             color.available = false;
           }
         });
-      })
+      });
+      this.resolve = true;
     });
   }
 

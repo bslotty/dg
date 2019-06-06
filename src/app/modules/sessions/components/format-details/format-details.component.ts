@@ -38,6 +38,12 @@ export class FormatDetailsComponent implements OnInit {
   selected;
   hasAccess:boolean = false;
   resetDisclaimer: boolean = false;
+  resolve: boolean = false;
+  headerButtons = [{
+    icon: "icon-x",
+    color: "transparent-primary",
+    action: "close",
+  }];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -68,6 +74,13 @@ export class FormatDetailsComponent implements OnInit {
 
 
   }
+
+  actionClick($event) {
+    if ($event == "close"){ 
+      this.close();
+    }
+  }
+
 
   disclaimerCheck(type) {
     if (type.indexOf("team") > -1 && this.selected == "ffa") {

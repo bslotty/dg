@@ -12,6 +12,12 @@ export class DeletePlayerComponent implements OnInit {
 
   deleteConfirm: boolean = false;
 
+  headerButtons = [{
+    icon: "icon-x",
+    action: "close",
+    color: "transparent-primary",
+  }];
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialogRef<DeletePlayerComponent>,
@@ -20,6 +26,12 @@ export class DeletePlayerComponent implements OnInit {
   ) { }
 
   ngOnInit() {  }
+
+  actionClick($event) {
+    if ($event == "close"){ 
+      this.close();
+    }
+  }
 
   close() {
     this.dialog.close();

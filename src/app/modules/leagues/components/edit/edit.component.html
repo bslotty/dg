@@ -1,13 +1,4 @@
-<!--    Heading   -->
-<div class="headerContainer">
-  <h1>
-    <label>Edit League</label>
-    <a mat-icon-button color="primary" (click)="close()">
-      <span class="icon-x"></span>
-    </a>
-  </h1>
-</div>
-
+<app-section-header title="Edit League" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header>
 
 <div>
 

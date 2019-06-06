@@ -23,6 +23,7 @@ export class TeamListComponent implements OnInit {
   teamList: Team[];
   status: string;
   hasAccess: boolean = false;
+  resolve: boolean = false;
 
   @Input() session: Session;
   @Input() league: League;
@@ -78,12 +79,20 @@ export class TeamListComponent implements OnInit {
         this.teamList = this.stats.populateTeamScores(teams, players, this.session);
       }
 
+      this.resolve = true;
+
     });
 
   }
 
   trackBy(index, item) {
     return item.id;
+  }
+
+  actionClick($event) {
+    if ($event == "create") {
+      this.createTeam();
+    }
   }
 
   createTeam() {
@@ -95,7 +104,9 @@ export class TeamListComponent implements OnInit {
     });
 
     createDiag.afterClosed().subscribe((diag) => {
-      this.populateData();
+      if (diag != null) {
+        this.populateData();
+      }
     });
   }
 
@@ -109,7 +120,9 @@ export class TeamListComponent implements OnInit {
     });
 
     deleteDialog.afterClosed().subscribe((diag) => {
-      this.populateData();
+      if (diag != null) {
+        this.populateData();
+      }
     });
   }
 
@@ -123,8 +136,10 @@ export class TeamListComponent implements OnInit {
     });
 
     editDialog.afterClosed().subscribe((diag) => {
-      this.populateData();
-      this.stats.update$.next(true);
+      if (diag != null) {
+        this.populateData();
+        this.stats.update$.next(true);
+      }
     });
   }
 

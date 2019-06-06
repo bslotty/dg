@@ -1,15 +1,11 @@
-<div>
+<app-section-header title="Teams" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header>
 
-  <app-section-header title="Teams" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header>
-
+<div *ngIf="resolve; else loader" @flyInPanelRow>
   <div class="panel row" @flyInPanelRow *ngFor="let team of teamList; trackBy:itemTrackBy">
     <div class="colorChoice">
       <div class="colorIcon {{ team.color }}"></div>
       <label [style.color]="team.hex">{{ team.name | titlecase }}</label>
     </div>
-
-
-
 
     <div class="panelActions">
       <div class="scores">
@@ -19,12 +15,9 @@
       <a mat-flat-button color="primary" (click)='editTeam(team)'>
         <span class="icon-settings"></span>
       </a>
-
       <a mat-flat-button color="warn" (click)='deleteTeam(team)'>
         <span class="icon-trash-2"></span>
       </a>
-
-
     </div>
   </div>
 
@@ -32,3 +25,7 @@
     <p class="message">Teams not yet Setup.</p>
   </div>
 </div>
+
+<ng-template #loader>
+  <app-feedback></app-feedback>
+</ng-template>

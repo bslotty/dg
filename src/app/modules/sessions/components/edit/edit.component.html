@@ -1,7 +1,4 @@
-  <!--    Heading   -->
-  <h1>
-    <label>Edit Session</label>
-  </h1>
+  <app-section-header title="Edit Session" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header>
 
   <div class="message">
     <p *ngIf="deleteConfirm">Please confirm deletion. The stats will not be saved.</p>

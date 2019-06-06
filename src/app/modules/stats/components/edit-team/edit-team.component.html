@@ -1,9 +1,5 @@
-<h1>
-  <label>Edit Team</label>
-  <a mat-icon-button (click)="close()">
-    <span class="icon-x"></span>
-  </a>
-</h1>
+
+<app-section-header title="Edit Team" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header> 
 
 <form [formGroup]="form">
   <mat-form-field>
@@ -12,7 +8,7 @@
 
   <mat-form-field>
     <mat-select formControlName="color" placeholder="Pick a Color">
-      <mat-option *ngFor="let color of colorList" [value]="color" [disabled]="!color.available">
+      <mat-option *ngFor="let color of colorList" [value]="color" [disabled]="!color.available" >
         <div class="colorChoice">
           <div class='colorIcon {{ color.name }}'></div>
           <label>{{ color.name | titlecase }}</label>

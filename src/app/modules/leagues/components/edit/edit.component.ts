@@ -17,8 +17,14 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 })
 export class EditComponent implements OnInit {
 
-  public form: FormGroup;
-  public league: League = this.data.league;
+  form: FormGroup;
+  league: League = this.data.league;
+
+  headerButtons = [{
+    action: "close",
+    icon: "icon-x",
+    color: "transparent-primary",
+  }];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -32,7 +38,6 @@ export class EditComponent implements OnInit {
     this.feed.initiateLoading();
     this.initForm();
   }
-
 
   initForm() {
     this.form = this.builder.group({
@@ -50,6 +55,13 @@ export class EditComponent implements OnInit {
 
     this.setForm();
   }
+
+  actionClick($event) {
+    if ($event == "close") {
+      this.close();
+    }
+  }
+
 
   setForm() {
     console.log ("this.League: ", this.league);

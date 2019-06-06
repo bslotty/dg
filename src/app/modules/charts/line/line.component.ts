@@ -2,11 +2,13 @@ import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { LineSettingsComponent } from '../line-settings/line-settings.component';
 import { StatsBackend } from '../../stats/services/backend.service';
+import { flyInPanelRow } from 'src/app/animations';
 
 @Component({
   selector: 'app-line',
   templateUrl: './line.component.html',
-  styleUrls: ['./line.component.css']
+  styleUrls: ['./line.component.css'],
+  animations: [flyInPanelRow]
 })
 export class LineComponent implements OnInit {
 
@@ -21,6 +23,7 @@ export class LineComponent implements OnInit {
       color: "transparent-primary"
     }
   ];
+  resolve: boolean = false;
 
   @Input() data;
   @Input() format;
@@ -58,7 +61,7 @@ export class LineComponent implements OnInit {
     },
 
     /*  Structure  */
-    curveType: "function",
+    curveType: "",
     enableInteractivity: true,
     dynamicResize: true,
     chartArea: {
@@ -130,6 +133,7 @@ export class LineComponent implements OnInit {
     this.initialHeaders = this.columnNames;
     this.initialData = this.chartData;
 
+    this.resolve = true;
   }
 
   actionClick($event) {
@@ -263,4 +267,10 @@ export class LineComponent implements OnInit {
 
 
 
+}
+
+
+export interface Chart {
+  columns: Array<any>;
+  scores: Array<any>;
 }

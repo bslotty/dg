@@ -7,11 +7,21 @@
 
 .buttonToggle {
     margin-top: .5em;
-    width: 70%;
+    width: 100%;
+}
+
+.players {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.buttonToggle > div > div {
+    width: 100%;
 }
 
 .buttonToggle button {
     width: 100%;
+    margin: 0 auto;
 }
 
 .col.center {
@@ -19,6 +29,9 @@
     align-items: center;
 }
 
+.teams {
+    margin-top: 2em;
+}
 
 /*  Move    */
 .actions {
@@ -29,10 +42,3 @@
     align-items: center;
 }
 
-
-.mat-tab-label {
-    height: 1em !important;
-    padding: .3em 1.2em  !important;
-    opacity: 1  !important; 
-    font-size: 1.3em  !important;
-}

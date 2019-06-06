@@ -48,6 +48,13 @@ export class EditTeamComponent implements OnInit {
     available: true,
   },];
 
+  resolve: Boolean = false;
+  headerButtons = [{
+    icon: "icon-x",
+    action: "close",
+    color: "transparent-primary",
+  }];
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public builder: FormBuilder,
@@ -61,6 +68,21 @@ export class EditTeamComponent implements OnInit {
 
     console.log("this.data.color:", this.data.team.color);
     this.populateData();
+    this.findColor();
+  }
+
+  actionClick($event) {
+    if ($event == "close"){ 
+      this.close();
+    }
+  }
+
+  findColor() {
+    var color = this.colorList.filter((v, i) =>{
+      return v.name == this.data.team.color;
+    })[0];
+
+    this.form.get('color').setValue(color);
   }
 
   populateData() {
@@ -90,7 +112,7 @@ export class EditTeamComponent implements OnInit {
     this.form.get('color').setValue(this.data.team.color);
   }
 
-  close(data) {
+  close(data = null) {
     this.dialog.close(data);
   }
 

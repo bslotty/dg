@@ -1,10 +1,6 @@
-  <!--    Heading   -->
-  <h1>
-    <label>Create Session</label>
-    <a mat-icon-button (click)="close()">
-      <span class="icon-x"></span>
-    </a>
-  </h1>
+
+  <app-section-header title="Create Session" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header> 
+
 
   <form [formGroup]='form'>
     <mat-form-field>

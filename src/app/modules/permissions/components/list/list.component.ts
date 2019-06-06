@@ -27,6 +27,8 @@ export class ListComponent implements OnInit {
   recruitList: Permission[];
   recruitCount: number = 0;
 
+  resolve:boolean = false;
+
   headerButtons = [{
     action: "create",
     icon: "icon-plus",
@@ -79,6 +81,8 @@ export class ListComponent implements OnInit {
           }
         }
       });
+
+      this.resolve = true;
     });
   }
 

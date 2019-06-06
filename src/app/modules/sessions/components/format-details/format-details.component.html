@@ -1,11 +1,4 @@
-<div class="headerContainer">
-    <h1>
-      <label>Session Format</label>
-      <a mat-icon-button color="primary" (click)="close()">
-        <span class="icon-x"></span>
-      </a>
-    </h1>
-</div>
+<app-section-header title="Session Format" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header>
 
 <div>
   <p class="warn">If you change the format, it will reset the scores.</p>
