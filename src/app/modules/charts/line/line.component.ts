@@ -46,7 +46,7 @@ export class LineComponent implements OnInit {
   //  Chart Options
   title = "";
   type = "LineChart";
-  width = window.innerWidth * .959;
+  width = document.getElementsByClassName("headerContainer")[0].scrollWidth; //window.innerWidth * .959;
   height = 400;
   orientation = "horizontal";
 
