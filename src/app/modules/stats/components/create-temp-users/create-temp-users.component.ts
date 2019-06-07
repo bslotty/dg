@@ -14,6 +14,11 @@ import { Permission } from 'src/app/modules/permissions/services/backend.service
 export class CreateTempUsersComponent implements OnInit {
 
   form: FormGroup;
+  headerButtons = [{
+    icon: "icon-x",
+    action: "close",
+    color: "transparent-primary"
+  }];
 
   constructor(
     public dialog: MatDialogRef<CreateTempUsersComponent>,
@@ -24,6 +29,12 @@ export class CreateTempUsersComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
+  }
+
+  actionClick($event){
+    if ($event == "close") {
+      this.close();
+    }
   }
 
   initForm() {

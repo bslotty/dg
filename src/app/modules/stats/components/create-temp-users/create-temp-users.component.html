@@ -1,9 +1,4 @@
-<h1>
-  <label>Add a Temporary Player</label>
-  <a mat-icon-button (click)="close()">
-    <span class="icon-x"></span>
-  </a>
-</h1>
+<app-section-header title="Add Temporary Player" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header>
 
 <div class="message">
   <p>Add an user that does not have an account. Once they register, you will be able to merge this temporary account

@@ -1,15 +1,16 @@
-<app-section-header title="Add Player" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header> 
+<app-section-header title="Add Player" [buttons]="headerButtons" (actionClick)="actionClick($event)">
+</app-section-header>
 
 
 <form [formGroup]="form">
+  <p class="message" *ngIf="availablePlayers.length > 0">Select a player or create a temporary player</p>
+  <p class="message" *ngIf="availablePlayers.length == 0">No members left, create a temporary player below</p>
   <mat-form-field>
     <mat-select placeholder="Player" formControlName='player'>
       <mat-option *ngFor="let player of availablePlayers" [value]="player">
         {{ player.user.first }} {{ player.user.last }}
       </mat-option>
     </mat-select>
-    <mat-hint *ngIf="availablePlayers.length > 0">Select a player or create a temporary player</mat-hint>
-    <mat-hint *ngIf="availablePlayers.length == 0">No members left, create a temporary player below</mat-hint>
   </mat-form-field>
 
 
