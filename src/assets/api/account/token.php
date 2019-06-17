@@ -8,8 +8,7 @@
 
 
     //  Load Basic Functions :: For IP Grab
-    require ($_SERVER['DOCUMENT_ROOT'] . '/disc/lib/functions.php');
-    require ($_SERVER['DOCUMENT_ROOT'] . '/disc/lib/sql.php');
+    require ($_SERVER['DOCUMENT_ROOT'] . '/api/disc/sql.php');
     $sql = new SQL;
 
 

@@ -1,4 +1,4 @@
-import { loading } from 'src/app/animations';
+import { loading, flyInPanelRow } from 'src/app/animations';
 import { Component, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
 import { FormGroup } from '@angular/forms';
@@ -12,7 +12,7 @@ import { ServerPayload } from 'src/app/app.component';
   selector: 'app-forgot',
   templateUrl: './forgot.component.html',
   styleUrls: ['./forgot.component.css'],
-  animations: [loading]
+  animations: [flyInPanelRow]
 })
 export class ForgotComponent implements OnInit {
 

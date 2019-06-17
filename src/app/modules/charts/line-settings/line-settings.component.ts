@@ -23,7 +23,7 @@ export class LineSettingsComponent implements OnInit {
 
   availableColors = this.data["colors"];
 
-  backButton = [{
+  headerButtons = [{
     action: 'close',
     color: 'transparent-primary',
     icon: 'icon-x',

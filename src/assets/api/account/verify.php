@@ -9,7 +9,6 @@
     
     
     //  Load Basic Functions :: For IP Grab
-    require ($_SERVER['DOCUMENT_ROOT'] . '/api/disc/functions.php');
     require ($_SERVER['DOCUMENT_ROOT'] . '/api/disc/sql.php');
     $sql = new SQL;
 
@@ -64,7 +63,7 @@
                 ":id"           => date("U") . rand(100000, 999999), 
                 ":accountid"    => $accountID,
                 ":key"          => 'PreviousIP',
-                ":value"        => hash("sha512", getRealIpAddr())
+                ":value"        => hash("sha512", $_SERVER["REMOTE_ADDR"])
             );
 
             
