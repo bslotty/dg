@@ -54,7 +54,7 @@
           Invalid Password
         </mat-error>
 
-        <mat-hint [@wipe] class="error" *ngIf="!passMatch && form.get('conf').touched && form.get('conf').valid">
+        <mat-hint class="error" *ngIf="!passMatch && form.get('conf').touched && form.get('conf').valid">
           Passwords must match
         </mat-hint>
       </mat-form-field>

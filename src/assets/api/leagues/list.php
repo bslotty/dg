@@ -40,7 +40,8 @@
                 "name"          => $o['Name'],
                 "visibility"    => $o['Visibility'],
                 "restrictions"  => $o['Restrictions'],
-                "description"   => $o['Description']
+                "description"   => $o['Description'],
+                "level"         => $o['Level'],
             );
         }
         

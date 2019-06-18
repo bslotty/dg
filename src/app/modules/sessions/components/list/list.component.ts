@@ -73,9 +73,11 @@ export class ListComponent implements OnInit {
       data: { league: this.league }
     });
 
-    diagRef.afterClosed().subscribe(()=>{
-      this.resolve = false;
-      this.populateData();
+    diagRef.afterClosed().subscribe((res)=>{
+      if (res) {
+        this.resolve = false;
+        this.populateData();
+      }
     });
   }
 }

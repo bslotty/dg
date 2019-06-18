@@ -63,6 +63,7 @@ export class DetailComponent implements OnInit {
 
   editLeague() {
     this.dialog.open(EditComponent, {
+      maxWidth: "95vw",
       data: { league: this.league }
     });
   }

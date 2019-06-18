@@ -117,7 +117,7 @@ export class CreateComponent implements OnInit {
 
           //  Goto Session; No Need for extra action. Yay Lazy!
           //  this.router.navigate(["leagues", this.league.id, "sessions", res["insertID"]])
-          this.close();
+          this.close(true);
         }
 
       });
@@ -129,8 +129,8 @@ export class CreateComponent implements OnInit {
     this.location.back();
   }
 
-  close() {
-    this.dialog.close();
+  close(res = false) {
+    this.dialog.close(res);
   }
 
 }

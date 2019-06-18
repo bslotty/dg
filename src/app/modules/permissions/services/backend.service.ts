@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ServerPayload } from 'src/app/app.component';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,8 @@ import { map } from 'rxjs/operators';
 export class PermissionBackend {
  
   public accessLevel: string = "";
+
+  public list: Subject<Permission[]> =  new Subject();
 
   constructor(
     private http: HttpClient,
@@ -21,10 +24,14 @@ export class PermissionBackend {
   setAccessLevel(permissionList: Permission[]){
 
     permissionList.forEach((permission)=>{
+      console.log ("permission.setAccessLevel.res: ", permission);
+
       //  Get Matching User -> Set Access Level
       if (permission.user.id == this.account.user.id) {
         //  Doesnt work
         this.account.user.access[permission.league.id] = permission.level;
+
+        console.log ("permissions.setAccessLevel.account: ", this.account.user);
 
         //  Fix
         this.accessLevel = permission.level;
@@ -37,14 +44,21 @@ export class PermissionBackend {
     return this.http.post(url, {"league": league, "user": this.account.user}).pipe(
       map((res)=>{
 
+        console.log ("permission.backend.memberList.permRes: ", res);
+
+
         if (res['status'] == "success") {
-          return res['data'];
-          /*
-          var members:Permission[] = [];
+        
+          this.list.next(res['data']);
 
           //  Set Access for user upon list gen;
           this.setAccessLevel(res['data']);
 
+          return res['data'];
+          /*
+          var members:Permission[] = [];
+
+          
           res['data'].forEach((permission)=>{
   
             members.push(new Permission(

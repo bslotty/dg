@@ -1,58 +1,72 @@
-<app-section-header title="Edit League" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header>
+<div class="small">
+  <app-section-header title="Edit League" [buttons]="headerButtons" (actionClick)="actionClick($event)">
+  </app-section-header>
 
-<div>
+  <div *ngIf="resolve;else loader">
 
-  <!--    Form   -->
-  <form [formGroup]='form'>
+    <form [formGroup]='form'>
 
-    <!-- Name  -->
-    <mat-form-field>
-      <input matInput placeholder="Name" formControlName='name' name='name'>
-      <mat-error *ngIf=" 
-          form.get('name').touched && 
-          form.get('name').invalid">
-        Invalid Name
-      </mat-error>
-    </mat-form-field>
+      <!-- Name  -->
+      <mat-form-field required="true">
+        <input matInput placeholder="Name" formControlName='name' name='name'>
+        <mat-error *ngIf=" 
+              form.get('name').touched && 
+              form.get('name').invalid">
+          Invalid Name
+        </mat-error>
+      </mat-form-field>
 
-    <!--  Visibility Toggle -->
-    <div class="split">
-      <mat-label>Visible in Search?</mat-label>
-      <mat-checkbox formControlName='visibility'></mat-checkbox>
-    </div>
+      <!--  Visibility Toggle -->
+      <div class="split">
+        <mat-label>Visiblility?</mat-label>
 
+        <div class="row">
+          <div *ngFor="let option of visModes;">
+            <button *ngIf="form.get('visibility').value == option" mat-flat-button color="accent">{{ option }}</button>
+            <button *ngIf="form.get('visibility').value != option" mat-stroked-button color="primary"
+              (click)='changeVis(option)'>{{ option }}</button>
+          </div>
+        </div>
 
-    <!--  Description -->
-    <mat-form-field>
-      <textarea matInput placeholder="Description" formControlName='description'>
-      </textarea>
-      <mat-hint>
-        (optional)
-      </mat-hint>
-    </mat-form-field>
-
-
-    <!--  Requirements  -->
-    <mat-form-field>
-      <textarea matInput placeholder="Restrictions" formControlName='restrictions'>
-      </textarea>
-      <mat-hint>
-        (optional)
-      </mat-hint>
-    </mat-form-field>
-
-    <!--    Actions   /!-->
-    <div class="actions">
-      <div class="row">
-        <a mat-raised-button color="primary" (click)="onFormSubmit()" [class.disabled]="form.invalid || form.pristine">
-          <label>Update</label>
-        </a>
       </div>
-    </div>
-
-  </form>
 
 
+      <!--  Description -->
+      <mat-form-field>
+        <textarea matInput placeholder="Description" formControlName='description'>
+          </textarea>
+        <mat-hint>
+          (optional)
+        </mat-hint>
+      </mat-form-field>
 
+
+      <!--  Requirements  
+      <mat-form-field>
+        <textarea matInput placeholder="Restrictions" formControlName='restrictions'>
+          </textarea>
+        <mat-hint>
+          (optional)
+        </mat-hint>
+      </mat-form-field>
+      -->
+
+      <!--    Actions   /!-->
+      <div class="actions">
+        <div class="row">
+          <a mat-raised-button color="primary" (click)="onFormSubmit()"
+            [class.disabled]="form.invalid || form.pristine">
+            <label>Update</label>
+          </a>
+        </div>
+      </div>
+
+    </form>
+  </div>
 
 </div>
+
+
+<ng-template #loader>
+  <app-feedback></app-feedback>
+</ng-template>

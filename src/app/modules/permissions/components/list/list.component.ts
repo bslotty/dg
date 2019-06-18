@@ -29,11 +29,7 @@ export class ListComponent implements OnInit {
 
   resolve:boolean = false;
 
-  headerButtons = [{
-    action: "create",
-    icon: "icon-plus",
-    color: "transparent-primary"
-  }]
+  headerButtons = []
 
   constructor(
     public route: ActivatedRoute,
@@ -55,7 +51,7 @@ export class ListComponent implements OnInit {
 
   populateData(){
     this.permissions.memberList(this.league).subscribe((members)=>{
-      console.log ("permissions.members: ", members);
+      console.log ("permissions.list.membersList: ", members);
 
       //  Members
       this.permissionList$ = members.filter((member)=>{ 
@@ -68,6 +64,13 @@ export class ListComponent implements OnInit {
       });
 
       this.recruitCount = this.recruitList.length;
+      if (this.recruitCount > 0) {
+        this.headerButtons.push({
+          action: "create",
+          icon: "icon-plus",
+          color: "transparent-primary"
+        });
+      }
 
 
       //  Admin Check
