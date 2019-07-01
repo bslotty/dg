@@ -10,7 +10,7 @@
       <mat-option *ngFor="let color of colorList" [value]="color" [disabled]="!color.available">
         <div class="colorChoice">
           <div class='colorIcon {{ color.name }}'></div>
-          <label>{{ color.name | titlecase }} {{ color.available }}</label>
+          <label>{{ color.name | titlecase }}</label>
         </div>
       </mat-option>
 

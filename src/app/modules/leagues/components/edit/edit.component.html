@@ -20,7 +20,7 @@
       <div class="split">
         <mat-label>Visiblility?</mat-label>
 
-        <div class="row">
+        <div class="row push">
           <div *ngFor="let option of visModes;">
             <button *ngIf="form.get('visibility').value == option" mat-flat-button color="accent">{{ option }}</button>
             <button *ngIf="form.get('visibility').value != option" mat-stroked-button color="primary"

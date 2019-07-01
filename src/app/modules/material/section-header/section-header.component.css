@@ -4,10 +4,6 @@
     justify-content: space-between;
     align-items: flex-end;
 
-    /*  margin-top: 2em;    */
     margin-bottom: .5em;
-}
-
-.mat-dialog-container .headerContainer {
-    margin-top: 0 !important;
+    margin-top: 3em;
 }

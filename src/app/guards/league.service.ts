@@ -26,15 +26,17 @@ export class LeagueGuard {
       Verify User has access to league; -> LeagueGuard
       Verify User has correct permission levels; -> PermGuard
     */
-    console.log ("this.account.user.access: ", this.account.user.access[route.paramMap.get("league")]);
+    
 
     console.log ("leagueGuard.league: ", this.leagues);
 
-
-    if (!this.account.user.access[route.paramMap.get("league")]){
+    if (this.account.user == undefined) {
+      return false;
+    } else if (!this.account.user.access[route.paramMap.get("league")]){
       this.router.navigate(["/leagues", route.paramMap.get("league"), "join"]);
       return false;
     } else {
+      console.log ("this.account.user.access: ", this.account.user.access[route.paramMap.get("league")]);
       return true;
     }
     

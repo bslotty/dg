@@ -44,7 +44,7 @@ export class LeagueBackend implements OnInit {
             ));
 
             this.account.user.access[league.id] = league.level;
-            console.log("league.account.level: ", this.account.user.access);
+            //  console.log("league.account.level: ", this.account.user.access);
           });
           this.list.next(result);
           return result;

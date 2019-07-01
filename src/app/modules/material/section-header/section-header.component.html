@@ -10,7 +10,7 @@
   </div>
 
 
-  <div class="actions">
+  <div class="actions row push">
     <a *ngFor="let button of buttons" mat-flat-button color="{{ button.color }}" (click)="emit( button.action )">
       <span class="{{ button.icon }}"></span>
     </a>

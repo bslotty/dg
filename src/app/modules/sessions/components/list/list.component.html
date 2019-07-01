@@ -6,14 +6,16 @@
 
     <div *ngIf="!emptySessions; else noSessions">
       <div class="panel row" *ngFor="let session of sessionList$; trackBy:itemTrackBy">
-        <div>
-          <label> {{ +(session.start + "000") | date:"E" }}, {{ +(session.start + "000") | date:"MMM d" }} </label>
+        <div class="col-lg">
+          <label class="col-sm"> {{ +(session.start + "000") | date:"E" }} </label>
+          <label class="col-md"> {{ +(session.start + "000") | date:"MMM d" }} </label>
           <label> {{ +(session.start + "000") | date:"h:mm a" }} </label>
         </div>
 
-        <div class='panelActions'>
-          <a mat-flat-button color="accent" routerLink="/courses/{{ session.course.id }}">@
-            {{ session.course.name }}</a>
+        <div class='panelActions row'>
+          <a mat-flat-button color="accent" class="col-xl" routerLink="/courses/{{ session.course.id }}">
+            @ {{ session.course.name }}
+          </a>
 
           <a mat-flat-button color="primary" routerLink="/leagues/{{ league.id }}/sessions/{{ session.id }}">
             <span class="icon-link-2"></span>

@@ -80,7 +80,7 @@ export class PlayerListComponent implements OnInit {
       console.log("stats.teams:", teams);
 
       //  Admin Check
-      members.filter((member) => {
+      members.map((member) => {
         if (this.account.user.id == member.user.id) {
           if (
             member.level == "creator" ||
@@ -110,13 +110,16 @@ export class PlayerListComponent implements OnInit {
         this.status = 'warn';
       }
 
+       //  Data Store
+       console.log ("ready.members: ", members);
+       this.memberList = members;
+       this.playerList = this.stats.populatePlayerScores(players, this.session.par);
+        this.teamList = this.stats.populateTeamScores(teams, players, this.session.par);
+
       //  Only Sort if Ready
       if (this.status == 'ready') {
 
-        //  Data Store
-        this.memberList = members;
-        this.playerList = this.stats.populatePlayerScores(players, this.session.par);
-        this.teamList = this.stats.populateTeamScores(teams, players, this.session.par);
+        
 
         //  Format Chart Data;
         this.chartData = this.stats.formatChart(this.playerList, this.session.format,  "scores", this.teamList,);

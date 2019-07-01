@@ -45,6 +45,10 @@ export class TeamListComponent implements OnInit {
 
   ngOnInit() {
     this.populateData();
+
+    this.stats.update$.subscribe((update) => {
+      this.populateData();
+    });
   }
 
   populateData() {

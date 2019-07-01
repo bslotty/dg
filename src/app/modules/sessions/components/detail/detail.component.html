@@ -3,12 +3,11 @@
 <div *ngIf="resolve; else loader">
 
   <div class="panel row" @flyInPanelRow>
-    <div>
-      <label> {{ +(session.start + "000") | date:"E" }} </label>
-      <label> {{ +(session.start + "000") | date:"MMM d" }} </label>
+    <div class="col-lg">
+      <label class="col-sm"> {{ +(session.start + "000") | date:"E" }} </label>
+      <label class="col-md"> {{ +(session.start + "000") | date:"MMM d" }} </label>
       <label> {{ +(session.start + "000") | date:"h:mm a" }} </label>
     </div>
-
     <div>
       <a mat-flat-button color="primary" (click)="editSession()">
         <span class="icon-settings"></span>
@@ -21,8 +20,8 @@
       <label>Course</label>
     </div>
 
-    <div>
-      <a mat-flat-button color="accent" routerLink="/courses/{{ session?.course?.id }}">
+    <div class="col-md">
+      <a mat-flat-button color="accent" routerLink="/courses/{{ session?.course?.id }}" class="col">
         <span class='icon-map-pin'></span>
         {{ session?.course?.name }}
       </a>
@@ -36,8 +35,8 @@
       <label> Format </label>
     </div>
 
-    <div>
-      <a mat-flat-button color="primary" (click)="changeFormat()">
+    <div class="col-md">
+      <a mat-flat-button color="primary" (click)="changeFormat()" class="col"> 
         <label>{{ format }}</label>
       </a>
     </div>
