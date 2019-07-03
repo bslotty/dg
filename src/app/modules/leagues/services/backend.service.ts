@@ -67,6 +67,9 @@ export class LeagueBackend implements OnInit {
               res["data"]["description"],
               res["data"]["restrictions"],
             );
+
+            this.account.user.access[league.id] = res["data"]["level"];
+
             return this.league;
           } else {
             return [];
@@ -130,6 +133,9 @@ export class LeagueBackend implements OnInit {
       })
     );
   }
+
+
+
 }
 
 

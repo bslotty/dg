@@ -2,13 +2,22 @@
 
 <div *ngIf="resolve; else loader" @flyInPanelRow>
   <div class="panel row" @flyInPanelRow *ngFor="let team of teamList; trackBy:itemTrackBy">
-    <div class="colorChoice">
-      <div class="colorIcon {{ team.color }}"></div>
-      <label [style.color]="team.hex">{{ team.name | titlecase }}</label>
+    <div class="col-lg">
+      <div class="row squish">
+        <div class="colorChoice">
+          <div class="colorIcon {{ team.color }}"></div>
+        </div>
+
+        <div [style.color]="team.hex" class="col-xl">
+          <label [style.color]="team.hex">{{ team.name | titlecase }}</label>
+        </div>
+      </div>
     </div>
 
-    <div class="panelActions">
-      <div class="scores">
+
+    <div class="panelActions col-md">
+
+      <div class="row push">
         <label> {{ team.teamScore }} </label>
       </div>
 

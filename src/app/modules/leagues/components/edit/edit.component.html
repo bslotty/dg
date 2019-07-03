@@ -4,6 +4,10 @@
 
   <div *ngIf="resolve;else loader">
 
+    <div class="message">
+      <p *ngIf="deleteConfirm" class="warn">Please confirm deletion. The Members, Sessions, and Stats will not be saved.</p>
+    </div>
+
     <form [formGroup]='form'>
 
       <!-- Name  -->
@@ -18,7 +22,7 @@
 
       <!--  Visibility Toggle -->
       <div class="split">
-        <mat-label>Visiblility?</mat-label>
+        <label class="col-md">Visiblility?</label>
 
         <div class="row push">
           <div *ngFor="let option of visModes;">
@@ -51,14 +55,26 @@
       </mat-form-field>
       -->
 
-      <!--    Actions   /!-->
+      <!--  Actions !-->
       <div class="actions">
-        <div class="row">
-          <a mat-raised-button color="primary" (click)="onFormSubmit()"
-            [class.disabled]="form.invalid || form.pristine">
+        <div class="row" *ngIf="!deleteConfirm">
+          <a mat-raised-button color="warn" (click)="toggleDelete()">
+            <label>Delete</label>
+          </a>
+          <a mat-raised-button color="primary" (click)="updateLeague()" [disabled]="form.invalid || form.pristine">
             <label>Update</label>
           </a>
         </div>
+
+        <div class="row" *ngIf="deleteConfirm">
+          <a mat-raised-button color="primary" (click)="toggleDelete()">
+            <label>Cancel</label>
+          </a>
+          <a mat-raised-button color="warn" (click)="deleteLeague()">
+            <label>Delete</label>
+          </a>
+        </div>
+
       </div>
 
     </form>

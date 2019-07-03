@@ -51,7 +51,6 @@ export class ListComponent implements OnInit {
 
   populateData(){
     this.permissions.memberList(this.league).subscribe((members)=>{
-      console.log ("permissions.list.membersList: ", members);
 
       //  Members
       this.permissionList$ = members.filter((member)=>{ 

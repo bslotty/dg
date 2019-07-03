@@ -1,17 +1,14 @@
-<app-section-header title="session" back="true"></app-section-header>
+<app-section-header title="session" back="true" [buttons]='headerButtons' (actionClick)="actionClick($event)"></app-section-header>
 
 <div *ngIf="resolve; else loader">
 
   <div class="panel row" @flyInPanelRow>
-    <div class="col-lg">
-      <label class="col-sm"> {{ +(session.start + "000") | date:"E" }} </label>
-      <label class="col-md"> {{ +(session.start + "000") | date:"MMM d" }} </label>
-      <label> {{ +(session.start + "000") | date:"h:mm a" }} </label>
-    </div>
     <div>
-      <a mat-flat-button color="primary" (click)="editSession()">
-        <span class="icon-settings"></span>
-      </a>
+      <label>Time</label>
+    </div>
+    <div class="col-md">
+      <label class="col-lg"> {{ +(session.start + "000") | date:"E" }} {{ +(session.start + "000") | date:"MMM d" }} </label>
+      <label class="col-md"> {{ +(session.start + "000") | date:"h:mm a" }} </label>
     </div>
   </div>
 

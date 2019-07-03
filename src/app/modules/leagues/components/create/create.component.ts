@@ -20,6 +20,8 @@ export class CreateComponent implements OnInit {
   form: FormGroup;
   league: League = new League("0");
 
+  visModes = ["public", "private"];
+
   headerButtons = [{
     action: "close",
     icon: "icon-x",
@@ -61,6 +63,11 @@ export class CreateComponent implements OnInit {
     if ($event == "close") {
       this.close();
     }
+  }
+
+  changeVis(vis) {
+    this.form.get("visibility").setValue(vis);
+    this.form.markAsDirty();
   }
 
   onFormSubmit() {

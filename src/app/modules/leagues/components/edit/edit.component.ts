@@ -20,6 +20,7 @@ export class EditComponent implements OnInit {
   form: FormGroup;
   league: League = this.data.league;
   resolve: boolean = false;
+  deleteConfirm: boolean;
 
   headerButtons = [{
     action: "close",
@@ -29,12 +30,15 @@ export class EditComponent implements OnInit {
 
   visModes = ["public", "private"];
 
+  
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialogRef<EditComponent>,
     public builder: FormBuilder,
     public leagues: LeagueBackend,
     public feed: FeedbackService,
+    public router: Router
   ) { }
 
   ngOnInit() {
@@ -80,7 +84,7 @@ export class EditComponent implements OnInit {
     this.resolve = true;
   }
 
-  onFormSubmit() {
+  updateLeague() {
     if (this.form.valid && this.form.dirty) {
 
       this.resolve = false;
@@ -101,6 +105,24 @@ export class EditComponent implements OnInit {
         }
       });
     }
+  }
+
+  toggleDelete(){
+    this.deleteConfirm = !this.deleteConfirm;
+  }
+
+  deleteLeague() {
+    this.resolve = false;
+
+    this.leagues.delete(this.league).subscribe((res:ServerPayload)=>{
+      this.feed.finializeLoading(res, true);
+      this.resolve = true;
+
+      if (res.status == "success") {
+        this.close();
+        this.router.navigate(["/leagues"]);
+      }
+    })
   }
 
 

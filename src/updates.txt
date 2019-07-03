@@ -1,0 +1,45 @@
+Project Upcoming Feature List
+
+Bagdes
+    OOB
+    Water Hazard
+    Tree Nest (landed in tree)
+    Kids Tee (Nailed a tree real close to drive pad)
+    Robbed (Disc went in the basket and out)
+    Lost (Needed a search party to find disk)
+
+    Tree Love
+    Tree Hate
+
+    Fore! (Nearby Miss)
+
+
+
+
+Handicap
+
+Create/Update Form Rework
+    Session
+        Include Format on the Form, possibly use that to drive the team/player creation
+            Stepper?
+    
+Account Stats
+    Birdie Percentages
+    Par Percentages
+    Bogey Percentages
+    Double Bogey Percentages
+    
+    Badge Totals
+
+
+
+
+Site Functionality
+    Course Selector (AutoComplete with REST)
+        List grouped by state
+        use zip for nearby courses      abs(zip - zip) -> sort
+
+    Rework Back Button
+
+    Rework Guards/Permissions/League Joining
+

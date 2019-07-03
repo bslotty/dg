@@ -1,10 +1,13 @@
 <div class="headerContainer">
   <div class="row squish">
-    <div *ngIf="back">
-      <a mat-flat-button color="transparent-primary" routerLink="/leagues/{{ league?.id }}">
-        <span class="icon-pocket rotate-90"></span>
-      </a>
-    </div>
+    <!--    Remove until we fix the back functionality. Back button on mobile and web works better.
+      <div *ngIf="back">
+        <a mat-flat-button color="transparent-primary" routerLink="/leagues/{{ league?.id }}">
+          <span class="icon-pocket rotate-90"></span>
+        </a>
+      </div>
+    -->
+
 
     <h1>{{ title | titlecase }}</h1>
   </div>

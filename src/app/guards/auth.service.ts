@@ -21,8 +21,6 @@ export class AuthGuard implements CanActivate {
    */
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot,): boolean {
 
-    console.log ("accountGuard.account: ", this.account.user);
-
     //  If user is set; Allow
     if (this.account.user && this.account.user.email) { return true } else {
       let url: string = state.url;

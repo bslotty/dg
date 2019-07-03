@@ -110,7 +110,7 @@ export class EditComponent implements OnInit {
   
 
   deleteSession() {
-    this.feed.initiateLoading();
+    this.resolve = false;
 
     this.sessions.delete(this.league, this.session).subscribe((res:ServerPayload)=>{
       this.feed.finializeLoading(res, true);
@@ -118,6 +118,8 @@ export class EditComponent implements OnInit {
       if (res.status == "success") {
         this.location.back();
       }
+
+      this.resolve = true;
     })
   }
 

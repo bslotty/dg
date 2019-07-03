@@ -24,14 +24,11 @@ export class PermissionBackend {
   setAccessLevel(permissionList: Permission[]){
 
     permissionList.forEach((permission)=>{
-      console.log ("permission.setAccessLevel.res: ", permission);
 
       //  Get Matching User -> Set Access Level
       if (permission.user.id == this.account.user.id) {
         //  Doesnt work
         this.account.user.access[permission.league.id] = permission.level;
-
-        console.log ("permissions.setAccessLevel.account: ", this.account.user);
 
         //  Fix
         this.accessLevel = permission.level;
@@ -44,9 +41,6 @@ export class PermissionBackend {
     return this.http.post(url, {"league": league, "user": this.account.user}).pipe(
       map((res)=>{
 
-        console.log ("permission.backend.memberList.permRes: ", res);
-
-
         if (res['status'] == "success") {
         
           this.list.next(res['data']);
@@ -55,26 +49,9 @@ export class PermissionBackend {
           this.setAccessLevel(res['data']);
 
           return res['data'];
-          /*
-          var members:Permission[] = [];
-
-          
-          res['data'].forEach((permission)=>{
-  
-            members.push(new Permission(
-              permission.id,
-              new League(permission.league.id),
-              new User(permission.user.id, permission.user.first, permission.user.last),
-              permission.level,
-              permission.status
-            ));
-          });
-
-          return members;
-          */
         } else {
 
-          return [];
+          return []
         }
       })
     );

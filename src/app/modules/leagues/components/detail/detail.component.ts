@@ -1,14 +1,9 @@
 import { flyInPanelRow } from './../../../../animations';
-import { ActivatedRoute, GuardsCheckEnd } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { League, LeagueBackend } from './../../services/backend.service';
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogModule } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { EditComponent } from '../edit/edit.component';
-import { DeleteComponent } from '../delete/delete.component';
-import { PermissionBackend, Permission } from 'src/app/modules/permissions/services/backend.service';
-import { SessionBackend, Session } from 'src/app/modules/sessions/services/backend.service';
-import { Observable, combineLatest } from 'rxjs';
-
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
@@ -26,10 +21,6 @@ export class DetailComponent implements OnInit {
       icon: "icon-settings",
       color: "transparent-primary",
       action: "edit",
-    }, {
-      icon: "icon-trash-2",
-      color: "transparent-warn",
-      action: "delete",
     }
   ];
 
@@ -56,8 +47,6 @@ export class DetailComponent implements OnInit {
   actionClick($event) {
     if ($event == "edit") {
       this.editLeague();
-    } else if ($event == "delete") {
-      this.deleteLeague();
     }
   }
 
@@ -68,10 +57,5 @@ export class DetailComponent implements OnInit {
     });
   }
 
-  deleteLeague() {
-    this.dialog.open(DeleteComponent, {
-      data: { league: this.league }
-    });
-  }
 
 }

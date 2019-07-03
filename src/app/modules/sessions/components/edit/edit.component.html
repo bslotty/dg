@@ -5,7 +5,7 @@
   <div *ngIf="resolve; else loader">
 
     <div class="message">
-      <p *ngIf="deleteConfirm">Please confirm deletion. The stats will not be saved.</p>
+      <p *ngIf="deleteConfirm" class="warn">Please confirm deletion. The stats will not be saved.</p>
     </div>
 
     <form [formGroup]='form'>

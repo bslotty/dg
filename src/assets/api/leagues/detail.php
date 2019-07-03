@@ -55,7 +55,8 @@
                 "name" => $data[0]['Name'],
                 "visibility" => $data[0]['Visibility'],
                 "description" => $data[0]['Description'],
-                "restrictions" => $data[0]['Restrictions']
+                "restrictions" => $data[0]['Restrictions'],
+                "level" => $data[0]['Level']
             )/*, 
                 "permission" => array(
                     "id" => $data[0]['PermissionID'],

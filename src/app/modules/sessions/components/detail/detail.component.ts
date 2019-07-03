@@ -6,10 +6,7 @@ import { SessionBackend, Session } from 'src/app/modules/sessions/services/backe
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { EditComponent } from '../edit/edit.component';
-import { DeleteComponent } from '../delete/delete.component';
-import { StatsBackend } from 'src/app/modules/stats/services/backend.service';
 import { FormatDetailsComponent } from '../format-details/format-details.component';
-import { PermissionBackend } from 'src/app/modules/permissions/services/backend.service';
 
 @Component({
   selector: 'app-detail',
@@ -25,6 +22,17 @@ export class DetailComponent implements OnInit {
   resolve: boolean = false;
   format: string;
 
+
+  headerButtons = [
+    {
+      icon: "icon-settings",
+      color: "transparent-primary",
+      action: "edit",
+    }
+  ];
+
+
+
   constructor(
     public route: ActivatedRoute,
     public leagues: LeagueBackend,
@@ -35,8 +43,12 @@ export class DetailComponent implements OnInit {
 
   ngOnInit() {
     this.populateData();
+  }
 
-    console.log ("session.detail.session: ", this.session);
+  actionClick($event) {
+    if ($event == "edit") {
+      this.editSession();
+    } 
   }
 
   populateData() {
@@ -57,19 +69,19 @@ export class DetailComponent implements OnInit {
   formatDisplay() {
     switch (this.session.format) {
       case "ffa":
-        this.format = "Free For All";
+        this.format = "FFA";
         break;
 
       case "team-best":
-        this.format = "Teams: Best";
+        this.format = "T: Best";
         break;
 
       case "team-average":
-        this.format = "Teams: Average Score";
+        this.format = "T: Average";
         break;
 
       case "team-sum":
-        this.format = "Teams: Sum Score";
+        this.format = "T: Sum";
         break;
 
       default:
@@ -85,12 +97,6 @@ export class DetailComponent implements OnInit {
 
     editDiag.afterClosed().subscribe((diag) => {
       this.populateData();
-    });
-  }
-
-  deleteSession() {
-    this.dialog.open(DeleteComponent, {
-      data: { session: this.session, league: this.league }
     });
   }
 

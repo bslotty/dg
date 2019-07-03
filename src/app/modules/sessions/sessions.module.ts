@@ -14,8 +14,6 @@ import { EditComponent } from './components/edit/edit.component';
 import { MaterialModule } from '../material/material.module';
 import { ShellComponent } from './components/shell/shell.component';
 import { FormatDetailsComponent } from './components/format-details/format-details.component';
-import { DeleteComponent } from './components/delete/delete.component';
-import { ChartsModule } from '../charts/charts.module';
 
 
 
@@ -32,7 +30,7 @@ import { ChartsModule } from '../charts/charts.module';
     DetailComponent, 
     CreateComponent, 
     EditComponent, 
-    ShellComponent, FormatDetailsComponent, DeleteComponent
+    ShellComponent, FormatDetailsComponent
   ],
   exports: [
     SessionList
@@ -40,7 +38,6 @@ import { ChartsModule } from '../charts/charts.module';
   entryComponents: [
     FormatDetailsComponent,
     CreateComponent,
-    DeleteComponent
   ]
 })
 export class SessionsModule { }
