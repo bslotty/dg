@@ -1472,7 +1472,7 @@ mat-footer-row, mat-header-row, mat-row, td.mat-cell, td.mat-footer-cell, th.mat
 }
 
 .mat-calendar-body-today:not(.mat-calendar-body-selected) {
-    border-color: rgba(0, 0, 0, .4)
+    border-color: rgb(106, 185, 232);
 }
 
 .mat-calendar-body-disabled>.mat-calendar-body-today:not(.mat-calendar-body-selected) {
