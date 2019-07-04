@@ -323,8 +323,6 @@ export class StatsBackend {
       });
     });
 
-    console.log("populateTeamScores.teams: ", teams);
-
     return teams;
   }
 
@@ -371,8 +369,6 @@ export class StatsBackend {
         //  Possible Tied Message here?
       }
     });
-
-    console.log("populatePlayerScores.player: ", players);
 
     return players;
   }

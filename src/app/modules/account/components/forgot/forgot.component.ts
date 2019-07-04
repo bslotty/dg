@@ -1,4 +1,4 @@
-import { loading } from 'src/app/animations';
+import { loading, flyInPanelRow } from 'src/app/animations';
 import { Component, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
 import { FormGroup } from '@angular/forms';
@@ -12,11 +12,12 @@ import { ServerPayload } from 'src/app/app.component';
   selector: 'app-forgot',
   templateUrl: './forgot.component.html',
   styleUrls: ['./forgot.component.css'],
-  animations: [loading]
+  animations: [flyInPanelRow]
 })
 export class ForgotComponent implements OnInit {
 
-  public form: FormGroup;
+  form: FormGroup;
+  resolve: boolean = false;
 
   constructor(
     public feed: FeedbackService,
@@ -27,7 +28,7 @@ export class ForgotComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    this.feed.finializeLoading();
+    this.resolve = true;
   }
 
   initForm(){
@@ -43,12 +44,14 @@ export class ForgotComponent implements OnInit {
 
   onFormSubmit (){
     if (this.form.valid && this.form.dirty) {  
-      this.feed.initiateLoading();
+      this.resolve = false;
 
       var user    = new User(null);
       user.email  = this.form.get('email').value;
       
       this.account.forgotPassword(user).subscribe((res: ServerPayload)=>{
+        this.resolve = true;
+
         this.feed.finializeLoading(res, true);
       });
     }

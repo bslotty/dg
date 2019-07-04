@@ -17,8 +17,6 @@ import { ShellComponent } from './components/shell/shell.component';
 /*  Child Components  */
 import { SessionsModule } from '../sessions/sessions.module';
 import { PermissionsModule } from '../permissions/permissions.module';
-import { DeleteComponent } from './components/delete/delete.component';
-import { FeedbackComponent } from '../feedback/components/feedback/feedback.component';
 
 
 @NgModule({
@@ -36,11 +34,9 @@ import { FeedbackComponent } from '../feedback/components/feedback/feedback.comp
     SearchComponent, 
     CreateComponent, 
     EditComponent, 
-    ShellComponent, DeleteComponent
+    ShellComponent,
   ],
   providers: [LeagueBackend],
-  entryComponents: [
-    DeleteComponent,
-  ]
+
 })
 export class LeaguesModule { }

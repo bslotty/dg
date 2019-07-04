@@ -16,8 +16,8 @@
 
 <div *ngIf="resolve; else loader" @flyInPanelRow>
     <div class="panel row" *ngFor="let permission of permissionList$">
-        <div>
-            <label> {{ permission.user.first }} {{ permission.user.last }}</label>
+        <div class="col-xl">
+            <label class="col-lg"> {{ permission.user.first }} {{ permission.user.last }}</label>
             <label
                 [class]="permission.level == 'creator' ? 'warn' : permission.level == 'moderator' ? 'accent' : 'primary'">
                 <i>{{ permission.level | titlecase }}</i>

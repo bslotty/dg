@@ -60,7 +60,7 @@ export class CreatePlayerComponent implements OnInit {
   }
 
   actionClick($event) {
-    if ($event == "close"){ 
+    if ($event == "close") {
       this.close();
     }
   }
@@ -87,7 +87,7 @@ export class CreatePlayerComponent implements OnInit {
 
   disableFormCheck() {
     var disable = this.availablePlayers.length == 0 ? true : false;
-    
+
     if (disable) {
       this.form.disable();
     } else {
@@ -98,6 +98,8 @@ export class CreatePlayerComponent implements OnInit {
   getAvailablePlayers() {
     //  Push All to Available
     //  Remove Already Added
+
+    console.log("createPlayer.getAvailablePlayers.data: ", this.data);
     this.data.memberList.forEach((member) => {
       var available = true;
 
@@ -122,9 +124,9 @@ export class CreatePlayerComponent implements OnInit {
     if (this.form.valid && this.form.dirty) {
 
       this.stats.createPlayer(
-        this.data.league, 
-        this.data.session, 
-        this.form.get('player').value['user'], 
+        this.data.league,
+        this.data.session,
+        this.form.get('player').value['user'],
         this.form.get('team').value
       ).subscribe((data) => {
         this.feed.finializeLoading(data, true);
@@ -144,13 +146,18 @@ export class CreatePlayerComponent implements OnInit {
     });
 
     tempPlayerDiag.afterClosed().subscribe((res) => {
+
+      
       //  Set New Player into Form
-      this.availablePlayers.push(res);
+      if (res) {
+        this.availablePlayers.push(res);
 
-      this.disableFormCheck();
+        this.disableFormCheck();
 
-      this.form.get('player').setValue(res);
-      this.form.get('player').markAsDirty();
+        this.form.get('player').setValue(res);
+        this.form.get('player').markAsDirty();
+      }
+
     });
   }
 }

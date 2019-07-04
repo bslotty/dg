@@ -2452,7 +2452,6 @@ span.mat-button-wrapper {
 }
 
 .mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button, .mat-raised-button {
-    line-height: 10vh !important;
     border-radius: 0 !important;
     font-size: 32px !important;
 }

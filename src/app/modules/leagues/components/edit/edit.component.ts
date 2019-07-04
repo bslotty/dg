@@ -19,6 +19,8 @@ export class EditComponent implements OnInit {
 
   form: FormGroup;
   league: League = this.data.league;
+  resolve: boolean = false;
+  deleteConfirm: boolean;
 
   headerButtons = [{
     action: "close",
@@ -26,16 +28,20 @@ export class EditComponent implements OnInit {
     color: "transparent-primary",
   }];
 
+  visModes = ["public", "private"];
+
+  
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialogRef<EditComponent>,
     public builder: FormBuilder,
     public leagues: LeagueBackend,
     public feed: FeedbackService,
+    public router: Router
   ) { }
 
   ngOnInit() {
-    this.feed.initiateLoading();
     this.initForm();
   }
 
@@ -63,30 +69,35 @@ export class EditComponent implements OnInit {
   }
 
 
-  setForm() {
-    console.log ("this.League: ", this.league);
+  changeVis(vis) {
+    this.form.get("visibility").setValue(vis);
+    this.form.markAsDirty();
+  }
 
+
+  setForm() {
     this.form.get('name').setValue(this.league.name);
-    this.form.get('visibility').setValue(this.league.visibility == "public" ? true : false);
+    this.form.get('visibility').setValue(this.league.visibility);
     this.form.get('description').setValue(this.league.description);
     this.form.get('restrictions').setValue(this.league.restrictions);
 
-    this.feed.finializeLoading();
+    this.resolve = true;
   }
 
-  onFormSubmit() {
+  updateLeague() {
     if (this.form.valid && this.form.dirty) {
 
-      this.feed.initiateLoading();
+      this.resolve = false;
 
       //  Store Data
       this.league.name = this.form.get('name').value;
-      this.league.visibility = this.form.get('visibility').value == true ? "public" : "private";
+      this.league.visibility = this.form.get('visibility').value;
       this.league.description = this.form.get('description').value;
       this.league.restrictions = this.form.get('restrictions').value;
 
       //  Send Data
       this.leagues.update(this.league).subscribe((res: ServerPayload) => {
+        this.resolve = true;
         this.feed.finializeLoading(res, true);
 
         if (res.status == "success") {
@@ -94,6 +105,24 @@ export class EditComponent implements OnInit {
         }
       });
     }
+  }
+
+  toggleDelete(){
+    this.deleteConfirm = !this.deleteConfirm;
+  }
+
+  deleteLeague() {
+    this.resolve = false;
+
+    this.leagues.delete(this.league).subscribe((res:ServerPayload)=>{
+      this.feed.finializeLoading(res, true);
+      this.resolve = true;
+
+      if (res.status == "success") {
+        this.close();
+        this.router.navigate(["/leagues"]);
+      }
+    })
   }
 
 

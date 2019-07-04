@@ -1,4 +1,3 @@
-import { loading } from 'src/app/animations';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
 import { ServerPayload } from 'src/app/app.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -15,18 +14,20 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
   selector: 'app-edit',
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.css'],
-  animations: [loading]
+  animations: []
 })
 export class EditComponent implements OnInit {
 
 
-  public form: FormGroup;
-  public courseList: Course[];
-  public insertID: string;
-  public deleteConfirm: boolean = false;
+  form: FormGroup;
+  courseList: Course[];
+  insertID: string;
+  deleteConfirm: boolean = false;
 
-  public league: League = new League (this.data.league.id);
-  public session: Session = new Session (this.data.session.id);
+  league: League = new League (this.data.league.id);
+  session: Session = new Session (this.data.session.id);
+
+  resolve: boolean = false;
 
 
   headerButtons = [{
@@ -49,10 +50,6 @@ export class EditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log ("League: ", this.league);
-    console.log ("Session: ", this.session);
-
-    this.feed.initiateLoading();
     this.initForm();
     this.getCourseList();
   }
@@ -79,6 +76,8 @@ export class EditComponent implements OnInit {
   getCourseList() {
     this.courses.getList('asc').subscribe((v:Course[])=>{
       this.courseList = v;
+
+      
     });
   }
 
@@ -100,7 +99,7 @@ export class EditComponent implements OnInit {
       this.form.get('min').setValue(d.getMinutes() == 0 ? "00" : d.getMinutes().toString());
       this.form.get('ampm').setValue( d.getHours() > 12 ? "pm" : "am" );
 
-      this.feed.finializeLoading();
+      this.resolve = true;
     });
   }
 
@@ -111,7 +110,7 @@ export class EditComponent implements OnInit {
   
 
   deleteSession() {
-    this.feed.initiateLoading();
+    this.resolve = false;
 
     this.sessions.delete(this.league, this.session).subscribe((res:ServerPayload)=>{
       this.feed.finializeLoading(res, true);
@@ -119,13 +118,15 @@ export class EditComponent implements OnInit {
       if (res.status == "success") {
         this.location.back();
       }
+
+      this.resolve = true;
     })
   }
 
 
   updateSession(){
     if (this.form.valid && this.form.dirty) {
-      this.feed.initiateLoading();
+      this.resolve = false;
 
 
 
@@ -160,6 +161,8 @@ export class EditComponent implements OnInit {
 
       //  Send Request
       this.sessions.updateSession(this.league, session).subscribe((res: ServerPayload)=>{
+        this.resolve = true;
+
         if (res['status'] == 'success') {
           this.feed.finializeLoading(res, true);
           this.close();

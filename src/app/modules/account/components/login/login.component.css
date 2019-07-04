@@ -1,0 +1,12 @@
+img {
+    margin-top: 5em;
+}
+
+.headerContainer {
+    margin-top: 0 !important;
+
+}
+
+#logo .headerContainer {
+    margin-top: 0 !important;
+}

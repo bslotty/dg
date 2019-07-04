@@ -44,8 +44,8 @@ export class CreateTempUsersComponent implements OnInit {
   }
 
 
-  close(){
-    this.dialog.close();
+  close(res = false){
+    this.dialog.close(res);
   }
 
   onFormSubmit(){

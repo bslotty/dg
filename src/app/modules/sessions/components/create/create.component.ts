@@ -4,7 +4,7 @@ import { FeedbackService } from './../../../feedback/services/feedback.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute,Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { CourseBackend, Course } from '../../../courses/services/backend.service';
 import { LeagueBackend, League } from '../../../leagues/services/backend.service';
@@ -24,7 +24,7 @@ export class CreateComponent implements OnInit {
   public courseList: Course[];
   public insertID: string;
 
-  public league: League = new League (this.data.league.id);
+  public league: League = new League(this.data.league.id);
 
   headerButtons = [{
     icon: "icon-x",
@@ -33,7 +33,7 @@ export class CreateComponent implements OnInit {
   }];
 
   constructor(
-    public courses: CourseBackend, 
+    public courses: CourseBackend,
     public leagues: LeagueBackend,
     public account: AccountBackend,
     public sessions: SessionBackend,
@@ -51,38 +51,63 @@ export class CreateComponent implements OnInit {
   }
 
   actionClick($event) {
-    if ($event == "close"){ 
+    if ($event == "close") {
       this.close();
     }
   }
 
   initForm() {
+
+    //  Set Today as default for convience
+    var d = new Date();
+
+    //  Set Start
+    //  this.form.get('start').setValue(new Date(+(this.session.start + "000")));
+
+    //  Set Time
+    var d = new Date();
+    var hour = d.getHours() > 12 ? (d.getHours() - 12) : d.getHours();
+    var min = d.getMinutes();
+    
+    if (min < 14 && min >= 0) {
+      min = 15;
+    } else if (min < 29 && min >= 15) {
+      min = 30;
+    } else if (min < 44 && min >= 30) {
+      min = 45;
+    } else if (min >= 45) {
+      min = 0;
+      hour = hour > 12 ? hour + 1 : 1;
+    }
+
+    var ampm = d.getHours() > 12 ? "pm" : "am";
+
     this.form = this.builder.group({
       course: ["", Validators.required],
-      start: ["", Validators.required],
-      hour: ["", Validators.required],
-      min: ["", Validators.required],
-      ampm: ["", Validators.required],
+      start: [d, Validators.required],
+      hour: [hour.toString(), Validators.required],
+      min: [min.toString(), Validators.required],
+      ampm: [ampm, Validators.required],
       description: [""],
-    }); 
+    });
   }
 
 
   getCourseList() {
-    this.courses.getList('asc').subscribe((v:Course[])=>{
+    this.courses.getList('asc').subscribe((v: Course[]) => {
 
       this.courseList = v;
       this.feed.finializeLoading();
     });
   }
 
-  onFormSubmit(){
+  onFormSubmit() {
     if (this.form.valid && this.form.dirty) {
 
       this.feed.initiateLoading();
 
       //  Convert Date
-      var d:Date = new Date(this.form.get('start').value);
+      var d: Date = new Date(this.form.get('start').value);
       var year = d.getFullYear();
       var month = d.getMonth();
       var day = d.getDate();
@@ -103,34 +128,34 @@ export class CreateComponent implements OnInit {
 
       //  Create Session
       var session: Session = new Session(
-        null, 
+        null,
         this.form.get('course').value,
-        "ffa", 
-        d, 
+        "ffa",
+        d,
         this.form.get('description').value
       );
 
       //  Send Request
-      this.sessions.createSession(this.league, session).subscribe((res: ServerPayload)=>{
+      this.sessions.createSession(this.league, session).subscribe((res: ServerPayload) => {
         this.feed.finializeLoading(res, true);
         if (res['status'] == 'success') {
 
           //  Goto Session; No Need for extra action. Yay Lazy!
           //  this.router.navigate(["leagues", this.league.id, "sessions", res["insertID"]])
-          this.close();
+          this.close(true);
         }
 
       });
     }
-    
+
   }
 
-  locationBack(){
+  locationBack() {
     this.location.back();
   }
 
-  close() {
-    this.dialog.close();
+  close(res = false) {
+    this.dialog.close(res);
   }
 
 }

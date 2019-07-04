@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators';
 /*    Types   */
 import { Session } from '../../sessions/services/backend.service';
 import { Permission } from '../../permissions/services/backend.service';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ import { Permission } from '../../permissions/services/backend.service';
 export class LeagueBackend implements OnInit {
 
   league: League;
+  list: Subject<League[]> = new Subject();
 
   constructor(
     private http: HttpClient,
@@ -39,8 +41,12 @@ export class LeagueBackend implements OnInit {
               league.visibility,
               league.description,
               league.restrictions,
-            ))
+            ));
+
+            this.account.user.access[league.id] = league.level;
+            //  console.log("league.account.level: ", this.account.user.access);
           });
+          this.list.next(result);
           return result;
         } else {
           return [];
@@ -61,6 +67,9 @@ export class LeagueBackend implements OnInit {
               res["data"]["description"],
               res["data"]["restrictions"],
             );
+
+            this.account.user.access[league.id] = res["data"]["level"];
+
             return this.league;
           } else {
             return [];
@@ -124,6 +133,9 @@ export class LeagueBackend implements OnInit {
       })
     );
   }
+
+
+
 }
 
 

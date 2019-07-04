@@ -17,8 +17,16 @@
 
     <!--  Visibility Toggle -->
     <div class="split">
-      <mat-label>Visible in Search?</mat-label>
-      <mat-checkbox formControlName='visibility'></mat-checkbox>
+      <label class="col-md">Visiblility?</label>
+
+      <div class="row push">
+        <div *ngFor="let option of visModes;">
+          <button *ngIf="form.get('visibility').value == option" mat-flat-button color="accent">{{ option }}</button>
+          <button *ngIf="form.get('visibility').value != option" mat-stroked-button color="primary"
+            (click)='changeVis(option)'>{{ option }}</button>
+        </div>
+      </div>
+
     </div>
 
 

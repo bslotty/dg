@@ -113,7 +113,9 @@ export class LineComponent implements OnInit {
       gridlines: {
         color: "#506450",
         count: -1,
-      }
+      },
+      maxValue: 10,
+      minValue: -10
     },
 
   };
@@ -132,6 +134,10 @@ export class LineComponent implements OnInit {
 
     this.initialHeaders = this.columnNames;
     this.initialData = this.chartData;
+
+    //  console.log ("chart: ", this.chartData);
+
+    this.options.vAxis.maxValue;
 
     this.resolve = true;
   }
@@ -205,7 +211,7 @@ export class LineComponent implements OnInit {
     });
 
     settingsDialog.afterClosed().subscribe((diag) => {
-      console.log ("popup.Data: ", diag);
+      //  console.log ("popup.Data: ", diag);
 
       if (diag) {
 
@@ -249,7 +255,7 @@ export class LineComponent implements OnInit {
         players = this.stats.populatePlayerScores(players, this.par);
         teams = this.stats.populateTeamScores(teams, players, this.par);
 
-        console.log ("AfterCheck: players: ", players, "teams: ", teams, "colors: ", this.options.colors);
+        //  console.log ("AfterCheck: players: ", players, "teams: ", teams, "colors: ", this.options.colors);
 
         //  Format Chart Data;
         var results = this.stats.formatChart(players, diag["teamFormat"], diag["format"], teams);
@@ -260,7 +266,7 @@ export class LineComponent implements OnInit {
         //  Toggles Visibility
         //  this.filterData(diag['selectedColumns']);
 
-        console.log ("results: ", results, this.chartData);
+        //  console.log ("results: ", results, this.chartData);
       }
     });
   }

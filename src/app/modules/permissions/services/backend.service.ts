@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ServerPayload } from 'src/app/app.component';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,8 @@ import { map } from 'rxjs/operators';
 export class PermissionBackend {
  
   public accessLevel: string = "";
+
+  public list: Subject<Permission[]> =  new Subject();
 
   constructor(
     private http: HttpClient,
@@ -21,6 +24,7 @@ export class PermissionBackend {
   setAccessLevel(permissionList: Permission[]){
 
     permissionList.forEach((permission)=>{
+
       //  Get Matching User -> Set Access Level
       if (permission.user.id == this.account.user.id) {
         //  Doesnt work
@@ -38,29 +42,16 @@ export class PermissionBackend {
       map((res)=>{
 
         if (res['status'] == "success") {
-          return res['data'];
-          /*
-          var members:Permission[] = [];
+        
+          this.list.next(res['data']);
 
           //  Set Access for user upon list gen;
           this.setAccessLevel(res['data']);
 
-          res['data'].forEach((permission)=>{
-  
-            members.push(new Permission(
-              permission.id,
-              new League(permission.league.id),
-              new User(permission.user.id, permission.user.first, permission.user.last),
-              permission.level,
-              permission.status
-            ));
-          });
-
-          return members;
-          */
+          return res['data'];
         } else {
 
-          return [];
+          return []
         }
       })
     );

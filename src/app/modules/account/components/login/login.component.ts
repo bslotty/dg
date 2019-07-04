@@ -1,22 +1,23 @@
 import { FeedbackService } from './../../../feedback/services/feedback.service';
-import { ServerPayload } from './../../../../app.component';
 import { Component, OnInit } from '@angular/core';
 import { User, AccountBackend, Password } from '../../services/backend.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { loading, flyInPanelRow } from 'src/app/animations';
+import { flyInPanelRow } from 'src/app/animations';
 
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  animations: [loading, flyInPanelRow],
+  animations: [flyInPanelRow],
 })
 export class LoginComponent implements OnInit {
 
   form: FormGroup;
   submitText: string = 'LOGIN';
+
+  resolve: boolean = true;
 
   constructor(
     public account: AccountBackend,
@@ -31,7 +32,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.initForm();
-    this.feed.finializeLoading();
+    this.resolve = true;
   }
 
   initForm() {
@@ -53,6 +54,7 @@ export class LoginComponent implements OnInit {
   onFormSubmit() {
     if (this.form.valid && this.form.dirty){
 
+      this.resolve = false;
       this.form.disable();
       this.submitText = "...";
 
@@ -67,6 +69,7 @@ export class LoginComponent implements OnInit {
       this.account.login(user).subscribe((payload) => {
 
         this.feed.finializeLoading(payload, true);
+        this.resolve = true;
         this.form.enable();
         this.submitText = "LOGIN";
 

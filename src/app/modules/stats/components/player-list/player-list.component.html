@@ -12,31 +12,28 @@
 <div *ngIf="resolve; else loader" @flyInPanelRow>
   <div class="panel row" *ngFor="let player of playerList">
 
-    <div class="row squish">
-      <div class="colorChoice" *ngIf="player.team.id != null">
-        <div class="colorIcon {{ player.team?.color }}"></div>
-      </div>
+    <div class="col-lg">
+      <div class="row squish">
+        <div class="colorChoice" *ngIf="player.team.id != null">
+          <div class="colorIcon {{ player.team?.color }}"></div>
+        </div>
 
-      <div [style.color]="player.team?.hex">
-        <label *ngIf="player.user.last == 'temp'"> {{ player.user.first }} </label>
-        <label *ngIf="player.user.last != 'temp'"> {{ player.user.first }} {{ player.user.last }} </label>
+        <div [style.color]="player.team?.hex" class="col-xl">
+          <label *ngIf="player.user.last == 'temp'"> {{ player.user.first }} </label>
+          <label *ngIf="player.user.last != 'temp'"> {{ player.user.first }} {{ player.user.last }} </label>
+        </div>
       </div>
     </div>
 
 
 
 
-    <div class="panelActions">
-      <!--
-            <a mat-icon-button color="primary" (click)='editPlayer(player)'>
-              <span class="icon-edit"></span>
-            </a>
-          -->
-
-      <div class="scores {{ player.spread }}">
-        <label> {{ player.score }} </label>
-        <label *ngIf="player.spread == 'Leader'"> {{ player.spread }} </label>
-        <label *ngIf="player.spread != 'Leader'"> +{{ player.spread }} </label>
+    <div class="panelActions col-md">
+ 
+      <div class="row push">
+        <label class="col-sm"> {{ player.score }} </label>
+        <label class="col-sm" *ngIf="player.spread == 'Leader'"> {{ player.spread }} </label>
+        <label class="col-sm" *ngIf="player.spread != 'Leader'"> +{{ player.spread }} </label>
       </div>
 
       <a mat-flat-button color="warn" (click)='removePlayer(player)'>
@@ -66,8 +63,7 @@
 </div>
 
 <div *ngIf="chartData?.columns?.length > 0;">
-  <app-line [data]="chartData" [teams]="teamList" [players]="playerList" [par]="session.par"
-    [format]="session.format">
+  <app-line [data]="chartData" [teams]="teamList" [players]="playerList" [par]="session.par" [format]="session.format">
   </app-line>
 </div>
 

@@ -67,10 +67,12 @@ export class PlayerScoreListComponent implements OnInit,OnDestroy {
       this.permissions.memberList(this.league),
       this.sessions.getDetail(this.session),
     ).subscribe(([players, members, session]) => {
+      /*
       console.log("\nPlayerScoreList");
       console.log("permissions.members: ", members);
       console.log("stats.players:", players);
       console.log("sessions.session:", session);
+      */
 
       //  Insert Par & Details
       this.session = session as Session;
@@ -113,11 +115,7 @@ export class PlayerScoreListComponent implements OnInit,OnDestroy {
 
       });
 
-
-      console.log("players: ", players);
-
       this.playerList = players;
-
       this.resolve = true;
     });
 
@@ -159,6 +157,7 @@ export class PlayerScoreListComponent implements OnInit,OnDestroy {
   incPar() {
     this.session.par[this.tabIndex - 1]++;
     this.playerList.forEach((player) => {
+      this.incThrow(player);
       this.updateTotalScore(player);
     });
 
@@ -168,6 +167,7 @@ export class PlayerScoreListComponent implements OnInit,OnDestroy {
     if (this.session.par[this.tabIndex - 1] > 1) {
       this.session.par[this.tabIndex - 1]--;
       this.playerList.forEach((player) => {
+        this.decThrow(player);
         this.updateTotalScore(player);
       });
 

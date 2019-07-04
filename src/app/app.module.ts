@@ -18,9 +18,6 @@ import { HomeComponent } from './home/home.component';
 
 /*  Dependancies  */
 import { HttpClientModule } from '@angular/common/http';
-import { FeedbackComponent } from './modules/feedback/components/feedback/feedback.component';
-import { ChartsModule } from 'src/app/modules/charts/charts.module';
-import { GoogleChartsModule } from 'angular-google-charts';
 
 
 @NgModule({

@@ -74,13 +74,15 @@ export class PlayerListComponent implements OnInit {
       this.permissions.memberList(this.league),
       this.stats.getTeams(this.session),
     ).subscribe(([players, members, teams]) => {
+      /*
       console.log("\nPlayerList");
       console.log("permissions.members: ", members);
       console.log("stats.players:", players);
       console.log("stats.teams:", teams);
+      */
 
       //  Admin Check
-      members.filter((member) => {
+      members.map((member) => {
         if (this.account.user.id == member.user.id) {
           if (
             member.level == "creator" ||
@@ -96,7 +98,6 @@ export class PlayerListComponent implements OnInit {
       this.tempMembers = players.filter((player) => {
         return player['user']['last'] == "temp";
       });
-      console.log("tempMembers: ", this.tempMembers);
 
       //  Status
       this.status = "ready";
@@ -110,18 +111,20 @@ export class PlayerListComponent implements OnInit {
         this.status = 'warn';
       }
 
+       //  Data Store
+       this.memberList = members;
+       this.playerList = this.stats.populatePlayerScores(players, this.session.par);
+        this.teamList = this.stats.populateTeamScores(teams, players, this.session.par);
+
       //  Only Sort if Ready
       if (this.status == 'ready') {
 
-        //  Data Store
-        this.memberList = members;
-        this.playerList = this.stats.populatePlayerScores(players, this.session.par);
-        this.teamList = this.stats.populateTeamScores(teams, players, this.session.par);
+        
 
         //  Format Chart Data;
         this.chartData = this.stats.formatChart(this.playerList, this.session.format,  "scores", this.teamList,);
 
-        console.log ("player.list.chartData: ", this.chartData);
+        //  console.log ("player.list.chartData: ", this.chartData);
       }
 
       this.resolve = true;

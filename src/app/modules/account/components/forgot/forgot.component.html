@@ -1,40 +1,42 @@
-<div [@flyInPanelRow]>
-
-  <div class="headerContainer small">
-    <h1>
-      <label>Forgot Password</label>
-      <a mat-button (click)="back()">Back</a>
-    </h1>
-  </div>
+<div class="small">
 
 
-  <div class="panel small">
+  <app-section-header title="Forgot Password" back="true"></app-section-header>
+
+  <div class="panel" [@flyInPanelRow]>
+    <div *ngIf="resolve; else loader">
+      <div class="message">
+        <p>Please enter the email that is associated with your account. We will send an email beginning the reset
+          process.
+        </p>
+      </div>
+      <form [formGroup]="form">
+        <mat-form-field>
+          <input matInput formControlName="email" placeholder="Email" />
+          <mat-error *ngIf="
+          form.get('email').touched && 
+          form.get('email').invalid">
+            Invalid Email
+          </mat-error>
+        </mat-form-field>
 
 
-    <div class="message">
-      <p>Please enter the email that is associated with your account. We will send an email beginning the reset process.</p>
+
+
+        <div class="actions">
+          <div class="row">
+            <a mat-raised-button color="primary" (click)="onFormSubmit()" [disabled]="form.invalid || form.pristine">
+              <label>Begin Process</label>
+            </a>
+          </div>
+        </div>
+      </form>
     </div>
 
-    <form [formGroup]="form">
-      <mat-form-field>
-        <input matInput formControlName="email" placeholder="Email" />
-        <mat-error *ngIf="
-        form.get('email').touched && 
-        form.get('email').invalid">
-          Invalid Email
-        </mat-error>
-      </mat-form-field>
+    <ng-template #loader>
+      <app-feedback></app-feedback>
+    </ng-template>
 
 
-
-
-      <div class="actions">
-        <div class="row">
-          <a mat-raised-button color="primary" (click)="onFormSubmit()" [disabled]="form.invalid || form.pristine">
-            <label>Begin Process</label>
-          </a>
-        </div>
-      </div>
-    </form>
   </div>
 </div>
