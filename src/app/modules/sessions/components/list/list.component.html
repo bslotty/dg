@@ -8,7 +8,7 @@
     <div *ngIf="!emptySessions; else noSessions">
       <div class="panel row" *ngFor="let session of sessionList$; trackBy:itemTrackBy">
         <div class="col-lg">
-          <label class="col-lg"> {{ +(session.start + "000") | date:"E" }} {{ +(session.start + "000") | date:"MMM d" }} </label>
+          <label class="col-lg"> {{ +(session.start + "000") | date:"E" }} {{ +(session.start + "000") | date:"MM/dd" }} </label>
           <label class="col-md"> {{ +(session.start + "000") | date:"h:mm a" }} </label>
         </div>
 

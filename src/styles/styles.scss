@@ -20,6 +20,9 @@ html {
 }
 
 body {
+  background: $primary-dark;
+  color: $text-color-light;
+
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -92,6 +95,17 @@ p b {
   font-weight: 500;
 }
 
+
+
+//  BootStrap Fixes
+.row {
+  width: 100%;
+}
+
+
+
+
+//   Bootstrap Replace
 .row {
   display: flex;
   flex-direction: row;
@@ -151,6 +165,9 @@ p b {
 .center {
   justify-content: center;
 }
+
+
+
 
 form {
   width: 600px;

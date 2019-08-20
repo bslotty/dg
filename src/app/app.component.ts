@@ -11,11 +11,13 @@ import { fade, flyIn } from 'src/app/animations';
 
 export class AppComponent {  
 
-  public width = window.innerWidth;
+  width = window.innerWidth;
 
   constructor(
     private router: Router,
-  ){ }
+  ){
+    console.log ("width: ", this.width);
+  }
 
   getRoute(outlet) {
     return this.router.url;

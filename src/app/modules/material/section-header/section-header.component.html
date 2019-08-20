@@ -1,5 +1,5 @@
 <div class="headerContainer">
-  <div class="row squish">
+  <div class="row justify-content-between align-items-end no-gutters">
     <!--    Remove until we fix the back functionality. Back button on mobile and web works better.
       <div *ngIf="back">
         <a mat-flat-button color="transparent-primary" routerLink="/leagues/{{ league?.id }}">
@@ -8,14 +8,19 @@
       </div>
     -->
 
+    <div class='col-10'>
+      <h1>{{ title | titlecase }}</h1>
+    </div>
 
-    <h1>{{ title | titlecase }}</h1>
+    <div class="col">
+      <div class="row justify-content-end align-items-end no-gutters">
+        <a *ngFor="let button of buttons" mat-flat-button color="{{ button.color }}" (click)="emit( button.action )">
+          <span class="{{ button.icon }}"></span>
+        </a>
+      </div>
+    </div>
   </div>
 
 
-  <div class="actions row push">
-    <a *ngFor="let button of buttons" mat-flat-button color="{{ button.color }}" (click)="emit( button.action )">
-      <span class="{{ button.icon }}"></span>
-    </a>
-  </div>
+
 </div>
