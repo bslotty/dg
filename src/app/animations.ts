@@ -166,6 +166,16 @@ export const flyInPanelRow = trigger('flyInPanelRow', [
 
 
 
+//  PUTT Animation for panel entry: 
+//    In:  Slow Raise Up From Bottom-85% -> bounceAbove -> Fast Down to normal POS.
+//    Out: Rotate to and fall off 
+
+
+
+
+
+
+
 
 /*
 

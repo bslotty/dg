@@ -1,5 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+#   C:\Users\BRSLOTTY\AppData\Local\Programs\nodejs
+
 # compiled output
 /dist
 /tmp

@@ -22,6 +22,7 @@ export class AppComponent {
   }
 }
 
+
 export class ServerPayload {
   public status: string;
   public msg: string;
