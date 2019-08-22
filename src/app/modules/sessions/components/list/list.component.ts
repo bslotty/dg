@@ -1,11 +1,10 @@
 import { League } from './../../../leagues/services/backend.service';
 import { SessionBackend, Session } from './../../services/backend.service';
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { flyInPanelRow, flyIn } from 'src/app/animations';
 import { MatDialog } from '@angular/material';
 import { CreateComponent } from '../create/create.component';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-session-list',

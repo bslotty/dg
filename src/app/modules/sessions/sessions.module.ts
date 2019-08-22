@@ -1,4 +1,4 @@
-import { PipesModule } from './../pipes/pipes/pipes.module';
+import { PipesModule } from '../../pipes/pipes.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -14,7 +14,7 @@ import { EditComponent } from './components/edit/edit.component';
 import { MaterialModule } from '../material/material.module';
 import { ShellComponent } from './components/shell/shell.component';
 import { FormatDetailsComponent } from './components/format-details/format-details.component';
-import { SessionListItemComponent } from './components/templates/session-list-item/session-list-item.component';
+import { SessionListItemComponent } from '../../templates/session-list-item/session-list-item.component';
 
 
 

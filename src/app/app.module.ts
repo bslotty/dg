@@ -1,4 +1,4 @@
-import { PipesModule } from './modules/pipes/pipes/pipes.module';
+import { PipesModule } from './pipes/pipes.module';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';

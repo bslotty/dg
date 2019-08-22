@@ -43,7 +43,7 @@ import {
   MatTooltipModule,
 } from '@angular/material';
 import { FeedbackComponent } from '../feedback/components/feedback/feedback.component';
-import { SectionHeaderComponent } from './section-header/section-header.component';
+import { SectionHeaderComponent } from '../../templates/section-header/section-header.component';
 import { RouterModule } from '@angular/router';
 @NgModule({
   imports: [

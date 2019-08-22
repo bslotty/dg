@@ -10,14 +10,9 @@ import { fade, flyIn } from 'src/app/animations';
 })
 
 export class AppComponent {  
-
-  width = window.innerWidth;
-
   constructor(
     private router: Router,
-  ){
-    console.log ("width: ", this.width);
-  }
+  ){ }
 
   getRoute(outlet) {
     return this.router.url;

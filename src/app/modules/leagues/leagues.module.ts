@@ -1,7 +1,7 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PipesModule } from 'src/app/modules/pipes/pipes/pipes.module';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 
 import { LeaguesRoutingModule } from './leagues-routing.module';
 import { LeagueBackend } from './services/backend.service';

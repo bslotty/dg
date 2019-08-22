@@ -61,11 +61,11 @@ export class LineComponent implements OnInit {
     },
 
     /*  Structure  */
-    curveType: "",
+    curveType: "function",
     enableInteractivity: true,
     dynamicResize: true,
     chartArea: {
-      left: "0%", top: "%0", width: '100%', height: '90%',
+      left: "5%", top: "%0", width: '90%', height: '90%',
     },
     theme: "maximized",
 
@@ -74,7 +74,7 @@ export class LineComponent implements OnInit {
     colors: [],
     pointsVisible: true,
     pointShape: "circle",
-    pointSize: 15,
+    pointSize: 10,
     lineWidth: 3,
 
     series: {
@@ -104,10 +104,11 @@ export class LineComponent implements OnInit {
     },
     vAxis: {
       /*  title: "Score", */
+      ticks: [],
       textStyle: {
         color: this.fontColor,
       },
-      textPosition: "in",
+      textPosition: "out",
       baseline: 0,
       baselineColor: "#fafaf0",
       gridlines: {
@@ -135,9 +136,17 @@ export class LineComponent implements OnInit {
     this.initialHeaders = this.columnNames;
     this.initialData = this.chartData;
 
-    //  console.log ("chart: ", this.chartData);
+    console.log("chart: ", this.chartData);
 
-    this.options.vAxis.maxValue;
+    //  Set Tick Range;
+    this.options.vAxis.maxValue = this.getHighestScore();
+    this.options.vAxis.minValue = this.getLowestScore();
+
+
+
+    this.options.vAxis.ticks = this.initTicks();
+
+
 
     this.resolve = true;
   }
@@ -147,10 +156,73 @@ export class LineComponent implements OnInit {
       this.openSettings();
     } else if ($event == "rotate") {
       this.rotateChart();
-    } 
+    }
   }
 
-  
+  getLowestScore() {
+    var score = 0
+
+    this.chartData.map((scores, i) => {
+      var testScore = scores.sort((a, b) => {
+        if (typeof a === "string") {
+          return null;
+        } else if (typeof b == "string") {
+          return null
+        }
+        return a - b;
+      })[1]; // Return 1, as 0 is the hole string;
+
+      if (testScore < score) {
+        score = testScore;
+      }
+    });
+
+    return score;
+  }
+
+  getHighestScore() {
+    var score = 0
+
+    this.chartData.map((scores, i) => {
+      var testScore = scores.sort((a, b) => {
+        if (typeof a === "string") {
+          return null;
+        } else if (typeof b == "string") {
+          return null
+        }
+        return b - a;
+      })[1]; // Return 1, as 0 is the hole string;
+
+      if (testScore > score) {
+        score = testScore;
+      }
+    });
+
+    return score;
+  }
+
+  initTicks(): Array<any> {
+
+    var ticks = [];
+    for (var i = this.getLowestScore(); i <= this.getHighestScore(); i++) {
+      if (i == this.options.vAxis.minValue) {
+        var remainder = 3 - Math.abs(this.options.vAxis.minValue % 3);
+        var paddingValue = this.options.vAxis.minValue - remainder;
+        ticks.push(paddingValue);
+      } else if (i == this.options.vAxis.maxValue) {
+        var remainder = 3 - Math.abs(this.options.vAxis.maxValue % 3);
+        var paddingValue = remainder + this.options.vAxis.maxValue;
+        ticks.push(paddingValue);
+      } else if (i % 3 == 0) {
+        ticks.push(i);
+      }
+    }
+
+    console.log("Ticks: ", ticks);
+    return ticks;
+  }
+
+
 
   /*  Change orientation onClick */
   rotateChart() {
@@ -177,7 +249,7 @@ export class LineComponent implements OnInit {
         }
       })
     });
- 
+
     /** Filter Columns
      */
     this.columnNames = this.initialHeaders.filter((hv, hi) => {
@@ -217,23 +289,23 @@ export class LineComponent implements OnInit {
 
         //  Re-Format Data From Arrays;
         //  Get Teams for Repop
-        var teams = this.teams.filter((t)=>{
+        var teams = this.teams.filter((t) => {
           return diag['selectedColumns'].indexOf(t.name) > -1;
-        }); 
+        });
 
         //  Get Players for Repop
-        var players = this.players.filter((p)=>{
+        var players = this.players.filter((p) => {
 
           //  Shorten Name;
           var name = p.user.first + " " + p.user.last.substr(0, 3);
           return diag['selectedColumns'].indexOf(name) > -1;
         });
 
-    
+
         //  Exception to Show Team Only
         if (players.length == 0 && teams.length > 0) {
           players = this.players;
-        } 
+        }
         //  Rework Above player reset to account for Partial Team Selection
         //  Team 1 No players with team 2 any players gets around the above filter and Errors
         //    Need to count for players on teams, if teams exist
@@ -259,7 +331,7 @@ export class LineComponent implements OnInit {
 
         //  Format Chart Data;
         var results = this.stats.formatChart(players, diag["teamFormat"], diag["format"], teams);
-   
+
         this.chartData = results['scores'];
         this.columnNames = results["columns"];
 

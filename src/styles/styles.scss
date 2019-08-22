@@ -14,14 +14,14 @@ agm-map {
 
 html {
   background: $primary-dark;
-  color: $text-color-light;
-  font-family: "Roboto", sans-serif;
+  color: $text-light;
+  font-family: $font-header;
   font-size: 28px;
 }
 
 body {
   background: $primary-dark;
-  color: $text-color-light;
+  color: $text-light;
 
   display: flex;
   flex-direction: column;
@@ -38,13 +38,13 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Montserrat", sans-serif;
+  font-family: $font-header;
   font-weight: 100;
   margin: 0;
 }
 
 p {
-
+  font-family: $font-text;
 }
 
 label {
@@ -56,6 +56,9 @@ a,
 a * {
   cursor: pointer !important;
 }
+
+
+
 
 //  Replace w/ BootStrap
 .message {
@@ -79,6 +82,10 @@ a * {
   color: rgb(255, 210, 50);
   border: 1px solid rgba(255, 210, 50, 0.5);
 }
+
+
+
+
 
 #container {
   width: 100%;

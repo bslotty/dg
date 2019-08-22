@@ -4,7 +4,7 @@
 // Be sure that you only ever include 'mat-core' mixin once!
 // it should not be included for each theme.
 $custom-typography: mat-typography-config(
-  $font-family: 'Roboto'
+  $font-family: $font-header,
 );
 @include mat-core($custom-typography);
 
@@ -25,20 +25,20 @@ $md-primary: (
   A400: #6e4e2e,
   A700: #492e13,
   contrast: (
-    50: $text-color-dark,
-    100: $text-color-dark,
-    200: $text-color-dark,
-    300: $text-color-light,
-    400: $text-color-light,
-    500: $text-color-light,
-    600: $text-color-light,
-    700: $text-color-light,
-    800: $text-color-light,
-    900: $text-color-light,
-    A100: $text-color-dark,
-    A200: $text-color-dark,
-    A400: $text-color-dark,
-    A700: $text-color-dark
+    50: $text-dark,
+    100: $text-dark,
+    200: $text-dark,
+    300: $text-light,
+    400: $text-light,
+    500: $text-light,
+    600: $text-light,
+    700: $text-light,
+    800: $text-light,
+    900: $text-light,
+    A100: $text-dark,
+    A200: $text-dark,
+    A400: $text-dark,
+    A700: $text-dark
   )
 );
 */ $md-primary: (
@@ -47,7 +47,7 @@ $md-primary: (
     200 : #fdfdf8,
     300 : #fcfcf5,
     400 : #fbfbf2,
-    500 : #fafaf0,
+    500 : $text-light,
     600 : #f9f9ee,
     700 : #f9f9ec,
     800 : #f8f8e9,
@@ -80,7 +80,7 @@ $md-accent: (
   200: #a0d2e3,
   300: #79c0d8,
   400: #5db3cf,
-  500: #40a5c7,
+  500: #6ab9e8,
   600: #3a9dc1,
   700: #3293ba,
   800: #2a8ab3,
@@ -90,20 +90,20 @@ $md-accent: (
   A400: #78cfff,
   A700: #5ec6ff,
   contrast: (
-    50: $text-color-dark,
-    100: $text-color-dark,
-    200: $text-color-dark,
-    300: $text-color-dark,
-    400: $text-color-light,
-    500: $text-color-light,
-    600: $text-color-light,
-    700: $text-color-light,
-    800: $text-color-light,
-    900: $text-color-light,
-    A100: $text-color-dark,
-    A200: $text-color-dark,
-    A400: $text-color-light,
-    A700: $text-color-light
+    50: $text-dark,
+    100: $text-dark,
+    200: $text-dark,
+    300: $text-dark,
+    400: $text-light,
+    500: $text-light,
+    600: $text-light,
+    700: $text-light,
+    800: $text-light,
+    900: $text-light,
+    A100: $text-dark,
+    A200: $text-dark,
+    A400: $text-light,
+    A700: $text-light
   )
 );
 
@@ -113,7 +113,7 @@ $md-warn: (
   200: #edda97,
   300: #e6cb6d,
   400: #e0bf4e,
-  500: #dbb42f,
+  500: #ffd232,
   600: #d7ad2a,
   700: #d2a423,
   800: #cd9c1d,
@@ -123,20 +123,20 @@ $md-warn: (
   A400: #ffd88d,
   A700: #ffd074,
   contrast: (
-    50: $text-color-dark,
-    100: $text-color-dark,
-    200: $text-color-dark,
-    300: $text-color-dark,
-    400: $text-color-dark,
-    500: $text-color-dark,
-    600: $text-color-dark,
-    700: $text-color-dark,
-    800: $text-color-dark,
-    900: $text-color-dark,
-    A100: $text-color-dark,
-    A200: $text-color-dark,
-    A400: $text-color-dark,
-    A700: $text-color-dark
+    50: $text-dark,
+    100: $text-dark,
+    200: $text-dark,
+    300: $text-dark,
+    400: $text-dark,
+    500: $text-dark,
+    600: $text-dark,
+    700: $text-dark,
+    800: $text-dark,
+    900: $text-dark,
+    A100: $text-dark,
+    A200: $text-dark,
+    A400: $text-dark,
+    A700: $text-dark
   )
 );
 
@@ -175,12 +175,12 @@ $dgc-theme: mat-dark-theme($dgc-primary, $dgc-accent, $dgc-warn);
 
 .mat-transparent-accent {
   background: transparent;
-  color: rgb(106, 185, 232);
+  color: #6ab9e8;
 }
 
 .mat-transparent-warn {
   background: transparent;
-  color: rgb(255, 210, 50);
+  color: #ffd232;
 }
 
 .mat-button {
@@ -259,7 +259,7 @@ $dgc-theme: mat-dark-theme($dgc-primary, $dgc-accent, $dgc-warn);
 
 .mat-snack-bar-container {
   background: $accent;
-  color: $text-color-light;
+  color: $text-light;
   margin-top: 10% !important;
   width: 100%;
   min-width: 80% !important;

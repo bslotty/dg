@@ -4,11 +4,8 @@
   </app-section-header>
 
   <div *ngIf="resolve; else loader" @flyInPanelRow class="borderTest">
-
     <div *ngIf="!emptySessions; else noSessions">
-        <div *ngFor="let session of sessionList$; trackBy:itemTrackBy">
-          <app-session-list-item [session]="session"></app-session-list-item>
-        </div>
+          <app-session-list-item *ngFor="let session of sessionList$; trackBy:itemTrackBy" [session]="session"></app-session-list-item>
     </div>
   </div>
 
