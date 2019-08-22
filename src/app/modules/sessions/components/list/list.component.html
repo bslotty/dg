@@ -6,25 +6,9 @@
   <div *ngIf="resolve; else loader" @flyInPanelRow class="borderTest">
 
     <div *ngIf="!emptySessions; else noSessions">
-      <div class="panel row" *ngFor="let session of sessionList$; trackBy:itemTrackBy">
-        <div class="col-lg">
-          <label class="col-lg"> {{ +(session.start + "000") | date:"E" }} {{ +(session.start + "000") | date:"MM/dd" }} </label>
-          <label class="col-md"> {{ +(session.start + "000") | date:"h:mm a" }} </label>
+        <div *ngFor="let session of sessionList$; trackBy:itemTrackBy">
+          <app-session-list-item [session]="session"></app-session-list-item>
         </div>
-
-        <div class="col-lg">
-          <div class='panelActions row'>
-            <a mat-flat-button color="accent" class="col-xl" routerLink="/courses/{{ session.course.id }}">
-              @ {{ session.course.name }}
-            </a>
-
-            <a mat-flat-button color="primary" routerLink="/leagues/{{ league.id }}/sessions/{{ session.id }}">
-              <span class="icon-link-2"></span>
-            </a>
-          </div>
-        </div>
-
-      </div>
     </div>
   </div>
 
