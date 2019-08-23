@@ -1,6 +1,6 @@
 <?php
 
-class Weight
+class Player
 {
 
 	public $id;
@@ -22,6 +22,18 @@ class Weight
 	//	Create
 	public function registerPlayer($item)
 	{
+		//	Auth 
+		require($_SERVER['DOCUMENT_ROOT'] . '/sites/dgc2/api/shared/auth.php');
+		$auth = new Auth($database);
+		
+		//	Generate Token
+		$token = $auth->generateToken($item, "verify");
+
+		//	Set Token Expiration to Three hours ahead of current time.
+		$expiration_date = mktime(date("H") + 3);
+		$token_expires_on = date("r", $expiration_date);
+
+		//	Format Query
 		$query = "INSERT INTO `Players` (
 			`id`, `created_by`, `created_on`, `modified_by`, `modified_on`,
 			`first_name`, `last_name`, `email`, `token`, `token_expires_on`, `last_login`
@@ -30,6 +42,7 @@ class Weight
 			:first_name, :last_name, :email, :token, :token_expires_on, :last_login
 		);";
 
+		//	Bind Data
 		$values = array(
 			":id" 				=> $this->db->generateGUID(),
 			":created_by" 		=> null,
@@ -39,12 +52,25 @@ class Weight
 			":first_name" 		=> $item["first_name"],
 			":last_name" 		=> $item["last_name"],
 			":email" 			=> $item["email"],
-			":token" 			=> $item["token"],
-			":token_expires_on"	=> $item["token_expires_on"],
-			":last_login" 		=> $item["last_login"]
+			":token" 			=> $token,
+			":token_expires_on"	=> $token_expires_on,
+			":last_login" 		=> null
 		);
 
-		return $this->db->Query($query, $values);
+		//	Insert
+		$result =  $this->db->Query($query, $values);
+	
+		//	Send Verification Email;
+		if ($result["status"] == "success") {
+			require($_SERVER['DOCUMENT_ROOT'] . '/sites/dgc2/api/shared/email.php');
+			$email = new Email();
+			$email->setRecipients($item["email"]);
+			$email->setBody($body);
+		}
+
+		return $result;
+
+		
 	}
 
 
@@ -143,40 +169,7 @@ class Weight
 	}
 
 
-	//	Utility
-	public function generateToken($item)
-	{
-		$str 	= $item["id"] . $item["created_on"] . 'DGC' . $item["email"] . 'Slots' . $item["last_name"];
-		$token 	= hash('sha512', $str);
 
-		return $token;
-	}
-
-	public function verifyToken($item)
-	{
-		$query = "SELECT
-			`id`,
-			`first_name`,
-			`last_name`,
-			`email`,
-		FROM `Players`
-		WHERE POSITION(:term IN CONCAT(
-			`first_name`,
-			`last_name`,
-			`email`,
-		)) > 0
-		ORDER BY `modified_on` DESC 
-		LIMIT 10";
-
-		$values = array(
-			":term"	=> $term
-		);
-
-		return $this->db->Query($query, $values);
-	}
-
-	public function setToken()
-	{ }
 
 	public function changePassword()
 	{ }

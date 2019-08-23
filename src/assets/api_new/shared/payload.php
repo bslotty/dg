@@ -1,1 +1,0 @@
-Use this file for a class which all other classes can use to format & manipulate the return payload; no more magic strings.
