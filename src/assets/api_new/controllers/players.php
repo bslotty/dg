@@ -14,7 +14,7 @@ $payload = json_decode(file_get_contents('php://input'), TRUE);
 
 //  Init Headers
 $return = array(
-    "request-type" => $_SERVER['REQUEST_METHOD']
+	"request-type" => $_SERVER['REQUEST_METHOD']
 );
 
 //  DB
@@ -28,52 +28,54 @@ $player = new Player($database);
 
 
 switch ($payload['action']) {
-    case "register":
+	case "register":
 		$return["data"][0] = $player->registerPlayer($payload["player"]);
-        break;
-
-    case "search":
-
-        //  Defaults
-        if (!isset($payload["start"])) {
-            $payload["start"] = 0;
-        }
-
-        if (!isset($payload["limit"])) {
-            $payload["limit"] = 100;
-        }
-
-        $return["data"][0] = $meals->getList($payload["start"], $payload["limit"]);
-        break;
-
-    case "update":
-        //  Delete
-        foreach ($payload["meals"] as $index => $array) {
-            if ($array["id"] != "create") {
-                $return["data"][$index] = $meals->delete($array["id"]);
-            }
-        }
-
-        //  Create New
-        foreach ($payload["meals"] as $index => $array) {
-            $return["data"][$index] = $meals->create($array);
-        }
-
-        $return["data"][count($return["data"])] = $meals->getList();
-        break;
-
-    case "delete":
-        foreach ($payload["meals"] as $index => $array) {
-            $return["data"][$index] = $meals->delete($array["id"]);
-        }
-        break;
-
-    case "detail":
-        $return["data"][0] = $meals->getDetail($payload["id"]);
 		break;
-		
+
 	case "login":
 
+		break;
+
+	case "search":
+
+		//  Defaults
+		if (!isset($payload["start"])) {
+			$payload["start"] = 0;
+		}
+
+		if (!isset($payload["limit"])) {
+			$payload["limit"] = 100;
+		}
+
+		$return["data"][0] = $meals->getList($payload["start"], $payload["limit"]);
+		break;
+
+	case "update":
+		//  Delete
+		foreach ($payload["meals"] as $index => $array) {
+			if ($array["id"] != "create") {
+				$return["data"][$index] = $meals->delete($array["id"]);
+			}
+		}
+
+		//  Create New
+		foreach ($payload["meals"] as $index => $array) {
+			$return["data"][$index] = $meals->create($array);
+		}
+
+		$return["data"][count($return["data"])] = $meals->getList();
+		break;
+
+
+	case "detail":
+		$return["data"][0] = $meals->getDetail($payload["id"]);
+		break;
+
+	default:
+		$return["data"]["status"] = "error";
+		$return["data"]["code"] = "500";
+		$return["data"]["phase"] = "setup";
+		$return["data"]["message"] = "Unknown route";
 		break;
 }
 
