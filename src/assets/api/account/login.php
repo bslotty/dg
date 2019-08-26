@@ -223,6 +223,7 @@
     }
    
     //  Return Payload
+    header("Testheader.status", "success");
     printf( json_encode($return) );
 
 ?>

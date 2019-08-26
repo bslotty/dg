@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
       //  Send Data
       this.account.login(user).subscribe((payload) => {
 
-        this.feed.finializeLoading(payload, true);
+        //  this.feed.finializeLoading(payload, true);
         this.resolve = true;
         this.form.enable();
         this.submitText = "LOGIN";

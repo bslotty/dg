@@ -1,44 +1,7 @@
-<div [@flyInPanelRow]>
+<div>
+  <app-section-header title="account" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header>
 
-  <div class="headerContainer small">
-    <h1>
-      <label>Account</label>
-      <a mat-button (click)="logout()">
-        <label>Logout</label>
-      </a>
-    </h1>
-  </div>
+  <app-account-edit></app-account-edit>
 
-  <div class="panel small">
-    <form *ngIf="account.user; else notFound">
-      <mat-form-field>
-        <input matInput placeholder="First Name" disabled value="{{ account.user.first }}">
-      </mat-form-field>
-
-      <mat-form-field>
-        <input matInput placeholder="Last Name" disabled value="{{ account.user.last }}">
-      </mat-form-field>
-
-      <mat-form-field>
-        <input matInput placeholder="Email" disabled value="{{ account.user.email }}">
-      </mat-form-field>
-
-      <div class="actions">
-        <div class="row">
-          <a mat-raised-button color="primary" routerLink="/account/update">
-            <label>Update</label>
-          </a>
-
-          <a mat-raised-button color="primary" routerLink="/account/reset">
-            <label>Reset Pass</label>
-          </a>
-        </div>
-      </div>
-
-    </form>
-
-    <ng-template #notFound>
-      <p>There was an error retrieving your account information</p>
-    </ng-template>
-  </div>
+  <app-account-reset></app-account-reset>
 </div>

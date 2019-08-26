@@ -7,15 +7,25 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class SectionHeaderComponent implements OnInit {
 
+
+
   @Input() title: string;
   @Input() buttons: Array<HeaderButton>;
   @Input() back: string;
 
   @Output() actionClick = new EventEmitter<string>();
 
+  justification: string;
+
   constructor() { }
 
-  ngOnInit() {  }
+  ngOnInit() {
+    if (this.buttons && this.buttons.length > 0) {
+      this.justification = "left";
+    } else {
+      this.justification = "center";
+    }
+  }
 
   emit(action) {
 
@@ -29,7 +39,7 @@ export class SectionHeaderComponent implements OnInit {
 
 }
 
-interface HeaderButton {
+export interface HeaderButton {
   icon: string;
   action: string;
   color: string;

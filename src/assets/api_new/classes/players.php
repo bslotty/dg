@@ -22,12 +22,8 @@ class Player
 	//	Create
 	public function registerPlayer($item)
 	{
-		//	Auth 
-		require($_SERVER['DOCUMENT_ROOT'] . '/sites/dgc2/api/shared/auth.php');
-		$auth = new Auth($database);
-		
 		//	Generate Token
-		$token = $auth->generateToken($item, "verify");
+		$token = $this->generateToken($item, "verify");
 
 		//	Set Token Expiration to Three hours ahead of current time.
 		$expiration_date = mktime(date("H") + 3);

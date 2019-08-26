@@ -30,5 +30,6 @@
         $return = array("status"=>"success", "msg"=>"You are now logged out!");
     }
 
+    
     printf(json_encode($return));
 ?>

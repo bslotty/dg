@@ -17,7 +17,8 @@ import { PageNotFoundComponent } from './404/page-not-found.component';
 import { HomeComponent } from './home/home.component';
 
 /*  Dependancies  */
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { RequestInterceptor } from './interceptor';
 
 
 @NgModule({
@@ -45,6 +46,13 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule
   ],
   exports: [
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RequestInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

@@ -41,6 +41,11 @@ h6 {
   font-family: $font-header;
   font-weight: 100;
   margin: 0;
+  width: 100%;
+}
+
+h1 {
+  font-size: 2em;
 }
 
 p {
@@ -108,6 +113,10 @@ p b {
 //  BootStrap Fixes
 .row {
   width: 100%;
+}
+
+.btn-lg {
+  padding: .5rem 1rem !important;
 }
 
 

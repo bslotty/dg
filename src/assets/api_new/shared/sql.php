@@ -29,7 +29,7 @@ class DB
         
         $this->host           = "brandonslottycom.fatcowmysql.com";
         $this->username       = "dg_admin_01";
-        $this->password       = "";
+        $this->password       = "bd7699b83a29babe1852027a3538d4a2";
         $this->database       = "discing_2";
         $this->charset        = 'utf8mb4';
         $this->dsn            = "mysql:host=". $this->host . ";dbname=". $this->database .";charset=". $this->charset .";";

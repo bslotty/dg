@@ -15,8 +15,6 @@ export class AccountBackend implements OnInit{
   public user: User;
   public redirectUrl: string;
 
-  private timeout: Date;
-
   public passwordPipe = pipe(
     debounceTime(400),
     distinctUntilChanged(),
@@ -34,7 +32,6 @@ export class AccountBackend implements OnInit{
   //  Clear User; User in Logout;
   resetUser() {
     this.user = new User(null);
-    this.timeout = new Date();
   }
 
 
@@ -151,10 +148,7 @@ export class AccountBackend implements OnInit{
 
 
    
-    //  Update; Verify we actually use any properties on the server
     logout() {
-      //return this.http.post("http://www.brandonslotty.com/disc/api/account/logout.php", {"user": this.user});
-    
       this.resetUser();
       this.router.navigate(['account/login']);
     }
@@ -194,3 +188,4 @@ export class Password {
     public confirm?,
   ) {}
 }
+

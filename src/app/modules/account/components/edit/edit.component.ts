@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-edit',
+  selector: 'app-account-edit',
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.css'],
   animations: [flyInPanelRow]
@@ -40,6 +40,12 @@ export class EditComponent implements OnInit {
         Validators.required, 
         Validators.minLength(2), 
         Validators.maxLength(128)
+      ]],
+      email:  [this.account.user.email, [
+        Validators.required, 
+        Validators.minLength(8), 
+        Validators.maxLength(128), 
+        Validators.pattern("(.)+@(.)+")
       ]],
     });
   }

@@ -34,8 +34,9 @@ const accountRoutes: Routes = [
   component: SetPasswordComponent,
 },{
   path: 'account',
-  component: ShellComponent,
+  component: DetailComponent,
   canActivate: [AuthGuard],
+  /*
   children: [
     { 
       path: '',
@@ -52,6 +53,7 @@ const accountRoutes: Routes = [
       component: ResetComponent,
     }
   ]
+  */
 }];
 
 @NgModule({

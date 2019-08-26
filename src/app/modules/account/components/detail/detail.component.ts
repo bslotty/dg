@@ -12,6 +12,12 @@ import { flyInPanelRow } from 'src/app/animations';
 })
 export class DetailComponent implements OnInit {
 
+  headerButtons = [{
+    icon: 'icon-log-out',
+    action: "logout",
+    color: "transparent-primary"
+  }];
+
   constructor(
     public account: AccountBackend,
     public feed: FeedbackService,
@@ -20,11 +26,19 @@ export class DetailComponent implements OnInit {
   ngOnInit() {
   }
 
+  
+
+  actionClick($event) {
+    if ($event == "logout") {
+      this.logout();
+    }
+  }
+
   logout() {
 
     var payload = new ServerPayload;
-    payload.status = "success";
-    payload.msg = "You are now logged out";
+    payload.status  = "success";
+    payload.msg     = "You are now logged out";
 
     this.feed.finializeLoading(payload, true);
     this.account.logout();

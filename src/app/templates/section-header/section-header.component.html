@@ -8,11 +8,11 @@
       </div>
     -->
 
-    <div class='col-10'>
+    <div class='col' style.textAlign="{{ justification }}" >
       <h1>{{ title | titlecase }}</h1>
     </div>
 
-    <div class="col">
+    <div class="col-xs" *ngIf="buttons?.length > 0">
       <div class="row justify-content-end align-items-end no-gutters">
         <a *ngFor="let button of buttons" mat-flat-button color="{{ button.color }}" (click)="emit( button.action )">
           <span class="{{ button.icon }}"></span>

@@ -7,7 +7,7 @@
 
     <form [formGroup]="form">
 
-      <!--  First Name  /!-->
+      <!--  First Name  -->
       <mat-form-field>
         <input matInput placeholder="First name" formControlName='first' name='first'>
         <mat-error *ngIf="
@@ -17,7 +17,7 @@
         </mat-error>
       </mat-form-field>
 
-      <!--  Last Name  /!-->
+      <!--  Last Name  -->
       <mat-form-field>
         <input matInput placeholder="Last Name" formControlName='last' name='last'>
         <mat-error *ngIf="
@@ -27,7 +27,7 @@
         </mat-error>
       </mat-form-field>
 
-      <!--  Email  /!-->
+      <!--  Email  -->
       <mat-form-field>
         <input matInput placeholder="Email" formControlName='email' name='email'>
         <mat-error *ngIf="
@@ -37,7 +37,7 @@
         </mat-error>
       </mat-form-field>
 
-      <!--  Password  /!-->
+      <!--  Password  -->
       <mat-form-field>
         <input matInput placeholder="Password" formControlName='pass' name='pass' type="password">
         <mat-error *ngIf="
@@ -47,7 +47,7 @@
         </mat-error>
       </mat-form-field>
 
-      <!--  Confirmation  /!-->
+      <!--  Confirmation  -->
       <mat-form-field>
         <input matInput placeholder="Confirm Password" formControlName='conf' name='conf' type="password">
         <mat-error *ngIf="form.get('conf').touched && form.get('conf').invalid">

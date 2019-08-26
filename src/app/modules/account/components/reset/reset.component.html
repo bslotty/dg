@@ -1,50 +1,48 @@
-<div [@flyInPanelRow]>
+<app-section-header title="Reset Password" [buttons]="headerButtons" (actionClick)="actionClick($event)">
+</app-section-header>
 
-  <div class="headerContainer small">
-    <h1>
-      <label>Reset Password</label>
-      <a mat-button (click)="back()">Back</a>
-    </h1>
 
+<form [formGroup]="form">
+
+  <!--  Old Password  /!-->
+  <mat-form-field>
+    <input matInput placeholder="Old Password" formControlName='old' type="password">
+    <mat-error *ngIf="
+            form.get('old').touched && 
+            form.get('old').invalid">
+      Invalid Password
+    </mat-error>
+  </mat-form-field>
+
+  <!--  Password  /!-->
+  <mat-form-field>
+    <input matInput placeholder="Password" formControlName='pass' type="password">
+    <mat-error *ngIf="form.get('pass').touched && form.get('pass').invalid">
+      Invalid Password
+    </mat-error>
+  </mat-form-field>
+
+  <!--  Confirmation  /!-->
+  <mat-form-field>
+    <input matInput placeholder="Confirm Password" formControlName='conf' type="password">
+    <mat-error *ngIf="form.get('conf').touched && form.get('conf').invalid">
+      <label *ngIf="form.get('conf').hasError('match'); else passwordError">
+        Passwords must match
+      </label>
+      <ng-template #passwordError>
+        <div *ngIf="form.get('conf').hasError('minLength')">Invalid Password MIN</div>
+        <div *ngIf="form.get('conf').hasError('maxLength')">Invalid Password MAX</div>
+        
+      </ng-template>
+    </mat-error>
+
+
+  </mat-form-field>
+
+  <div class="row no-gutters justify-content-stretch align-items-center mt-3">
+    <a mat-raised-button color="primary" class="btn btn-block" [disabled]="form.pristine || form.invalid"
+      (click)="onFormSubmit()">
+      <label>Update Password</label>
+    </a>
   </div>
-
-  <div class="panel small">
-
-
-
-    <form [formGroup]="form">
-
-      <!--  Password  /!-->
-      <mat-form-field>
-        <input matInput placeholder="Password" formControlName='pass' name='pass' type="password">
-        <mat-error *ngIf="
-          form.get('pass').touched && 
-          form.get('pass').invalid">
-          Invalid Password
-        </mat-error>
-      </mat-form-field>
-
-      <!--  Confirmation  /!-->
-      <mat-form-field>
-        <input matInput placeholder="Confirm Password" formControlName='conf' name='conf' type="password">
-        <mat-error *ngIf="
-        form.get('conf').touched && 
-        form.get('conf').invalid">
-          Invalid Password
-        </mat-error>
-
-        <mat-hint [@wipe] class="error" *ngIf="!passMatch && form.get('conf').touched && form.get('conf').valid">
-          Passwords must match
-        </mat-hint>
-      </mat-form-field>
-
-      <div class="actions">
-        <div class="row">
-          <a mat-raised-button color="primary" [class.disabled]="form.pristine || form.invalid || !passMatch" (click)="onFormSubmit()">
-            <label>Update Password</label>
-          </a>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
+</form>
