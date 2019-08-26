@@ -19,11 +19,11 @@
 
 import { Injectable } from '@angular/core';
 import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor,
-  HttpResponse
+	HttpRequest,
+	HttpHandler,
+	HttpEvent,
+	HttpInterceptor,
+	HttpResponse
 } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
@@ -35,44 +35,46 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class RequestInterceptor implements HttpInterceptor {
 
-  constructor(
-	  private accountService: AccountBackend,
-	  private feedbackService: FeedbackService,
-  ) {}
+	constructor(
+		private accountService: AccountBackend,
+		private feedbackService: FeedbackService,
+	) { }
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-	
-	console.log ("request: ", request, next);
-
-
-	console.log (request.params.toString());
+	intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+		//	console.log("request: ", request, next);
 
 
-	//	Toast Status of Request
-	//	;
+		//	Auth Token
+		var token = localStorage.getItem("DGC-Token");
 
-    request = request.clone({
-      setHeaders: {
-        Authorization: `dsadsadsadasdqweqweqweqw`
-      }
-	});
-	
-    return next.handle(request).pipe(map((event: HttpEvent<any>) => {
-		if (event instanceof HttpResponse) {
-		  console.log ("Event", event);
+		//--!		If Token not set -> Invalid -> Login
 
-		  //	Toast Feedback from server if set.
-		  if (event.body.msg) {
-			this.feedbackService.setMessage({
-				status: 	event.body.status, 
-				msg: 		event.body.msg, 
-				data: []
-			});
-		  }
-		  
-		}
-		return event; 
-	  })
-	);
-  }
+		request = request.clone({
+			setHeaders: {
+				Authorization: token ? token : "",
+			}
+		});
+
+		return next.handle(request).pipe(map((event: HttpEvent<any>) => {
+			if (event instanceof HttpResponse) {
+
+				//	Toast Feedback from server if set.
+				if (event.body.msg) {
+					this.feedbackService.setMessage({
+						status: event.body.status,
+						msg: event.body.msg,
+						data: []
+					});
+				}
+
+				//	Return Data?
+				if (event.body.status == "success" && event.body.data) {
+
+				}
+
+			}
+			return event;
+		})
+		);
+	}
 }

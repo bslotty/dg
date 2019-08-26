@@ -10,7 +10,7 @@ import { ServerPayload } from 'src/app/app.component';
 @Injectable({
   providedIn: 'root'
 })
-export class AccountBackend implements OnInit{
+export class AccountBackend implements OnInit {
 
   public user: User;
   public redirectUrl: string;
@@ -25,139 +25,126 @@ export class AccountBackend implements OnInit{
     private router: Router,
   ) { }
 
-    ngOnInit() {
-      this.user = new User(null);
-    }
+  ngOnInit() {
+    this.user = new User(null);
+  }
 
   //  Clear User; User in Logout;
   resetUser() {
     this.user = new User(null);
   }
 
+  setUser(user) {
+    this.user           = new User(user["id"]);
+    this.user.first     = user["first"];
+    this.user.last      = user["last"];
+    this.user.email     = user["email"];
+    this.user.token     = user["validationToken"];
 
-    /*    HTTP  Requests    */
-    //  Select
-    login(user) {
-      let url = environment.apiUrl + "/account/login.php";
-
-      //  Grab verificationToken from cache
-      user.validationToken = localStorage.getItem("verificationToken");
-
-  
-      return this.http.post(url, {"user": user}).pipe(
-        map((res)=>{
-
-          //  Set user if successfull
-          if (res['status'] == "success") {
-            //  Set User
-            this.user = new User(res['data']["user"]["id"]);
-            this.user.first = res['data']["user"]["first"];
-            this.user.last  = res['data']["user"]["last"];
-            this.user.email = res['data']["user"]["email"];
-            this.user.validationToken = res['data']["user"]["validationToken"];
-
-            //  Store Token as local cache;
-            localStorage.setItem("verificationToken", res['data']["user"]["validationToken"]);
-
-          }
-          
-          //  Return Payload for Feedback
-          return res;
-        })
-      )
-    }
+    //  Store Token as local cache;
+    localStorage.setItem("DGC-Token", this.user.token);
+  }
 
 
-    //  Create
-    register(user: User) {
-      let url = environment.apiUrl + "/account/register.php";
-      return this.http.post(url, {"user": user}).pipe(
-        map((res: ServerPayload)=>{return res;})
-      ); 
-    }
+  /*    HTTP  Requests    */
+  //  Select
+  login(user) {
+    let url = environment.apiUrl + "/account/login.php";
 
-    //  Update
-    updateUser(user: User) {
-      let url = environment.apiUrl + "/account/update.php";
-      return this.http.post(url, {"user": user});
-    }
-  
-    updatePassword(user: User) {
-      let url = environment.apiUrl + "/account/reset.php";
-      return this.http.post(url, {"user": user}).pipe(
-        map((res: ServerPayload)=>{
-          //  Clear Pass
-          this.user.pass = new Password(null, null);
-          return res;
-        })
-      );  
-    }
-
-    forgotPassword(user: User) {
-      let url = environment.apiUrl + "/account/forgot.php";
-      return this.http.post(url, {"user": user});   
-    }
-    
-    verify(token: string) {
-      let url = environment.apiUrl + "/account/verify.php";
-      return this.http.post(url, {"token": token}).pipe(
-        map((res: ServerPayload)=>{
-
-          //  Set user if successfull
-          if (res.status == "success") {
-
-            //  Set User
-            this.user = new User(res.data["user"]["id"]);
-            this.user.first = res.data["user"]["first"];
-            this.user.last  = res.data["user"]["last"];
-            this.user.email = res.data["user"]["email"];
-            this.user.validationToken = res.data["user"]["validationToken"];
+    //  Grab verificationToken from cache
+    user.validationToken = localStorage.getItem("DGC-Token");
 
 
-          }
-          
-          //  Return Payload for Feedback
-          return res;
-        })
-      );
-    }
+    return this.http.post(url, { "user": user }).pipe(
+      map((res) => {
+
+        //  Set user if successfull
+        if (res['status'] == "success") {
+          this.setUser(res['data']["user"]);
+        }
+
+        //  Return Payload for Feedback
+        return res;
+      })
+    )
+  }
 
 
-    verifyToken(token: string) {
-      let url = environment.apiUrl + "/account/token.php";
-      return this.http.post(url, {"token": token}).pipe(
-        map((res: ServerPayload)=>{
+  //  Create
+  register(user: User) {
+    let url = environment.apiUrl + "/account/register.php";
+    return this.http.post(url, { "user": user }).pipe(
+      map((res: ServerPayload) => { return res; })
+    );
+  }
 
-          //  Set user if successfull
-          if (res.status == "success") {
-            
-            //  Set User
-            this.user = new User(res.data["user"]["id"]);
-            this.user.first = res.data["user"]["first"];
-            this.user.last  = res.data["user"]["last"];
-            this.user.email = res.data["user"]["email"];
-            this.user.validationToken = res.data["user"]["validationToken"];
+  //  Update
+  updateUser(user: User) {
+    let url = environment.apiUrl + "/account/update.php";
+    return this.http.post(url, { "user": user });
+  }
 
-          }
-          
-          //  Return Payload for Feedback
-          return res;
-        })
-      );
-    }
+  updatePassword(user: User) {
+    let url = environment.apiUrl + "/account/reset.php";
+    return this.http.post(url, { "user": user }).pipe(
+      map((res: ServerPayload) => {
+        //  Clear Pass
+        this.user.pass = new Password(null, null);
+        return res;
+      })
+    );
+  }
+
+  forgotPassword(user: User) {
+    let url = environment.apiUrl + "/account/forgot.php";
+    return this.http.post(url, { "user": user });
+  }
+
+  verify(token: string) {
+    let url = environment.apiUrl + "/account/verify.php";
+    return this.http.post(url, { "token": token }).pipe(
+      map((res: ServerPayload) => {
+
+        //  Set user if successfull
+        if (res.status == "success") {
+          this.setUser(res['data']["user"]);
+        }
+
+        //  Return Payload for Feedback
+        return res;
+      })
+    );
+  }
 
 
-   
-    logout() {
-      this.resetUser();
-      this.router.navigate(['account/login']);
-    }
-  
-    
+  verifyToken(token: string) {
+    let url = environment.apiUrl + "/account/token.php";
+    return this.http.post(url, { "token": token }).pipe(
+      map((res: ServerPayload) => {
+
+        //  Set user if successfull
+        if (res.status == "success") {
+          this.setUser(res['data']["user"]);
+        }
+
+        //  Return Payload for Feedback
+        return res;
+      })
+    );
+  }
 
 
 
-    
+  logout() {
+    this.resetUser();
+    this.router.navigate(['account/login']);
+  }
+
+
+
+
+
+
 
 }
 
@@ -170,7 +157,7 @@ export class User {
 
   //  Flag for League Moderation
   public access = {};
-  public validationToken;
+  public token;
 
   constructor(
     public id,
@@ -178,14 +165,14 @@ export class User {
     public last?,
     public email?,
     public pass?,
-  ) {}
+  ) { }
 }
 
 export class Password {
 
-  constructor (
+  constructor(
     public current,
     public confirm?,
-  ) {}
+  ) { }
 }
 

@@ -1,8 +1,8 @@
 import { AccountBackend, Password } from 'src/app/modules/account/services/backend.service';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { ServerPayload } from 'src/app/app.component';
 import { Router } from '@angular/router';
+import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
 
 @Component({
   selector: 'app-account-reset',
@@ -18,6 +18,7 @@ export class ResetComponent implements OnInit {
     public builder: FormBuilder,
     public account: AccountBackend,
     public router: Router,
+    public feed: FeedbackService,
   ) { }
 
 
@@ -56,6 +57,8 @@ export class ResetComponent implements OnInit {
         Validators.maxLength(128)
       ]],
     });
+
+    //  Add Old if token doesnt exist; reset/change
   }
 
 
@@ -67,11 +70,9 @@ export class ResetComponent implements OnInit {
         this.form.get('conf').value,
       );
 
-      this.account.updatePassword(this.account.user).subscribe((payload: ServerPayload) => {
-
-        if (payload.status == "success") {
-          this.router.navigate(["account"]);
-        }
+      this.account.updatePassword(this.account.user).subscribe((res) => {
+        //  Clear Password
+        this.account.user.pass = null;
       });
     }
   }

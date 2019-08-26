@@ -8,7 +8,7 @@ import { ServerPayload } from 'src/app/app.component';
 })
 export class FeedbackService {
 
-  public loading: number = 1;
+  public loading: boolean = true;
   
 
   public pColor: string  = "primary";
@@ -35,7 +35,7 @@ export class FeedbackService {
 
 
   initiateLoading() {
-    this.loading = 1;
+    this.loading = true;
 
     this.pColor = "primary";
     this.pMode = "indeterminate";
@@ -53,7 +53,7 @@ export class FeedbackService {
 
     this.pValue = "100";
     this.pMode = "determinate";
-    this.loading = 0;
+    this.loading = false;
   }
 
 }

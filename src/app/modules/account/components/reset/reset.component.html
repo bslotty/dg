@@ -2,42 +2,41 @@
 </app-section-header>
 
 
-<form [formGroup]="form">
+<div *ngIf="!feed?.loading; else loader">
+  <form [formGroup]="form">
 
-  <!--  Old Password  /!-->
-  <mat-form-field>
-    <input matInput placeholder="Old Password" formControlName='old' type="password">
-    <mat-error *ngIf="
-            form.get('old').touched && 
-            form.get('old').invalid">
-      Invalid Password
-    </mat-error>
-  </mat-form-field>
+    <!--  Old Password  /!-->
+    <mat-form-field>
+      <input matInput placeholder="Old Password" formControlName='old' type="password">
+      <mat-error *ngIf="
+              form.get('old').touched && 
+              form.get('old').invalid">
+        Invalid Password
+      </mat-error>
+    </mat-form-field>
 
-  <!--  Password  /!-->
-  <mat-form-field>
-    <input matInput placeholder="Password" formControlName='pass' type="password">
-    <mat-error *ngIf="form.get('pass').touched && form.get('pass').invalid">
-      Invalid Password
-    </mat-error>
-  </mat-form-field>
+    <!--  Password  /!-->
+    <mat-form-field>
+      <input matInput placeholder="Password" formControlName='pass' type="password">
+      <mat-error *ngIf="form.get('pass').touched && form.get('pass').invalid">
+        Invalid Password
+      </mat-error>
+    </mat-form-field>
 
-  <!--  Confirmation  /!-->
-  <mat-form-field>
-    <input matInput placeholder="Confirm Password" formControlName='conf' type="password">
-    <mat-error *ngIf="form.get('conf').touched && form.get('conf').invalid">
-      <label *ngIf="form.get('conf').hasError('match'); else passwordError">
-        Passwords must match
-      </label>
-      <ng-template #passwordError>
-        <div *ngIf="form.get('conf').hasError('minLength')">Invalid Password MIN</div>
-        <div *ngIf="form.get('conf').hasError('maxLength')">Invalid Password MAX</div>
-        
-      </ng-template>
-    </mat-error>
+    <!--  Confirmation  /!-->
+    <mat-form-field>
+      <input matInput placeholder="Confirm Password" formControlName='conf' type="password">
+      <mat-error *ngIf="form.get('conf').touched && form.get('conf').invalid">
+        <label *ngIf="form.get('conf').hasError('match'); else passwordError">
+          Passwords must match
+        </label>
+        <ng-template #passwordError>Invalid Password</ng-template>
+      </mat-error>
 
 
-  </mat-form-field>
+    </mat-form-field>
+
+  </form>
 
   <div class="row no-gutters justify-content-stretch align-items-center mt-3">
     <a mat-raised-button color="primary" class="btn btn-block" [disabled]="form.pristine || form.invalid"
@@ -45,4 +44,8 @@
       <label>Update Password</label>
     </a>
   </div>
-</form>
+</div>
+
+<ng-template #loader>
+  <loader></loader>
+</ng-template>

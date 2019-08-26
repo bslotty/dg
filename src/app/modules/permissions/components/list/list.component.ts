@@ -9,9 +9,6 @@ import { PendingComponent } from '../pending/pending.component';
 import { RemoveComponent } from '../remove/remove.component';
 import { EditComponent } from '../edit/edit.component';
 import { AccountBackend } from 'src/app/modules/account/services/backend.service';
-import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-
 @Component({
   selector: 'app-perm-list',
   templateUrl: './list.component.html',
@@ -27,7 +24,7 @@ export class ListComponent implements OnInit {
   recruitList: Permission[];
   recruitCount: number = 0;
 
-  resolve:boolean = false;
+  resolve: boolean = false;
 
   headerButtons = []
 
@@ -49,16 +46,16 @@ export class ListComponent implements OnInit {
     }
   }
 
-  populateData(){
-    this.permissions.memberList(this.league).subscribe((members)=>{
+  populateData() {
+    this.permissions.memberList(this.league).subscribe((members) => {
 
       //  Members
-      this.permissionList$ = members.filter((member)=>{ 
+      this.permissionList$ = members.filter((member) => {
         return member['status'] == 'approved'
       });
 
       //  Recruits
-      this.recruitList = members.filter((member)=>{
+      this.recruitList = members.filter((member) => {
         return member['status'] == "pending";
       });
 
@@ -73,7 +70,7 @@ export class ListComponent implements OnInit {
 
 
       //  Admin Check
-      members.filter((member)=>{
+      members.filter((member) => {
         if (this.account.user.id == member.user.id) {
           if (
             member.level == "creator" ||
@@ -92,14 +89,17 @@ export class ListComponent implements OnInit {
   viewPending() {
     if (this.recruitCount > 0) {
       const pendingDiag = this.dialog.open(PendingComponent, {
-        data: { 
+        data: {
           league: this.league,
           recruits: this.recruitList
         }
       });
 
-      pendingDiag.afterClosed().subscribe((diag)=>{
-        this.populateData();
+      pendingDiag.afterClosed().subscribe((diag) => {
+        if (diag) {
+          this.populateData();
+        }
+
       });
     }
   }

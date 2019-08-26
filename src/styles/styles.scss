@@ -50,6 +50,7 @@ h1 {
 
 p {
   font-family: $font-text;
+  font-weight: 300;
 }
 
 label {
@@ -121,94 +122,6 @@ p b {
 
 
 
-
-//   Bootstrap Replace
-.row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.row.squish {
-  justify-content: flex-start;
-}
-
-.row.push {
-  justify-content: flex-end;
-}
-
-.panelActions .row {
-  width: 100%;
-}
-
-.col {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-
-.col-sm {
-  width: 20%;
-}
-
-.col-md {
-  width: 40%;
-}
-
-.col-lg {
-  width: 60%;
-}
-
-.col-xl {
-  width: 80%;
-}
-
-.col {
-  width: 100%;
-}
-
-.col.center {
-  justify-content: center;
-  align-items: center;
-}
-
-.small {
-  max-width: 640px;
-  margin: 0 auto;
-}
-
-.center {
-  justify-content: center;
-}
-
-
-
-
-form .actions {
-  width: 100%;
-  margin-top: 2em;
-  padding-bottom: 1em;
-}
-
-.actions .row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  margin-bottom: 1em;
-}
-
-.actions .row .large {
-  font-size: 2.5em;
-  line-height: 2em;
-  width: 100%;
-}
-
-form .actions .row:last-of-type {
-  margin-bottom: 0;
-}
 
 :host {
   display: flex;
@@ -363,13 +276,6 @@ table {
   color: rgb(255, 210, 50);
 }
 
-.panelActions {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-}
-
 .colorChoice .colorIcon {
   height: 5vh;
 }
@@ -382,6 +288,6 @@ table {
 
 @media only screen and (max-width: 720px) {
   router-outlet ~ * {
-    width: 640px;
+    min-width: 480px;
   }
 }

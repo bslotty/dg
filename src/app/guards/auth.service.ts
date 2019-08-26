@@ -22,13 +22,13 @@ export class AuthGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot,): boolean {
 
     //  If user is set; Allow
-    if (this.account.user && this.account.user.email) { return true } else {
+    if (this.account.user && this.account.user.email /* && this.account.user.token */) { return true } else {
       let url: string = state.url;
 
       //  Store Url for redirect
       this.account.redirectUrl = url;
     
-      // Navigate to the login page with extras
+      // Navigate to the login page
       this.router.navigate(['/account/login']);
 
       //  Deny 

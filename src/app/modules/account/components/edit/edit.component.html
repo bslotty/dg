@@ -30,14 +30,11 @@
       Invalid Email
     </mat-error>
   </mat-form-field>
-
-  <div class="row no-gutters justify-content-stretch align-items-center mt-3">
-    <a mat-raised-button color="primary" (click)="onFormSubmit()"
-        class="btn btn-block"
-        [disabled]="form.pristine || form.invalid">
-      <label>Update Account</label>
-    </a>
-  </div>
-
-
 </form>
+
+<div class="row no-gutters justify-content-stretch align-items-center mt-3">
+  <a mat-raised-button color="primary" (click)="onFormSubmit()" class="btn btn-block"
+    [disabled]="form.pristine || form.invalid">
+    <label>Update Account</label>
+  </a>
+</div>

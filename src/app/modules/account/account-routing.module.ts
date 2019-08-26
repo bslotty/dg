@@ -5,16 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from 'src/app/guards/auth.service';
 
 /*  Components  */
-import { ShellComponent } from './components/shell/shell.component';
-import { DetailComponent } from './components/detail/detail.component';
-import { EditComponent } from './components/edit/edit.component';
-
 import { LoginComponent } from './components/login/login.component';
 import { CreateComponent } from './components/create/create.component';
 import { ForgotComponent } from './components/forgot/forgot.component';
 import { SetPasswordComponent } from './components/set-password/set-password.component';
 import { VerifyComponent } from './components/verify/verify.component';
-import { ResetComponent } from './components/reset/reset.component';
+import { DetailComponent } from './components/detail/detail.component';
 
 const accountRoutes: Routes = [
 {

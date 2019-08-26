@@ -1,5 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -42,9 +43,13 @@ import {
   MatToolbarModule,
   MatTooltipModule,
 } from '@angular/material';
-import { FeedbackComponent } from '../feedback/components/feedback/feedback.component';
 import { SectionHeaderComponent } from '../../templates/section-header/section-header.component';
-import { RouterModule } from '@angular/router';
+
+
+import { LoaderComponent } from '../feedback/components/loader/loader.component';
+import { FeedbackComponent } from '../feedback/components/feedback/feedback.component';
+
+
 @NgModule({
   imports: [
     CommonModule,
@@ -89,6 +94,7 @@ import { RouterModule } from '@angular/router';
   ],
   declarations: [
     FeedbackComponent,
+    LoaderComponent,
     SectionHeaderComponent,
   ],
   exports: [
@@ -130,6 +136,7 @@ import { RouterModule } from '@angular/router';
     MatTooltipModule,
     
     FeedbackComponent,
+    LoaderComponent,
     SectionHeaderComponent,
 ]
 })

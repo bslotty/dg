@@ -1,75 +1,68 @@
-<div class="small">
+<app-section-header title="Register" back="true"></app-section-header>
 
-  <app-section-header title="Register" back="true"></app-section-header>
+<form [formGroup]="form">
 
-  <div class="panel">
+  <h4 class="mt-3"> Information </h4>
 
-
-    <form [formGroup]="form">
-
-      <!--  First Name  -->
-      <mat-form-field>
-        <input matInput placeholder="First name" formControlName='first' name='first'>
-        <mat-error *ngIf="
+  <!--  First Name  -->
+  <mat-form-field>
+    <input matInput placeholder="First name" formControlName='first' name='first'>
+    <mat-error *ngIf="
         form.get('first').touched && 
         form.get('first').invalid">
-          Invalid First Name
-        </mat-error>
-      </mat-form-field>
+      Invalid First Name
+    </mat-error>
+  </mat-form-field>
 
-      <!--  Last Name  -->
-      <mat-form-field>
-        <input matInput placeholder="Last Name" formControlName='last' name='last'>
-        <mat-error *ngIf="
+  <!--  Last Name  -->
+  <mat-form-field>
+    <input matInput placeholder="Last Name" formControlName='last' name='last'>
+    <mat-error *ngIf="
       form.get('last').touched && 
       form.get('last').invalid">
-          Invalid Last Name
-        </mat-error>
-      </mat-form-field>
+      Invalid Last Name
+    </mat-error>
+  </mat-form-field>
 
-      <!--  Email  -->
-      <mat-form-field>
-        <input matInput placeholder="Email" formControlName='email' name='email'>
-        <mat-error *ngIf="
+  <!--  Email  -->
+  <mat-form-field>
+    <input matInput placeholder="Email" formControlName='email' name='email'>
+    <mat-error *ngIf="
         form.get('email').touched && 
         form.get('email').invalid">
-          Invalid Email
-        </mat-error>
-      </mat-form-field>
+      Invalid Email
+    </mat-error>
+  </mat-form-field>
 
-      <!--  Password  -->
-      <mat-form-field>
-        <input matInput placeholder="Password" formControlName='pass' name='pass' type="password">
-        <mat-error *ngIf="
+  <h4 class="mt-3"> Password </h4>
+
+  <!--  Password  -->
+  <mat-form-field>
+    <input matInput placeholder="Password" formControlName='pass' name='pass' type="password">
+    <mat-error *ngIf="
         form.get('pass').touched && 
         form.get('pass').invalid">
-          Invalid Password
-        </mat-error>
-      </mat-form-field>
+      Invalid Password
+    </mat-error>
+  </mat-form-field>
 
-      <!--  Confirmation  -->
-      <mat-form-field>
-        <input matInput placeholder="Confirm Password" formControlName='conf' name='conf' type="password">
-        <mat-error *ngIf="form.get('conf').touched && form.get('conf').invalid">
-          Invalid Password
-        </mat-error>
+  <!--  Confirmation  -->
+  <mat-form-field>
+    <input matInput placeholder="Confirm Password" formControlName='conf' name='conf' type="password">
+    <mat-error *ngIf="form.get('conf').touched && form.get('conf').invalid">
+      Invalid Password
+    </mat-error>
 
-        <mat-hint class="error" *ngIf="!passMatch && form.get('conf').touched && form.get('conf').valid">
-          Passwords must match
-        </mat-hint>
-      </mat-form-field>
-    </form>
+    <mat-hint class="error" *ngIf="!passMatch && form.get('conf').touched && form.get('conf').valid">
+      Passwords must match
+    </mat-hint>
+  </mat-form-field>
+</form>
 
-    <!--    Actions    -->
-    <div class="actions">
-      <div class="row">
-        <a mat-raised-button color="primary" (click)="onFormSubmit()" [class.disabled]="form.pristine || form.invalid || !passMatch">
-          <label>Register</label>
-        </a>
-      </div>
-    </div>
-
-  </div>
-
-
+<!--    Actions    -->
+<div class="row no-gutters justify-content-stretch align-items-center mt-3">
+  <a mat-raised-button color="primary" class="btn btn-block" (click)="onFormSubmit()"
+    [disabled]="form.pristine || form.invalid">
+    <label>Register</label>
+  </a>
 </div>

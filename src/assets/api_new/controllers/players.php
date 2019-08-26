@@ -33,7 +33,7 @@ switch ($payload['action']) {
 		break;
 
 	case "login":
-
+		$return["data"] = $player->login($payload["player"]);
 		break;
 
 	case "search":

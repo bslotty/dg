@@ -15,7 +15,6 @@ import { ResetComponent } from './components/reset/reset.component';
 import { VerifyComponent } from './components/verify/verify.component';
 import { ForgotComponent } from './components/forgot/forgot.component';
 import { CreateComponent } from './components/create/create.component';
-import { ShellComponent } from './components/shell/shell.component';
 import { SetPasswordComponent } from './components/set-password/set-password.component';
 
 import { MaterialModule } from 'src/app/modules/material/material.module';
@@ -35,7 +34,6 @@ import { MaterialModule } from 'src/app/modules/material/material.module';
     VerifyComponent, 
     ForgotComponent, 
     CreateComponent,
-    ShellComponent,
     SetPasswordComponent,
   ],
   providers: [AccountBackend]

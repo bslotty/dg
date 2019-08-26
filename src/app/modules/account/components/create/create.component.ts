@@ -17,7 +17,6 @@ import { Router } from '@angular/router';
 })
 export class CreateComponent implements OnInit {
   public form: FormGroup;
-  public passMatch: boolean;
 
   constructor(
     public builder: FormBuilder,
@@ -29,15 +28,16 @@ export class CreateComponent implements OnInit {
   ngOnInit() {
     this.initForm();
 
-    //  Listen to password confirmation updates
-    this.form.get('conf').valueChanges.pipe(this.account.passwordPipe).subscribe((v)=>{
-      if (this.form.get('pass').value == this.form.get('conf').value) {
-        this.passMatch = true;
-      } else {
-        this.passMatch = false;
-        
+    //  Password Match
+    this.form.get('conf').valueChanges.pipe(this.account.passwordPipe).subscribe((v) => {
 
+      //  Match
+      if (this.form.get('pass').value != this.form.get('conf').value) {
+        this.form.get("conf").setErrors({ match: true });
+      } else {
+        this.form.get("conf").setErrors(null);
       }
+      
     });
 
     this.feed.finializeLoading();
@@ -77,8 +77,7 @@ export class CreateComponent implements OnInit {
   onFormSubmit() {
     
     //  If form is valid and password matches
-    if (this.form.valid && this.form.dirty && this.passMatch) {
-      this.feed.initiateLoading();
+    if (this.form.valid && this.form.dirty) {
 
       //  store user
       var user    = new User(0);
@@ -88,8 +87,7 @@ export class CreateComponent implements OnInit {
       user.pass   = new Password(this.form.get('pass').value);
 
       //  send creation request
-      this.account.register(user).subscribe((res: ServerPayload)=>{
-        this.feed.finializeLoading(res, true);
+      this.account.register(user).subscribe((res)=>{
         
         if (res.status == "success" ){
           this.router.navigate(["account/login"]);
