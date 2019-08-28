@@ -14,6 +14,11 @@ export class ResetComponent implements OnInit {
 
   public form: FormGroup;
 
+  //  password | text
+  passwordType: string  = 'password';
+  confirmType: string   = 'password';
+  oldType: string       = 'password';
+
   constructor(
     public builder: FormBuilder,
     public account: AccountBackend,
@@ -76,4 +81,18 @@ export class ResetComponent implements OnInit {
       });
     }
   }
+
+  showPassword($field, $bool) {
+    if ($field == 'pass') { 
+      this.passwordType = $bool ? 'text' : 'password';
+      
+    } else if ($field == "conf") {
+      this.confirmType = $bool ? 'text' : 'password';
+
+    } else if($field == "old") {
+      this.oldType = $bool ? 'text' : 'password';
+
+    }
+  }
+
 }

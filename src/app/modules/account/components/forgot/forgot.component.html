@@ -1,38 +1,32 @@
 <app-section-header title="Forgot Password" back="true"></app-section-header>
 
-<div class="panel">
-  <div *ngIf="resolve; else loader">
+<div *ngIf="resolve; else loader">
 
-    <div class="message alert alert-light">
-      <p>Please enter the email that is associated with your account. We will send an email beginning the reset
-        process.</p>
-    </div>
-
-
-    <form [formGroup]="form">
-      <mat-form-field>
-        <input matInput formControlName="email" placeholder="Email" />
-        <mat-error *ngIf="
-          form.get('email').touched && 
-          form.get('email').invalid">
-          Invalid Email
-        </mat-error>
-      </mat-form-field>
-    </form>
-
-    <div class="row no-gutters justify-content-stretch align-items-center mt-3">
-      <a mat-raised-button color="primary" class="btn btn-block"
-          (click)="onFormSubmit()" 
-          [disabled]="form.invalid || form.pristine">
-        <label>Begin Process</label>
-      </a>
-    </div>
-
+  <div class="message alert alert-light">
+    <p>Please enter the email that is associated with your account. We will send an email beginning the reset
+      process.</p>
   </div>
 
-  <ng-template #loader>
-    <app-feedback></app-feedback>
-  </ng-template>
 
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label matPrefix>Email</mat-label>
+      <input matInput formControlName="email"/>
+      <mat-error *ngIf="form.get('email').dirty && form.get('email').invalid">
+        Invalid Email
+      </mat-error>
+    </mat-form-field>
+  </form>
+
+  <div class="row no-gutters justify-content-stretch align-items-center mt-3">
+    <a mat-raised-button color="primary" class="btn btn-block" (click)="onFormSubmit()"
+      [disabled]="form.invalid || form.pristine || form.disabled">
+      <label>Begin Process</label>
+    </a>
+  </div>
 
 </div>
+
+<ng-template #loader>
+  <app-feedback></app-feedback>
+</ng-template>

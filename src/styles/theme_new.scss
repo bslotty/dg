@@ -4,7 +4,7 @@
 // Be sure that you only ever include 'mat-core' mixin once!
 // it should not be included for each theme.
 $custom-typography: mat-typography-config(
-  $font-family: $font-header,
+  $font-family: $font-header
 );
 @include mat-core($custom-typography);
 
@@ -41,38 +41,39 @@ $md-primary: (
     A700: $text-dark
   )
 );
-*/ $md-primary: (
-    50 : #fefefd,
-    100 : #fefefb,
-    200 : #fdfdf8,
-    300 : #fcfcf5,
-    400 : #fbfbf2,
-    500 : $text-light,
-    600 : #f9f9ee,
-    700 : #f9f9ec,
-    800 : #f8f8e9,
-    900 : #f6f6e5,
-    A100 : #ffffff,
-    A200 : #ffffff,
-    A400 : #ffffff,
-    A700 : #ffffff,
-    contrast: (
-        50 : #000000,
-        100 : #000000,
-        200 : #000000,
-        300 : #000000,
-        400 : #000000,
-        500 : #000000,
-        600 : #000000,
-        700 : #000000,
-        800 : #000000,
-        900 : #000000,
-        A100 : #000000,
-        A200 : #000000,
-        A400 : #000000,
-        A700 : #000000,
-    )
-); 
+*/
+$md-primary: (
+  50: #fefefd,
+  100: #fefefb,
+  200: #fdfdf8,
+  300: #fcfcf5,
+  400: #fbfbf2,
+  500: $text-light,
+  600: #f9f9ee,
+  700: #f9f9ec,
+  800: #f8f8e9,
+  900: #f6f6e5,
+  A100: #ffffff,
+  A200: #ffffff,
+  A400: #ffffff,
+  A700: #ffffff,
+  contrast: (
+    50: $primary-dark,
+    100: $primary-dark,
+    200: $primary-dark,
+    300: $primary-dark,
+    400: $primary-dark,
+    500: $primary-dark,
+    600: $primary-dark,
+    700: $primary-dark,
+    800: $primary-dark,
+    900: $primary-dark,
+    A100: $primary-dark,
+    A200: $primary-dark,
+    A400: $primary-dark,
+    A700: $primary-dark
+  )
+);
 
 $md-accent: (
   50: #e8f4f8,
@@ -80,7 +81,7 @@ $md-accent: (
   200: #a0d2e3,
   300: #79c0d8,
   400: #5db3cf,
-  500: #6ab9e8,
+  500: $accent,
   600: #3a9dc1,
   700: #3293ba,
   800: #2a8ab3,
@@ -113,7 +114,7 @@ $md-warn: (
   200: #edda97,
   300: #e6cb6d,
   400: #e0bf4e,
-  500: #ffd232,
+  500: $warn,
   600: #d7ad2a,
   700: #d2a423,
   800: #cd9c1d,
@@ -151,14 +152,13 @@ $dgc-theme: mat-dark-theme($dgc-primary, $dgc-accent, $dgc-warn);
 // include the custom theme object into the angular material theme
 @include angular-material-theme($dgc-theme);
 
-
-
-
 /**
     Angular Material Fixes Here
 */
 //  Dialog Theme Update
-.mat-dialog-container, .mat-select-panel, .mat-menu-panel {
+.mat-dialog-container,
+.mat-select-panel,
+.mat-menu-panel {
   background: $primary-light;
 }
 
@@ -175,15 +175,15 @@ $dgc-theme: mat-dark-theme($dgc-primary, $dgc-accent, $dgc-warn);
 
 .mat-transparent-accent {
   background: transparent;
-  color: #6ab9e8;
+  color: $accent;
 }
 
 .mat-transparent-warn {
   background: transparent;
-  color: #ffd232;
+  color: $warn;
 }
 
-.mat-button {
+.mat-button, .mat-menu-item {
   font-size: 20px !important;
   text-transform: uppercase;
 }
@@ -206,8 +206,6 @@ $dgc-theme: mat-dark-theme($dgc-primary, $dgc-accent, $dgc-warn);
   justify-content: space-around;
 }
 
-
-
 .mat-button,
 .mat-fab,
 .mat-flat-button,
@@ -220,7 +218,6 @@ $dgc-theme: mat-dark-theme($dgc-primary, $dgc-accent, $dgc-warn);
   border-radius: 0 !important;
   font-size: 1em !important;
 }
-
 
 .mat-pseudo-checkbox {
   width: 32px !important;
@@ -289,4 +286,28 @@ $dgc-theme: mat-dark-theme($dgc-primary, $dgc-accent, $dgc-warn);
 .mat-raised-button.disabled {
   background-color: rgba(0, 0, 0, 0.2);
   color: rgba(255, 255, 255, 0.4);
+}
+
+/*
+
+New Input Styles
+
+*/
+.mat-form-field.mat-focused .mat-form-field-prefix {
+  color: $accent;
+}
+
+.mat-form-field-invalid .mat-form-field-prefix {
+  color: $warn;
+}
+
+
+
+.mat-form-field-prefix {
+  font-style: italic;
+  margin-right: 1em;
+
+  color: $text-light-fade;
+  min-width: 20%;
+  text-align: right;
 }

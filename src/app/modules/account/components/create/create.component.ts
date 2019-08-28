@@ -1,12 +1,9 @@
 import { AccountBackend } from 'src/app/modules/account/services/backend.service';
 import { flyInPanelRow } from './../../../../animations';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { User, Password } from './../../services/backend.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { filter } from 'rxjs/internal/operators/filter';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
-import { ServerPayload } from 'src/app/app.component';
 import { Router } from '@angular/router';
 
 @Component({
@@ -17,6 +14,10 @@ import { Router } from '@angular/router';
 })
 export class CreateComponent implements OnInit {
   public form: FormGroup;
+
+  //  password | text
+  passwordType: string  = "password";
+  confirmType: string   = "password";
 
   constructor(
     public builder: FormBuilder,
@@ -93,6 +94,16 @@ export class CreateComponent implements OnInit {
           this.router.navigate(["account/login"]);
         }
       });
+
+    }
+  }
+
+  showPassword($field, $bool) {
+    if ($field == 'pass') { 
+      this.passwordType = $bool ? 'text' : 'password';
+      
+    } else if ($field == "conf") {
+      this.confirmType = $bool ? 'text' : 'password';
 
     }
   }

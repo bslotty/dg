@@ -9,10 +9,10 @@ class Payload
 	public $data;
 
 
-	public function __construct()
+	public function __construct($status = "error", $msg = null)
 	{
-		$this->status = "error";
-		$this->msg = null;
+		$this->status = $status;
+		$this->msg = $msg;
 	}
 
 

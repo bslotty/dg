@@ -19,6 +19,8 @@ export class LoginComponent implements OnInit {
 
   resolve: boolean = true;
 
+  passwordFieldType: string = "password" // password | text
+
   constructor(
     public account: AccountBackend,
     public router: Router,
@@ -37,13 +39,13 @@ export class LoginComponent implements OnInit {
 
   initForm() {
     this.form = this.builder.group({
-      email: ["", [
+      email: ["Brandon@brandonSlotty.com", [
         Validators.required, 
         Validators.minLength(8), 
         Validators.maxLength(128), 
         Validators.pattern("(.)+@(.)+")
       ]],
-      password: ["", [
+      password: ["BAS6702m", [
         Validators.required, 
         Validators.minLength(8), 
         Validators.maxLength(128)
@@ -83,5 +85,12 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  showPassword(bool) {
+    if (bool) {
+      this.passwordFieldType = "text";
+    } else {
+      this.passwordFieldType = "password";
+    }
+  }
  
 }

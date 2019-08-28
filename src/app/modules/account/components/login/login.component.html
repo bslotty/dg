@@ -1,55 +1,55 @@
-<div class="small">
-  <div class="row no-gutters justify-content-center align-items-center">
-    <div class="col" id="logo">
-      <app-section-header title="login"></app-section-header>
+<div class="row no-gutters justify-content-center align-items-center">
+  <div class="col">
+    <app-section-header title="login"></app-section-header>
+  </div>
+</div>
+
+<div *ngIf="resolve; else loader">
+
+  <form [formGroup]="form">
+    <div class="row no-gutters justify-content-stretch align-items-center">
+      <!--  Email   -->
+      <mat-form-field>
+        <mat-label matPrefix>Email</mat-label>
+        <input matInput formControlName='email'>
+        <mat-error *ngIf="(form.get('email').touched || form.get('email').dirty) && form.get('email').invalid">
+          Invalid Email
+        </mat-error>
+      </mat-form-field>
     </div>
+
+
+    <div class="row no-gutters justify-content-stretch align-items-center">
+      <!--  Password  -->
+      <mat-form-field floatLabel="always">
+        <mat-label matPrefix>Password</mat-label>
+        <input matInput formControlName='password' [type]="passwordFieldType" (keyup.enter)="onFormSubmit()">
+        <a matSuffix mat-flat-button color="transparent-primary" (mousedown)="showPassword(true)" (mouseup)="showPassword(false)">
+          <span class="icon-eye"></span>
+        </a>
+        <mat-error *ngIf="(form.get('password').touched || form.get('password').dirty) && form.get('password').invalid">
+          Invalid Password
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+
+  <div class="row no-gutters justify-content-stretch align-items-center mt-3">
+    <a mat-raised-button color="primary" class="btn btn-lg btn-block" (click)="onFormSubmit()"
+      [disabled]="form.invalid || form.pristine">
+      <label>{{ submitText }}</label>
+    </a>
   </div>
 
-  <div *ngIf="resolve; else loader">
-
-    <form [formGroup]="form">
-      <div class="row no-gutters justify-content-stretch align-items-center">
-        <!--  Email   -->
-        <mat-form-field>
-          <input matInput placeholder="Email" formControlName='email' name='email'>
-          <mat-error *ngIf="
-                   form.get('email').touched && 
-                   form.get('email').invalid">
-            Invalid Email
-          </mat-error>
-        </mat-form-field>
-      </div>
 
 
-      <div class="row no-gutters justify-content-stretch align-items-center">
-        <!--  Password  -->
-        <mat-form-field>
-          <input matInput placeholder="Password" formControlName='password' name='password' type="password"
-            (keyup.enter)="onFormSubmit()">
-          <mat-error *ngIf="
-                 form.get('password').touched && 
-                 form.get('password').invalid">
-            Invalid Password
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </form>
-
-    <div class="row no-gutters justify-content-stretch align-items-center mt-3">
-      <a mat-raised-button color="primary" class="btn btn-lg btn-block" (click)="onFormSubmit()"
-        [disabled]="form.invalid || form.pristine">
-        <label>{{ submitText }}</label>
-      </a>
-    </div>
-
-    <div class="row no-gutters justify-content-between align-items-center mt-3">
-      <a mat-button routerLink="/account/register">
-        <label>Register</label>
-      </a>
-      <a mat-button routerLink="/account/forgot">
-        <label>Forgot?</label>
-      </a>
-    </div>
+  <div class="row no-gutters justify-content-between align-items-center mt-3">
+    <a mat-button routerLink="/account/register">
+      <label>Register</label>
+    </a>
+    <a mat-button routerLink="/account/forgot">
+      <label>Forgot?</label>
+    </a>
   </div>
 </div>
 
