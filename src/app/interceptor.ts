@@ -55,6 +55,9 @@ export class RequestInterceptor implements HttpInterceptor {
 			}
 		});
 
+		//	Loader Init
+		this.feedbackService.loading = true;
+
 		return next.handle(request).pipe(map((event: HttpEvent<any>) => {
 			if (event instanceof HttpResponse) {
 
@@ -71,6 +74,9 @@ export class RequestInterceptor implements HttpInterceptor {
 				if (event.body.status == "success" && event.body.data) {
 
 				}
+
+				// Loader Toggle
+				this.feedbackService.loading = false;
 
 			}
 			return event;
