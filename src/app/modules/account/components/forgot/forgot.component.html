@@ -1,6 +1,6 @@
 <app-section-header title="Forgot Password" back="true"></app-section-header>
 
-<div *ngIf="resolve; else loader">
+<div *ngIf="!feed.loading; else loader">
 
   <div class="message alert alert-light">
     <p>Please enter the email that is associated with your account. We will send an email beginning the reset
@@ -28,5 +28,5 @@
 </div>
 
 <ng-template #loader>
-  <app-feedback></app-feedback>
+  <loader></loader>
 </ng-template>

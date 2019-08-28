@@ -13,17 +13,17 @@ import { Router } from '@angular/router';
   animations: [flyInPanelRow]
 })
 export class CreateComponent implements OnInit {
-  public form: FormGroup;
+  form: FormGroup;
 
   //  password | text
   passwordType: string  = "password";
   confirmType: string   = "password";
 
   constructor(
-    public builder: FormBuilder,
-    public account: AccountBackend,
-    public feed: FeedbackService,    
-    public router: Router,
+    private builder: FormBuilder,
+    private account: AccountBackend,
+    private feed: FeedbackService,    
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -41,7 +41,7 @@ export class CreateComponent implements OnInit {
       
     });
 
-    this.feed.finializeLoading();
+    this.feed.loading = false;
   }
 
   initForm(){
@@ -104,7 +104,6 @@ export class CreateComponent implements OnInit {
       
     } else if ($field == "conf") {
       this.confirmType = $bool ? 'text' : 'password';
-
     }
   }
 

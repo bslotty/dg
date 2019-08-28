@@ -13,18 +13,17 @@ import { FeedbackService } from 'src/app/modules/feedback/services/feedback.serv
 export class ForgotComponent implements OnInit {
 
   form: FormGroup;
-  resolve: boolean = false;
 
   constructor(
-    public feed: FeedbackService,
-    public builder: FormBuilder,
-    public account: AccountBackend,
-    public location: Location,
+    private feed: FeedbackService,
+    private builder: FormBuilder,
+    private account: AccountBackend,
+    private location: Location,
   ) { }
 
   ngOnInit() {
     this.initForm();
-    this.resolve = true;
+    this.feed.loading = true;
   }
 
   initForm(){
@@ -39,14 +38,14 @@ export class ForgotComponent implements OnInit {
   }
 
   onFormSubmit (){
-    if (this.form.valid && this.form.dirty) {  
-      this.resolve = false;
+    if (this.form.valid && this.form.dirty) {
 
       var user    = new User(null);
       user.email  = this.form.get('email').value;
       
       this.account.forgotPassword(user).subscribe((res)=>{
-        this.resolve = true;
+        //  Confirmation Page?
+        //  Home Page?
       });
     }
   }

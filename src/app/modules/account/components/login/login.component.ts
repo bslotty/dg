@@ -17,8 +17,6 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   submitText: string = 'LOGIN';
 
-  resolve: boolean = true;
-
   passwordFieldType: string = "password" // password | text
 
   constructor(
@@ -34,7 +32,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.initForm();
-    this.resolve = true;
+    this.feed.loading = false;
   }
 
   initForm() {
@@ -55,8 +53,6 @@ export class LoginComponent implements OnInit {
 
   onFormSubmit() {
     if (this.form.valid && this.form.dirty){
-
-      this.resolve = false;
       this.form.disable();
       this.submitText = "...";
 
@@ -69,18 +65,18 @@ export class LoginComponent implements OnInit {
 
       //  Send Data
       this.account.login(user).subscribe((payload) => {
-
-        //  this.feed.finializeLoading(payload, true);
-        this.resolve = true;
         this.form.enable();
         this.submitText = "LOGIN";
 
         //  Redirect if available; else Goto leagues
-        if (this.account.redirectUrl) {
-          this.router.navigate([this.account.redirectUrl]);
-        } else {
-          this.router.navigate(['/leagues']);
+        if (payload["status"] == "success"){
+          if (this.account.redirectUrl) {
+            this.router.navigate([this.account.redirectUrl]);
+          } else {
+            this.router.navigate(['/sessions']);
+          }
         }
+   
       });
     }
   }

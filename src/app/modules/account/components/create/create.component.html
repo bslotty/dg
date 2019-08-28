@@ -1,69 +1,77 @@
 <app-section-header title="Register" back="true"></app-section-header>
 
-<form [formGroup]="form">
+<div *ngIf="!feed.loading; else loader">
+  <form [formGroup]="form">
 
-  <h6 class="mt-4"> Information </h6>
+    <h6 class="mt-4"> Information </h6>
 
-  <!--  First Name  -->
-  <mat-form-field>
-    <mat-label matPrefix>First</mat-label>
-    <input matInput formControlName='first'>
-    <mat-error *ngIf="form.get('first').dirty && form.get('first').invalid">
-      Invalid First Name
-    </mat-error>
-  </mat-form-field>
+    <!--  First Name  -->
+    <mat-form-field>
+      <mat-label matPrefix>First</mat-label>
+      <input matInput formControlName='first'>
+      <mat-error *ngIf="form.get('first').dirty && form.get('first').invalid">
+        Invalid First Name
+      </mat-error>
+    </mat-form-field>
 
-  <!--  Last Name  -->
-  <mat-form-field>
-    <mat-label matPrefix>Last</mat-label>
-    <input matInput formControlName='last'>
-    <mat-error *ngIf="form.get('last').dirty && form.get('last').invalid">
-      Invalid Last Name
-    </mat-error>
-  </mat-form-field>
+    <!--  Last Name  -->
+    <mat-form-field>
+      <mat-label matPrefix>Last</mat-label>
+      <input matInput formControlName='last'>
+      <mat-error *ngIf="form.get('last').dirty && form.get('last').invalid">
+        Invalid Last Name
+      </mat-error>
+    </mat-form-field>
 
-  <!--  Email  -->
-  <mat-form-field>
-    <mat-label matPrefix>Email</mat-label>
-    <input matInput formControlName='email'>
-    <mat-error *ngIf="form.get('email').dirty && form.get('email').invalid">
-      Invalid Email
-    </mat-error>
-  </mat-form-field>
+    <!--  Email  -->
+    <mat-form-field>
+      <mat-label matPrefix>Email</mat-label>
+      <input matInput formControlName='email'>
+      <mat-error *ngIf="form.get('email').dirty && form.get('email').invalid">
+        Invalid Email
+      </mat-error>
+    </mat-form-field>
 
-  <h6 class="mt-4"> Password </h6>
+    <h6 class="mt-4"> Password </h6>
 
-  <!--  Password  -->
-  <mat-form-field>
-    <mat-label matPrefix>Password</mat-label>
-    <input matInput formControlName='pass' [type]="passwordType">
-    <span matSuffix class="icon-eye" (mousedown)="showPassword('pass', true)" (mouseup)="showPassword('pass', false)"></span>
-    <mat-error *ngIf="(form.get('pass').touched || form.get('pass').dirty) && form.get('pass').invalid">
-      Invalid Password
-    </mat-error>
-  </mat-form-field>
+    <!--  Password  -->
+    <mat-form-field>
+      <mat-label matPrefix>Password</mat-label>
+      <input matInput formControlName='pass' [type]="passwordType">
+      <span matSuffix class="icon-eye" (mousedown)="showPassword('pass', true)"
+        (mouseup)="showPassword('pass', false)"></span>
+      <mat-error *ngIf="(form.get('pass').touched || form.get('pass').dirty) && form.get('pass').invalid">
+        Invalid Password
+      </mat-error>
+    </mat-form-field>
 
-  <!--  Confirmation  -->
-  <mat-form-field>
-    <mat-label matPrefix>Confirm</mat-label>
-    <input matInput formControlName='conf' [type]="confirmType">
-    <span matSuffix class="icon-eye" (mousedown)="showPassword('conf', true)" (mouseup)="showPassword('conf', false)"></span>
-    <mat-error *ngIf="(form.get('conf').touched || form.get('conf').dirty) && form.get('conf').invalid">
-      <label *ngIf="form.get('conf').hasError('match'); else normalError">
-        Passwords must match
-      </label>
-      <ng-template #normalError>
-        <label>Invalid Password</label>
-      </ng-template>
-    </mat-error>
+    <!--  Confirmation  -->
+    <mat-form-field>
+      <mat-label matPrefix>Confirm</mat-label>
+      <input matInput formControlName='conf' [type]="confirmType">
+      <span matSuffix class="icon-eye" (mousedown)="showPassword('conf', true)"
+        (mouseup)="showPassword('conf', false)"></span>
+      <mat-error *ngIf="(form.get('conf').touched || form.get('conf').dirty) && form.get('conf').invalid">
+        <label *ngIf="form.get('conf').hasError('match'); else normalError">
+          Passwords must match
+        </label>
+        <ng-template #normalError>
+          <label>Invalid Password</label>
+        </ng-template>
+      </mat-error>
 
-  </mat-form-field>
-</form>
+    </mat-form-field>
+  </form>
 
-<!--    Actions    -->
-<div class="row no-gutters justify-content-stretch align-items-center mt-3 mb-5">
-  <a mat-raised-button color="primary" class="btn btn-block" (click)="onFormSubmit()"
-    [disabled]="form.pristine || form.invalid || form.disabled">
-    <label>Register</label>
-  </a>
+  <!--    Actions    -->
+  <div class="row no-gutters justify-content-stretch align-items-center mt-3 mb-5">
+    <a mat-raised-button color="primary" class="btn btn-block" (click)="onFormSubmit()"
+      [disabled]="form.pristine || form.invalid || form.disabled">
+      <label>Register</label>
+    </a>
+  </div>
 </div>
+
+<ng-template #loader>
+  <loader></loader>
+</ng-template>

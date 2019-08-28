@@ -19,8 +19,8 @@ export class DetailComponent implements OnInit {
   }];
 
   constructor(
-    public account: AccountBackend,
-    public feed: FeedbackService,
+    private account: AccountBackend,
+    private feed: FeedbackService,
   ) { }
 
   ngOnInit() {

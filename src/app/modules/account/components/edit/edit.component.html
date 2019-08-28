@@ -1,37 +1,48 @@
-<!--    Form    -->
+
+<div *ngIf="!feed.loading; else loader">
+
 <form [formGroup]="form">
 
-  <!--  First   -->
-  <mat-form-field>
-    <mat-label matPrefix>First</mat-label>
-    <input matInput formControlName='first'>
-    <mat-error *ngIf="form.get('first').dirty && form.get('first').invalid">
-      Invalid First Name
-    </mat-error>
-  </mat-form-field>
+    <!--  First   -->
+    <mat-form-field>
+      <mat-label matPrefix>First</mat-label>
+      <input matInput formControlName='first'>
+      <mat-error *ngIf="form.get('first').dirty && form.get('first').invalid">
+        Invalid First Name
+      </mat-error>
+    </mat-form-field>
+  
+    <!--  Last   -->
+    <mat-form-field>
+      <mat-label matPrefix>Last</mat-label>
+      <input matInput formControlName='last'>
+      <mat-error *ngIf="form.get('last').dirty && form.get('last').invalid">
+        Invalid Last Name
+      </mat-error>
+    </mat-form-field>
+  
+    <!--  Email  -->
+    <mat-form-field>
+      <mat-label matPrefix>Email</mat-label>
+      <input matInput formControlName='email'>
+      <mat-error *ngIf="form.get('email').dirty && form.get('email').invalid">
+        Invalid Email
+      </mat-error>
+    </mat-form-field>
+  </form>
+  
+  <!--  Feedback  -->
 
-  <!--  Last   -->
-  <mat-form-field>
-    <mat-label matPrefix>Last</mat-label>
-    <input matInput formControlName='last'>
-    <mat-error *ngIf="form.get('last').dirty && form.get('last').invalid">
-      Invalid Last Name
-    </mat-error>
-  </mat-form-field>
-
-  <!--  Email  -->
-  <mat-form-field>
-    <mat-label matPrefix>Email</mat-label>
-    <input matInput formControlName='email'>
-    <mat-error *ngIf="form.get('email').dirty && form.get('email').invalid">
-      Invalid Email
-    </mat-error>
-  </mat-form-field>
-</form>
-
-<div class="row no-gutters justify-content-stretch align-items-center mt-2">
-  <a mat-raised-button color="primary" (click)="onFormSubmit()" class="btn btn-block"
-    [disabled]="form.pristine || form.invalid || form_disabled">
-    <label>Update Account</label>
-  </a>
+  <!--  Actions   -->
+  <div class="row no-gutters justify-content-stretch align-items-center mt-2">
+    <a mat-raised-button color="primary" (click)="onFormSubmit()" class="btn btn-block"
+      [disabled]="form.pristine || form.invalid || form_disabled">
+      <label>Update Account</label>
+    </a>
+  </div>
 </div>
+
+<ng-template #loader>
+  <loader></loader>
+</ng-template>
+

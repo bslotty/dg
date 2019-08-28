@@ -12,7 +12,7 @@ import { FeedbackService } from 'src/app/modules/feedback/services/feedback.serv
 })
 export class ResetComponent implements OnInit {
 
-  public form: FormGroup;
+  form: FormGroup;
 
   //  password | text
   passwordType: string  = 'password';
@@ -20,10 +20,10 @@ export class ResetComponent implements OnInit {
   oldType: string       = 'password';
 
   constructor(
-    public builder: FormBuilder,
-    public account: AccountBackend,
-    public router: Router,
-    public feed: FeedbackService,
+    private builder: FormBuilder,
+    private account: AccountBackend,
+    private router: Router,
+    private feed: FeedbackService,
   ) { }
 
 
@@ -41,6 +41,8 @@ export class ResetComponent implements OnInit {
       }
       
     });
+
+    this.feed.loading  = false;
   }
 
 
@@ -76,7 +78,6 @@ export class ResetComponent implements OnInit {
       );
 
       this.account.updatePassword(this.account.user).subscribe((res) => {
-        //  Clear Password
         this.account.user.pass = null;
       });
     }

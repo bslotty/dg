@@ -1,10 +1,6 @@
-<div class="row no-gutters justify-content-center align-items-center">
-  <div class="col">
-    <app-section-header title="login"></app-section-header>
-  </div>
-</div>
+<app-section-header title="login"></app-section-header>
 
-<div *ngIf="resolve; else loader">
+<div *ngIf="!feed.loading; else loader">
 
   <form [formGroup]="form">
     <div class="row no-gutters justify-content-stretch align-items-center">
@@ -24,7 +20,8 @@
       <mat-form-field floatLabel="always">
         <mat-label matPrefix>Password</mat-label>
         <input matInput formControlName='password' [type]="passwordFieldType" (keyup.enter)="onFormSubmit()">
-        <a matSuffix mat-flat-button color="transparent-primary" (mousedown)="showPassword(true)" (mouseup)="showPassword(false)">
+        <a matSuffix mat-flat-button color="transparent-primary" (mousedown)="showPassword(true)"
+          (mouseup)="showPassword(false)">
           <span class="icon-eye"></span>
         </a>
         <mat-error *ngIf="(form.get('password').touched || form.get('password').dirty) && form.get('password').invalid">
