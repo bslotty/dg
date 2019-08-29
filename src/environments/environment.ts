@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://www.brandonslotty.com/api/disc",
+  apiUrl: "http://www.brandonslotty.com/sites/disc/api",
 };
 
 /*

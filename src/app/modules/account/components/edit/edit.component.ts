@@ -26,7 +26,7 @@ export class EditComponent implements OnInit {
   ngOnInit() {
     this.initForm();
 
-    this.feed.finializeLoading();
+    this.feed.loading = false;
   }
 
   initForm(){
@@ -52,17 +52,19 @@ export class EditComponent implements OnInit {
 
   onFormSubmit (){
     if (this.form.valid && this.form.dirty) {  
-      this.feed.initiateLoading();
 
       var user    = new User(this.account.user.id);
       user.first  = this.form.get('first').value;
       user.last   = this.form.get('last').value;
-      user.email  = this.account.user.email;
+      user.email  = this.form.get('email').value;
       
       this.account.updateUser(user).subscribe((payload: ServerPayload)=>{
-
-
-        this.feed.finializeLoading(payload, true);
+        
+        if (payload['status'] == "success") {
+          this.account.user.first   = user.first;
+          this.account.user.last    = user.last;
+          this.account.user.email   = user.email;
+        }
       });
     }
   }

@@ -1,7 +1,15 @@
 <div class="mb-5">
-  <app-section-header title="account" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header>
+  <app-section-header title="account" [buttons]="headerButtons" (actionClick)="actionClick($event)">
+  </app-section-header>
 
-  <app-account-edit></app-account-edit>
+  <div *ngIf="!feed.loading; else loader">
+    <app-account-edit></app-account-edit>
 
-  <app-account-reset></app-account-reset>
+    <app-account-reset></app-account-reset>
+  </div>
+
+
 </div>
+<ng-template #loader>
+  <loader></loader>
+</ng-template>

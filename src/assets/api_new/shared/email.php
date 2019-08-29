@@ -22,35 +22,34 @@ class Email
 
 		//	Set URL For Calls
 		//	$this->URL 	= "https://www.disc-golf.center";
-		$this->URL 		= "https://www.brandonslotty.com/disc";
+		//	$this->URL 	= "https://www.brandonslotty.com/disc";
+		$this->URL 		= "http://localhost:4200";
 	}
 
 	//	Generic Functions
-	public function setFrom($value)
+	public function setFrom($value): void
 	{
 		//	Store
 		$this->from = $value;
 
 		//	Set Headers
-		$this->headers   .= 'From: <' . $this->from . ">\r\n";
+		$this->headers   .= "From: <" . $this->from . ">\r\n";
 	}
 
-	public function setRecipients($value)
+	public function setRecipients($value): void
 	{
 		$this->to = $value;
 	}
 
-	public function setSubject($value)
+	public function setSubject($value): void
 	{
 		$this->subject = $value;
 	}
 
-	public function setBody($html)
+	public function setBody($html): void
 	{
 		$this->body = $html;
 	}
-
-
 
 
 
@@ -80,10 +79,10 @@ class Email
 		$this->setSubject("DGC Account Verification");
 
 		//	Body
-		$message    = "<html '><body style='color: rgb(80,100,80) !IMPORTANT>";
+		$message    = "<html><body style='color: rgb(80,100,80) !IMPORTANT;'>";
 		$message   .= "<h1>BS Disc</h1><h3>Verify Your Account</h3>";
 		$message   .= "<p>Click <a href='" . $this->URL . "account/verify/" . $token . "'>Here</a> ";
-		$message   .= "to verify your account. If you did not initiate this request, ignore this message.</p>";
+		$message   .= "to verify your account. <br><br>If you did not initiate this request, ignore this message.</p>";
 		$message   .= "</body></html>";
 
 		$this->setBody($message);
@@ -104,25 +103,9 @@ class Email
 		$message    = "<html stayle='color: rgb(80,100,80) !IMPORTANT;'><body>";
 		$message   .= "<h1>BS Disc</h1><h3>Verify Your Account</h3>";
 		$message   .= "<p>Click <a href='" . $this->URL . "account/forgot/" . $token . "'>Here</a> ";
-		$message   .= "to reset your password. If you did not initiate this request, ignore this message.</p>";
+		$message   .= "to reset your password. <br><br>If you did not initiate this request, ignore this message.</p>";
 		$message   .= "</body></html>";
 
 		$this->setBody($message);
-
-		/*
-		if ($this->sendEmail()) {
-			$return = array(
-				"status" => "success",
-				"msg" => "An email has been sent to " . $email . " for further instructions on how to reset your password."
-			);
-		} else {
-			$return = array(
-				"status" => "error",
-				"msg" => "Unable to send email. Please try again."
-			);
-		}
-
-		return $return;
-		*/
 	}
 }

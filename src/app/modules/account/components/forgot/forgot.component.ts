@@ -23,7 +23,7 @@ export class ForgotComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    this.feed.loading = true;
+    this.feed.loading = false;
   }
 
   initForm(){

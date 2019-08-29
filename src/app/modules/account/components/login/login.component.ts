@@ -37,13 +37,13 @@ export class LoginComponent implements OnInit {
 
   initForm() {
     this.form = this.builder.group({
-      email: ["", [
+      email: ["Brandon@brandonSlotty.com", [
         Validators.required, 
         Validators.minLength(8), 
         Validators.maxLength(128), 
         Validators.pattern("(.)+@(.)+")
       ]],
-      password: ["", [
+      password: ["BAS6702m", [
         Validators.required, 
         Validators.minLength(8), 
         Validators.maxLength(128)
@@ -64,17 +64,21 @@ export class LoginComponent implements OnInit {
       );
 
       //  Send Data
-      this.account.login(user).subscribe((payload) => {
+      this.account.login(user).subscribe((res) => {
         this.form.enable();
         this.submitText = "LOGIN";
 
         //  Redirect if available; else Goto leagues
-        if (payload["status"] == "success"){
+        if (this.account.rCheck(res)){
           if (this.account.redirectUrl) {
             this.router.navigate([this.account.redirectUrl]);
           } else {
             this.router.navigate(['/sessions']);
           }
+        } else {
+
+          //  Polish form for re-submit
+          this.form.markAsPristine();
         }
    
       });

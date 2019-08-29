@@ -8,19 +8,25 @@ import { ServerPayload } from 'src/app/app.component';
 })
 export class FeedbackService {
 
-  public loading: boolean = true;
-  
+  loading: boolean = true;
 
-  public pColor: string  = "primary";
-  public pMode:  string  = "determinate"
-  public pValue: string  = "100";
+  pColor: string = "primary";
+  pMode: string = "determinate"
+  pValue: string = "100";
+
+  feedbackMessage: string;
 
   constructor(
-    public snackBar: MatSnackBar
+    private snackBar: MatSnackBar
   ) { }
 
 
-  setMessage(payload: ServerPayload) {
+  /**
+   * @event REST Callback with result of error
+   * To tie in with message component for form
+   * feedback
+   */
+  toast(payload: ServerPayload) {
     //  Scale Duration based on message length
     var length = payload.msg.length;
     var scale = (length * 2) / 1000;
@@ -33,7 +39,18 @@ export class FeedbackService {
     });
   }
 
+  /**
+   * @event REST Callback with result of error
+   * To tie in with message component for form
+   * feedback
+   */
+  setMessage(payload: ServerPayload) {
+    this.feedbackMessage = payload.msg;
+  }
 
+  /**
+   * @deprecated
+   */
   initiateLoading() {
     this.loading = true;
 
@@ -43,6 +60,9 @@ export class FeedbackService {
   }
 
 
+  /**
+   * @deprecated
+   */
   finializeLoading(payload = null, toast: boolean = false) {
     if (payload) {
       if (toast == true) {

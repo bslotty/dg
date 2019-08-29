@@ -12,6 +12,8 @@ import { map } from 'rxjs/operators';
 })
 export class SessionBackend  {
 
+ 
+
   constructor(
     public http: HttpClient,
     public account: AccountBackend,
@@ -19,7 +21,7 @@ export class SessionBackend  {
 
   //  Load Data List
   getList(league: League) {
-    let url = environment.apiUrl + "/sessions/list.php";
+    let url =  "/sessions/list.php";
 
     return this.http.post(url, { "league": league }).pipe(
       map((res: ServerPayload) => {

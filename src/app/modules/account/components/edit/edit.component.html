@@ -1,6 +1,4 @@
 
-<div *ngIf="!feed.loading; else loader">
-
 <form [formGroup]="form">
 
     <!--  First   -->
@@ -40,9 +38,3 @@
       <label>Update Account</label>
     </a>
   </div>
-</div>
-
-<ng-template #loader>
-  <loader></loader>
-</ng-template>
-

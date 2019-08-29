@@ -55,10 +55,10 @@ class Player
 	/**
 	 * @return Date; ISO 8601:  date("U")
 	 */
-	public function getTokenExpDateExpDate()
+	public function getTokenExpDate()
 	{
 		$expiration_date = mktime(date("H") + 3);
-		return date("U", $expiration_date);
+		return date("c", $expiration_date);
 	}
 
 
@@ -67,29 +67,27 @@ class Player
 	//	Create
 	public function registerPlayer($item)
 	{
-		//	Token for Verification
-		$token = $this->generateToken($item, "verify");
-
 		//	Format Query
 		$query = "INSERT INTO `Players` (
 			`id`, `created_by`, `created_on`, `modified_by`, `modified_on`,
-			`first_name`, `last_name`, `email`, `token`, `token_expires_on`, `last_login`
+			`first_name`, `last_name`, `email`, `password`, `token`, `token_expires_on`, `last_login`
 		) VALUES (
 			:id, :created_by, :created_on, :modified_by, :modified_on,
-			:first_name, :last_name, :email, :token, :token_expires_on, :last_login
+			:first_name, :last_name, :email, :password, :token, :token_expires_on, :last_login
 		);";
 
 		//	Bind Data
 		$values = array(
 			":id" 				=> $this->db->generateGUID(),
 			":created_by" 		=> null,
-			":created_on" 		=> date("U"),
+			":created_on" 		=> date("c"),
 			":modified_by" 		=> null,
 			":modified_on" 		=> null,
-			":first_name" 		=> $item["first_name"],
-			":last_name" 		=> $item["last_name"],
+			":first_name" 		=> $item["first"],
+			":last_name" 		=> $item["last"],
 			":email" 			=> $item["email"],
-			":token" 			=> $token,
+			":password" 		=> $this->saltPassword($item),
+			":token" 			=> $this->generateToken($item, "verify"),
 			":token_expires_on"	=> $this->getTokenExpDate(),
 			":last_login" 		=> null
 		);
@@ -138,13 +136,16 @@ class Player
 			`first_name`,
 			`last_name`,
 			`email`,
+			`password`,
 			`token`,
+			`token_expires_on`,
+			`last_login`
 		FROM `Players`
 		WHERE `email`=:email 
 		LIMIT 1";
 
 		$values = array(
-			":email" => $email
+			":email" => strtolower($email)
 		);
 
 		return $this->db->Query($query, $values);
@@ -193,7 +194,7 @@ class Player
 		$values = array(
 			":id"           		=> $item["id"],
 			":modified_by"    		=> $item["modified_by"],
-			":modified_on"       	=> date("U")
+			":modified_on"       	=> date("c")
 		);
 
 		//	Init Query
@@ -250,7 +251,7 @@ class Player
 	/**
 	 * @param Player $item
 	 */
-	public function verifyToken($item)
+	public function verifyToken($token)
 	{
 		$query = "SELECT *
 		FROM `Players`
@@ -258,7 +259,7 @@ class Player
 		LIMIT 1";
 
 		$values = array(
-			":token"	=> $item['token']
+			":token"	=> $token
 		);
 
 		return $this->db->Query($query, $values);

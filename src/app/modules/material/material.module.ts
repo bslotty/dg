@@ -43,6 +43,10 @@ import {
   MatToolbarModule,
   MatTooltipModule,
 } from '@angular/material';
+
+import {DragDropModule} from '@angular/cdk/drag-drop';
+
+
 import { SectionHeaderComponent } from '../../templates/section-header/section-header.component';
 
 
@@ -91,6 +95,8 @@ import { FeedbackComponent } from '../feedback/components/feedback/feedback.comp
     MatToolbarModule,
     MatTooltipModule,
 
+    DragDropModule,
+
   ],
   declarations: [
     FeedbackComponent,
@@ -138,6 +144,8 @@ import { FeedbackComponent } from '../feedback/components/feedback/feedback.comp
     FeedbackComponent,
     LoaderComponent,
     SectionHeaderComponent,
+
+    DragDropModule,
 ]
 })
 export class MaterialModule { 

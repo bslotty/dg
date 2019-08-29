@@ -57,15 +57,33 @@ export class RequestInterceptor implements HttpInterceptor {
 
 		//	Loader Init
 		this.feedbackService.loading = true;
+		this.feedbackService.feedbackMessage = null;
 
 		return next.handle(request).pipe(map((event: HttpEvent<any>) => {
 			if (event instanceof HttpResponse) {
 
+				//	Needs to be replaced with getting the message of the last status; 
 				//	Toast Feedback from server if set.
 				if (event.body.msg) {
+
+				}
+
+				console.log ("event: ", event);
+
+				//	If last server event's message -> display feedback;
+				//		Success	=  	Toast
+				//		Error 	=	Message
+				var lastEvent = event.body.data[event.body.data.length - 1];
+				if (lastEvent.msg && lastEvent.status == "success") {
+					this.feedbackService.toast({
+						status: lastEvent.status,
+						msg: lastEvent.msg,
+						data: []
+					});
+				} else if (lastEvent.msg && lastEvent.status == "error") {
 					this.feedbackService.setMessage({
-						status: event.body.status,
-						msg: event.body.msg,
+						status: lastEvent.status,
+						msg: lastEvent.msg,
 						data: []
 					});
 				}

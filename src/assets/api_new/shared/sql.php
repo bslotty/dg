@@ -23,12 +23,12 @@ class DB
     }
 
     // get the database connection
-    public function getConnection()
+    public function getConnection(): void
     {
         $this->connection = null;
         
         $this->host           = "brandonslottycom.fatcowmysql.com";
-        $this->username       = "dg_admin_01";
+        $this->username       = "dg_admin_1";
         $this->password       = "bd7699b83a29babe1852027a3538d4a2";
         $this->database       = "discing_2";
         $this->charset        = 'utf8mb4';
@@ -40,8 +40,6 @@ class DB
         } catch (PDOException $exception) {
             echo "Error: " . $exception->getMessage();
         }
-
-        return $this->connection;
     }
 
     //  Generate GUID

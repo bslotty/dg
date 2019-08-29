@@ -46,28 +46,28 @@ export class CreateComponent implements OnInit {
 
   initForm(){
     this.form = this.builder.group({
-      first:  ["", [
+      first:  ["Brandon", [
         Validators.required, 
         Validators.minLength(2), 
         Validators.maxLength(128)
       ]],
-      last:   ["", [
+      last:   ["Slotty", [
         Validators.required, 
         Validators.minLength(2), 
         Validators.maxLength(128)
       ]],
-      email:  ["", [
+      email:  ["Brandon@BrandonSlotty.com", [
         Validators.required, 
         Validators.minLength(8), 
         Validators.maxLength(128), 
         Validators.pattern("(.)+@(.)+")
       ]],
-      pass:   ["", [
+      pass:   ["BAS6702m2", [
         Validators.required, 
         Validators.minLength(8), 
         Validators.maxLength(128)
       ]],
-      conf:   ["", [
+      conf:   ["BAS6702m", [
         Validators.required, 
         Validators.minLength(8), 
         Validators.maxLength(128)

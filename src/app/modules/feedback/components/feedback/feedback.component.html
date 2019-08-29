@@ -1,8 +1,5 @@
-<div class="loaderContainer" [@flyInPanelRow]> 
-  <mat-progress-spinner 
-    [color]='feed?.pColor ? feed.pColor : "warn"' 
-    mode='indeterminate'
-    [value]='feed?.pValue  ? feed.pValue : "100"' 
-    strokeWidth="1">
-  </mat-progress-spinner>
+<div class="feedbackMessage" *ngIf="feed.feedbackMessage">
+  <p class="alert alert-warning message">
+    {{ feed.feedbackMessage }}
+  </p>
 </div>
