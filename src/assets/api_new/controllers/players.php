@@ -230,16 +230,29 @@ switch ($payload['action']) {
 		break;
 
 	case "update":
-		$return["data"][$i++] = $player->updatePlayer($payload["player"]);
+		$updatedPlayer = $player->updatePlayer($payload["player"]);
+		$return["data"][$i++] = $updatedPlayer;
 
-		// Return Player for Token used with requests;
-		$return["data"][$i++] = array(
-			"status" 	=> "success",
-			"msg" 		=> "Account Updated!",
-			"data"		=> array(
-				"player"	=> $authorizedPlayer["results"][0]
-			)
-		);
+		if ($updatedPlayer["status"] == "success") {
+			// Return Player for Token used with requests;
+			$return["data"][$i++] = array(
+				"status" 	=> "success",
+				"msg" 		=> "Account Updated!",
+				"data"		=> array(
+					"player"	=> $updatedPlayer["results"][0]
+				)
+			);
+		} else {
+			// Return Player for Token used with requests;
+			$return["data"][$i++] = array(
+				"status" 	=> "error",
+				"msg" 		=> "Error updating account",
+				"data"		=> array(
+					"player"	=> $updatedPlayer["results"][0]
+				)
+			);
+		}
+
 		break;
 
 	case "reset":
@@ -263,8 +276,8 @@ switch ($payload['action']) {
 				"status" 	=> "error",
 				"msg" 		=> "Invalid Old Password",
 				"debug"		=> array(
-						"oldPassHash" 	=> $oldPassHash,
-						"lostPlayer" 	=> $lostPlayer
+					"oldPassHash" 	=> $oldPassHash,
+					"lostPlayer" 	=> $lostPlayer
 				)
 			);
 		}

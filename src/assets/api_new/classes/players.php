@@ -190,6 +190,10 @@ class Player
 	public function updatePlayer($item)
 	{
 
+		//	Verify Player Valid?
+		//	Check ID?
+
+
 		//	Base Values on each update;
 		$values = array(
 			":id"           		=> $item["id"],
