@@ -87,6 +87,7 @@ switch ($payload['action']) {
 		if ($foundPlayer["status"] == "success" && count($foundPlayer['results']) > 0) {
 
 			//	Compare password;
+			$payload["player"]['password'] = $payload["player"]["pass"]["current"];
 			$hash = $player->saltPassword($payload["player"]);
 
 			//	Invalid Pass?
@@ -120,6 +121,11 @@ switch ($payload['action']) {
 					);
 				}
 			} else {
+				$return["data"][$i++] = array(
+					"status" => "success",
+					"hash" => $hash
+				);
+
 				//	yay! Login
 				//	Set Last Login to Now
 				$foundPlayer["results"][0]["last_login"] = date("c");
@@ -189,7 +195,7 @@ switch ($payload['action']) {
 		$authorizedPlayer 		= $player->verifyToken($payload["token"]);
 		$return["data"][$i++] 	= $authorizedPlayer;
 
-		if ($authorizedPlayer["status"] == "success" && count($authorizedPlayer["results"]) > 0 ) {
+		if ($authorizedPlayer["status"] == "success" && count($authorizedPlayer["results"]) > 0) {
 
 			//	Update Tokens
 			$authorizedPlayer["results"][0]["token"] 				= $player->generateToken($authorizedPlayer["results"][0], "login");
@@ -215,7 +221,6 @@ switch ($payload['action']) {
 					"msg" 		=> "Unable to update account. Please try to initiate the request again."
 				);
 			}
-			
 		} else {
 			$return["data"][$i++] = array(
 				"status" 	=> "error",
@@ -230,7 +235,7 @@ switch ($payload['action']) {
 		// Return Player for Token used with requests;
 		$return["data"][$i++] = array(
 			"status" 	=> "success",
-			"msg" 		=> "Account Verified!",
+			"msg" 		=> "Account Updated!",
 			"data"		=> array(
 				"player"	=> $authorizedPlayer["results"][0]
 			)
@@ -238,8 +243,31 @@ switch ($payload['action']) {
 		break;
 
 	case "reset":
-		//	set password? isnt it just an update? Salt new Password? 
-		$return["data"][$i++] = $player->updatePlayer($payload["player"]);
+		//	Verify Old Pass
+		$payload['player']['password'] = $payload["player"]["pass"]["old"];
+		$oldPassHash = $player->saltPassword($payload["player"]);
+
+		$lostPlayer = $player->getPlayerByEmail($payload["player"]["email"]);
+
+		if ($lostPlayer["results"][0]["password"] == $oldPassHash) {
+			//	Update Pass
+			$payload['player']['password'] = $payload["player"]["pass"]["confirm"];
+
+			//	Salt Password
+			$payload['player']['password'] = $player->saltPassword($payload["player"]);
+
+			//	Update Account
+			$return["data"][$i++] = $player->updatePlayer($payload['player']);
+		} else {
+			$return["data"][$i++] = array(
+				"status" 	=> "error",
+				"msg" 		=> "Invalid Old Password",
+				"debug"		=> array(
+						"oldPassHash" 	=> $oldPassHash,
+						"lostPlayer" 	=> $lostPlayer
+				)
+			);
+		}
 		break;
 
 

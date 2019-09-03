@@ -110,13 +110,11 @@ export class AccountBackend implements OnInit {
 
   //  Update
   updateUser(user: User) {
-    let url = environment.apiUrl + "/account/update.php";
-    return this.http.post(url, { "user": user });
+    return this.http.post(this.url, { "action": "update", "player": user });
   }
 
   updatePassword(user: User) {
-    let url = environment.apiUrl + "/account/reset.php";
-    return this.http.post(url, { "user": user }).pipe(
+    return this.http.post(this.url, { "action": "reset", "player": user }).pipe(
       map((res: ServerPayload) => {
         //  Clear Pass
         this.user.pass = new Password(null, null);
@@ -202,6 +200,7 @@ export class User {
 }
 
 export class Password {
+  public old;
 
   constructor(
     public current,

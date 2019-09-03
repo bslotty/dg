@@ -32,16 +32,18 @@ export class ResetComponent implements OnInit {
   ngOnInit() {
     this.initForm();
 
-    //  Password Match
-    this.form.get('conf').valueChanges.pipe(this.account.passwordPipe).subscribe((v) => {
+    this.form.valueChanges.pipe(this.account.passwordPipe).subscribe((t)=>{
+      console.log ("form.ValueChanges: ", t);
 
-      //  Match
-      if (this.form.get('pass').value != this.form.get('conf').value) {
+      if (t["old"] == t["pass"]) {
+        this.form.get("pass").setErrors({ same: true });
+      } else if (t["old"] == t["conf"]) {
+        this.form.get("conf").setErrors({ same: true });
+      } else if (t["pass"] != t["conf"] && this.form.get("conf").dirty){
         this.form.get("conf").setErrors({ match: true });
       } else {
-        this.form.get("conf").setErrors(null);
+        this.form.setErrors(null);
       }
-      
     });
 
     this.feed.loading  = false;
@@ -74,11 +76,13 @@ export class ResetComponent implements OnInit {
   onFormSubmit() {
     if (this.form.valid && this.form.dirty) {
 
-      this.account.user.pass = new Password(
+      var newPass = new Password(
         this.form.get('pass').value,
         this.form.get('conf').value,
       );
+      newPass.old = this.form.get('old').value;
 
+      this.account.user.pass = newPass;
       this.account.updatePassword(this.account.user).subscribe((res) => {
         this.account.user.pass = null;
       });
