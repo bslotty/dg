@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
-import { Observable, Subject } from 'rxjs';
 import { ServerPayload } from 'src/app/app.component';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FeedbackService {
+export class FeedbackService implements OnInit {
 
   loading: boolean = true;
 
@@ -17,8 +17,24 @@ export class FeedbackService {
   feedbackMessage: string;
 
   constructor(
-    private snackBar: MatSnackBar
-  ) { }
+    private snackBar: MatSnackBar,
+    private router: Router
+  ) {
+
+    //  Reset Error Message upon Router Change
+    //    Change on End, After all checks;
+    this.router.events.subscribe((e) => {
+      if (e instanceof NavigationEnd) {
+        this.feedbackMessage = "";
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.feedbackMessage = "";
+
+
+  }
 
 
   /**

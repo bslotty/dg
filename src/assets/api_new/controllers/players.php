@@ -162,13 +162,13 @@ switch ($payload['action']) {
 			//	Setup Email
 			require($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/shared/email.php');
 			$email = new Email();
-			$email->formatPasswordResetEmail($player["email"], $token);
+			$email->formatPasswordResetEmail($lostPlayer["results"][0]["email"], $token);
 
 			//	Send Email
 			if ($email->sendEmail()) {
 				$return["data"][$i++] = array(
 					"status" 	=> "success",
-					"msg" 		=> "The next steps have been sent to: " . $payload['player']['email']
+					"msg" 		=> "The next steps have been sent to: " . $lostPlayer["results"][0]['email']
 				);
 			} else {
 				$return["data"][$i++] = array(
@@ -179,7 +179,7 @@ switch ($payload['action']) {
 		} else {
 			$return["data"][$i++] = array(
 				"status" 	=> "error",
-				"msg" 		=> $payload['player']['email'] . " is not associated with an account."
+				"msg" 		=> $lostPlayer["results"][0]['email'] . " is not associated with an account."
 			);
 		}
 		break;

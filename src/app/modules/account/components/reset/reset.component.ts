@@ -1,6 +1,6 @@
 import { AccountBackend, Password } from 'src/app/modules/account/services/backend.service';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
 
@@ -13,6 +13,8 @@ import { FeedbackService } from 'src/app/modules/feedback/services/feedback.serv
 export class ResetComponent implements OnInit {
 
   form: FormGroup;
+
+  @Input() fromToken: boolean = false;
 
   //  password | text
   passwordType: string  = 'password';

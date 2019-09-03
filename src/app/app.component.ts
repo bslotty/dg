@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { fade, flyIn } from 'src/app/animations';
+import { FeedbackService } from './modules/feedback/services/feedback.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,7 @@ import { fade, flyIn } from 'src/app/animations';
 
 export class AppComponent {  
   constructor(
-    private router: Router,
+    private router: Router
   ){ }
 
   getRoute(outlet) {

@@ -41,7 +41,7 @@ class Player
 	}
 
 	/**
-	 * @param Player $player
+	 * @param Player $playerd
 	 */
 	public function saltPassword($player): string
 	{

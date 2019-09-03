@@ -126,8 +126,7 @@ export class AccountBackend implements OnInit {
   }
 
   forgotPassword(user: User) {
-    let url = environment.apiUrl + "/account/forgot.php";
-    return this.http.post(url, { "user": user });
+    return this.http.post(this.url, { "action": "initate-password-reset", "player": user });
   }
 
   verify(token: string) {

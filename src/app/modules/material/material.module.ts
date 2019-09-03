@@ -44,11 +44,9 @@ import {
   MatTooltipModule,
 } from '@angular/material';
 
-import {DragDropModule} from '@angular/cdk/drag-drop';
-
-
 import { SectionHeaderComponent } from '../../templates/section-header/section-header.component';
-
+ 
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { LoaderComponent } from '../feedback/components/loader/loader.component';
 import { FeedbackComponent } from '../feedback/components/feedback/feedback.component';
