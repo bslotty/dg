@@ -29,17 +29,23 @@ export class CreateComponent implements OnInit {
   ngOnInit() {
     this.initForm();
 
-    //  Password Match
-    this.form.get('conf').valueChanges.pipe(this.account.passwordPipe).subscribe((v) => {
+    this.form.valueChanges.pipe(this.account.passwordPipe).subscribe((t)=>{
+      console.log ("form.ValueChanges: ", t);
 
-      //  Match
-      if (this.form.get('pass').value != this.form.get('conf').value) {
+      if (t["old"] == t["pass"]) {
+        this.form.get("pass").setErrors({ same: true });
+      } else if (t["old"] == t["conf"]) {
+        this.form.get("conf").setErrors({ same: true });
+      } else if (t["pass"] != t["conf"] && this.form.get("conf").dirty){
         this.form.get("conf").setErrors({ match: true });
       } else {
-        this.form.get("conf").setErrors(null);
+        this.form.setErrors(null);
       }
-      
+
+      console.log ("form: ", this.form);
     });
+
+
 
     this.feed.loading = false;
   }

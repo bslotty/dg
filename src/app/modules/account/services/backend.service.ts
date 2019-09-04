@@ -117,7 +117,7 @@ export class AccountBackend implements OnInit {
     return this.http.post(this.url, { "action": "reset", "player": user }).pipe(
       map((res: ServerPayload) => {
         //  Clear Pass
-        this.user.pass = new Password(null, null);
+        this.user.pass = new Password(null);
         return res;
       })
     );
@@ -201,10 +201,10 @@ export class User {
 
 export class Password {
   public old;
+  public confirm;
 
   constructor(
     public current,
-    public confirm?,
   ) { }
 }
 
@@ -215,8 +215,6 @@ export class Password {
  *  Player Class for
  */
 export class Player {
-  access = {};  //  Flag for League Moderation
-
   created_by;
   created_on;
   modified_by;
