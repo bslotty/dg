@@ -1,4 +1,4 @@
-import { AccountBackend } from 'src/app/modules/account/services/backend.service';
+import { AccountBackend, Player } from 'src/app/modules/account/services/backend.service';
 import { flyInPanelRow } from './../../../../animations';
 import { User, Password } from './../../services/backend.service';
 import { Component, OnInit } from '@angular/core';
@@ -87,11 +87,11 @@ export class CreateComponent implements OnInit {
     if (this.form.valid && this.form.dirty) {
 
       //  store user
-      var user    = new User(0);
-      user.first  = this.form.get('first').value,
-      user.last   = this.form.get('last').value,
-      user.email  = this.form.get('email').value,
-      user.pass   = new Password(this.form.get('pass').value);
+      var user          = new Player(0);
+      user.first_name   = this.form.get('first').value;
+      user.last_name    = this.form.get('last').value;
+      user.email        = this.form.get('email').value;
+      user.password     = this.form.get('pass').value;
 
       //  send creation request
       this.account.register(user).subscribe((res)=>{

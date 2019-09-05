@@ -1,6 +1,6 @@
 import { FeedbackService } from './../../../feedback/services/feedback.service';
 import { Component, OnInit } from '@angular/core';
-import { User, AccountBackend, Password } from '../../services/backend.service';
+import { AccountBackend, Player } from '../../services/backend.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { flyInPanelRow } from 'src/app/animations';
@@ -37,13 +37,13 @@ export class LoginComponent implements OnInit {
 
   initForm() {
     this.form = this.builder.group({
-      email: ["", [
+      email: ["Brandon@BrandonSlotty.com", [
         Validators.required, 
         Validators.minLength(8), 
         Validators.maxLength(128), 
         Validators.pattern("(.)+@(.)+")
       ]],
-      password: ["", [
+      password: ["BAS6702m", [
         Validators.required, 
         Validators.minLength(8), 
         Validators.maxLength(128)
@@ -57,10 +57,10 @@ export class LoginComponent implements OnInit {
       this.submitText = "...";
 
       //  Set Data
-      var user = new User(
+      var user = new Player(
         null, null, null, 
         this.form.get('email').value, 
-        new Password (this.form.get('password').value)
+        this.form.get('password').value
       );
 
       //  Send Data

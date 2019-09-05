@@ -12,7 +12,7 @@ import { ServerPayload } from 'src/app/app.component';
 })
 export class AccountBackend implements OnInit {
 
-  user: User;
+  user: Player;
   redirectUrl: string;
 
   url: string = environment.apiUrl + '/controllers/players.php';
@@ -47,22 +47,20 @@ export class AccountBackend implements OnInit {
   }
 
   ngOnInit() {
-    this.user = new User(null);
+    this.user = new Player(null);
   }
 
   //  Clear User; User in Logout;
   resetUser() {
-    this.user = new User(null);
+    this.user = new Player(null);
   }
 
   setUser(user) {
-    this.user = new User(user["id"]);
-    this.user.first = user["first_name"];
-    this.user.last = user["last_name"];
-    this.user.email = user["email"];
-    this.user.token = user["token"];
-
-
+    this.user             = new Player(user["id"]);
+    this.user.first_name  = user["first_name"];
+    this.user.last_name   = user["last_name"];
+    this.user.email       = user["email"];
+    this.user.token       = user["token"];
   }
 
   setAuthToken(token) {
@@ -102,29 +100,29 @@ export class AccountBackend implements OnInit {
 
 
   //  Create
-  register(user: User) {
-    return this.http.post(this.url, { "action": "register", "player": user }).pipe(
+  register(player: Player) {
+    return this.http.post(this.url, { "action": "register", "player": player }).pipe(
       map((res: ServerPayload) => { return res; })
     );
   }
 
   //  Update
-  updateUser(user: User) {
-    return this.http.post(this.url, { "action": "update", "player": user });
+  updateUser(player: Player) {
+    return this.http.post(this.url, { "action": "update", "player": player });
   }
 
-  updatePassword(user: User) {
-    return this.http.post(this.url, { "action": "reset", "player": user }).pipe(
+  updatePassword(player: Player) {
+    return this.http.post(this.url, { "action": "reset", "player": player }).pipe(
       map((res: ServerPayload) => {
         //  Clear Pass
-        this.user.pass = new Password(null);
+        this.user.password = new Password();
         return res;
       })
     );
   }
 
-  forgotPassword(user: User) {
-    return this.http.post(this.url, { "action": "initate-password-reset", "player": user });
+  forgotPassword(player: Player) {
+    return this.http.post(this.url, { "action": "initate-password-reset", "player": player });
   }
 
   verify(token: string) {
@@ -146,8 +144,7 @@ export class AccountBackend implements OnInit {
 
 
   verifyToken(token: string) {
-    let url = environment.apiUrl + "/account/token.php";
-    return this.http.post(url, { "token": token }).pipe(
+    return this.http.post(this.url, { "action": "verify-password-reset", "token": token }).pipe(
       map((res: ServerPayload) => {
 
         //  Set user if successfull
@@ -202,17 +199,16 @@ export class User {
 export class Password {
   public old;
   public confirm;
+  public current;
 
-  constructor(
-    public current,
-  ) { }
+  constructor() { }
 }
 
 
 
 
 /**
- *  Player Class for
+ *  Player
  */
 export class Player {
   created_by;
@@ -225,9 +221,9 @@ export class Player {
 
   constructor(
     public id,
-    public first?,
-    public last?,
+    public first_name?,
+    public last_name?,
     public email?,
-    public pass?,
+    public password?,
   ) { }
 }

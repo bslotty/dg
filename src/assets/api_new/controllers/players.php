@@ -87,7 +87,6 @@ switch ($payload['action']) {
 		if ($foundPlayer["status"] == "success" && count($foundPlayer['results']) > 0) {
 
 			//	Compare password;
-			$payload["player"]['password'] = $payload["player"]["pass"]["current"];
 			$hash = $player->saltPassword($payload["player"]);
 
 			//	Invalid Pass?
@@ -190,6 +189,12 @@ switch ($payload['action']) {
 		}
 		break;
 
+	case "validate-password-reset":
+		//	Forgot Password Email Link takes you to a page that will call this. 
+		//	Afterwards goto finalize-password-reset to set the password
+		//		May be un-needed and we may be able to just re-use the reset case;
+	break;
+
 	case "verify":
 		//	Check Token matches
 		$authorizedPlayer 		= $player->verifyToken($payload["token"]);
@@ -230,54 +235,86 @@ switch ($payload['action']) {
 		break;
 
 	case "update":
-		$updatedPlayer = $player->updatePlayer($payload["player"]);
-		$return["data"][$i++] = $updatedPlayer;
+		$uniquePlayer = $player->getPlayerByEmail($payload["player"]["email"]);
+		if ($uniquePlayer["status"] == "success" && count($uniquePlayer["results"]) == 0) {
+			$updatedPlayer = $player->updatePlayer($payload["player"]);
+			$return["data"][$i++] = $updatedPlayer;
 
-		if ($updatedPlayer["status"] == "success") {
-			// Return Player for Token used with requests;
-			$return["data"][$i++] = array(
-				"status" 	=> "success",
-				"msg" 		=> "Account Updated!",
-				"data"		=> array(
-					"player"	=> $updatedPlayer["results"][0]
-				)
-			);
+			if ($updatedPlayer["status"] == "success") {
+				// Return Player for Token used with requests;
+				$return["data"][$i++] = array(
+					"status" 	=> "success",
+					"msg" 		=> "Account Updated!",
+					"data"		=> array(
+						"player"	=> $updatedPlayer["results"][0]
+					)
+				);
+			} else {
+				// Return Player for Token used with requests;
+				$return["data"][$i++] = array(
+					"status" 	=> "error",
+					"msg" 		=> "Error updating account",
+					"data"		=> array(
+						"player"	=> $updatedPlayer["results"][0]
+					)
+				);
+			}
 		} else {
 			// Return Player for Token used with requests;
 			$return["data"][$i++] = array(
 				"status" 	=> "error",
-				"msg" 		=> "Error updating account",
+				"msg" 		=> $uniquePlayer["results"][0]['email'] . " is already associated with an account.",
 				"data"		=> array(
-					"player"	=> $updatedPlayer["results"][0]
+					"player"	=> $uniquePlayer["results"][0]
 				)
 			);
 		}
 
+
+
 		break;
 
 	case "reset":
+		//	Store Values for Replacement
+		$old 		= $payload["player"]["password"]["old"];
+		$current 	= $payload["player"]["password"]["current"];
+		
 		//	Verify Old Pass
-		$payload['player']['password'] = $payload["player"]["pass"]["old"];
+		$payload['player']['password'] = $old;
 		$oldPassHash = $player->saltPassword($payload["player"]);
 
 		$lostPlayer = $player->getPlayerByEmail($payload["player"]["email"]);
 
 		if ($lostPlayer["results"][0]["password"] == $oldPassHash) {
 			//	Update Pass
-			$payload['player']['password'] = $payload["player"]["pass"]["confirm"];
+			$lostPlayer["results"][0]["password"] = $current;
 
 			//	Salt Password
-			$payload['player']['password'] = $player->saltPassword($payload["player"]);
+			$lostPlayer["results"][0]["password"] = $player->saltPassword($lostPlayer["results"][0]);
 
 			//	Update Account
-			$return["data"][$i++] = $player->updatePlayer($payload['player']);
+			$return["data"][$i++] = $player->updatePlayer($lostPlayer["results"][0]);
+
+			/*
+			$return["data"][$i++] = array(
+				"status" 	=> "error",
+				"msg" 		=> "DEBUG",
+				"debug"		=> array(
+					"oldPassHash" 	=> $oldPassHash,
+					"lostPlayer" 	=> $lostPlayer,
+					"hash"			=> $lostPlayer["results"][0]['password'] . '1337' . strtolower($lostPlayer["results"][0]["email"])
+				)
+			);
+			*/
+
 		} else {
 			$return["data"][$i++] = array(
 				"status" 	=> "error",
 				"msg" 		=> "Invalid Old Password",
 				"debug"		=> array(
 					"oldPassHash" 	=> $oldPassHash,
-					"lostPlayer" 	=> $lostPlayer
+					"lostPlayer" 	=> $lostPlayer,
+					"hash"			=> $lostPlayer["results"][0]['password'] . '1337' . strtolower($lostPlayer["results"][0]["email"])
 				)
 			);
 		}
@@ -293,7 +330,7 @@ switch ($payload['action']) {
 			"status" => "error",
 			"code" => "500",
 			"phase" => "setup",
-			"message" => "Unknown Action",
+			"msg" => "Unknown Action",
 		);
 		break;
 }

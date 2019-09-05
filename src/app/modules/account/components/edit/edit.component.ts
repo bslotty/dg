@@ -1,7 +1,7 @@
 import { ServerPayload } from 'src/app/app.component';
 import { FeedbackService } from './../../../feedback/services/feedback.service';
 import { flyInPanelRow } from './../../../../animations';
-import { AccountBackend, User } from 'src/app/modules/account/services/backend.service';
+import { AccountBackend, User, Player } from 'src/app/modules/account/services/backend.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
@@ -31,12 +31,12 @@ export class EditComponent implements OnInit {
 
   initForm(){
     this.form = this.builder.group({
-      first:  [this.account.user.first, [
+      first:  [this.account.user.first_name, [
         Validators.required, 
         Validators.minLength(2), 
         Validators.maxLength(128)
       ]],
-      last:   [this.account.user.last, [
+      last:   [this.account.user.last_name, [
         Validators.required, 
         Validators.minLength(2), 
         Validators.maxLength(128)
@@ -53,17 +53,17 @@ export class EditComponent implements OnInit {
   onFormSubmit (){
     if (this.form.valid && this.form.dirty) {  
 
-      var user    = new User(this.account.user.id);
-      user.first  = this.form.get('first').value;
-      user.last   = this.form.get('last').value;
-      user.email  = this.form.get('email').value;
+      var p    = new Player(this.account.user.id);
+      p.first_name  = this.form.get('first').value;
+      p.last_name   = this.form.get('last').value;
+      p.email       = this.form.get('email').value;
       
-      this.account.updateUser(user).subscribe((payload: ServerPayload)=>{
+      this.account.updateUser(p).subscribe((payload: ServerPayload)=>{
         
-        if (payload['status'] == "success") {
-          this.account.user.first   = user.first;
-          this.account.user.last    = user.last;
-          this.account.user.email   = user.email;
+        if (this.account.rCheck(payload)) {
+          this.account.user.first_name  = p.first_name;
+          this.account.user.last_name   = p.last_name;
+          this.account.user.email       = p.email;
         }
       });
     }

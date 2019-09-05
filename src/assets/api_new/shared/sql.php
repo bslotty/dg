@@ -72,14 +72,22 @@ class DB
                 "status"    => "error",
                 "code"      => "-1",
                 "phase"     => "prepare",
-                "message"   => "Error with query"
+                "message"   => "Error with query",
+                "debug"     => array(
+                    "q"     => $q,
+                    "v"     => $v
+                )
             );
         } else if (!$this->stmt->execute($v)) {
             $payload = array(
                 "status"    => "error",
                 "code"      => $this->stmt->errorCode(),
                 "phase"     => "execute",
-                "message"   => $this->stmt->errorInfo()
+                "message"   => $this->stmt->errorInfo(),
+                "debug"     => array(
+                    "q"     => $q,
+                    "v"     => $v
+                )
             );
         } else {
 

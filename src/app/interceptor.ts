@@ -64,9 +64,7 @@ export class RequestInterceptor implements HttpInterceptor {
 
 				//	Needs to be replaced with getting the message of the last status; 
 				//	Toast Feedback from server if set.
-				if (event.body.msg) {
-
-				}
+				//	if (event.body.msg) { }
 
 				console.log ("event: ", event);
 

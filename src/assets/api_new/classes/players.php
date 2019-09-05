@@ -34,7 +34,10 @@ class Player
 	 */
 	public function generateToken($item, $type): string
 	{
-		$str 	= $item["id"] . $item["modified_on"] . 'DGC' . $item["email"] . $item["last_name"] . 'WAAAGH!!' . $type == 'login' ? session_id() : $type;
+
+		$modifier = $type == 'login' ? session_id() : $type;
+
+		$str 	= $item["id"] . $item["modified_on"] . 'DGC' . $item["email"] . $item["last_name"] . 'WAAAGH!!' . $modifier;
 		$token 	= hash('sha512', $str);
 
 		return $token;
@@ -57,7 +60,7 @@ class Player
 	 */
 	public function getTokenExpDate()
 	{
-		$expiration_date = mktime(date("H") + 3);
+		$expiration_date = mktime(date("H") + 1);
 		return date("c", $expiration_date);
 	}
 
@@ -83,8 +86,8 @@ class Player
 			":created_on" 		=> date("c"),
 			":modified_by" 		=> null,
 			":modified_on" 		=> null,
-			":first_name" 		=> $item["first"],
-			":last_name" 		=> $item["last"],
+			":first_name" 		=> $item["first_name"],
+			":last_name" 		=> $item["last_name"],
 			":email" 			=> $item["email"],
 			":password" 		=> $this->saltPassword($item),
 			":token" 			=> $this->generateToken($item, "verify"),
@@ -196,18 +199,22 @@ class Player
 
 		//	Base Values on each update;
 		$values = array(
-			":id"           		=> $item["id"],
-			":modified_by"    		=> $item["modified_by"],
-			":modified_on"       	=> date("c")
+			":id"					=> $item["id"]
 		);
 
+		//	Insert Modified Information
+		$item['modified_by'] = null;
+		$item['modified_on'] = date("c");
+
 		//	Init Query
-		$query = "UPDATE `Players` SET";
+		$query = "UPDATE `Players` SET ";
 
 		//	Update query and values
 		foreach ($item as $key => $value) {
-			$query .= "`" . $key . "` = :" . $key . ", ";
-			$values[":" . $key] = $value;
+			if ($key != "id" && $key != "access") {
+				$query .= "`" . $key . "`=:" . $key . ", ";
+				$values[":" . $key] = $value;
+			}
 		};
 
 		//	Remove Trailing ", "
