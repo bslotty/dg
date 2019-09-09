@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { fade, flyIn } from 'src/app/animations';
 import { FeedbackService } from './modules/feedback/services/feedback.service';
+import { AccountBackend } from './modules/account/services/backend.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,8 @@ import { FeedbackService } from './modules/feedback/services/feedback.service';
 
 export class AppComponent {  
   constructor(
-    private router: Router
+    private router: Router,
+    private account: AccountBackend,
   ){ }
 
   getRoute(outlet) {

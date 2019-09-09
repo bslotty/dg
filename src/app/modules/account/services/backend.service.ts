@@ -125,6 +125,9 @@ export class AccountBackend implements OnInit {
     return this.http.post(this.url, { "action": "initate-password-reset", "player": player });
   }
 
+
+
+  
   verify(token: string) {
     return this.http.post(this.url, { "action": "verify", "token": token }).pipe(
       map((res: ServerPayload) => {
@@ -218,6 +221,8 @@ export class Player {
   token;
   token_expires_on;
   last_logon;
+
+  access = {}
 
   constructor(
     public id,

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AccountBackend, User } from '../../services/backend.service';
+import { AccountBackend, User, Player } from '../../services/backend.service';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
 
 @Component({
@@ -40,7 +40,7 @@ export class ForgotComponent implements OnInit {
   onFormSubmit (){
     if (this.form.valid && this.form.dirty) {
 
-      var user    = new User(null);
+      var user    = new Player(null);
       user.email  = this.form.get('email').value;
       
       this.account.forgotPassword(user).subscribe((res)=>{

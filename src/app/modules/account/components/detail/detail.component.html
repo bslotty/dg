@@ -1,15 +1,33 @@
-<div class="mb-5">
-  <app-section-header title="account" [buttons]="headerButtons" (actionClick)="actionClick($event)">
-  </app-section-header>
-
-  <div *ngIf="!feed.loading; else loader">
-    <app-account-edit></app-account-edit>
-
-    <app-account-reset></app-account-reset>
+<div>
+  <h6 class="mt-4"> Update Information </h6>
+  <p>Need to update your account? Update your account information here.</p>
+  <div class="row no-gutters justify-content-end align-items-center">
+    <a mat-button routerLink="/account/update">
+      <label>Update</label>
+    </a>
   </div>
 
+</div>
+
+
+<div>
+  <h6 class="mt-4"> Rankings </h6>
+  <p>Want to see where you place among your friends? Check your rankings here.</p>
+  <div class="row no-gutters justify-content-end align-items-center">
+    <a mat-button routerLink="/account/rankings">
+      <label>Rank</label>
+    </a>
+  </div>
 
 </div>
-<ng-template #loader>
-  <loader></loader>
-</ng-template>
+
+<div>
+  <h6 class="mt-4"> Stats </h6>
+  <p>Want to see how well you perform? Check out your stats here.</p>
+  <div class="row no-gutters justify-content-end align-items-center">
+    <a mat-button routerLink="/account/stats">
+      <label>Stats</label>
+    </a>
+  </div>
+
+</div>

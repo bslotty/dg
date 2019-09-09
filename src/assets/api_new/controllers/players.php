@@ -162,18 +162,22 @@ switch ($payload['action']) {
 			$lostPlayer["results"][0]["token_expires_on"] = $player->getTokenExpDate();
 
 			//	Update Player
-			$locatedPlayer = $player->updatePlayer($lostPlayer);
+			$locatedPlayer = $player->updatePlayer($lostPlayer["results"][0]);
 			if ($locatedPlayer["status"] == "success" && count($locatedPlayer['affectedRows']) > 0) {
 				//	Setup Email
 				require($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/shared/email.php');
 				$email = new Email();
-				$email->formatPasswordResetEmail($locatedPlayer["results"][0]["email"], $token);
+				$email->formatPasswordResetEmail($lostPlayer["results"][0]["email"], $token);
 
 				//	Send Email
 				if ($email->sendEmail()) {
 					$return["data"][$i++] = array(
 						"status" 	=> "success",
-						"msg" 		=> "The next steps have been sent to: " . $locatedPlayer["results"][0]['email']
+						"msg" 		=> "The next steps have been sent to: " . $lostPlayer["results"][0]['email'],
+						"debug"		=> array(
+							"locatedPlayer" =>	$locatedPlayer,
+							"lostPlayer" 	=>	$lostPlayer
+						)
 					);
 				} else {
 					$return["data"][$i++] = array(
@@ -190,7 +194,7 @@ switch ($payload['action']) {
 		} else {
 			$return["data"][$i++] = array(
 				"status" 	=> "error",
-				"msg" 		=> $lostPlayer["results"][0]['email'] . " is not associated with an account."
+				"msg" 		=> $payload['player']['email'] . " is not associated with an account."
 			);
 		}
 		break;

@@ -18,6 +18,7 @@ import { CreateComponent } from './components/create/create.component';
 import { SetPasswordComponent } from './components/set-password/set-password.component';
 
 import { MaterialModule } from 'src/app/modules/material/material.module';
+import { ShellComponent } from './components/shell/shell.component';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { MaterialModule } from 'src/app/modules/material/material.module';
     ForgotComponent, 
     CreateComponent,
     SetPasswordComponent,
+    ShellComponent,
   ],
   providers: [AccountBackend]
 })
