@@ -163,22 +163,28 @@ switch ($payload['action']) {
 
 			//	Update Player
 			$locatedPlayer = $player->updatePlayer($lostPlayer);
+			if ($locatedPlayer["status"] == "success" && count($locatedPlayer['affectedRows']) > 0) {
+				//	Setup Email
+				require($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/shared/email.php');
+				$email = new Email();
+				$email->formatPasswordResetEmail($locatedPlayer["results"][0]["email"], $token);
 
-			//	Setup Email
-			require($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/shared/email.php');
-			$email = new Email();
-			$email->formatPasswordResetEmail($lostPlayer["results"][0]["email"], $token);
-
-			//	Send Email
-			if ($email->sendEmail()) {
-				$return["data"][$i++] = array(
-					"status" 	=> "success",
-					"msg" 		=> "The next steps have been sent to: " . $lostPlayer["results"][0]['email']
-				);
+				//	Send Email
+				if ($email->sendEmail()) {
+					$return["data"][$i++] = array(
+						"status" 	=> "success",
+						"msg" 		=> "The next steps have been sent to: " . $locatedPlayer["results"][0]['email']
+					);
+				} else {
+					$return["data"][$i++] = array(
+						"status" 	=> "error",
+						"msg" 		=> "Unable to send verification email."
+					);
+				}
 			} else {
 				$return["data"][$i++] = array(
 					"status" 	=> "error",
-					"msg" 		=> "Unable to send verification email."
+					"msg" 		=> "Unable to store token for validation. Please try again."
 				);
 			}
 		} else {
@@ -193,7 +199,7 @@ switch ($payload['action']) {
 		//	Forgot Password Email Link takes you to a page that will call this. 
 		//	Afterwards goto finalize-password-reset to set the password
 		//		May be un-needed and we may be able to just re-use the reset case;
-	break;
+		break;
 
 	case "verify":
 		//	Check Token matches
@@ -278,7 +284,7 @@ switch ($payload['action']) {
 		//	Store Values for Replacement
 		$old 		= $payload["player"]["password"]["old"];
 		$current 	= $payload["player"]["password"]["current"];
-		
+
 		//	Verify Old Pass
 		$payload['player']['password'] = $old;
 		$oldPassHash = $player->saltPassword($payload["player"]);
@@ -306,7 +312,6 @@ switch ($payload['action']) {
 				)
 			);
 			*/
-
 		} else {
 			$return["data"][$i++] = array(
 				"status" 	=> "error",

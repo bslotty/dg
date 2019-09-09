@@ -43,7 +43,7 @@ export class LeagueBackend implements OnInit {
               league.restrictions,
             ));
 
-            this.account.user.access[league.id] = league.level;
+            this.account.user['access'][league.id] = league.level;
             //  console.log("league.account.level: ", this.account.user.access);
           });
           this.list.next(result);
@@ -68,7 +68,7 @@ export class LeagueBackend implements OnInit {
               res["data"]["restrictions"],
             );
 
-            this.account.user.access[league.id] = res["data"]["level"];
+            this.account.user['access'][league.id] = res["data"]["level"];
 
             return this.league;
           } else {

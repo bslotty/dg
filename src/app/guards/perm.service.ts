@@ -36,12 +36,12 @@ export class PermGuard {
     if (!this.account.user && !this.leagues.league) { 
       this.router.navigate(["/account/login"]); 
       return false 
-    } else if (!this.account.user.access){
+    } else if (!this.account.user['access']){
       this.router.navigate(["/leagues", this.leagues.league.id, "join"]);
       return false;
     } else if (
-      this.account.user.access[this.leagues.league.id] != "moderator" && 
-      this.account.user.access[this.leagues.league.id] != "creator"){
+      this.account.user['access'][this.leagues.league.id] != "moderator" && 
+      this.account.user['access'][this.leagues.league.id] != "creator"){
       return false
     } else {
       return true;
