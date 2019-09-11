@@ -147,13 +147,11 @@ export class AccountBackend implements OnInit {
 
 
   verifyToken(token: string) {
-    return this.http.post(this.url, { "action": "verify-password-reset", "token": token }).pipe(
+    return this.http.post(this.url, { "action": "validate-password-reset", "token": token }).pipe(
       map((res: ServerPayload) => {
-
         //  Set user if successfull
         if (this.rCheck(res)) {
-          console.log("res: ", res);
-          this.setUser(res['data']["player"]);
+          this.setUser(res["data"][0]["player"]);
         }
 
         //  Return Payload for Feedback

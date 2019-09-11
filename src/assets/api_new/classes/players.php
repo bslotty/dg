@@ -260,7 +260,7 @@ class Player
 
 
 	/**
-	 * @param Player $item
+	 * @param string $item
 	 */
 	public function verifyToken($token)
 	{

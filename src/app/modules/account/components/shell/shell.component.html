@@ -1,11 +1,7 @@
 <div class="mb-5">
-  <app-section-header title="account" [buttons]="headerButtons" (actionClick)="actionClick($event)">
-  </app-section-header>
-
   <div *ngIf="!feed.loading; else loader">
     <router-outlet></router-outlet>
   </div>
-
 </div>
 
 <ng-template #loader>

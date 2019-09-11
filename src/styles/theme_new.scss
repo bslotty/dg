@@ -152,6 +152,55 @@ $dgc-theme: mat-dark-theme($dgc-primary, $dgc-accent, $dgc-warn);
 // include the custom theme object into the angular material theme
 @include angular-material-theme($dgc-theme);
 
+
+/*
+    Angular Material Font Guidelines
+    
+*/
+h1 {
+  font-size: 34sp;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 24sp;
+  font-weight: 400;
+}
+
+h3 {
+  font-size: 20sp;
+  font-weight: 600;
+}
+
+p, label {
+  font-size: 14sp;
+}
+
+.subText {
+  font-size: 12sp;
+}
+
+a, button, .mat-button {
+  font-size: 14sp;
+  font-weight: 400;
+  text-transform: uppercase;
+
+}
+
+p i {
+  color: rgba(240, 250, 240, 0.7);
+}
+
+p b {
+  font-weight: 500;
+}
+
+
+
+
+
+
+
 /**
     Angular Material Fixes Here
 */

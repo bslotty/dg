@@ -15,32 +15,32 @@ import { flyInPanelRow } from 'src/app/animations';
 })
 export class SetPasswordComponent implements OnInit {
 
-  public verified: boolean = false;
+  private verified: boolean = false;
 
   constructor(
-    public account: AccountBackend,
-    public location: Location,
-    public feed: FeedbackService,
-    public route: ActivatedRoute,
-    public router: Router,
+    private account: AccountBackend,
+    private feed: FeedbackService,
+    private route: ActivatedRoute,
+    private router: Router,
 
   ) { }
 
   ngOnInit() {
+    this.feed.loading = true;
     this.verifyToken();
   }
 
   verifyToken() {
-    this.feed.initiateLoading();
     let token = this.route.snapshot.paramMap.get('token');
     this.account.verifyToken(token).subscribe((res: ServerPayload)=>{
-      if (res.status == "success") {
+      if (this.account.rCheck(res)) {
         this.verified = true;
-      } else if (res.status == "error" /*&& res.msg.indexOf("expired") > -1*/) {
+        this.feed.loading = false;
+
+      } else {
         this.router.navigate(["account/forgot"]);
       } 
-
-      this.feed.finializeLoading(res, true);
+      
     });
   }
 }

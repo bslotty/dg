@@ -76,15 +76,14 @@ export class ResetComponent implements OnInit {
   onFormSubmit() {
     if (this.form.valid && this.form.dirty) {
 
-      var newPass     = new Password();
-      newPass.current = this.form.get('pass').value,
-      newPass.confirm = this.form.get('conf').value;
-      newPass.old     = this.form.get('old').value;
+      var newPass       = new Password();
+      newPass.current   = this.form.get('pass').value,
+      newPass.confirm   = this.form.get('conf').value;
+      newPass.old       = this.form.get('old').value;
 
       this.account.user.password = newPass;
       this.account.updatePassword(this.account.user).subscribe((res) => {
         this.account.user.password = null;
-        console.log ("reset.res: ", res);
       });
     }
   }

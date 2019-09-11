@@ -4,8 +4,6 @@
     z-index: 10;
     width: 100%;
     position: fixed;
-    padding: 0 .5em 0 1em;
-    margin-bottom: 1em;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -17,25 +15,9 @@
 .head > h3 {
     flex-grow: 3;
     font-weight: 100;
-    font-size: 2em;
     margin: 0;
 }
 
-@media only screen and (max-width: 720px) {
-    .head a {
-        width: 15%;
-        min-width: 10%;
-    }
+h1 {
+    font-weight: 100;
 }
-
-
-
-.centerTest {
-    text-align: center;
-    width: 100%;
-    margin: 5em;
-}
-
-
-
-

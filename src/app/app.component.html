@@ -1,7 +1,7 @@
-<div class="head row justify-content-between align-items-center no-gutters">
+<div class="head row justify-content-between align-items-center no-gutters mb-4">
     <div class="col-4">
         <a mat-button color="primary" routerLink="/">
-            <h3>DGC</h3>
+            <h1>DGC</h1>
         </a>
 
     </div>
@@ -16,7 +16,7 @@
                 <a mat-button color="primary" routerLink="/sessions">Sessions</a>
             </div>
             <div *ngIf="account.user?.id; else login">
-                <a mat-button routerLink="/account">Acount</a>
+                <a mat-button routerLink="/account">Account</a>
             </div>
         </div>
 
@@ -31,11 +31,9 @@
                 <a mat-menu-item routerLink="/courses">Courses</a>
                 <a mat-menu-item routerLink="/sessions">Sessions</a>
 
-                <div *ngIf="account.user?.id; else login">
-                    <a mat-menu-item routerLink="/account">{{ account.user.first_name }}</a>
+                <div *ngIf="account.user?.id; else menuLogin">
+                    <a mat-menu-item routerLink="/account">Account</a>
                 </div>
-
-
 
             </mat-menu>
         </div>
@@ -53,10 +51,14 @@
 <app-feedback ></app-feedback>
 -->
 
-<div id="container" [@fade]="getRoute(route)">
+<div id="container" [@fade]="getRoute(route)" class="container">
     <router-outlet #route="outlet"></router-outlet>
 </div>
 
 <ng-template #login>
+    <a mat-button routerLink="/account">Login</a>
+</ng-template>
+
+<ng-template #menuLogin>
     <a mat-menu-item routerLink="/account">Login</a>
 </ng-template>

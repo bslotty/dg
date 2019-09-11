@@ -203,6 +203,43 @@ switch ($payload['action']) {
 		//	Forgot Password Email Link takes you to a page that will call this. 
 		//	Afterwards goto finalize-password-reset to set the password
 		//		May be un-needed and we may be able to just re-use the reset case;
+		$playerByToken = $player->verifyToken($payload["token"]);
+
+		if ($playerByToken["status"] == "success" && count($playerByToken["results"]) > 0) {
+
+			//	Validate Expiration Date.
+			$exp_date = strtotime($playerByToken["results"][0]["token_exp_date"]);
+
+			if ($exp_date < time()) {
+
+				//	Set New Token for Validation
+
+
+				$return["data"][$i++] = array(
+					"status" 	=> "success",
+					"msg" 		=> "Account Validated",
+					"player"	=> $playerByToken["results"][0]
+				);
+			} else {
+				$return["data"][$i++] = array(
+					"status" 	=> "error",
+					"msg" 		=> "Token expired",
+					"debug"		=> array(
+						"playerByToken" => $playerByToken
+					)
+				);
+			}
+		} else {
+			$return["data"][$i++] = array(
+				"status" 	=> "error",
+				"msg" 		=> "Invalid Token",
+				"debug"		=> array(
+					"playerByToken" => $playerByToken
+				)
+			);
+		}
+
+
 		break;
 
 	case "verify":
