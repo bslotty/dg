@@ -1,9 +1,8 @@
 import { FeedbackService } from './../../../feedback/services/feedback.service';
 import { Component, OnInit } from '@angular/core';
-import { AccountBackend, Player } from '../../services/backend.service';
-import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup} from '@angular/forms';
 import { flyInPanelRow } from 'src/app/animations';
+import { AccountFormService } from '../../services/account-form.service';
 
 
 @Component({
@@ -15,46 +14,32 @@ import { flyInPanelRow } from 'src/app/animations';
 export class LoginComponent implements OnInit {
 
   form: FormGroup;
-  submitText: string = 'LOGIN';
-
-  passwordFieldType: string = "password" // password | text
 
   constructor(
-    public account: AccountBackend,
-    public router: Router,
-    public builder: FormBuilder,
+    public accountForm: AccountFormService,
     public feed: FeedbackService,
   ) { }
 
   ngOnInit() { 
+    /*
     if (this.account.user) {
       this.router.navigate(["leagues"]);
     }
+    */
 
-    this.initForm();
-    this.feed.loading = false;
-  }
-
-  initForm() {
-    this.form = this.builder.group({
-      email: ["Brandon@BrandonSlotty.com", [
-        Validators.required, 
-        Validators.minLength(8), 
-        Validators.maxLength(128), 
-        Validators.pattern("(.)+@(.)+")
-      ]],
-      password: ["BAS6702m", [
-        Validators.required, 
-        Validators.minLength(8), 
-        Validators.maxLength(128)
-      ]],
-    })
+    this.accountForm.CreateForm("login");
+    this.accountForm.accountForm$.subscribe((f)=>{
+      this.form = f;
+      this.feed.loading = false;
+    });
   }
 
   onFormSubmit() {
+    this.accountForm.SubmitLogin();
+
+    /*
     if (this.form.valid && this.form.dirty){
       this.form.disable();
-      this.submitText = "...";
 
       //  Set Data
       var user = new Player(
@@ -66,7 +51,6 @@ export class LoginComponent implements OnInit {
       //  Send Data
       this.account.login(user).subscribe((res) => {
         this.form.enable();
-        this.submitText = "LOGIN";
 
         //  Redirect if available; else Goto leagues
         if (this.account.rCheck(res)){
@@ -83,14 +67,7 @@ export class LoginComponent implements OnInit {
    
       });
     }
+    */
   }
 
-  showPassword(bool) {
-    if (bool) {
-      this.passwordFieldType = "text";
-    } else {
-      this.passwordFieldType = "password";
-    }
-  }
- 
 }

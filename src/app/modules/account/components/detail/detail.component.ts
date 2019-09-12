@@ -23,8 +23,7 @@ export class DetailComponent implements OnInit {
     private feed: FeedbackService,
   ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   
 

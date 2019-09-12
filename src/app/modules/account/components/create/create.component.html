@@ -33,18 +33,7 @@
     </mat-form-field>
 
     <h6 class="mt-4"> Password </h6>
-
-    <!--  Password  -->
-    <mat-form-field>
-      <mat-label matPrefix>Password</mat-label>
-      <input matInput formControlName='pass' [type]="passwordType">
-      <span matSuffix class="icon-eye" (mousedown)="showPassword('pass', true)"
-        (mouseup)="showPassword('pass', false)"></span>
-      <mat-error *ngIf="(form.get('pass').touched || form.get('pass').dirty) && form.get('pass').invalid">
-        Invalid Password
-      </mat-error>
-    </mat-form-field>
-
+    <form-password inputType="password" submitOnEnter="true" [control]="form.get('pass')"></form-password>
     <form-password inputType="confirm" submitOnEnter="true" [control]="form.get('conf')"></form-password>
   </form>
 

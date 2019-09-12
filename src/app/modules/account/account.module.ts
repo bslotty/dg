@@ -6,6 +6,7 @@ import { AccountRoutingModule } from './account-routing.module';
 
 /*  Services  */
 import { AccountBackend } from 'src/app/modules/account/services/backend.service';
+import { AccountFormService } from './services/account-form.service';
 
 /*  Views */
 import { DetailComponent } from './components/detail/detail.component';
@@ -19,6 +20,7 @@ import { SetPasswordComponent } from './components/set-password/set-password.com
 
 import { MaterialModule } from 'src/app/modules/material/material.module';
 import { ShellComponent } from './components/shell/shell.component';
+
 
 
 @NgModule({
@@ -38,6 +40,9 @@ import { ShellComponent } from './components/shell/shell.component';
     SetPasswordComponent,
     ShellComponent,
   ],
-  providers: [AccountBackend]
+  providers: [
+    AccountBackend,
+    AccountFormService
+  ]
 })
 export class AccountModule { }

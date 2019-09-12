@@ -9,7 +9,7 @@ import { EventEmitter } from 'events';
 })
 export class PasswordComponent implements OnInit {
 
-  @Input() inputType: string        = "InvalidType";    //   Old | Current | Confirm         
+  @Input() inputType: string        = "InvalidType";      
   @Input() submitOnEnter: boolean   = false;
   @Input() control: FormControl;
 
@@ -17,8 +17,7 @@ export class PasswordComponent implements OnInit {
 
   textType: string = "password";   //  text | password
 
-  constructor() {
-  }
+  constructor() { }
 
   ngOnInit() { }
 
