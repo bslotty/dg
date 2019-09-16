@@ -366,6 +366,35 @@ switch ($payload['action']) {
 		}
 		break;
 
+	case "password-set":
+		//	Store Values for Replacement
+		$current 	= $payload["player"]["password"]["current"];
+
+		//	Verify Old Pass
+		$payload['player']['password'] = $current;
+		$passHash = $player->saltPassword($payload["player"]);
+
+		$verifiedPlayer = $player->getPlayerByEmail($payload["player"]["email"]);
+
+		if ($verifiedPlayer["status"] == "success" && count($playerByToken["results"]) > 0) {
+			$playerByToken["results"][0]["password"] = $passHash;
+
+			//	Update Account
+			$return["data"][$i++] = $player->updatePlayer($playerByToken["results"][0]);
+		} else {
+			// Return Player for Token used with requests;
+			$return["data"][$i++] = array(
+				"status" 	=> "error",
+				"msg" 		=> "Unable to update account information.",
+				"data"		=> array(
+					"player"	=> $verifiedPlayer["results"][0]
+				)
+			);
+		}
+
+
+
+		break;
 
 	case "detail":
 		$return["data"][$i++] = $player->getDetail($payload["player"]["id"]);

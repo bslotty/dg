@@ -125,6 +125,10 @@ export class AccountBackend implements OnInit {
     return this.http.post(this.url, { "action": "initate-password-reset", "player": player });
   }
 
+  setPassword(player: Player) {
+    return this.http.post(this.url, { "action": "password-set", "player": player });
+  }
+
 
 
   
@@ -165,6 +169,15 @@ export class AccountBackend implements OnInit {
 
 
   logout() {
+
+    /*
+    var payload = new ServerPayload;
+    payload.status  = "success";
+    payload.msg     = "You are now logged out";
+
+    this.feed.finializeLoading(payload, true);
+    */
+
     this.resetUser();
     this.router.navigate(['account/login']);
   }

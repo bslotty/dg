@@ -3,43 +3,14 @@
 
 <form [formGroup]="form">
 
-  <!--  Old Password  /!-->
-  <mat-form-field>
-    <mat-label matPrefix>Old</mat-label>
-    <input matInput formControlName='old' [type]="oldType">
-    <span matSuffix class="icon-eye" (mousedown)="showPassword('old', true)"
-      (mouseup)="showPassword('old', false)"></span>
-    <mat-error *ngIf="form.get('old').dirty && form.get('old').invalid">
-      Invalid Password
-    </mat-error>
-  </mat-form-field>
+  <!--  Old Password  -->
+  <form-password inputType="old" [control]="form.get('old')"></form-password>
 
-  <!--  Password  /!-->
-  <mat-form-field>
-    <mat-label matPrefix>Password</mat-label>
-    <input matInput formControlName='pass' [type]="passwordType">
-    <span matSuffix class="icon-eye" (mousedown)="showPassword('pass', true)"
-      (mouseup)="showPassword('pass', false)"></span>
-    <mat-error *ngIf="form.get('pass').dirty && form.get('pass').invalid">
-      Invalid Password
-    </mat-error>
-  </mat-form-field>
+  <!--  Password  -->
+  <form-password inputType="password" [control]="form.get('password')"></form-password>
 
-  <!--  Confirmation  /!-->
-  <mat-form-field>
-    <mat-label matPrefix>Confirm</mat-label>
-    <input matInput formControlName='conf' [type]="confirmType">
-    <span matSuffix class="icon-eye" (mousedown)="showPassword('conf', true)"
-      (mouseup)="showPassword('conf', false)"></span>
-    <mat-error *ngIf="form.get('conf').dirty && form.get('conf').invalid">
-      <label *ngIf="form.get('conf').hasError('match'); else normalError">
-        Passwords must match
-      </label>
-      <ng-template #normalError>
-        <label>Invalid Password</label>
-      </ng-template>
-    </mat-error>
-  </mat-form-field>
+  <!--  Confirmation  -->
+  <form-password inputType="confirm" submitOnEnter="true" [control]="form.get('conf')"></form-password>
 
 </form>
 

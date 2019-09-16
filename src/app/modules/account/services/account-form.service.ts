@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { BehaviorSubject, Observable, pipe } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { AccountBackend, Player } from './backend.service';
+import { AccountBackend, Player, Password } from './backend.service';
 import { Router } from '@angular/router';
 import { ServerPayload } from 'src/app/app.component';
 
@@ -155,31 +155,59 @@ export class AccountFormService {
     //  Observe Changes for custom errors;
     form.valueChanges.pipe(this.passwordPipe).subscribe((t) => {
       console.log("form.ValueChanges: ", t);
-      if (t["old"] == t["pass"]) {
-        form.get("pass").setErrors({ same: true });
-      } else if (t["old"] == t["conf"]) {
+
+      //  Reset Fields upon Update
+      if (t["old"]) {
+        form.get('old').setErrors(null);
+      }
+
+      if (t["conf"]) {
+        form.get('conf').setErrors(null);
+      }
+
+      if (t["password"]) {
+        form.get('password').setErrors(null);
+      }
+      
+
+      if (t["old"] && t["old"] == t["password"]) {
+        form.get("password").setErrors({ same: true });
+
+      } else if (t["old"] && t["conf"] && t["old"] == t["conf"]) {
         form.get("conf").setErrors({ same: true });
-      } else if (t["pass"] != t["conf"] && (form.get("pass").dirty && form.get("conf").dirty)) {
-        form.get("pass").setErrors({ match: true });
+
+      } else if (t["conf"] && t["password"] != t["conf"] && (form.get("password").dirty && form.get("conf").dirty)) {
+        form.get("password").setErrors({ match: true });
         form.get("conf").setErrors({ match: true });
+
       } else {
         form.setErrors(null);
       }
     });
+
+    //  Push Form
     this.accountForm.next(form);
+  }
+
+  ReadyForSubmission(): boolean {
+    if (this.accountForm.value.valid && this.accountForm.value.dirty && !this.accountForm.value.disabled) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 
   SubmitRegistration() {
     //  If form is valid and password matches
-    if (this.accountForm.value.valid && this.accountForm.value.dirty) {
+    if (this.ReadyForSubmission()) {
 
       //  store user
       var user = new Player(0);
-      user.first_name   = this.accountForm.value.get('first').value;
-      user.last_name    = this.accountForm.value.get('last').value;
-      user.email        = this.accountForm.value.get('email').value;
-      user.password     = this.accountForm.value.get('pass').value;
+      user.first_name = this.accountForm.value.get('first').value;
+      user.last_name = this.accountForm.value.get('last').value;
+      user.email = this.accountForm.value.get('email').value;
+      user.password = this.accountForm.value.get('password').value;
 
       //  send creation request
       this.account.register(user).subscribe((res) => {
@@ -194,7 +222,7 @@ export class AccountFormService {
 
   SubmitLogin() {
 
-    if (this.accountForm.value.valid && this.accountForm.value.dirty) {
+    if (this.ReadyForSubmission()) {
       this.accountForm.value.disable();
 
       //  Set Data
@@ -226,30 +254,81 @@ export class AccountFormService {
   }
 
   SubmitUpdate() {
-    
-    if (this.accountForm.value.valid && this.accountForm.value.dirty) {  
-      var p    = new Player(this.account.user.id);
-      p.first_name  = this.accountForm.value.get('first').value;
-      p.last_name   = this.accountForm.value.get('last').value;
-      p.email       = this.accountForm.value.get('email').value;
-      
-      this.account.updateUser(p).subscribe((payload: ServerPayload)=>{
-        
+
+    if (this.ReadyForSubmission()) {
+      var p = new Player(this.account.user.id);
+      p.first_name = this.accountForm.value.get('first').value;
+      p.last_name = this.accountForm.value.get('last').value;
+      p.email = this.accountForm.value.get('email').value;
+
+      this.account.updateUser(p).subscribe((payload: ServerPayload) => {
+
         if (this.account.rCheck(payload)) {
-          this.account.user.first_name  = p.first_name;
-          this.account.user.last_name   = p.last_name;
-          this.account.user.email       = p.email;
+          this.account.user.first_name = p.first_name;
+          this.account.user.last_name = p.last_name;
+          this.account.user.email = p.email;
         }
       });
     }
   }
 
-  SubmitReset() {
+  SubmitForgot() {
+    if (this.ReadyForSubmission()) {
 
+      var user = new Player(null);
+      user.email = this.accountForm.value.get('email').value;
+
+      this.account.forgotPassword(user).subscribe((res) => {
+        //  Confirmation Page?
+        //  Home Page?
+      });
+    }
   }
 
-  SubmitSet() {
+  SubmitReset() {
+    if (this.ReadyForSubmission()) {
 
+      var newPass = new Password();
+      newPass.current = this.accountForm.value.get('password').value;
+      newPass.confirm = this.accountForm.value.get('conf').value;
+      newPass.old = this.accountForm.value.get('old').value;
+
+      this.account.user.password = newPass;
+      this.account.updatePassword(this.account.user).subscribe((res) => {
+        this.account.user.password = null;
+      });
+    }
+  }
+
+  VerifyForgotToken(token) {
+    this.account.verifyToken(token).subscribe((res: ServerPayload) => {
+      console.log("res", res);
+
+      if (this.account.rCheck(res)) {
+        this.CreateForm("set");
+      } else {
+        this.router.navigate(["account/forgot"]);
+      }
+    });
+  }
+
+
+
+  SubmitSet() {
+    if (this.ReadyForSubmission()) {
+
+      var newPass = new Password();
+      newPass.current = this.accountForm.value.get('password').value;
+      newPass.confirm = this.accountForm.value.get('conf').value;
+
+      this.account.user.password = newPass;
+      this.account.setPassword(this.account.user).subscribe((res) => {
+        this.account.user.password = null;
+        if (this.account.rCheck(res)) {
+          this.router.navigate(["account"]);
+        } else { }
+      });
+    }
   }
 
 

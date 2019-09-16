@@ -34,12 +34,6 @@ export class DetailComponent implements OnInit {
   }
 
   logout() {
-
-    var payload = new ServerPayload;
-    payload.status  = "success";
-    payload.msg     = "You are now logged out";
-
-    this.feed.finializeLoading(payload, true);
     this.account.logout();
   }
 }

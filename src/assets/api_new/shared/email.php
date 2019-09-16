@@ -81,9 +81,9 @@ class Email
 		//	Body
 		$message    = "<html><body style='color: rgb(80,100,80) !IMPORTANT;'>";
 		$message   .= "<h1>BS Disc</h1><h3>Verify Your Account</h3>";
-		$message   .= "<p>Click <a href='" . $this->URL . "account/verify/" . $token . "'>Here</a> ";
+		$message   .= "<p>Click <a href='" . $this->URL . "/account/verify/" . $token . "'>Here</a> ";
 		$message   .= "to verify your account. <br><br>If you did not initiate this request, ignore this message.</p>";
-		$message   .= "<p>If you are unable to click the link, copy this into your address bar: " . $this->URL . "account/verify/" . $token . "";
+		$message   .= "<p>If you are unable to click the link, copy this into your address bar: " . $this->URL . "/account/verify/" . $token . "";
 		$message   .= "</body></html>";
 
 		$this->setBody($message);
@@ -103,9 +103,9 @@ class Email
 		//	Body
 		$message    = "<html stayle='color: rgb(80,100,80) !IMPORTANT;'><body>";
 		$message   .= "<h1>BS Disc</h1><h3>Verify Your Account</h3>";
-		$message   .= "<p>Click <a href='" . $this->URL . "account/forgot/" . $token . "'>Here</a> ";
+		$message   .= "<p>Click <a href='" . $this->URL . "/account/forgot/" . $token . "'>Here</a> ";
 		$message   .= "to reset your password. <br><br>If you did not initiate this request, ignore this message.</p>";
-		$message   .= "<p>If you are unable to click the link, copy this into your address bar: " . $this->URL . "account/verify/" . $token . "";
+		$message   .= "<p>If you are unable to click the link, copy this into your address bar: " . $this->URL . "/account/verify/" . $token . "";
 		$message   .= "</body></html>";
 
 		$this->setBody($message);

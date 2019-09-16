@@ -1,46 +1,38 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from "@angular/common";
-import { AccountBackend } from 'src/app/modules/account/services/backend.service';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ServerPayload } from 'src/app/app.component';
-import { flyInPanelRow } from 'src/app/animations';
+import { FormGroup } from '@angular/forms';
+import { AccountFormService } from '../../services/account-form.service';
+import { AccountBackend } from '../../services/backend.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
   selector: 'app-set-password',
   templateUrl: './set-password.component.html',
   styleUrls: ['./set-password.component.css'],
-  animations: [flyInPanelRow]
+  animations: []
 })
 export class SetPasswordComponent implements OnInit {
 
-  private verified: boolean = false;
+  private form: FormGroup;
 
   constructor(
-    private account: AccountBackend,
     private feed: FeedbackService,
+    private accountForm: AccountFormService,
     private route: ActivatedRoute,
-    private router: Router,
-
   ) { }
 
   ngOnInit() {
-    this.feed.loading = true;
-    this.verifyToken();
+    let token = this.route.snapshot.paramMap.get('token');
+    this.accountForm.VerifyForgotToken(token);
+    this.accountForm.accountForm$.subscribe((t)=>{
+      this.form = t;
+      this.feed.loading = false;
+    });
   }
 
-  verifyToken() {
-    let token = this.route.snapshot.paramMap.get('token');
-    this.account.verifyToken(token).subscribe((res: ServerPayload)=>{
-      if (this.account.rCheck(res)) {
-        this.verified = true;
-        this.feed.loading = false;
-
-      } else {
-        this.router.navigate(["account/forgot"]);
-      } 
-      
-    });
+  onFormSubmit() {
+    this.accountForm.SubmitSet();
   }
 }
