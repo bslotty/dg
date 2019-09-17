@@ -243,22 +243,6 @@ class Player
 	}
 
 
-
-
-	public function changePassword($player)
-	{
-		$query = "DELETE
-		FROM `Players` 
-		WHERE `id`=:id";
-
-		$values = array(
-			":id" => $id
-		);
-
-		return $this->db->Query($query, $values);
-	}
-
-
 	/**
 	 * @param string $item
 	 */

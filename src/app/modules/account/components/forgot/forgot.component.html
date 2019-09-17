@@ -23,7 +23,7 @@
   
   <div class="row no-gutters justify-content-stretch align-items-center mt-3">
     <a mat-raised-button color="primary" class="btn btn-block btn-lg" (click)="onFormSubmit()"
-      [disabled]="form.invalid || form.pristine || form.disabled">
+      [disabled]="!accountForm.ReadyForSubmission()">
       <label>Begin Process</label>
     </a>
   </div>

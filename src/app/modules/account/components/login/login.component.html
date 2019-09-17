@@ -25,8 +25,8 @@
 
   <div class="row no-gutters justify-content-stretch align-items-center mt-3">
     <a mat-raised-button color="primary" class="btn btn-lg btn-block" (click)="onFormSubmit()"
-      [disabled]="form.invalid || form.pristine">
-      <label>{{ submitText }}</label>
+      [disabled]="!accountForm.ReadyForSubmission()">
+      <label>Login</label>
     </a>
   </div>
 

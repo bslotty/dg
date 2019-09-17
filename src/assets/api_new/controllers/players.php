@@ -341,18 +341,6 @@ switch ($payload['action']) {
 
 			//	Update Account
 			$return["data"][$i++] = $player->updatePlayer($lostPlayer["results"][0]);
-
-			/*
-			$return["data"][$i++] = array(
-				"status" 	=> "error",
-				"msg" 		=> "DEBUG",
-				"debug"		=> array(
-					"oldPassHash" 	=> $oldPassHash,
-					"lostPlayer" 	=> $lostPlayer,
-					"hash"			=> $lostPlayer["results"][0]['password'] . '1337' . strtolower($lostPlayer["results"][0]["email"])
-				)
-			);
-			*/
 		} else {
 			$return["data"][$i++] = array(
 				"status" 	=> "error",
@@ -367,27 +355,24 @@ switch ($payload['action']) {
 		break;
 
 	case "password-set":
-		//	Store Values for Replacement
-		$current 	= $payload["player"]["password"]["current"];
-
-		//	Verify Old Pass
-		$payload['player']['password'] = $current;
+		$payload['player']['password'] = $payload["player"]["password"]["current"];
 		$passHash = $player->saltPassword($payload["player"]);
 
 		$verifiedPlayer = $player->getPlayerByEmail($payload["player"]["email"]);
 
-		if ($verifiedPlayer["status"] == "success" && count($playerByToken["results"]) > 0) {
-			$playerByToken["results"][0]["password"] = $passHash;
+		if ($verifiedPlayer["status"] == "success" && count($verifiedPlayer["results"]) > 0) {
+			$verifiedPlayer["results"][0]["password"] = $passHash;
 
 			//	Update Account
-			$return["data"][$i++] = $player->updatePlayer($playerByToken["results"][0]);
+			$return["data"][$i++] = $player->updatePlayer($verifiedPlayer["results"][0]);
 		} else {
 			// Return Player for Token used with requests;
 			$return["data"][$i++] = array(
 				"status" 	=> "error",
 				"msg" 		=> "Unable to update account information.",
 				"data"		=> array(
-					"player"	=> $verifiedPlayer["results"][0]
+					"player"	=> $verifiedPlayer["results"][0],
+					"hash"		=> $passHash
 				)
 			);
 		}

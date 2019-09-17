@@ -11,6 +11,7 @@ import { MapComponent } from './components/map/map.component';
 import { ShellComponent } from './components/shell/shell.component';
 
 import { AgmCoreModule } from '@agm/core';
+import { CourseListComponent } from './components/templates/course-list/course-list.component';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { AgmCoreModule } from '@agm/core';
     SearchComponent, 
     DetailComponent, 
     MapComponent, 
-    ShellComponent
+    ShellComponent,
+    CourseListComponent
   ]
 })
 export class CoursesModule { }

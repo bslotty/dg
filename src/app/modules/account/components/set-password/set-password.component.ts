@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SetPasswordComponent implements OnInit {
 
-  private form: FormGroup;
+  private form: FormGroup = new FormGroup({});
 
   constructor(
     private feed: FeedbackService,

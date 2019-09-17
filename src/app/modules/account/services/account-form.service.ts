@@ -154,7 +154,8 @@ export class AccountFormService {
 
     //  Observe Changes for custom errors;
     form.valueChanges.pipe(this.passwordPipe).subscribe((t) => {
-      console.log("form.ValueChanges: ", t);
+      console.log("form.ValueChanges: ", form, t);
+
 
       //  Reset Fields upon Update
       if (t["old"]) {
@@ -189,6 +190,10 @@ export class AccountFormService {
     this.accountForm.next(form);
   }
 
+  /**
+   *  @returns boolean
+   *  Form needs to be Valid, Touched, and not Disabled.
+   */
   ReadyForSubmission(): boolean {
     if (this.accountForm.value.valid && this.accountForm.value.dirty && !this.accountForm.value.disabled) {
       return true;

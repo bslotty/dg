@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit {
   }
 
   onFormSubmit() {
+    
     this.accountForm.SubmitLogin();
   }
 

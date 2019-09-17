@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServerPayload } from 'src/app/app.component';
-import { map, catchError, timeout, distinctUntilChanged, debounceTime } from 'rxjs/operators';
-import { of, pipe, BehaviorSubject, Subject } from 'rxjs';
+import { map, catchError, distinctUntilChanged, debounceTime } from 'rxjs/operators';
+import { of, pipe, BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -10,7 +10,9 @@ import { environment } from 'src/environments/environment';
 })
 export class CourseBackend {
 
-  private serverPipe = pipe(
+  url: string = environment.apiUrl + '/controllers/courses.php';
+
+  serverPipe = pipe(
     debounceTime(5000),
     distinctUntilChanged(),
   );
@@ -28,8 +30,7 @@ export class CourseBackend {
   ) { }
 
   getList(sort: string) {
-    let url = environment.apiUrl + "/courses/list.php";
-    return this.http.post(url, {"sort": sort}).pipe(this.serverPipe, 
+    return this.http.post(this.url, {"action": "list", "sort": sort}).pipe(this.serverPipe, 
       map((res: ServerPayload) => {
         if (res.status == "success") {
           var result:Course[] = [];
