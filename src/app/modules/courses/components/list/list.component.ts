@@ -1,9 +1,7 @@
 import { flyInPanelRow } from './../../../../animations';
 import { CourseBackend } from './../../services/backend.service';
 import { Component, OnInit } from '@angular/core';
-import { Course } from '../../services/backend.service';
-import { ViewChild } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
 
 @Component({
   selector: 'app-list',
@@ -17,7 +15,8 @@ export class ListComponent implements OnInit {
   resolve: boolean = false;
 
   constructor(
-    public courses: CourseBackend
+    public courses: CourseBackend,
+    private feed: FeedbackService
   ) { }
 
 
@@ -31,8 +30,6 @@ export class ListComponent implements OnInit {
         this.resolve = true;
       }
 
-    }, (e) => {
-      console.warn("list$.error: ", e);
     });
 
     if (this.courseList == undefined) {

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { CoursesRoutingModule } from './courses-routing.module';
 import { MaterialModule } from './../material/material.module';
+import { AgmCoreModule } from '@agm/core';
 
 import { ListComponent } from './components/list/list.component';
 import { SearchComponent } from './components/search/search.component';
@@ -10,8 +11,8 @@ import { DetailComponent } from './components/detail/detail.component';
 import { MapComponent } from './components/map/map.component';
 import { ShellComponent } from './components/shell/shell.component';
 
-import { AgmCoreModule } from '@agm/core';
-import { CourseListComponent } from './components/templates/course-list/course-list.component';
+
+import { CourseListItemComponent } from './components/templates/course-list-item/course-list-item.component';
 
 @NgModule({
   imports: [
@@ -28,7 +29,7 @@ import { CourseListComponent } from './components/templates/course-list/course-l
     DetailComponent, 
     MapComponent, 
     ShellComponent,
-    CourseListComponent
+    CourseListItemComponent
   ]
 })
 export class CoursesModule { }

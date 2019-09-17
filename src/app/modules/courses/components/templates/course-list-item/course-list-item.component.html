@@ -1,0 +1,18 @@
+<div class="row">
+    <div class="col">
+      <label>{{ course.name }}</label>
+      <!--
+        <div class="subText row">
+          <label><i>{{ course.parkName }} </i></label>
+          <label><i>{{ course.city }}, </i></label>
+          <label><i>{{ course.state }} </i></label>
+          <label><i>{{ course.zip }} </i></label>
+        </div>
+      -->
+
+    </div>
+
+    <a mat-flat-button color="primary" routerLink="/courses/{{ course.id }}">
+      <span class="icon-link-2"></span>
+    </a>
+  </div>
