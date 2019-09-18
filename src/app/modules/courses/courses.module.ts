@@ -13,6 +13,7 @@ import { ShellComponent } from './components/shell/shell.component';
 
 
 import { CourseListItemComponent } from './components/templates/course-list-item/course-list-item.component';
+import { CreateComponent } from './components/create/create.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { CourseListItemComponent } from './components/templates/course-list-item
     DetailComponent, 
     MapComponent, 
     ShellComponent,
-    CourseListItemComponent
+    CourseListItemComponent,
+    CreateComponent
   ]
 })
 export class CoursesModule { }

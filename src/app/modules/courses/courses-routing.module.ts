@@ -6,6 +6,7 @@ import { ShellComponent } from './components/shell/shell.component';
 import { ListComponent } from './components/list/list.component';
 import { DetailComponent } from './components/detail/detail.component';
 import { SearchComponent } from './components/search/search.component';
+import { CreateComponent } from './components/create/create.component';
 
 const courseRoutes: Routes = [{
   path: 'courses',
@@ -17,6 +18,9 @@ const courseRoutes: Routes = [{
     },{
       path: "search",
       component: SearchComponent,
+    },{
+      path: 'create',
+      component: CreateComponent,
     },{
       path: ':id',
       component: DetailComponent,

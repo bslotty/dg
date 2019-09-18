@@ -28,7 +28,7 @@ export class AccountBackend implements OnInit {
   ) { }
 
   /**
-   * @param ServePayload res Subscription Response
+   * @param ServerPayload res Subscription Response
    * @returns boolean true if the latest query ran by the server was successfull;
    * -- else false
    */
