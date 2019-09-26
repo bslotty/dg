@@ -1,3 +1,5 @@
-<p>
-  map works!
-</p>
+<div id="map" class="panel">
+  <agm-map [latitude]="course.lat" [longitude]="course.lng" [zoom]="zoom" (mapClick)="pin($event)">
+    <agm-marker [latitude]="course.lat" [longitude]="course.lng"></agm-marker>
+  </agm-map>
+</div>

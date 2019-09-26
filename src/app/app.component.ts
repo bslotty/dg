@@ -11,11 +11,11 @@ import { AccountBackend } from './modules/account/services/backend.service';
   animations: [fade, flyIn],
 })
 
-export class AppComponent {  
+export class AppComponent {
   constructor(
     private router: Router,
     private account: AccountBackend,
-  ){ }
+  ) { }
 
   getRoute(outlet) {
     return this.router.url;
