@@ -5,13 +5,8 @@ require($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/shared/headers.php');
 //  Convert HTTP Vars
 $payload = json_decode(file_get_contents('php://input'), TRUE);
 
-//  Init Headers
-$return = array(
-	"request-type" => $_SERVER['REQUEST_METHOD']
-);
-
-//	Counter for Return Data
-$i = 0;
+//  Init Return
+$return = array();
 
 //	Debug
 /**
@@ -38,12 +33,12 @@ switch ($payload['action']) {
 
 		//	Email has to be unique
 		$potentalPlayer = $player->getPlayerByEmail($payload["player"]["email"]);
-		$return["data"][$i++] = $potentalPlayer;
+		$return[] = $potentalPlayer;
 		if ($potentalPlayer["status"] == "success" && count($potentalPlayer["results"]) == 0) {
 
 			//	Create New Player! Yay!
 			$registeredPlayer = $player->registerPlayer($payload["player"]);
-			$return["data"][$i++] = $registeredPlayer;
+			$return[] = $registeredPlayer;
 
 
 			//	Send Verification Email;
@@ -56,24 +51,24 @@ switch ($payload['action']) {
 
 				//	Send Email
 				if ($email->sendEmail()) {
-					$return["data"][$i++] = array(
+					$return[] = array(
 						"status" => "success",
 						"msg" => "Account needs to be verified. Please check your email."
 					);
 				} else {
-					$return["data"][$i++] = array(
+					$return[] = array(
 						"status" => "error",
 						"msg" => "Unable to send verification email."
 					);
 				}
 			} else {
-				$return["data"][$i++] = array(
+				$return[] = array(
 					"status" => "error",
 					"msg" => "Unable to register account."
 				);
 			}
 		} else {
-			$return["data"][$i++] = array(
+			$return[] = array(
 				"status" => "error",
 				"msg" => "An account is already associated with: " . $payload["player"]["email"]
 			);
@@ -83,7 +78,7 @@ switch ($payload['action']) {
 	case "login":
 
 		$foundPlayer = $player->getPlayerByEmail($payload["player"]["email"]);
-		$return["data"][$i++] = $foundPlayer;
+		$return[] = $foundPlayer;
 		if ($foundPlayer["status"] == "success" && count($foundPlayer['results']) > 0) {
 
 			//	Compare password;
@@ -91,7 +86,7 @@ switch ($payload['action']) {
 
 			//	Invalid Pass?
 			if ($foundPlayer["results"][0]["password"] != $hash) {
-				$return["data"][$i++] = array(
+				$return[] = array(
 					"status" => "error",
 					"msg"   => "Invalid Password",
 					"hash"	=> $hash
@@ -109,18 +104,18 @@ switch ($payload['action']) {
 
 				//	Send Email
 				if ($email->sendEmail()) {
-					$return["data"][$i++] = array(
+					$return[] = array(
 						"status" => "error",
 						"msg" => "Account needs to be verified. Please check your email."
 					);
 				} else {
-					$return["data"][$i++] = array(
+					$return[] = array(
 						"status" => "error",
 						"msg" => "Unable to send verification email."
 					);
 				}
 			} else {
-				$return["data"][$i++] = array(
+				$return[] = array(
 					"status" => "success",
 					"hash" => $hash
 				);
@@ -134,10 +129,10 @@ switch ($payload['action']) {
 				$foundPlayer["results"][0]["token_expires_on"] = null;
 
 				//	Update Token & Login
-				$return["data"][$i++] = $player->updatePlayer($foundPlayer["results"][0]);
+				$return[] = $player->updatePlayer($foundPlayer["results"][0]);
 			}
 		} else {
-			$return["data"][$i++] = array(
+			$return[] = array(
 				"status" => "error",
 				"msg" => $payload['player']['email'] . " is not associated with an account."
 			);
@@ -145,14 +140,14 @@ switch ($payload['action']) {
 		break;
 
 	case "search":
-		$return["data"][$i++] = $player->searchPlayers($payload["term"]);
+		$return[] = $player->searchPlayers($payload["term"]);
 
 
 		break;
 
 	case "initate-password-reset":
 		$lostPlayer				= $player->getPlayerByEmail($payload['player']['email']);
-		$return["data"][$i++] 	= $lostPlayer;
+		$return[] = $lostPlayer;
 
 		if ($lostPlayer["status"] == "success" && count($lostPlayer['results']) > 0) {
 
@@ -171,7 +166,7 @@ switch ($payload['action']) {
 
 				//	Send Email
 				if ($email->sendEmail()) {
-					$return["data"][$i++] = array(
+					$return[] = array(
 						"status" 	=> "success",
 						"msg" 		=> "The next steps have been sent to: " . $lostPlayer["results"][0]['email'],
 						"debug"		=> array(
@@ -180,19 +175,19 @@ switch ($payload['action']) {
 						)
 					);
 				} else {
-					$return["data"][$i++] = array(
+					$return[] = array(
 						"status" 	=> "error",
 						"msg" 		=> "Unable to send verification email."
 					);
 				}
 			} else {
-				$return["data"][$i++] = array(
+				$return[] = array(
 					"status" 	=> "error",
 					"msg" 		=> "Unable to store token for validation. Please try again."
 				);
 			}
 		} else {
-			$return["data"][$i++] = array(
+			$return[] = array(
 				"status" 	=> "error",
 				"msg" 		=> $payload['player']['email'] . " is not associated with an account."
 			);
@@ -215,13 +210,13 @@ switch ($payload['action']) {
 				//	Set New Token for Validation
 
 
-				$return["data"][$i++] = array(
+				$return[] = array(
 					"status" 	=> "success",
 					"msg" 		=> "Account Validated",
 					"player"	=> $playerByToken["results"][0]
 				);
 			} else {
-				$return["data"][$i++] = array(
+				$return[] = array(
 					"status" 	=> "error",
 					"msg" 		=> "Token expired",
 					"debug"		=> array(
@@ -230,7 +225,7 @@ switch ($payload['action']) {
 				);
 			}
 		} else {
-			$return["data"][$i++] = array(
+			$return[] = array(
 				"status" 	=> "error",
 				"msg" 		=> "Invalid Token",
 				"debug"		=> array(
@@ -245,7 +240,7 @@ switch ($payload['action']) {
 	case "verify":
 		//	Check Token matches
 		$authorizedPlayer 		= $player->verifyToken($payload["token"]);
-		$return["data"][$i++] 	= $authorizedPlayer;
+		$return[] = $authorizedPlayer;
 
 		if ($authorizedPlayer["status"] == "success" && count($authorizedPlayer["results"]) > 0) {
 
@@ -256,11 +251,11 @@ switch ($payload['action']) {
 
 			// Update Player
 			$updatedPlayer = $player->updatePlayer($authorizedPlayer["results"][0]);
-			$return["data"][$i++] = $updatedPlayer;
+			$return[] = $updatedPlayer;
 
 			if ($updatedPlayer["status"] == "success" && $updatedPlayer["affectedRows"] == 1) {
 				// Return Player for Token used with requests;
-				$return["data"][$i++] = array(
+				$return[] = array(
 					"status" 	=> "success",
 					"msg" 		=> "Account Verified!",
 					"data"		=> array(
@@ -268,13 +263,13 @@ switch ($payload['action']) {
 					)
 				);
 			} else {
-				$return["data"][$i++] = array(
+				$return[] = array(
 					"status" 	=> "error",
 					"msg" 		=> "Unable to update account. Please try to initiate the request again."
 				);
 			}
 		} else {
-			$return["data"][$i++] = array(
+			$return[] = array(
 				"status" 	=> "error",
 				"msg" 		=> "Invalid Request."
 			);
@@ -285,11 +280,11 @@ switch ($payload['action']) {
 		$uniquePlayer = $player->getPlayerByEmail($payload["player"]["email"]);
 		if ($uniquePlayer["status"] == "success" && count($uniquePlayer["results"]) == 0) {
 			$updatedPlayer = $player->updatePlayer($payload["player"]);
-			$return["data"][$i++] = $updatedPlayer;
+			$return[] = $updatedPlayer;
 
 			if ($updatedPlayer["status"] == "success") {
 				// Return Player for Token used with requests;
-				$return["data"][$i++] = array(
+				$return[] = array(
 					"status" 	=> "success",
 					"msg" 		=> "Account Updated!",
 					"data"		=> array(
@@ -298,7 +293,7 @@ switch ($payload['action']) {
 				);
 			} else {
 				// Return Player for Token used with requests;
-				$return["data"][$i++] = array(
+				$return[] = array(
 					"status" 	=> "error",
 					"msg" 		=> "Error updating account",
 					"data"		=> array(
@@ -308,7 +303,7 @@ switch ($payload['action']) {
 			}
 		} else {
 			// Return Player for Token used with requests;
-			$return["data"][$i++] = array(
+			$return[] = array(
 				"status" 	=> "error",
 				"msg" 		=> $uniquePlayer["results"][0]['email'] . " is already associated with an account.",
 				"data"		=> array(
@@ -340,9 +335,9 @@ switch ($payload['action']) {
 			$lostPlayer["results"][0]["password"] = $player->saltPassword($lostPlayer["results"][0]);
 
 			//	Update Account
-			$return["data"][$i++] = $player->updatePlayer($lostPlayer["results"][0]);
+			$return[] = $player->updatePlayer($lostPlayer["results"][0]);
 		} else {
-			$return["data"][$i++] = array(
+			$return[] = array(
 				"status" 	=> "error",
 				"msg" 		=> "Invalid Old Password",
 				"debug"		=> array(
@@ -364,10 +359,10 @@ switch ($payload['action']) {
 			$verifiedPlayer["results"][0]["password"] = $passHash;
 
 			//	Update Account
-			$return["data"][$i++] = $player->updatePlayer($verifiedPlayer["results"][0]);
+			$return[] = $player->updatePlayer($verifiedPlayer["results"][0]);
 		} else {
 			// Return Player for Token used with requests;
-			$return["data"][$i++] = array(
+			$return[] = array(
 				"status" 	=> "error",
 				"msg" 		=> "Unable to update account information.",
 				"data"		=> array(
@@ -382,11 +377,11 @@ switch ($payload['action']) {
 		break;
 
 	case "detail":
-		$return["data"][$i++] = $player->getDetail($payload["player"]["id"]);
+		$return[] = $player->getDetail($payload["player"]["id"]);
 		break;
 
 	default:
-		$return["data"][$i++] = array(
+		$return[] = array(
 			"status" => "error",
 			"code" => "500",
 			"phase" => "setup",

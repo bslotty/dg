@@ -26,7 +26,7 @@ export class SetPasswordComponent implements OnInit {
   ngOnInit() {
     let token = this.route.snapshot.paramMap.get('token');
     this.accountForm.VerifyForgotToken(token);
-    this.accountForm.accountForm$.subscribe((t)=>{
+    this.accountForm.form$.subscribe((t)=>{
       this.form = t;
       this.feed.loading = false;
     });

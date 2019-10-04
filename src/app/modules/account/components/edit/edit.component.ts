@@ -21,8 +21,8 @@ export class EditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.accountForm.CreateForm("update");
-    this.accountForm.accountForm$.subscribe((f)=>{
+    this.accountForm.Setup("update");
+    this.accountForm.form$.subscribe((f)=>{
       this.form = f;
       this.feed.loading = false;
     });

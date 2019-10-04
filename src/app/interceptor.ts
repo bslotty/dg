@@ -71,7 +71,7 @@ export class RequestInterceptor implements HttpInterceptor {
 				//	If last server event's message -> display feedback;
 				//		Success	=  	Toast
 				//		Error 	=	Message
-				var lastEvent = event.body.data[event.body.data.length - 1];
+				var lastEvent = event.body[event.body.length - 1];
 				if (lastEvent.msg && lastEvent.status == "success") {
 					this.feedbackService.toast({
 						status: lastEvent.status,
@@ -84,11 +84,6 @@ export class RequestInterceptor implements HttpInterceptor {
 						msg: lastEvent.msg,
 						data: []
 					});
-				}
-
-				//	Return Data?
-				if (event.body.status == "success" && event.body.data) {
-
 				}
 
 				// Loader Toggle

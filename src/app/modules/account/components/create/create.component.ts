@@ -19,8 +19,8 @@ export class CreateComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.accountForm.CreateForm("register");
-    this.accountForm.accountForm$.subscribe((f) => {
+    this.accountForm.Setup("register");
+    this.accountForm.form$.subscribe((f) => {
       console.log("accountForm.registerForm", f);
 
       this.form = f;

@@ -70,11 +70,7 @@ class DB
         if (!$this->stmt = $this->pdo->prepare($q)) {
             $payload = array(
                 "status"    => "error",
-                /*
-                "code"      => "-1",
-                "phase"     => "prepare",
-                */
-                "message"   => "Error with query",
+                "msg"   => "Error with query",
                 "debug"     => array(
                     "q"     => $q,
                     "v"     => $v
@@ -85,7 +81,7 @@ class DB
                 "status"    => "error",
                 "code"      => $this->stmt->errorCode(),
                 "phase"     => "execute",
-                "message"   => $this->stmt->errorInfo(),
+                "msg"   => $this->stmt->errorInfo(),
                 "debug"     => array(
                     "q"     => $q,
                     "v"     => $v
@@ -95,11 +91,6 @@ class DB
 
             $payload = array(
                 "status"        => "success",
-                /*
-                "code"          => "0",
-                "phase"         => "end",
-                */
-                "message"       => "success",
                 "affectedRows"  =>  $this->stmt->rowCount(),
                 "results"       =>  $this->stmt->fetchAll(PDO::FETCH_ASSOC)
             );

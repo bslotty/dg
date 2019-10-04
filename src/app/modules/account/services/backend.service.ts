@@ -33,8 +33,8 @@ export class AccountBackend implements OnInit {
    * -- else false
    */
   rCheck(res): boolean {
-    var latest = res["data"].length - 1;
-    if (res["data"][latest]["status"] == "success") {
+    var latest = res.length - 1;
+    if (res[latest]["status"] == "success") {
       return true;
     } else {
       return false;
@@ -42,15 +42,20 @@ export class AccountBackend implements OnInit {
   }
 
   rGetData(res): Array<any> | boolean {
-    var latest = res["data"].length - 1;
-    return res["data"][latest]["data"];
+    var latest = res.length - 1;
+    if (latest > -1) {
+      return res[latest]["results"];
+    } else {
+      return false;
+    }
+    
   }
 
   ngOnInit() {
-    this.user = new Player(null);
+    this.resetUser();
   }
 
-  //  Clear User; User in Logout;
+  //  Clear User;
   resetUser() {
     this.user = new Player(null);
   }
@@ -86,10 +91,14 @@ export class AccountBackend implements OnInit {
 
         //  Set user if successfull
         if (this.rCheck(res)) {
-          var loggedInPlayer = res['data'][0]["results"][0];
+          var playerResponse = this.rGetData(res);
+          if (playerResponse != false) {
+            var loggedInPlayer = playerResponse[0];
           
-          this.setUser(loggedInPlayer);
-          this.setAuthToken(loggedInPlayer["token"]);
+            this.setUser(loggedInPlayer);
+            this.setAuthToken(loggedInPlayer["token"]);
+          }
+    
         }
 
         //  Return Payload for Feedback

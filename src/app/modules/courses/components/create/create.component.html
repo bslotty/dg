@@ -1,22 +1,49 @@
 <app-section-header title="Create a Course" back="true"></app-section-header>
 
+<div>
+  <p class="alert alert-light">
+    Please select a park by address, or drag the pin onto a park.
+  </p>
+
+
+</div>
+
+<div class="row mt-3 mb-3">
+  <app-map (selectedLocation)="updateAddress($event)"></app-map>
+</div>
+
+<div *ngIf="invalidParkAddress">
+  <p class="alert alert-warning">
+    {{ errorMessage }}
+  </p>
+</div>
 
 <div>
-  <p class="message">Pick a method:</p>
+  <form [formGroup]="form">
+    <div class="row justify-content-between align-center">
+      <mat-form-field class="col">
+        <mat-label>Park</mat-label>
+        <input matInput formControlName="parkName" />
+      </mat-form-field>
+    </div>
 
+    <div class="row justify-content-between align-center">
+      <mat-form-field class="col-6">
+        <mat-label>City</mat-label>
+        <input matInput formControlName="city" />
+      </mat-form-field>
+      <mat-form-field class="col-3">
+        <mat-label>State</mat-label>
+        <input matInput formControlName="state" />
+      </mat-form-field>
+      <mat-form-field class="col-3">
+        <mat-label>Zip</mat-label>
+        <input matInput formControlName="zip" />
+      </mat-form-field>
+    </div>
+  </form>
 
-  <div class="row justify-content-between align-items-center no-gutter">
-
-    <a mat-flat-button color="transparent-primary" class="btn-card col">
-      <span class="icon-edit"></span>
-      <label>Manual</label>
-    </a>
-
-    <a mat-flat-button color="transparent-primary" class="btn-card col">
-      <span class="icon-map-pin"></span>
-      <label>Automatic</label>
-    </a>
+  <div class="actions row justify-content-between align-center">
+    <a (click)="createCourse()" mat-flat-button class="btn btn-lg btn-block" color="primary" [disabled]="!courseForm.ReadyForSubmission()"> Create </a>
   </div>
-
-  <app-map ></app-map>
 </div>

@@ -26,8 +26,8 @@ export class LoginComponent implements OnInit {
     }
     */
 
-    this.accountForm.CreateForm("login");
-    this.accountForm.accountForm$.subscribe((f)=>{
+    this.accountForm.Setup("login");
+    this.accountForm.form$.subscribe((f)=>{
       this.form = f;
       this.feed.loading = false;
     });

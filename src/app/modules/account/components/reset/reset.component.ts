@@ -27,8 +27,8 @@ export class ResetComponent implements OnInit {
 
 
   ngOnInit() {
-    this.accountForm.CreateForm("reset");
-    this.accountForm.accountForm$.subscribe((t)=>{
+    this.accountForm.Setup("reset");
+    this.accountForm.form$.subscribe((t)=>{
       this.form = t;
       this.feed.loading  = false;
     });

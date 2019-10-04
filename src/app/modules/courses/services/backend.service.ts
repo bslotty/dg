@@ -31,8 +31,8 @@ export class CourseBackend {
    * -- else false
    */
   rCheck(res): boolean {
-    var latest = res["data"].length - 1;
-    if (res["data"][latest]["status"] == "success") {
+    var latest = res.length - 1;
+    if (res[latest]["status"] == "success") {
       return true;
     } else {
       return false;
@@ -48,18 +48,12 @@ export class CourseBackend {
           res.data["courses"].forEach((course) => {
             result.push(new Course(
               course['id'],
-              course['name'],
               course['parkName'],
-              course['location'],
-
-              course['img'],
               course['city'],
               course['state'],
               course['zip'],
               +course['lat'],
               +course['lng'],
-              course['difficulty'],
-              course['holeCount'],
             ))
           });
           //this.list$.next(result);
@@ -91,17 +85,12 @@ export class CourseBackend {
 
           result = new Course(
             course['id'],
-            course['name'],
             course['parkName'],
-            course['location'],
-            course['img'],
             course['city'],
             course['state'],
             course['zip'],
             +course['lat'],
-            +course['lng'],
-            course['difficulty'],
-            course['holeCount'],
+            +course['lng']
           );
 
           return result;
@@ -114,7 +103,7 @@ export class CourseBackend {
 
   search(term: string) {
     this.http.post(this.url, { action: "search", term: term }).pipe(this.serverPipe).subscribe((res: ServerPayload) => {
-      console.log("res: ", res);
+
 
       if (this.rCheck(res)) {
         var result: Course[] = [];
@@ -149,17 +138,12 @@ export class CourseBackend {
 
 export class Course {
   constructor(
-    public id: string,
-    public name?: string,
+    public id?: string,
     public parkName?: string,
-    public location?: string,
-    public img?: string,
     public city?: string,
     public state?: string,
     public zip?: string,
     public lat?: number,
     public lng?: number,
-    public difficulty?: string,
-    public holes?: string,
   ) { }
 }

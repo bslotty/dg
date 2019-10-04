@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { EventEmitter } from 'events';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'form-password',
@@ -13,7 +13,7 @@ export class PasswordComponent implements OnInit {
   @Input() submitOnEnter: boolean   = false;
   @Input() control: FormControl;
 
-  @Output() submitEvent: EventEmitter;
+  @Output() submitEvent: EventEmitter<string> = new EventEmitter();
 
   textType: string = "password";   //  text | password
 

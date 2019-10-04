@@ -5,13 +5,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/shared/headers.php');
 //  Convert HTTP Vars
 $payload = json_decode(file_get_contents('php://input'), TRUE);
 
-//  Init Headers
-$return = array(
-	"request-type" => $_SERVER['REQUEST_METHOD']
-);
-
-//	Counter for Return Data
-$i = 0;
+//  Init Return
+$return = array();
 
 //	Debug
 /**
@@ -30,12 +25,12 @@ $courses = new Course($database);
 
 switch ($payload['action']) {
 	case "list":
-		$return["data"][$i++] = $courses->getList($payload['start'], $payload['limit']);
+		$return[] = $courses->getList($payload['start'], $payload['limit']);
 
 		break;
 
 	case "search":
-		$return["data"][$i++] = $courses->getList($payload['term']);
+		$return[] = $courses->getList($payload['term']);
 		break;
 
 	case "create":
@@ -48,7 +43,7 @@ switch ($payload['action']) {
 		break;
 
 	default:
-		$return["data"][$i++] = array(
+		$return[] = array(
 			"status" => "error",
 			"code" => "500",
 			"phase" => "setup",

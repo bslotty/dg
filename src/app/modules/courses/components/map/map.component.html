@@ -1,5 +1,14 @@
-<div id="map" class="panel">
-  <agm-map [latitude]="course.lat" [longitude]="course.lng" [zoom]="zoom" (mapClick)="pin($event)">
-    <agm-marker [latitude]="course.lat" [longitude]="course.lng"></agm-marker>
+<div id="map">
+
+  <div class="form-group">
+    <mat-label>Enter address</mat-label>
+    <input type="text" matInput (keydown.enter)="$event.preventDefault()"
+      placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
+  </div>
+
+
+  <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" (mapClick)="pin($event, place)">
+    <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+    (dragEnd)="markerDragEnd($event)"></agm-marker>
   </agm-map>
 </div>

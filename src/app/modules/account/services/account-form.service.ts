@@ -11,8 +11,8 @@ import { ServerPayload } from 'src/app/app.component';
 })
 export class AccountFormService {
 
-  private accountForm: BehaviorSubject<FormGroup | undefined> = new BehaviorSubject(undefined);
-  accountForm$: Observable<FormGroup> = this.accountForm.asObservable();
+  private form: BehaviorSubject<FormGroup | undefined> = new BehaviorSubject(undefined);
+  form$: Observable<FormGroup> = this.form.asObservable();
 
   builder: FormBuilder = new FormBuilder;
 
@@ -106,7 +106,7 @@ export class AccountFormService {
    * @param type; register | login | update | reset | set |
    * 
    */
-  CreateForm(type: string) {
+  Setup(type: string) {
 
     //  Create Form
     var form = this.builder.group({});
@@ -154,7 +154,7 @@ export class AccountFormService {
 
     //  Observe Changes for custom errors;
     form.valueChanges.pipe(this.passwordPipe).subscribe((t) => {
-      console.log("form.ValueChanges: ", form, t);
+      //  console.log("form.ValueChanges: ", form, t);
 
 
       //  Reset Fields upon Update
@@ -187,7 +187,7 @@ export class AccountFormService {
     });
 
     //  Push Form
-    this.accountForm.next(form);
+    this.form.next(form);
   }
 
   /**
@@ -195,7 +195,7 @@ export class AccountFormService {
    *  Form needs to be Valid, Touched, and not Disabled.
    */
   ReadyForSubmission(): boolean {
-    if (this.accountForm.value.valid && this.accountForm.value.dirty && !this.accountForm.value.disabled) {
+    if (this.form.value.valid && this.form.value.dirty && !this.form.value.disabled) {
       return true;
     } else {
       return false;
@@ -209,10 +209,10 @@ export class AccountFormService {
 
       //  store user
       var user = new Player(0);
-      user.first_name = this.accountForm.value.get('first').value;
-      user.last_name = this.accountForm.value.get('last').value;
-      user.email = this.accountForm.value.get('email').value;
-      user.password = this.accountForm.value.get('password').value;
+      user.first_name = this.form.value.get('first').value;
+      user.last_name = this.form.value.get('last').value;
+      user.email = this.form.value.get('email').value;
+      user.password = this.form.value.get('password').value;
 
       //  send creation request
       this.account.register(user).subscribe((res) => {
@@ -228,18 +228,18 @@ export class AccountFormService {
   SubmitLogin() {
 
     if (this.ReadyForSubmission()) {
-      this.accountForm.value.disable();
+      this.form.value.disable();
 
       //  Set Data
       var user = new Player(
         null, null, null,
-        this.accountForm.value.get('email').value,
-        this.accountForm.value.get('password').value
+        this.form.value.get('email').value,
+        this.form.value.get('password').value
       );
 
       //  Send Data
       this.account.login(user).subscribe((res) => {
-        this.accountForm.value.enable();
+        this.form.value.enable();
 
         //  Redirect if available; else Goto leagues
         if (this.account.rCheck(res)) {
@@ -251,7 +251,7 @@ export class AccountFormService {
         } else {
 
           //  Polish form for re-submit
-          this.accountForm.value.markAsPristine();
+          this.form.value.markAsPristine();
         }
 
       });
@@ -262,9 +262,9 @@ export class AccountFormService {
 
     if (this.ReadyForSubmission()) {
       var p = new Player(this.account.user.id);
-      p.first_name = this.accountForm.value.get('first').value;
-      p.last_name = this.accountForm.value.get('last').value;
-      p.email = this.accountForm.value.get('email').value;
+      p.first_name = this.form.value.get('first').value;
+      p.last_name = this.form.value.get('last').value;
+      p.email = this.form.value.get('email').value;
 
       this.account.updateUser(p).subscribe((payload: ServerPayload) => {
 
@@ -281,7 +281,7 @@ export class AccountFormService {
     if (this.ReadyForSubmission()) {
 
       var user = new Player(null);
-      user.email = this.accountForm.value.get('email').value;
+      user.email = this.form.value.get('email').value;
 
       this.account.forgotPassword(user).subscribe((res) => {
         //  Confirmation Page?
@@ -294,9 +294,9 @@ export class AccountFormService {
     if (this.ReadyForSubmission()) {
 
       var newPass = new Password();
-      newPass.current = this.accountForm.value.get('password').value;
-      newPass.confirm = this.accountForm.value.get('conf').value;
-      newPass.old = this.accountForm.value.get('old').value;
+      newPass.current = this.form.value.get('password').value;
+      newPass.confirm = this.form.value.get('conf').value;
+      newPass.old = this.form.value.get('old').value;
 
       this.account.user.password = newPass;
       this.account.updatePassword(this.account.user).subscribe((res) => {
@@ -310,7 +310,7 @@ export class AccountFormService {
       console.log("res", res);
 
       if (this.account.rCheck(res)) {
-        this.CreateForm("set");
+        this.Setup("set");
       } else {
         this.router.navigate(["account/forgot"]);
       }
@@ -323,8 +323,8 @@ export class AccountFormService {
     if (this.ReadyForSubmission()) {
 
       var newPass = new Password();
-      newPass.current = this.accountForm.value.get('password').value;
-      newPass.confirm = this.accountForm.value.get('conf').value;
+      newPass.current = this.form.value.get('password').value;
+      newPass.confirm = this.form.value.get('conf').value;
 
       this.account.user.password = newPass;
       this.account.setPassword(this.account.user).subscribe((res) => {
