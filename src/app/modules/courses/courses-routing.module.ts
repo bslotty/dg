@@ -8,6 +8,8 @@ import { DetailComponent } from './components/detail/detail.component';
 import { SearchComponent } from './components/search/search.component';
 import { CreateComponent } from './components/create/create.component';
 
+import { AuthGuard } from 'src/app/guards/auth.service';
+
 const courseRoutes: Routes = [{
   path: 'courses',
   component: ShellComponent,
@@ -21,6 +23,7 @@ const courseRoutes: Routes = [{
     },{
       path: 'create',
       component: CreateComponent,
+      canActivate: [AuthGuard],
     },{
       path: ':id',
       component: DetailComponent,

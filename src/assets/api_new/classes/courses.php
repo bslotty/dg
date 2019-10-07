@@ -72,7 +72,7 @@ class Course
 			`park_name`,';',
 			`city`,';',
 			`state`,';',
-			`zip`,
+			`zip`
 		)) LIKE CONCAT('%%', :term, '%%')
 		LIMIT " . (int)$start . ", " . (int)$limit . ";";
 
@@ -84,18 +84,19 @@ class Course
 		return $this->db->Query($query, $values);
 	}
 
-	public function create($course)
+	public function create($course, $user)
 	{
 		$query = "INSERT INTO `Courses` 
-		(`id`, `created_by`, `created_on`, `modified_by`, `modified_on`, `name`, `park_name`, `city`, `state`, `zip`, `latitude`, `longitude` ) VALUES 
-		(:id, :created_by, :created_on, :modified_by, :modified_on, :name, :park_name, :city, :state, :zip, :latitude, :longitude);";
+		(`id`, `created_by`, `created_on`, `modified_by`, `modified_on`, `park_name`, `city`, `state`, `zip`, `latitude`, `longitude` ) VALUES 
+		(:id, :created_by, :created_on, :modified_by, :modified_on, :park_name, :city, :state, :zip, :latitude, :longitude);";
 
 		$values = array(
 			':id' 			=> $this->db->generateGUID(),
-			':created_by' 	=> $course['created_by'],
+			':created_by' 	=> $user['id'],
 			':created_on' 	=> date('c'),
 			':modified_by' 	=> null,
 			':modified_on' 	=> null,
+
 			':park_name' 	=> $course['park_name'],
 			':city' 		=> $course['city'],
 			':state' 		=> $course['state'],
@@ -147,4 +148,32 @@ class Course
 	//	For Delete
 	public function getCreator()
 	{ }
+
+
+	/**
+	 *  Input course from frontend format to backend format
+	 */
+	public function ConvertFrontBack($course) {
+		$newCourse = array(
+			'park_name' 	=> $course['parkName'],
+			'city' 			=> $course['city'],
+			'state' 		=> $course['state'],
+			'zip' 			=> $course['zip'],
+			'latitude' 		=> $course['lat'],
+			'longitude' 	=> $course['lng']		
+		);
+
+		return $newCourse;
+	}
+
+
+	//	Return Nearby Courses
+	//	1 degree of Longitude = ~0.79585 * 69.172 = ~ 55.051 miles
+	//	To find area  +/- xx.005
+	//	Latitude for Calulations
+	public function nearBy($course) 
+	{
+
+	}
+
 }

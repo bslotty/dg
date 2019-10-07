@@ -57,6 +57,7 @@ export class AccountBackend implements OnInit {
 
   //  Clear User;
   resetUser() {
+    console.warn("User RESET");
     this.user = new Player(null);
   }
 
@@ -91,16 +92,12 @@ export class AccountBackend implements OnInit {
 
         //  Set user if successfull
         if (this.rCheck(res)) {
-          var playerResponse = this.rGetData(res);
-          if (playerResponse != false) {
-            var loggedInPlayer = playerResponse[0];
-          
-            this.setUser(loggedInPlayer);
-            this.setAuthToken(loggedInPlayer["token"]);
-          }
-    
+          var loggedInPlayer = res[0]['results'][0];
+        
+          this.setUser(loggedInPlayer);
+          this.setAuthToken(loggedInPlayer["token"]);
         }
-
+  
         //  Return Payload for Feedback
         return res;
       })

@@ -18,9 +18,13 @@ $devMode = true;
 require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/shared/sql.php');
 $database = new DB;
 
-//  Player
+//  Course
 require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/classes/courses.php');
 $courses = new Course($database);
+
+//  Course
+require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/classes/players.php');
+$player = new Player($database);
 
 
 switch ($payload['action']) {
@@ -30,10 +34,31 @@ switch ($payload['action']) {
 		break;
 
 	case "search":
-		$return[] = $courses->getList($payload['term']);
+		$return[] = $courses->search($payload['term']);
 		break;
 
 	case "create":
+		//	Verify User
+		$user = $player->getPlayerByEmail($payload['user']['email']);
+		$return[] = $user;
+		if ($user["status"] == "success" && count($user['results']) > 0) {
+			//	Verify no Course within +/- .005 of lat/lng
+			//	$return[] = $courses->nearBy($payload['course']);
+			
+			$course = $courses->ConvertFrontBack($payload['course']);
+
+			//	Create Course
+			$created = $courses->create($course, $user['results'][0]);
+			$return[] = $created;
+			if ($created['status'] == 'success' && $created["affectedRows"] == 1) {
+
+				//	Return ID for Detail View
+				//	$return[] = $database->lastInsertId();
+			}
+		}
+
+
+
 		break;
 
 	case "update":

@@ -4,6 +4,7 @@ import { ServerPayload } from 'src/app/app.component';
 import { map, catchError, distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { of, pipe, BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { AccountBackend } from '../../account/services/backend.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,7 @@ export class CourseBackend {
 
   constructor(
     private http: HttpClient,
+    private account: AccountBackend,
   ) { }
 
   /**
@@ -77,11 +79,11 @@ export class CourseBackend {
 
   getDetail(course: Course) {
     let url = environment.apiUrl + "/courses/detail.php";
-    return this.http.post(url, { course: course }).pipe(
-      map((res: ServerPayload) => {
+    return this.http.post(url, { course: course }).pipe(map((res: ServerPayload) => {
         var result: Course;
+        console.log("create.res: ", res);
         if (res.status == "success") {
-          var course = res["data"]["course"];
+          var course = res["results"][0];
 
           result = new Course(
             course['id'],
@@ -93,9 +95,9 @@ export class CourseBackend {
             +course['lng']
           );
 
-          return result;
+          return this.list.next(course);
         } else {
-          return [];
+          return this.list.next([]);
         }
       })
     );
@@ -126,11 +128,40 @@ export class CourseBackend {
         */
 
 
-        this.list.next(res["data"][0]["results"]);
+        this.list.next(res[0]["results"]);
       } else {
         this.list.next([]);
       }
     });
+  }
+
+  create(course) {
+    console.log ("User: ", this.account.user);
+    return this.http.post(this.url, { 
+      action: 'create',
+      course: course, 
+      user: this.account.user 
+    }).pipe(map((res: ServerPayload) => {
+        var result: Course;
+        if (res.status == "success") {
+          var course = res["data"]["course"];
+
+          result = new Course(
+            course['id'],
+            course['parkName'],
+            course['city'],
+            course['state'],
+            course['zip'],
+            +course['lat'],
+            +course['lng']
+          );
+
+          return result;
+        } else {
+          return [];
+        }
+      })
+    );
   }
 
 }

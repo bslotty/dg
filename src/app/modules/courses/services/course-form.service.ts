@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { CourseBackend, Course } from './backend.service';
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +51,7 @@ export class CourseFormService {
     Validators.maxLength(9)
   ]);
 
-  constructor() { }
+  constructor(private courseService: CourseBackend) { }
 
   Setup(type) {
 
@@ -93,6 +94,18 @@ export class CourseFormService {
 
   SubmitCreation() {
     console.log("SubmitCreation.form: ", this.form);
+
+    var course = new Course();
+    course.parkName   = this.form.value.value.parkName;
+    course.city       = this.form.value.value.city;
+    course.state      = this.form.value.value.state;
+    course.zip        = this.form.value.value.zip;
+    course.lat        = this.form.value.value.lat;
+    course.lng        = this.form.value.value.lng;
+
+    this.courseService.create(course).subscribe((res)=>{
+      console.log("course.form.create.res: ", res);
+    });
   }
 
 

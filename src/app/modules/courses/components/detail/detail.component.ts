@@ -32,8 +32,8 @@ export class DetailComponent implements OnInit {
 
 
   getDetail() {
-    this.courses.getDetail(this.course).subscribe((v: Course)=>{
-      this.course = v;
+    this.courses.getDetail(this.course).subscribe((v)=>{
+      console.log ("course.detail.res:  ", v);
 
       this.feed.finializeLoading();
     });
