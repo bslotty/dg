@@ -13,8 +13,8 @@ export class MapComponent implements OnInit {
 
   @Output() selectedLocation: EventEmitter<Course | Boolean> = new EventEmitter();
 
-  latitude: number = 42.89909566052781;
-  longitude: number = -87.89861061200014;
+  latitude: number = 42.8990;
+  longitude: number = -87.8986;
   zoom: number = 7;
   address: string;
   private geoCoder;

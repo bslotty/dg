@@ -12,11 +12,10 @@ import { FeedbackService } from 'src/app/modules/feedback/services/feedback.serv
 export class ListComponent implements OnInit {
 
   courseList;
-  resolve: boolean = false;
 
   constructor(
     public courses: CourseBackend,
-    private feed: FeedbackService
+    private feed: FeedbackService,
   ) { }
 
 
@@ -27,41 +26,16 @@ export class ListComponent implements OnInit {
       if (courses.length > 0) {
         console.log("list$.courses: ", courses);
         this.courseList = courses;
-        this.resolve = true;
+        this.feed.loading = false;
       }
 
     });
 
     if (this.courseList == undefined) {
-      this.getCourseList("asc");
+      this.courses.genList("asc");
     }
 
   }
-
-
-
-
-  getCourseList(sort) {
-    this.resolve = false;
-
-    /*
-    this.courses.getList(sort).subscribe((v: Course[])=>{
-      v.forEach((e, i)=>{
-        setTimeout(() => {
-          this.courseList.push(e);
-        }, 30 * i)
-      });
-
-      this.loading = 0;
-    });
-    */
-
-    //this.courses.getList(sort);
-    this.courses.genList(sort);
-  }
-
-
-
 }
 
 

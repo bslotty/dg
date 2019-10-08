@@ -13,7 +13,7 @@
 <div *ngIf="!feed.loading; else loader">
     <div *ngIf="results.length > 0 && this.form.dirty; else create">
         <div *ngFor="let course of results">
-          {{ course.name }}
+          <course-list-item [course]="course"></course-list-item>
         </div>
       
       </div>
