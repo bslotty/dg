@@ -174,6 +174,42 @@ class Course
 	public function nearBy($course) 
 	{
 
+		$lat_top = $course['latitude'] + 0.005;
+		$lat_bot = $course['latitude'] - 0.005;
+
+		$lng_top = $course['longitude'] + 0.005;
+		$lng_bot = $course['longitude'] - 0.005;
+
+		$query = "SELECT 
+			`id`, 
+			`created_by`, 
+			`created_on`, 
+			`modified_by`, 
+			`modified_on`, 
+			`park_name`, 
+			`city`, 
+			`state`, 
+			`zip`, 
+			`latitude`, 
+			`longitude`
+		FROM `Courses` WHERE (
+			:lat_top > `latitude` AND :lat_bot < `latitude` AND
+			:lng_top > `longitude` AND :lng_bot < `longitude`
+		) OR LOWER(`park_name`) LIKE CONCAT('%%', :park_name, '%%')
+		LIMIT 25";
+		
+		
+
+		$values = array(
+			':park_name' 	=> $course['park_name'],
+			':lat_top' 		=> $lat_top,
+			':lat_bot' 		=> $lat_bot,
+			':lng_top' 		=> $lng_top,
+			':lng_bot' 		=> $lng_bot
+		);
+
+		return $this->db->Query($query, $values);
+
 	}
 
 }

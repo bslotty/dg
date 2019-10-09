@@ -42,18 +42,34 @@ switch ($payload['action']) {
 		$user = $player->getPlayerByEmail($payload['user']['email']);
 		$return[] = $user;
 		if ($user["status"] == "success" && count($user['results']) > 0) {
-			//	Verify no Course within +/- .005 of lat/lng
-			//	$return[] = $courses->nearBy($payload['course']);
-			
+
+			//	Convert Keys
 			$course = $courses->ConvertFrontBack($payload['course']);
 
-			//	Create Course
-			$created = $courses->create($course, $user['results'][0]);
-			$return[] = $created;
-			if ($created['status'] == 'success' && $created["affectedRows"] == 1) {
+			//	Verify no Course within +/- .005 of lat/lng
+			$nearby = $courses->nearBy($course);
+			$return[] = $nearby;
+			if ($nearby['status'] == 'success') {
+				if (count($nearby["results"]) > 0) {
+					$return[] = array(
+						'status' 	=> 'error',
+						'msg'		=> 'There are similiar courses nearby'
+					);
+				} else {
+					//	Create Course
+					$created = $courses->create($course, $user['results'][0]);
+					$return[] = $created;
+					if ($created['status'] == 'success' && $created["affectedRows"] == 1) {
 
-				//	Return ID for Detail View
-				//	$return[] = $database->lastInsertId();
+						//	Return ID for Detail View
+						//	$return[] = $database->lastInsertId();
+					}
+				}
+			} else {
+				$return[] = array(
+					'status' 	=> 'error',
+					'msg'		=> 'Nearby course search failed.'
+				);
 			}
 		}
 
@@ -70,8 +86,6 @@ switch ($payload['action']) {
 	default:
 		$return[] = array(
 			"status" => "error",
-			"code" => "500",
-			"phase" => "setup",
 			"msg" => "Unknown Action",
 		);
 		break;

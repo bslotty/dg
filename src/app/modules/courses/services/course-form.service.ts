@@ -80,10 +80,10 @@ export class CourseFormService {
     this.form.next(form);
   }
 
-   /**
-   *  @returns boolean
-   *  Form needs to be Valid, Touched, and not Disabled.
-   */
+  /**
+  *  @returns boolean
+  *  Form needs to be Valid, Touched, and not Disabled.
+  */
   ReadyForSubmission(): boolean {
     if (this.form.value.valid && this.form.value.dirty && !this.form.value.disabled) {
       return true;
@@ -96,17 +96,21 @@ export class CourseFormService {
     console.log("SubmitCreation.form: ", this.form);
 
     var course = new Course();
-    course.parkName   = this.form.value.value.parkName;
-    course.city       = this.form.value.value.city;
-    course.state      = this.form.value.value.state;
-    course.zip        = this.form.value.value.zip;
-    course.lat        = this.form.value.value.lat;
-    course.lng        = this.form.value.value.lng;
+    course.parkName = this.form.value.value.parkName;
+    course.city = this.form.value.value.city;
+    course.state = this.form.value.value.state;
+    course.zip = this.form.value.value.zip;
+    course.lat = this.form.value.value.lat;
+    course.lng = this.form.value.value.lng;
 
-    this.courseService.create(course).subscribe((res)=>{
+    this.courseService.create(course).subscribe((res) => {
       console.log("course.form.create.res: ", res);
+      if (this.courseService.rCheck(res)) {
+
+      } else {
+
+      }
     });
   }
-
 
 }

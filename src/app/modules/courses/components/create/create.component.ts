@@ -56,7 +56,9 @@ export class CreateComponent implements OnInit {
   }
 
   createCourse() {
-    this.courseForm.SubmitCreation();
+    if  (this.courseForm.ReadyForSubmission()) {
+      this.courseForm.SubmitCreation();
+    }
   }
 
 }

@@ -92,7 +92,11 @@ class DB
             $payload = array(
                 "status"        => "success",
                 "affectedRows"  =>  $this->stmt->rowCount(),
-                "results"       =>  $this->stmt->fetchAll(PDO::FETCH_ASSOC)
+                "results"       =>  $this->stmt->fetchAll(PDO::FETCH_ASSOC),
+                "debug"     => array(
+                    "q"     => $q,
+                    "v"     => $v
+                )
             );
         }
 
