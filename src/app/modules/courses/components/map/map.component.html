@@ -1,6 +1,6 @@
 <div id="map">
 
-  <div class="form-group">
+  <div class="form-group" *ngIf="search">
     <mat-label>Enter address</mat-label>
     <input type="text" matInput (keydown.enter)="$event.preventDefault()"
       placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>

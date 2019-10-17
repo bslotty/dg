@@ -1,22 +1,5 @@
-<app-section-header title="Courses"></app-section-header>
+<app-section-header title="{{ title }}"></app-section-header>
 
-<div *ngIf="!feed.loading; else loader">
-  <div *ngFor="let course of courseList" class="panel">
-    <course-list-item [course]="course"></course-list-item>
-  </div>
-
-  <div class="message">
-    <p>Looking for a Course that isnt listed? <a mat-flat-button color="transparent-accent"
-        routerLink="/courses/search">
-        Search
-      </a> for one!</p>
-  </div>
-
+<div *ngFor="let course of courseList" class="panel">
+  <course-list-item [course]="course"></course-list-item>
 </div>
-
-
-
-
-<ng-template #loader>
-  <loader></loader>
-</ng-template>

@@ -152,7 +152,6 @@ $dgc-theme: mat-dark-theme($dgc-primary, $dgc-accent, $dgc-warn);
 // include the custom theme object into the angular material theme
 @include angular-material-theme($dgc-theme);
 
-
 /*
     Angular Material Font Guidelines
     
@@ -172,7 +171,8 @@ h3 {
   font-weight: 600;
 }
 
-p, label {
+p,
+label {
   font-size: 14sp;
 }
 
@@ -180,11 +180,12 @@ p, label {
   font-size: 12sp;
 }
 
-a, button, .mat-button {
+a,
+button,
+.mat-button {
   font-size: 14sp;
   font-weight: 400;
   text-transform: uppercase;
-
 }
 
 p i {
@@ -194,12 +195,6 @@ p i {
 p b {
   font-weight: 500;
 }
-
-
-
-
-
-
 
 /**
     Angular Material Fixes Here
@@ -232,7 +227,8 @@ p b {
   color: $warn;
 }
 
-.mat-button, .mat-menu-item {
+.mat-button,
+.mat-menu-item {
   font-size: 20px !important;
   text-transform: uppercase;
 }
@@ -296,7 +292,7 @@ p b {
 .mat-icon-button,
 .mat-stroked-button,
 .mat-raised-button {
-  line-height: 2em !important;
+  line-height: inherit;
 }
 
 .cdk-overlay-pane {
@@ -350,8 +346,6 @@ New Input Styles
   color: $warn;
 }
 
-
-
 .mat-form-field-prefix {
   font-style: italic;
   margin-right: 1em;
@@ -359,4 +353,36 @@ New Input Styles
   color: $text-light-fade;
   min-width: 20%;
   text-align: right;
+}
+
+/*
+  Google Places
+*/
+.pac-container {
+  background: $primary-light;
+  color: $text-light-fade;
+}
+
+.pac-item {
+  font-size: 0.8rem;
+  color: $text-light-fade;
+  line-height: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  padding: 0.5em;
+}
+
+.pac-item-query {
+  font-size: 1.2rem;
+  line-height: 1.3em;
+  color: $text-light;
+}
+
+.pac-icon {
+  display: none;
+}
+
+.pac-matched {
 }

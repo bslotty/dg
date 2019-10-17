@@ -16,6 +16,8 @@ import { CourseListItemComponent } from './components/templates/course-list-item
 import { CreateComponent } from './components/create/create.component';
 import { CourseBackend } from './services/backend.service';
 import { CourseFormService } from './services/course-form.service';
+import { FavoritesComponent } from './components/favorites/favorites.component';
+import { NearbyComponent } from './components/nearby/nearby.component';
 
 @NgModule({
   imports: [
@@ -34,7 +36,9 @@ import { CourseFormService } from './services/course-form.service';
     MapComponent, 
     ShellComponent,
     CourseListItemComponent,
-    CreateComponent
+    CreateComponent,
+    FavoritesComponent,
+    NearbyComponent
   ],
   providers: [
     CourseBackend,

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CourseBackend, Course } from './backend.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -40,18 +41,20 @@ export class CourseFormService {
   ]);
 
   private cLat = new FormControl("", [
-    Validators.required,
+    /* Validators.required, */
     Validators.minLength(9),
     Validators.maxLength(9)
   ]);
 
   private cLng = new FormControl("", [
-    Validators.required,
+    /* Validators.required, */
     Validators.minLength(9),
     Validators.maxLength(9)
   ]);
 
-  constructor(private courseService: CourseBackend) { }
+  constructor(
+    private courseService: CourseBackend,
+    private router: Router) { }
 
   Setup(type) {
 
@@ -92,6 +95,26 @@ export class CourseFormService {
     }
   }
 
+  resetForm(): void {
+    this.form.value.get("parkName").reset();
+    this.form.value.get("city").reset();
+    this.form.value.get("state").reset();
+    this.form.value.get("zip").reset();
+    this.form.value.get("lat").reset();
+    this.form.value.get("lng").reset();
+  }
+
+  setForm(values): void {
+    this.form.value.get("parkName").setValue(values.parkName);
+    this.form.value.get("city").setValue(values.city);
+    this.form.value.get("state").setValue(values.state);
+    this.form.value.get("zip").setValue(values.zip);
+    this.form.value.get("lat").setValue(values.lat);
+    this.form.value.get("lng").setValue(values.lng);
+    this.form.value.markAsDirty();
+
+  }
+
   SubmitCreation() {
     console.log("SubmitCreation.form: ", this.form);
 
@@ -106,11 +129,33 @@ export class CourseFormService {
     this.courseService.create(course).subscribe((res) => {
       console.log("course.form.create.res: ", res);
       if (this.courseService.rCheck(res)) {
-
+          var createdCourse = this.courseService.rGetData(res);
+          this.router.navigate(["courses", createdCourse[0]['id']]);
       } else {
+        console.log ("Nearby?");
+        
+        //  Fix
+        this.courseService.setCourseList(this.courseService.rGetData(res) as Course[]);
 
+        this.router.navigate(["courses/nearby"]);
       }
     });
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

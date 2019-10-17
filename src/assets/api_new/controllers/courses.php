@@ -48,21 +48,24 @@ switch ($payload['action']) {
 
 			//	Verify no Course within +/- .005 of lat/lng
 			$nearby = $courses->nearBy($course);
-			$return[] = $nearby;
 			if ($nearby['status'] == 'success') {
 				if (count($nearby["results"]) > 0) {
-					$return[] = array(
-						'status' 	=> 'error',
-						'msg'		=> 'There are similiar courses nearby'
-					);
+
+					//	Update Create Status to error, as nearby courses were found;
+					$nearby['status'] = "error";
+					$nearby['msg'] = 'There are similiar courses nearby';
+					$return[] = $nearby;
+
 				} else {
+					$return[] = $nearby;
+					
 					//	Create Course
 					$created = $courses->create($course, $user['results'][0]);
 					$return[] = $created;
 					if ($created['status'] == 'success' && $created["affectedRows"] == 1) {
 
 						//	Return ID for Detail View
-						//	$return[] = $database->lastInsertId();
+						$return[] = $courses->UserRecientlyCreated($payload['user']);
 					}
 				}
 			} else {

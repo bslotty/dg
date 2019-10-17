@@ -1,0 +1,31 @@
+<p>favorites works! send list of courses to app-course-list</p>
+<div *ngIf="!feed.loading; else loader">
+	<app-course-list [courseList]="courseList" title="courses"></app-course-list>
+</div>
+
+
+<p>Previously Played at Goes here!</p>
+
+
+
+
+<div class="message">
+	<p>Looking for a Course that isnt listed? <a mat-flat-button color="transparent-accent"
+		routerLink="/courses/search">
+		Search
+		</a> for one!</p>
+	</div>
+
+<ng-template #loader>
+	<loader></loader>
+</ng-template>
+
+
+
+
+Re-Open
+SortSafe.ACT_ReOpen
+
+Close
+SortSafe.ACT_Close
+

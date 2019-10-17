@@ -4,12 +4,12 @@ import { Course } from '../../services/backend.service';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+  styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
 
   @Input() course: Course;
-  @Input() type: string = "search"; // search | mapOnly
+  @Input() search: boolean = true; 
 
   @Output() selectedLocation: EventEmitter<Course | Boolean> = new EventEmitter();
 

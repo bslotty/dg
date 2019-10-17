@@ -173,12 +173,32 @@ class Course
 	//	Latitude for Calulations
 	public function nearBy($course) 
 	{
+		$values = array(
+			':park_name' 	=> $course['park_name']
+		);
 
-		$lat_top = $course['latitude'] + 0.005;
-		$lat_bot = $course['latitude'] - 0.005;
+		//	Workaround for Lat/Lng not being set; apply values and SQL Query if they are null
+		$whereLatLng = "";
+		if (!empty($course['latitude']) && !empty($course['longitude'])) {
+			$whereLatLng = " (
+				:lat_top > `latitude` AND :lat_bot < `latitude` AND
+				:lng_top > `longitude` AND :lng_bot < `longitude`
+			) OR ";
 
-		$lng_top = $course['longitude'] + 0.005;
-		$lng_bot = $course['longitude'] - 0.005;
+			//	Set Ranges
+			$lat_top = (double)$course['latitude'] + 0.005;
+			$lat_bot = (double)$course['latitude'] - 0.005;
+	
+			$lng_top = (double)$course['longitude'] + 0.005;
+			$lng_bot = (double)$course['longitude'] - 0.005;
+
+			//	Bind Values
+			$values[':lat_top'] = $lat_top;
+			$values[':lat_bot'] = $lat_bot;
+			$values[':lng_top'] = $lng_top;
+			$values[':lng_bot'] = $lng_bot;
+
+		} else {  }
 
 		$query = "SELECT 
 			`id`, 
@@ -192,24 +212,43 @@ class Course
 			`zip`, 
 			`latitude`, 
 			`longitude`
-		FROM `Courses` WHERE (
-			:lat_top > `latitude` AND :lat_bot < `latitude` AND
-			:lng_top > `longitude` AND :lng_bot < `longitude`
-		) OR LOWER(`park_name`) LIKE CONCAT('%%', :park_name, '%%')
+		FROM `Courses` WHERE ". $whereLatLng ." LOWER(`park_name`) LIKE CONCAT('%%', :park_name, '%%')
 		LIMIT 25";
 		
 		
 
-		$values = array(
-			':park_name' 	=> $course['park_name'],
-			':lat_top' 		=> $lat_top,
-			':lat_bot' 		=> $lat_bot,
-			':lng_top' 		=> $lng_top,
-			':lng_bot' 		=> $lng_bot
-		);
+		
 
 		return $this->db->Query($query, $values);
 
 	}
+
+	public function UserRecientlyCreated($user) {
+		$query = "SELECT
+			`id`, 
+			`created_by`, 
+			`created_on`, 
+			`modified_by`, 
+			`modified_on`, 
+			`park_name`, 
+			`city`, 
+			`state`, 
+			`zip`, 
+			`latitude`, 
+			`longitude`
+			FROM `Courses` 
+			WHERE `created_by`=:userID 
+			ORDER BY `created_on` DESC
+			LIMIT 1;";
+
+
+		
+		$values = array(
+			':userID' => $user["id"]
+		);
+
+		return $this->db->Query($query, $values);
+	}
+
 
 }

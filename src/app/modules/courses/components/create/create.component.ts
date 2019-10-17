@@ -10,7 +10,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class CreateComponent implements OnInit {
 
-  mode: string;     //  
+  mode: string;
   form: FormGroup;
 
   invalidParkAddress: Boolean = false;
@@ -18,7 +18,7 @@ export class CreateComponent implements OnInit {
 
   errorMessage: string = "Google was unable to find a park at that location. Try to move the pin inside a park or to another location within the park.";
 
-  constructor(private courseService: CourseBackend, private courseForm: CourseFormService) { }
+  constructor(private courseForm: CourseFormService) { }
 
   ngOnInit() {
     this.courseForm.Setup("create");
@@ -32,24 +32,13 @@ export class CreateComponent implements OnInit {
     if ($event == false) {
       this.invalidParkAddress = true;
 
-      this.form.get("parkName").reset();
-      this.form.get("city").reset();
-      this.form.get("state").reset();
-      this.form.get("zip").reset();
-      this.form.get("lat").reset();
-      this.form.get("lng").reset();
+      this.courseForm.resetForm();
 
     } else {
       this.selectedLocation = $event;
       this.invalidParkAddress = false;
 
-      this.form.get("parkName").setValue($event.parkName);
-      this.form.get("city").setValue($event.city);
-      this.form.get("state").setValue($event.state);
-      this.form.get("zip").setValue($event.zip);
-      this.form.get("lat").setValue($event.lat);
-      this.form.get("lng").setValue($event.lng);
-      this.form.markAsDirty();
+      this.courseForm.setForm($event);
     }
   
     console.log ("form: ", this.form);

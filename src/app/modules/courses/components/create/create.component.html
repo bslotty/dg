@@ -9,7 +9,7 @@
 </div>
 
 <div class="row mt-3 mb-3">
-  <app-map (selectedLocation)="updateAddress($event)"></app-map>
+  <app-map (selectedLocation)="updateAddress($event)" search="true"></app-map>
 </div>
 
 <div *ngIf="invalidParkAddress">
@@ -44,6 +44,7 @@
   </form>
 
   <div class="actions row justify-content-between align-center">
-    <a (click)="createCourse()" mat-flat-button class="btn btn-lg btn-block" color="primary" [disabled]="!courseForm.ReadyForSubmission()"> Create </a>
+    <a (click)="createCourse()" mat-flat-button class="btn btn-lg btn-block" color="primary"
+      [disabled]="!courseForm.ReadyForSubmission()"> Create </a>
   </div>
 </div>

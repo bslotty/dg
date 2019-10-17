@@ -41,6 +41,16 @@ export class CourseBackend {
     }
   }
 
+  rGetData(res): Array<any> | boolean {
+    var latest = res.length - 1;
+    if (latest > -1) {
+      return res[latest]["results"];
+    } else {
+      return false;
+    }
+    
+  }
+
   getList(sort: string) {
     return this.http.post(this.url, { "action": "list", "sort": sort }).pipe(this.serverPipe,
       map((res: ServerPayload) => {
@@ -141,28 +151,14 @@ export class CourseBackend {
       action: 'create',
       course: course, 
       user: this.account.user 
-    }).pipe(map((res: ServerPayload) => {
-        var result: Course;
-        if (res.status == "success") {
-          var course = res["data"]["course"];
-
-          result = new Course(
-            course['id'],
-            course['parkName'],
-            course['city'],
-            course['state'],
-            course['zip'],
-            +course['lat'],
-            +course['lng']
-          );
-
-          return result;
-        } else {
-          return [];
-        }
-      })
-    );
+    });
   }
+
+
+  setCourseList(courses: Course[]) {
+    this.list.next(courses);
+  }
+
 
 }
 
