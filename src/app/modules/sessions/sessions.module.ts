@@ -15,6 +15,7 @@ import { MaterialModule } from '../material/material.module';
 import { ShellComponent } from './components/shell/shell.component';
 import { FormatDetailsComponent } from './components/format-details/format-details.component';
 import { SessionListItemComponent } from '../../templates/session-list-item/session-list-item.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 
 
@@ -31,7 +32,7 @@ import { SessionListItemComponent } from '../../templates/session-list-item/sess
     DetailComponent, 
     CreateComponent, 
     EditComponent, 
-    ShellComponent, FormatDetailsComponent, SessionListItemComponent
+    ShellComponent, FormatDetailsComponent, SessionListItemComponent, DashboardComponent
   ],
   exports: [
     SessionList

@@ -12,6 +12,8 @@ export class ListComponent implements OnInit {
 
   @Input() title: string = "Courses";
   @Input() courseList: Course[];
+  @Input() limit: boolean = true;
+  @Input() from: number = 0;
 
   constructor(
     private feed: FeedbackService,

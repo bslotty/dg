@@ -18,9 +18,17 @@ export class CourseBackend {
     distinctUntilChanged(),
   );
 
+  //  Generic
   private list: BehaviorSubject<Course[]> = new BehaviorSubject([]);
   list$: Observable<Course[]> = this.list.asObservable();
+  
+  //  Favorites
+  private favoriteList: BehaviorSubject<Course[]> = new BehaviorSubject([]);
+  favoriteList$: Observable<Course[]> = this.list.asObservable();
 
+  //  Recient
+  private recientList: BehaviorSubject<Course[]> = new BehaviorSubject([]);
+  recientList$: Observable<Course[]> = this.list.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -51,8 +59,21 @@ export class CourseBackend {
     
   }
 
-  getList(sort: string) {
-    return this.http.post(this.url, { "action": "list", "sort": sort }).pipe(this.serverPipe,
+  genList(list: string = "list", start: number = 0, limit: number = 20) {
+    this.getList(list, start, limit).subscribe((courses) => {
+      return courses;
+    });
+  }
+
+
+  getList(list: string, start: number, limit: number) {
+    return this.http.post(this.url, { 
+      "action": list,
+      "start": start,
+      "limit": limit
+    }).pipe(this.serverPipe,
+
+      /*  Move to GenList so we can handle errors*/
       map((res: ServerPayload) => {
         if (res.status == "success") {
           var result: Course[] = [];
@@ -81,11 +102,7 @@ export class CourseBackend {
     );
   }
 
-  genList(sort: string = "asc") {
-    this.getList(sort).subscribe((courses) => {
-      return courses;
-    });
-  }
+  
 
   getDetail(course: Course) {
     let url = environment.apiUrl + "/courses/detail.php";

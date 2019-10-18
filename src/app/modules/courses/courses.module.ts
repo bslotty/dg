@@ -18,6 +18,7 @@ import { CourseBackend } from './services/backend.service';
 import { CourseFormService } from './services/course-form.service';
 import { FavoritesComponent } from './components/favorites/favorites.component';
 import { NearbyComponent } from './components/nearby/nearby.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { NearbyComponent } from './components/nearby/nearby.component';
     CourseListItemComponent,
     CreateComponent,
     FavoritesComponent,
-    NearbyComponent
+    NearbyComponent,
+    DashboardComponent
   ],
   providers: [
     CourseBackend,
