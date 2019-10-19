@@ -33,6 +33,16 @@ switch ($payload['action']) {
 
 		break;
 
+	case "recient":
+		$return[] = $courses->UserRecientlyPlayed($payload['user']);
+
+		break;
+
+	case "favorites":
+		$return[] = $courses->UserFavorites($payload['user']);
+
+		break;
+
 	case "search":
 		$return[] = $courses->search($payload['term']);
 		break;
@@ -55,10 +65,9 @@ switch ($payload['action']) {
 					$nearby['status'] = "error";
 					$nearby['msg'] = 'There are similiar courses nearby';
 					$return[] = $nearby;
-
 				} else {
 					$return[] = $nearby;
-					
+
 					//	Create Course
 					$created = $courses->create($course, $user['results'][0]);
 					$return[] = $created;

@@ -3,18 +3,16 @@ import { Routes, RouterModule } from '@angular/router';
 
 /*  Components  */
 import { ShellComponent } from './components/shell/shell.component';
-
 import { ListComponent } from './components/list/list.component';
-import { FavoritesComponent } from './components/favorites/favorites.component';
-
 import { DetailComponent } from './components/detail/detail.component';
 import { SearchComponent } from './components/search/search.component';
 import { CreateComponent } from './components/create/create.component';
-import { NearbyComponent } from './components/nearby/nearby.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
-
-/*  Guards  */
 import { AuthGuard } from 'src/app/guards/auth.service';
+
+import { CourseBackend } from './services/backend.service';
+
 
 
 
@@ -24,7 +22,7 @@ const courseRoutes: Routes = [{
   children: [
     {
       path: '',
-      component: FavoritesComponent,
+      component: DashboardComponent,
     },{
       path: "search",
       component: SearchComponent,
@@ -33,11 +31,9 @@ const courseRoutes: Routes = [{
       component: CreateComponent,
       canActivate: [AuthGuard],
     },{
-      path: 'nearby',
-      component: NearbyComponent,
-    },{
-      path: ':id',
+      path: ':name',
       component: DetailComponent,
+      data: []
     }
   ]
 }];

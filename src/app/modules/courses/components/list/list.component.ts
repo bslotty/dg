@@ -1,6 +1,7 @@
 import { Course } from './../../services/backend.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-course-list',
@@ -10,7 +11,7 @@ import { FeedbackService } from 'src/app/modules/feedback/services/feedback.serv
 })
 export class ListComponent implements OnInit {
 
-  @Input() title: string = "Courses";
+  @Input() title: string;
   @Input() courseList: Course[];
   @Input() limit: boolean = true;
   @Input() from: number = 0;
@@ -20,6 +21,12 @@ export class ListComponent implements OnInit {
   ) { }
 
   ngOnInit() {}
+
+  drop(e: CdkDragDrop<Course[]>) {
+    console.log("drop Event: ", e);
+    console.log ("courseList: ", this.courseList);
+    moveItemInArray(this.courseList, e.previousIndex, e.currentIndex);
+  }
   
 }
 

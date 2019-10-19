@@ -94,11 +94,13 @@ export class CreateComponent implements OnInit {
 
 
   getCourseList() {
-    this.courses.getList('asc').subscribe((v: Course[]) => {
+    /*  Broken when adding multiple course lists. Fix when working through a new session
+    this.courses.getList('').subscribe((v: Course[]) => {
 
       this.courseList = v;
       this.feed.finializeLoading();
     });
+    */
   }
 
   onFormSubmit() {

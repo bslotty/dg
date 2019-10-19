@@ -1,1 +1,22 @@
 <p>dashboard works!</p>
+
+<div *ngIf="!feed.loading; else loader">
+    <app-course-list *ngIf="topCourses" [courseList]="topCourses" title="Courses"></app-course-list>
+
+    <div *ngIf="account.user">
+        <app-course-list *ngIf="favoriteCourses" [courseList]="favoriteCourses" title="Favorites"></app-course-list>
+        <app-course-list *ngIf="recientCourses" [courseList]="recientCourses" title="Recient"></app-course-list>
+    </div>
+
+    <div class="message">
+        <p>Looking for a Course that isnt listed? <a mat-flat-button color="transparent-accent"
+                routerLink="/courses/search">
+                Search
+            </a> for one!</p>
+    </div>
+
+</div>
+
+<ng-template #loader>
+    <loader></loader>
+</ng-template>

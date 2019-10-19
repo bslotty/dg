@@ -43,15 +43,12 @@ class Course
 			`latitude`,
 			`longitude` 
 		FROM `Courses`
-		LIMIT " . (int)$start . ", " . (int)$limit . ";";
+		LIMIT " . (int) $start . ", " . (int) $limit . ";";
 
 		$values = array();
 
 		return $this->db->Query($query, $values);
 	}
-
-	public function getFavorites()
-	{ }
 
 	public function search($term, $start = 0, $limit = 100)
 	{
@@ -74,7 +71,7 @@ class Course
 			`state`,';',
 			`zip`
 		)) LIKE CONCAT('%%', :term, '%%')
-		LIMIT " . (int)$start . ", " . (int)$limit . ";";
+		LIMIT " . (int) $start . ", " . (int) $limit . ";";
 
 
 		$values = array(
@@ -109,7 +106,7 @@ class Course
 	}
 
 	public function update($course)
-	{ 	
+	{
 		//	Base Values on each update;
 		$values = array(
 			":id"				=> $course["id"]
@@ -122,7 +119,7 @@ class Course
 
 		//	Update query and values
 		foreach ($course as $key => $value) {
-			if (!array_key_exists(":". $key, $values)) {
+			if (!array_key_exists(":" . $key, $values)) {
 				$query .= "`" . $key . "`=:" . $key . ", ";
 				$values[":" . $key] = $value;
 			}
@@ -135,15 +132,12 @@ class Course
 		$query .= " WHERE `id`=:id LIMIT 1";
 
 		return $this->db->Query($query, $values);
-
 	}
 
 
 
-	public function delete($course, $requestor) 
-	{
-			
-	}
+	public function delete($course, $requestor)
+	{ }
 
 	//	For Delete
 	public function getCreator()
@@ -153,14 +147,15 @@ class Course
 	/**
 	 *  Input course from frontend format to backend format
 	 */
-	public function ConvertFrontBack($course) {
+	public function ConvertFrontBack($course)
+	{
 		$newCourse = array(
 			'park_name' 	=> $course['parkName'],
 			'city' 			=> $course['city'],
 			'state' 		=> $course['state'],
 			'zip' 			=> $course['zip'],
 			'latitude' 		=> $course['lat'],
-			'longitude' 	=> $course['lng']		
+			'longitude' 	=> $course['lng']
 		);
 
 		return $newCourse;
@@ -171,7 +166,7 @@ class Course
 	//	1 degree of Longitude = ~0.79585 * 69.172 = ~ 55.051 miles
 	//	To find area  +/- xx.005
 	//	Latitude for Calulations
-	public function nearBy($course) 
+	public function nearBy($course)
 	{
 		$values = array(
 			':park_name' 	=> $course['park_name']
@@ -186,19 +181,18 @@ class Course
 			) OR ";
 
 			//	Set Ranges
-			$lat_top = (double)$course['latitude'] + 0.005;
-			$lat_bot = (double)$course['latitude'] - 0.005;
-	
-			$lng_top = (double)$course['longitude'] + 0.005;
-			$lng_bot = (double)$course['longitude'] - 0.005;
+			$lat_top = (float) $course['latitude'] + 0.005;
+			$lat_bot = (float) $course['latitude'] - 0.005;
+
+			$lng_top = (float) $course['longitude'] + 0.005;
+			$lng_bot = (float) $course['longitude'] - 0.005;
 
 			//	Bind Values
 			$values[':lat_top'] = $lat_top;
 			$values[':lat_bot'] = $lat_bot;
 			$values[':lng_top'] = $lng_top;
 			$values[':lng_bot'] = $lng_bot;
-
-		} else {  }
+		} else { }
 
 		$query = "SELECT 
 			`id`, 
@@ -212,18 +206,18 @@ class Course
 			`zip`, 
 			`latitude`, 
 			`longitude`
-		FROM `Courses` WHERE ". $whereLatLng ." LOWER(`park_name`) LIKE CONCAT('%%', :park_name, '%%')
+		FROM `Courses` WHERE " . $whereLatLng . " LOWER(`park_name`) LIKE CONCAT('%%', :park_name, '%%')
 		LIMIT 25";
-		
-		
 
-		
+
+
+
 
 		return $this->db->Query($query, $values);
-
 	}
 
-	public function UserRecientlyCreated($user) {
+	public function UserRecientlyCreated($user)
+	{
 		$query = "SELECT
 			`id`, 
 			`created_by`, 
@@ -239,10 +233,10 @@ class Course
 			FROM `Courses` 
 			WHERE `created_by`=:userID 
 			ORDER BY `created_on` DESC
-			LIMIT 1;";
+			LIMIT 10;";
 
 
-		
+
 		$values = array(
 			':userID' => $user["id"]
 		);
@@ -251,4 +245,64 @@ class Course
 	}
 
 
+	public function UserFavorites($user)
+	{
+		$query = "SELECT
+			`c`.`id`, 
+			`c`.`created_by`, 
+			`c`.`created_on`, 
+			`c`.`modified_by`, 
+			`c`.`modified_on`, 
+			`c`.`park_name`, 
+			`c`.`city`, 
+			`c`.`state`, 
+			`c`.`zip`, 
+			`c`.`latitude`, 
+			`c`.`longitude`
+		FROM `Courses` AS `c`
+		JOIN `Favorites` AS `f`
+		WHERE 
+			`c`.`id`=`f`.`related_id` AND 
+			`f`.`related_table`=:related_table AND 
+			`f`.`created_by`=:userId
+		ORDER BY `c`.`created_on` DESC;";
+
+		$values = array(
+			':userId' => $user["id"],
+			':related_table' => "courses"
+
+		);
+
+		return $this->db->Query($query, $values);
+	}
+
+	public function UserRecientlyPlayed($user)
+	{
+		$query = "SELECT
+			`c`.`id`, 
+			`c`.`created_by`, 
+			`c`.`created_on`, 
+			`c`.`modified_by`, 
+			`c`.`modified_on`, 
+			`c`.`park_name`, 
+			`c`.`city`, 
+			`c`.`state`, 
+			`c`.`zip`, 
+			`c`.`latitude`, 
+			`c`.`longitude`
+		FROM `Courses` AS `c`
+		JOIN `Sessions` AS `sn`
+		JOIN `Scores` AS `sc`
+		WHERE 
+			`c`.`id`=`sn`.`course_id` AND 
+			`sn`.`id` = `sc`.`session_id` AND
+			`sc`.`player_id` = :userId
+		ORDER BY `c`.`created_on` DESC;";
+
+		$values = array(
+			':userId' => $user["id"]
+		);
+
+		return $this->db->Query($query, $values);
+	}
 }

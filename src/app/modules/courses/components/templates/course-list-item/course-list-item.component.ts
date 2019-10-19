@@ -14,4 +14,8 @@ export class CourseListItemComponent implements OnInit {
   ngOnInit() {
   }
 
+  favorite(course){
+    console.log ("course", course);
+  }
+
 }

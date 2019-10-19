@@ -2,3 +2,17 @@
     font-weight: 100;
     font-size: .8em;
 }
+
+
+.drag-list {
+    max-width: 100%;
+    min-height: 60px;
+    display: block;
+    overflow: hidden;
+    
+    overflow: hidden;
+}
+
+.drag-item {
+    display: flex;
+}

@@ -1,5 +1,5 @@
-<app-section-header title="{{ title }}"></app-section-header>
+<app-section-header *ngIf="title" title="{{ title }}"></app-section-header>
 
-<div *ngFor="let course of courseList" class="panel">
-  <course-list-item [course]="course"></course-list-item>
+<div cdkDropList (cdkDropListDropped)="drop($event)" class="drag-list">
+  <course-list-item *ngFor="let course of courseList" [course]="course" cdkDrag class="drag-item"></course-list-item>
 </div>

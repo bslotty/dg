@@ -49,24 +49,38 @@ export class CourseBackend {
     }
   }
 
-  rGetData(res): Array<any> | boolean {
+  rGetData(res): Array<any> {
     var latest = res.length - 1;
     if (latest > -1) {
       return res[latest]["results"];
     } else {
-      return false;
+      return [];
     }
     
   }
 
-  genList(list: string = "list", start: number = 0, limit: number = 20) {
-    this.getList(list, start, limit).subscribe((courses) => {
-      return courses;
+  listFavorites(){
+    this.getList("favorites").subscribe((courses:Course[])=>{
+      console.log ("courses.favorites: ",courses);
+      this.favoriteList.next(courses);
+    });
+  };
+
+  listRecient(){
+    this.getList("recient").subscribe((courses:Course[])=>{
+      console.log ("courses.recient: ",courses);
+      this.recientList.next(courses);
+    });
+  }
+
+  listTop() {
+    this.getList("list").subscribe((courses:Course[]) => {
+      this.list.next(courses);
     });
   }
 
 
-  getList(list: string, start: number, limit: number) {
+  getList(list: string, start: number = 0, limit: number = 20) {
     return this.http.post(this.url, { 
       "action": list,
       "start": start,
@@ -74,11 +88,13 @@ export class CourseBackend {
     }).pipe(this.serverPipe,
 
       /*  Move to GenList so we can handle errors*/
-      map((res: ServerPayload) => {
-        if (res.status == "success") {
+      map((res) => {
+        console.log ("res: ", res);
+
+        if (this.rCheck(res)) {
           var result: Course[] = [];
 
-          res.data["courses"].forEach((course) => {
+          this.rGetData(res).forEach((course) => {
             result.push(new Course(
               course['id'],
               course['parkName'],

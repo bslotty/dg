@@ -74,11 +74,13 @@ export class EditComponent implements OnInit {
   }
 
   getCourseList() {
+    /*
     this.courses.getList('asc').subscribe((v:Course[])=>{
       this.courseList = v;
 
       
     });
+    */
   }
 
   setForm() {

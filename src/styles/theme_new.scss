@@ -258,11 +258,21 @@ p b {
 .mat-mini-fab,
 .mat-raised-button,
 .mat-stroked-button {
-  font-size: initial;
   min-width: 0 !important;
   border-radius: 0 !important;
   font-size: 1em !important;
+
+  line-height: 2em !important;
+  height: initial !important;
 }
+
+.mat-fab,
+.mat-icon-button,
+.mat-mini-fab {
+  width: 2em  !important;
+  border-radius: 100%  !important;
+}
+
 
 .mat-pseudo-checkbox {
   width: 32px !important;
@@ -331,6 +341,35 @@ p b {
 .mat-raised-button.disabled {
   background-color: rgba(0, 0, 0, 0.2);
   color: rgba(255, 255, 255, 0.4);
+}
+
+
+
+// CDK-Drag-Drop
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+  background: #F00;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.drag-item:last-child {
+  border: none;
+}
+
+.drag-list.cdk-drop-list-dragging .drag-item:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 /*

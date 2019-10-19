@@ -1,23 +1,28 @@
-<div class="course-item mb-3">
-  <div class="row justify-content-between align-items-stretch no-gutters">
-    <div class="col">
+<div class="course-item mb-3 row justify-content-between align-items-stretch no-gutters">
+
+    <div class="col align-self-end">
       <div class="row">
         <div class="col">{{ course.park_name }}</div>
       </div>
 
-      <div class="row justify-content-start align-items-center no-gutters">
+      <div class="row justify-content-start align-items-center no-gutters sub-text">
         <div class="col">{{ course.city}}, {{ course.state }} {{ course.zip }}</div>
       </div>
     </div>
 
+
     <div class="col-4">
       <div class="row justify-content-end align-items no-gutters">
-        <a mat-flat-button color="primary" routerLink="/courses/{{ course.id }}">
-          <span class="icon-link-2"></span>
+          <a mat-icon-button color="accent" (click)="favorite(course)" class="ml-1">
+            <span class="icon-heart"></span>
+          </a>
+
+        <a mat-icon-button color="primary" routerLink="/courses/{{ course.id }}" class="ml-1">
+          <span class="icon-external-link"></span>
         </a>
       </div>
-
     </div>
 
-  </div>
+
+
 </div>
