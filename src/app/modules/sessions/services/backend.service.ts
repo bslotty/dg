@@ -5,19 +5,64 @@ import { HttpClient } from '@angular/common/http';
 import { ServerPayload } from 'src/app/app.component';
 import { environment } from 'src/environments/environment';
 import { Course } from '../../courses/services/backend.service';
-import { map } from 'rxjs/operators';
+import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { pipe, BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionBackend  {
 
- 
+  url: string = environment.apiUrl + '/controllers/courses.php';
+
+  serverPipe = pipe(
+    debounceTime(500),
+    distinctUntilChanged(),
+  );
+
+  //  Generic
+  private list: BehaviorSubject<Course[]> = new BehaviorSubject([]);
+  list$: Observable<Course[]> = this.list.asObservable();
+  
+  //  Favorites
+  private favoriteList: BehaviorSubject<Course[]> = new BehaviorSubject([]);
+  favoriteList$: Observable<Course[]> = this.list.asObservable();
+
+  //  Recient
+  private recientList: BehaviorSubject<Course[]> = new BehaviorSubject([]);
+  recientList$: Observable<Course[]> = this.list.asObservable();
 
   constructor(
-    public http: HttpClient,
-    public account: AccountBackend,
+    private http: HttpClient,
+    private account: AccountBackend,
   ) { }
+
+  /**
+   * @param ServerPayload res Subscription Response
+   * @returns boolean true if the latest query ran by the server was successfull;
+   * -- else false
+   */
+  rCheck(res): boolean {
+    var latest = res.length - 1;
+    if (res[latest]["status"] == "success") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  rGetData(res): Array<any> {
+    var latest = res.length - 1;
+    if (latest > -1) {
+      return res[latest]["results"];
+    } else {
+      return [];
+    }
+  }
+
+
+
+ 
 
   //  Load Data List
   getList(league: League) {

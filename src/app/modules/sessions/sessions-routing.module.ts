@@ -13,23 +13,23 @@ import { PlayerScoreListComponent } from '../stats/components/player-score-list/
 
 const sessionRoutes: Routes = [
   {
-    path: 'leagues/:league/sessions',
+    path: 'sessions',
     component: ShellComponent,
     canActivate: [LeagueGuard],
   },{
-    path: "leagues/:league/sessions/create",
+    path: "sessions/create",
     component: CreateComponent,
     canActivate: [PermGuard],
   },{
-    path: "leagues/:league/sessions/:session/edit",
+    path: "sessions/:session/edit",
     component: EditComponent,
     canActivate: [LeagueGuard, PermGuard],
   },{
-    path: "leagues/:league/sessions/:session/play",
+    path: "sessions/:session/play",
     component: PlayerScoreListComponent,
     canActivate: [LeagueGuard],
   },{
-    path: "leagues/:league/sessions/:session",
+    path: "sessions/:session",
     component: DetailComponent,
     canActivate: [LeagueGuard],
   },];

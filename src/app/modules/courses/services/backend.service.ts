@@ -148,30 +148,8 @@ export class CourseBackend {
 
   search(term: string) {
     this.http.post(this.url, { action: "search", term: term }).pipe(this.serverPipe).subscribe((res: ServerPayload) => {
-
-
       if (this.rCheck(res)) {
-        var result: Course[] = [];
-
-        /*
-        res.data["courses"].forEach((course) => {
-          result.push(new Course(
-            course['id'],
-            course['name'],
-            course['parkName'],
-            course['location'],
-            course['img'],
-            course['city'],
-            course['state'],
-            course['zip'],
-            +course['lat'],
-            +course['lng'],
-          ))
-        });
-        */
-
-
-        this.list.next(res[0]["results"]);
+        this.list.next(this.convertProperties(res));
       } else {
         this.list.next([]);
       }
@@ -192,6 +170,23 @@ export class CourseBackend {
     this.list.next(courses);
   }
 
+  convertProperties(res){
+    var result: Course[] = [];
+
+    this.rGetData(res).forEach((course) => {
+      result.push(new Course(
+        course['id'],
+        course['park_name'],
+        course['city'],
+        course['state'],
+        course['zip'],
+        +course['latitude'],
+        +course['longitude'],
+      ))
+    });
+
+    return result;
+  }
 
 }
 

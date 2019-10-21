@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
 
     this.courses.list$.subscribe((courses) => {
-      console.log ("courses: ", courses);
+      console.log("courses: ", courses);
       if (courses.length > 0) {
         console.log("list$.courses: ", courses);
         this.topCourses = courses;
@@ -37,12 +37,14 @@ export class DashboardComponent implements OnInit {
       this.courses.listTop();
     }
 
-    if (this.favoriteCourses == undefined) {
-      this.courses.listFavorites();
-    }
+    if (this.account.user) {
+      if (this.favoriteCourses == undefined) {
+        this.courses.listFavorites();
+      }
 
-    if (this.recientCourses == undefined) {
-      this.courses.listRecient();
+      if (this.recientCourses == undefined) {
+        this.courses.listRecient();
+      }
     }
   }
 

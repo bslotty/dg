@@ -27,6 +27,7 @@ export class AuthGuard implements CanActivate {
       let url: string = state.url;
 
       //  Store Url for redirect
+      console.log ("auth.guard.url: ", url);
       this.account.redirectUrl = url;
     
       // Navigate to the login page
