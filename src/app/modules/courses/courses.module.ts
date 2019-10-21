@@ -16,7 +16,6 @@ import { CourseListItemComponent } from './components/templates/course-list-item
 import { CreateComponent } from './components/create/create.component';
 import { CourseBackend } from './services/backend.service';
 import { CourseFormService } from './services/course-form.service';
-import { FavoritesComponent } from './components/favorites/favorites.component';
 import { NearbyComponent } from './components/nearby/nearby.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
@@ -38,7 +37,6 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     ShellComponent,
     CourseListItemComponent,
     CreateComponent,
-    FavoritesComponent,
     NearbyComponent,
     DashboardComponent
   ],

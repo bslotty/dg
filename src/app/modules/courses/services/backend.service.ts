@@ -97,12 +97,12 @@ export class CourseBackend {
           this.rGetData(res).forEach((course) => {
             result.push(new Course(
               course['id'],
-              course['parkName'],
+              course['park_name'],
               course['city'],
               course['state'],
               course['zip'],
-              +course['lat'],
-              +course['lng'],
+              +course['latitude'],
+              +course['longitude'],
             ))
           });
           //this.list$.next(result);
