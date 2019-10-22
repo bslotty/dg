@@ -92,23 +92,8 @@ export class CourseBackend {
         console.log ("res: ", res);
 
         if (this.rCheck(res)) {
-          var result: Course[] = [];
-
-          this.rGetData(res).forEach((course) => {
-            result.push(new Course(
-              course['id'],
-              course['park_name'],
-              course['city'],
-              course['state'],
-              course['zip'],
-              +course['latitude'],
-              +course['longitude'],
-            ))
-          });
-          //this.list$.next(result);
-          return result;
+          return this.convertProperties(res);
         } else {
-          //this.list$.next([]);
           return [];
         }
       }),
@@ -123,27 +108,12 @@ export class CourseBackend {
   getDetail(course: Course) {
     let url = environment.apiUrl + "/courses/detail.php";
     return this.http.post(url, { course: course }).pipe(map((res: ServerPayload) => {
-        var result: Course;
-        console.log("create.res: ", res);
-        if (res.status == "success") {
-          var course = res["results"][0];
-
-          result = new Course(
-            course['id'],
-            course['parkName'],
-            course['city'],
-            course['state'],
-            course['zip'],
-            +course['lat'],
-            +course['lng']
-          );
-
-          return this.list.next(course);
-        } else {
-          return this.list.next([]);
-        }
-      })
-    );
+      if (this.rCheck(res)) {
+        this.list.next(this.convertProperties(res));
+      } else {
+        this.list.next([]);
+      }
+    }));
   }
 
   search(term: string) {
@@ -176,13 +146,17 @@ export class CourseBackend {
     this.rGetData(res).forEach((course) => {
       result.push(new Course(
         course['id'],
+        course['created_on'],
+        course['created_by'],
+        course['modified_on'],
+        course['modified_by'],
         course['park_name'],
         course['city'],
         course['state'],
         course['zip'],
         +course['latitude'],
         +course['longitude'],
-      ))
+      ));
     });
 
     return result;
@@ -194,11 +168,15 @@ export class CourseBackend {
 export class Course {
   constructor(
     public id?: string,
-    public parkName?: string,
+    public created_on?: string,
+    public created_by?: string, /* User? */
+    public modified_on?: string,
+    public modified_by?: string, /* User? */
+    public park_name?: string,
     public city?: string,
     public state?: string,
     public zip?: string,
-    public lat?: number,
-    public lng?: number,
+    public latitude?: number,
+    public longitude?: number,
   ) { }
 }

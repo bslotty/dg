@@ -1,5 +1,5 @@
 import { League } from './../../leagues/services/backend.service';
-import { AccountBackend } from 'src/app/modules/account/services/backend.service';
+import { AccountBackend, Player } from 'src/app/modules/account/services/backend.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServerPayload } from 'src/app/app.component';
@@ -21,16 +21,16 @@ export class SessionBackend  {
   );
 
   //  Generic
-  private list: BehaviorSubject<Course[]> = new BehaviorSubject([]);
-  list$: Observable<Course[]> = this.list.asObservable();
+  private list: BehaviorSubject<Session[]> = new BehaviorSubject([]);
+  list$: Observable<Session[]> = this.list.asObservable();
   
   //  Favorites
-  private favoriteList: BehaviorSubject<Course[]> = new BehaviorSubject([]);
-  favoriteList$: Observable<Course[]> = this.list.asObservable();
+  private favoriteList: BehaviorSubject<Session[]> = new BehaviorSubject([]);
+  favoriteList$: Observable<Session[]> = this.list.asObservable();
 
   //  Recient
-  private recientList: BehaviorSubject<Course[]> = new BehaviorSubject([]);
-  recientList$: Observable<Course[]> = this.list.asObservable();
+  private recientList: BehaviorSubject<Session[]> = new BehaviorSubject([]);
+  recientList$: Observable<Session[]> = this.list.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -105,6 +105,7 @@ export class SessionBackend  {
     return this.http.post(url, { "session": session }).pipe(
       map((res: ServerPayload) => {
 
+        /*
         if (res.status == "success") {
           session = new Session(
             res.data["session"]["id"],
@@ -121,6 +122,9 @@ export class SessionBackend  {
         } else {
           return [];
         }
+        */
+
+        return [];
       })
     );
   }
@@ -196,18 +200,36 @@ export class SessionBackend  {
       })
     );
   }
+
+  sortSession(list){
+    //  Sort
+    var sorted = list.sort((a, b) => {
+      return b["start"] - a["start"];
+    });
+
+    return sorted;
+  }
+
+  convertSession(res) {
+    var result = [];
+
+    return result;
+  }
 }
 
 
 export class Session {
   constructor(
     public id: string,
+    public created_on?: Date,
+    public created_by?: string, /* User? */
+    public modified_on?: Date,
+    public modified_by?: string, /* User? */
     public course?: Course,
     public format?: string,
-    public start?: Date,
-    public description?: string,
-    public isDone?: number,
-    public isStarted?: number,
+    public starts_on?: Date,
+    public title?: string,
     public par?: Array<any>,
+    public players?: Player[],
   ) { }
 }

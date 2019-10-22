@@ -1,7 +1,7 @@
 import { League } from './../../../leagues/services/backend.service';
 import { SessionBackend, Session } from './../../services/backend.service';
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { flyInPanelRow, flyIn } from 'src/app/animations';
 import { MatDialog } from '@angular/material';
 import { CreateComponent } from '../create/create.component';
@@ -14,69 +14,20 @@ import { CreateComponent } from '../create/create.component';
 })
 export class ListComponent implements OnInit {
 
-  league = new League(this.route.snapshot.paramMap.get("league"));
-  createSessionMessage: Boolean = false;
-  resolve: boolean = false;
-
-  sessionList$: Session[];
+  createSessionMessage: boolean = false;
   emptySessions: boolean = false;
+  
+  @Input() title: string;
+  @Input() sessionList: Session[] = [];
+  @Input() limit: boolean = true;
+  @Input() from: number = 0;
 
-  headerButtons = [{
-    action: "create",
-    icon: "icon-plus",
-    color: "transparent-primary"
-  }];
+  constructor( ) { }
 
-  constructor(
-    public route: ActivatedRoute,
-    public sessions: SessionBackend,
-    public dialog: MatDialog,
-  ) { }
+  ngOnInit() { }
 
-  ngOnInit() {
-    this.populateData();
-  }
-
-  actionClick($event){ 
-    if ($event == 'create') {
-      this.createSession();
-    }
-  }
-
-
-  populateData() {
-
-    this.sessions.getList(this.league).subscribe((sessions)=>{
-
-      
-
-      if (sessions.length == 0) {
-        this.emptySessions = true;
-      } else {
-        //  Sort
-        this.sessionList$ = sessions.sort((a, b) => {
-          return b["start"] - a["start"];
-        });
-      }
-
-      this.resolve = true;
-    });
-  }
 
   itemTrackBy(index: number, item) {
     return item.id;
-  }
-
-  createSession() {
-    const diagRef = this.dialog.open(CreateComponent, {
-      data: { league: this.league }
-    });
-
-    diagRef.afterClosed().subscribe((res)=>{
-      if (res) {
-        this.resolve = false;
-        this.populateData();
-      }
-    });
   }
 }

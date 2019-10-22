@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SessionBackend } from '../../services/backend.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
 
-  ngOnInit() {
-  }
+  
+  constructor(
+    private sessionBackend: SessionBackend
+  ) { }
+
+  ngOnInit() { }
+
+
 
 }

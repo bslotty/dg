@@ -31,7 +31,7 @@ export class PermGuard {
       Verify User exists; -> AuthGuard
       Verify User has access to league; -> LeagueGuard
       Verify User has correct permission levels; -> PermGuard
-    */
+    
 
     if (!this.account.user && !this.leagues.league) { 
       this.router.navigate(["/account/login"]); 
@@ -46,5 +46,8 @@ export class PermGuard {
     } else {
       return true;
     }
+    */
+
+    return true;
   }
 }

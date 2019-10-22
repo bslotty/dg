@@ -119,12 +119,12 @@ export class CourseFormService {
     console.log("SubmitCreation.form: ", this.form);
 
     var course = new Course();
-    course.parkName = this.form.value.value.parkName;
+    course.park_name = this.form.value.value.parkName;
     course.city = this.form.value.value.city;
     course.state = this.form.value.value.state;
     course.zip = this.form.value.value.zip;
-    course.lat = this.form.value.value.lat;
-    course.lng = this.form.value.value.lng;
+    course.latitude = this.form.value.value.lat;
+    course.longitude = this.form.value.value.lng;
 
     this.courseService.create(course).subscribe((res) => {
       console.log("course.form.create.res: ", res);

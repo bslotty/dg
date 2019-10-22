@@ -23,21 +23,33 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
 
+    //  Subscribe to lists
     this.courses.list$.subscribe((courses) => {
-      console.log("courses: ", courses);
-      if (courses.length > 0) {
-        console.log("list$.courses: ", courses);
-        this.topCourses = courses;
-        this.feed.loading = false;
-      }
-
+      this.topCourses = courses;
+      this.feed.loading = false;
     });
 
+    //  Populate Lists
     if (this.topCourses == undefined) {
       this.courses.listTop();
     }
 
+
+    //  Account Required Lists
     if (this.account.user) {
+
+      //  Subscribe to Account Linked Lists
+      this.courses.favoriteList$.subscribe((courses)=>{
+        this.favoriteCourses = courses;
+        this.feed.loading = false;
+      });
+      
+      this.courses.recientList$.subscribe((courses)=>{
+        this.favoriteCourses = courses;
+        this.feed.loading = false;
+      });
+
+      //  Populate Account Linked Lists
       if (this.favoriteCourses == undefined) {
         this.courses.listFavorites();
       }

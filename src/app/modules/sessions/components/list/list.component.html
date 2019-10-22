@@ -3,9 +3,9 @@
   <app-section-header title="Sessions" [buttons]="headerButtons" (actionClick)="actionClick($event)">
   </app-section-header>
 
-  <div *ngIf="resolve; else loader" @flyInPanelRow>
+  <div *ngIf="resolve; else loader">
     <div *ngIf="!emptySessions; else noSessions">
-      <app-session-list-item *ngFor="let session of sessionList$; trackBy:itemTrackBy" [session]="session"></app-session-list-item>
+      <app-session-list-item *ngFor="let session of sessionList; trackBy:itemTrackBy" [session]="session"></app-session-list-item>
     </div>
   </div>
 
