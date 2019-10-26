@@ -2,15 +2,13 @@ import { loading } from 'src/app/animations';
 import { ServerPayload } from 'src/app/app.component';
 import { FeedbackService } from './../../../feedback/services/feedback.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
 
 import { CourseBackend, Course } from '../../../courses/services/backend.service';
 import { LeagueBackend, League } from '../../../leagues/services/backend.service';
 import { AccountBackend } from '../../../account/services/backend.service';
 import { SessionBackend, Session } from '../../services/backend.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-create',
@@ -20,28 +18,19 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 })
 export class CreateComponent implements OnInit {
 
-  public form: FormGroup;
-  public courseList: Course[];
-  public insertID: string;
+  form: FormGroup;
+  courseList: Course[];
+  insertID: string;
 
-  public league: League = new League(this.data.league.id);
-
-  headerButtons = [{
-    icon: "icon-x",
-    color: "transparent-primary",
-    action: "close",
-  }];
+  session: Session = new Session();
 
   constructor(
     public courses: CourseBackend,
-    public leagues: LeagueBackend,
     public account: AccountBackend,
     public sessions: SessionBackend,
     public builder: FormBuilder,
     public location: Location,
     public feed: FeedbackService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialog: MatDialogRef<CreateComponent>,
   ) { }
 
   ngOnInit() {
@@ -50,11 +39,6 @@ export class CreateComponent implements OnInit {
     this.getCourseList();
   }
 
-  actionClick($event) {
-    if ($event == "close") {
-      this.close();
-    }
-  }
 
   initForm() {
 
@@ -138,26 +122,15 @@ export class CreateComponent implements OnInit {
       );
 
       //  Send Request
-      this.sessions.createSession(this.league, session).subscribe((res: ServerPayload) => {
+      /*
+      this.sessions.createSession(session).subscribe((res: ServerPayload) => {
         this.feed.finializeLoading(res, true);
-        if (res['status'] == 'success') {
-
-          //  Goto Session; No Need for extra action. Yay Lazy!
-          //  this.router.navigate(["leagues", this.league.id, "sessions", res["insertID"]])
-          this.close(true);
-        }
+        if (res['status'] == 'success') { }
 
       });
+      */
     }
 
-  }
-
-  locationBack() {
-    this.location.back();
-  }
-
-  close(res = false) {
-    this.dialog.close(res);
   }
 
 }

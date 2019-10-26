@@ -33,19 +33,19 @@ $permissions = new Player($database);
 
 switch ($payload['action']) {
 	case "list":
-		$return[] = $courses->getList($payload['start'], $payload['limit']);
+		$return[] = $sessions->getList($payload['start'], $payload['limit']);
 
 		break;
 
+	/*
 	case "recient":
 		$return[] = $courses->UserRecientlyPlayed($payload['user']);
-
 		break;
 
 	case "favorites":
 		$return[] = $courses->UserFavorites($payload['user']);
-
 		break;
+	*/
 
 	case "search":
 		$return[] = $courses->search($payload['term']);

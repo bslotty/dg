@@ -53,6 +53,7 @@ import { FeedbackComponent } from '../feedback/components/feedback/feedback.comp
 import { PasswordComponent } from 'src/app/templates/form-fields/password/password.component';
 
 
+
 @NgModule({
   imports: [
     CommonModule,
@@ -95,6 +96,7 @@ import { PasswordComponent } from 'src/app/templates/form-fields/password/passwo
     MatTooltipModule,
 
     DragDropModule,
+    
 
   ],
   declarations: [

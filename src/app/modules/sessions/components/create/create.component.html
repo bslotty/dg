@@ -1,84 +1,74 @@
+<app-section-header title="Create Session" [buttons]="headerButtons" (actionClick)="actionClick($event)">
+</app-section-header>
 
-  <app-section-header title="Create Session" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header> 
+
+<form [formGroup]='form'>
+
+  <mat-horizontal-stepper [linear]="isLinear" #stepper labelPosition="bottom">
+    <ng-template matStepperIcon="edit" let-index="index">
+      <p class="stepperHeader mb-0">{{ index + 1 }}</p>
+    </ng-template>
+
+    <ng-template matStepperIcon="done">
+      <span class="icon-check"></span>
+    </ng-template>
+
+    <ng-template matStepperIcon="number" let-index="index">
+      <p class="stepperHeader mb-0">{{ index + 1 }}</p>
+    </ng-template>
 
 
-  <form [formGroup]='form'>
-    <mat-form-field>
-      <mat-label>Course</mat-label>
-      <mat-select 
-        formControlName='course'
-        placeholder="Choose Start Date">
-        <mat-option *ngFor="let o of courseList" [value]="o">
-          {{ o.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <mat-step>
+      <ng-template matStepLabel>Format</ng-template>
+      <app-session-format [format]="session.format"></app-session-format>
+    </mat-step>
 
-    <mat-form-field>
-      <input  
-        matInput
-        [matDatepicker]="picker"
-        placeholder="Choose Start Date"
-        formControlName='start'
-        (focus)="picker.open()"
-        name='start'>
-      <mat-datepicker-toggle matSuffix [for]="picker"><span class='icon-calendar'></span></mat-datepicker-toggle>
-      <mat-datepicker #picker startView="year" [startAt]="form.get('start').value" touchUi="true"></mat-datepicker>
-    </mat-form-field>
 
-    <div class='row shrink'>
-      <mat-form-field>
-        <mat-select placeholder="Hour" formControlName='hour'>
-          <mat-option value="1">1</mat-option>
-          <mat-option value="2">2</mat-option>
-          <mat-option value="3">3</mat-option>
-          <mat-option value="4">4</mat-option>
-          <mat-option value="5">5</mat-option>
-          <mat-option value="6">6</mat-option>
-          <mat-option value="7">7</mat-option>
-          <mat-option value="8">8</mat-option>
-          <mat-option value="9">9</mat-option>
-          <mat-option value="10">10</mat-option>
-          <mat-option value="11">11</mat-option>
-          <mat-option value="12">12</mat-option>
-        </mat-select>
-      </mat-form-field>
+    <mat-step>
+      <ng-template matStepLabel>Course</ng-template>
+      <app-course-selector 
+        (selected)="selectCourse(event)">
+      </app-course-selector>
+    </mat-step>
 
-      <mat-form-field>
-        <mat-select placeholder="Minute" formControlName='min'>
-          <mat-option value="00">00</mat-option>
-          <mat-option value="15">15</mat-option>
-          <mat-option value="30">30</mat-option>
-          <mat-option value="45">45</mat-option>
-        </mat-select>
-      </mat-form-field>
+    <mat-step>
+      <ng-template matStepLabel>Players</ng-template>
+      <div class="row justify-content-end align-items-center">
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </mat-step>
+
+    <mat-step *ngIf="session.format != ffa">
+      <ng-template matStepLabel>Teams</ng-template>
+      <div class="row justify-content-end align-items-center">
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel>Time</ng-template>
 
       <mat-form-field>
-        <mat-select placeholder="AM / PM" formControlName='ampm'>
-          <mat-option value="am">AM</mat-option>
-          <mat-option value="pm">PM</mat-option>
-        </mat-select>
+        <input matInput [matDatepicker]="picker" placeholder="Choose Start Date" formControlName='start'
+          (focus)="picker.open()" name='start'>
+        <mat-datepicker-toggle matSuffix [for]="picker"><span class='icon-calendar'></span></mat-datepicker-toggle>
+        <mat-datepicker #picker startView="year" [startAt]="form.get('start').value" touchUi="true"></mat-datepicker>
       </mat-form-field>
-    </div>
-        
 
-    <mat-form-field>
-      <textarea matInput 
-        placeholder="Additional Information" 
-        formControlName='description'>
-      </textarea>
-      <mat-hint>optional</mat-hint>
-    </mat-form-field>
 
-    <!--  Actions !-->
-    <div class="actions">
-      <div class="row">
-        <a mat-raised-button 
-          color="primary" 
-          (click)="onFormSubmit()"
-          [disabled] = "form.invalid || form.pristine">
+      <ngb-timepicker (ngModel)="time"></ngb-timepicker>
+      <hr>
+      <pre>Selected time: {{ time | json }}</pre>
+      <div class="row justify-content-end align-items-center">
+        <a mat-raised-button color="primary" (click)="onFormSubmit()" [disabled]="form.invalid || form.pristine">
           <label>Create</label>
         </a>
       </div>
-    </div>
-  </form>
+    </mat-step>
+
+  </mat-horizontal-stepper>
+
+
+</form>

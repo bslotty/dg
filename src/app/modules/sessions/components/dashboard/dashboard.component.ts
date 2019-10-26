@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SessionBackend } from '../../services/backend.service';
+import { SessionBackend, Session } from '../../services/backend.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,13 +8,20 @@ import { SessionBackend } from '../../services/backend.service';
 })
 export class DashboardComponent implements OnInit {
 
-
+  list: Session[];
   
   constructor(
     private sessionBackend: SessionBackend
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+
+    this.sessionBackend.getList();
+    this.sessionBackend.list$.subscribe((s)=>{
+      this.list = s;
+    });
+
+  }
 
 
 

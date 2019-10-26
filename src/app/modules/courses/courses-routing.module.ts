@@ -11,8 +11,6 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 import { AuthGuard } from 'src/app/guards/auth.service';
 
-import { CourseBackend } from './services/backend.service';
-
 
 
 

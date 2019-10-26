@@ -17,7 +17,9 @@ import { FormatDetailsComponent } from './components/format-details/format-detai
 import { SessionListItemComponent } from '../../templates/session-list-item/session-list-item.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CourseSelectorComponent } from './components/course-selector/course-selector.component';
+import { PlayerSelectorComponent } from './components/player-selector/player-selector.component';
 
 @NgModule({
   imports: [
@@ -26,13 +28,14 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     StatsModule,
     SessionsRoutingModule,
     PipesModule,
+    NgbModule,
   ],
   declarations: [    
     SessionList, 
     DetailComponent, 
     CreateComponent, 
     EditComponent, 
-    ShellComponent, FormatDetailsComponent, SessionListItemComponent, DashboardComponent
+    ShellComponent, FormatDetailsComponent, SessionListItemComponent, DashboardComponent, CourseSelectorComponent, PlayerSelectorComponent
   ],
   exports: [
     SessionList

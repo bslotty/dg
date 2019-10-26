@@ -13,7 +13,7 @@ import { pipe, BehaviorSubject, Observable } from 'rxjs';
 })
 export class SessionBackend  {
 
-  url: string = environment.apiUrl + '/controllers/courses.php';
+  url: string = environment.apiUrl + '/controllers/sessions.php';
 
   serverPipe = pipe(
     debounceTime(500),
@@ -24,6 +24,7 @@ export class SessionBackend  {
   private list: BehaviorSubject<Session[]> = new BehaviorSubject([]);
   list$: Observable<Session[]> = this.list.asObservable();
   
+  /*
   //  Favorites
   private favoriteList: BehaviorSubject<Session[]> = new BehaviorSubject([]);
   favoriteList$: Observable<Session[]> = this.list.asObservable();
@@ -31,6 +32,29 @@ export class SessionBackend  {
   //  Recient
   private recientList: BehaviorSubject<Session[]> = new BehaviorSubject([]);
   recientList$: Observable<Session[]> = this.list.asObservable();
+  */
+
+  public types = [
+    {
+      name: 'Free For All',
+      enum: 'ffa',
+      desc: `Every person for themselves! This is standard play.`,
+    },{
+      name: 'Teams: Sum',
+      enum: 'team-sum',
+      desc: `This format will combine the scores of each player on each team. Rankings will be sorted by the Team's Total Score.`,
+    },{
+      name: 'Teams: Average',
+      enum: 'team-average',
+      desc: `This format will average the throw totals of each player against par. Rankings will be sorted by the Team's Average Score.`,
+    },{
+      name: 'Teams: Best Only',
+      enum: 'team-best',
+      desc: `This format will only count the best score of each hole. Scores are set from the best scores of each hole.`,
+    }
+  ];
+
+
 
   constructor(
     private http: HttpClient,
@@ -65,14 +89,15 @@ export class SessionBackend  {
  
 
   //  Load Data List
-  getList(league: League) {
-    let url =  "/sessions/list.php";
+  getList() {
+    return this.http.post(this.url, { 
+      "action": "list",
 
-    return this.http.post(url, { "league": league }).pipe(
+    }).pipe(
       map((res: ServerPayload) => {
 
         if (res.status == "success") {
-          return res.data['sessions'];
+          return res['sessions'];
           /*
           var result: Session[] = [];
 
@@ -101,29 +126,8 @@ export class SessionBackend  {
   }
 
   getDetail(session: Session) {
-    let url = environment.apiUrl + "/sessions/detail.php";
-    return this.http.post(url, { "session": session }).pipe(
+    return this.http.post(this.url, { "session": session }).pipe(
       map((res: ServerPayload) => {
-
-        /*
-        if (res.status == "success") {
-          session = new Session(
-            res.data["session"]["id"],
-            new Course(res.data["course"]["id"], res.data["course"]["name"]),
-            res.data["session"]["format"],
-            res.data["session"]["start"],
-            res.data["session"]["description"],
-            res.data["session"]["isDone"],
-            res.data["session"]["isStarted"],
-            JSON.parse(res.data["session"]["par"]),
-          );
-
-          return session;
-        } else {
-          return [];
-        }
-        */
-
         return [];
       })
     );
@@ -131,16 +135,13 @@ export class SessionBackend  {
 
 
 
-  createSession(league: League, session: Session) {
-    let url = environment.apiUrl + "/sessions/create.php";
-    return this.http.post(url, {
+  create(session: Session) {
+    return this.http.post(this.url, {
       "user": this.account.user,
-      "league": league,
       "session": session,
+      "action": "create"
     }).pipe(
       map((res: ServerPayload) => {
-        //  Update Data Store
-        this.getList(league);
 
         //  Return Server Response for Error Handling
         return res;
@@ -158,9 +159,6 @@ export class SessionBackend  {
       "session": session,
     }).pipe(
       map((res: ServerPayload) => {
-        //  Update Data Store
-        this.getList(league);
-
         //  Return Server Response for Error Handling
         return res;
       })
@@ -175,8 +173,6 @@ export class SessionBackend  {
       "session": session,
     }).pipe(
       map((res: ServerPayload) => {
-        //  Update Data Store
-        this.getList(league);
 
         //  Return Server Response for Error Handling
         return res;
@@ -192,8 +188,6 @@ export class SessionBackend  {
       "session": session,
     }).pipe(
       map((res: ServerPayload) => {
-        //  Update Data Store
-        this.getList(league);
 
         //  Return Server Response for Error Handling
         return res;
@@ -215,12 +209,16 @@ export class SessionBackend  {
 
     return result;
   }
+
+  updateFormat(type) {
+    console.log ("session.updateFormat: ", type);
+  }
 }
 
 
 export class Session {
   constructor(
-    public id: string,
+    public id?: string,
     public created_on?: Date,
     public created_by?: string, /* User? */
     public modified_on?: Date,

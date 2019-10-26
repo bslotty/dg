@@ -1,17 +1,19 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { CourseBackend } from '../../services/backend.service';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CourseBackend, Course } from 'src/app/modules/courses/services/backend.service';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
 
 @Component({
-  selector: 'app-course-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css']
+  selector: 'app-course-selector',
+  templateUrl: './course-selector.component.html',
+  styleUrls: ['./course-selector.component.scss']
 })
-export class SearchComponent implements OnInit {
+export class CourseSelectorComponent implements OnInit {
   
   form: FormGroup;
-  results = [];
+  results:Course[] = [];
+  @Output() selected: EventEmitter<Course> = new EventEmitter();
+
 
   constructor(
     private builder: FormBuilder,
@@ -47,3 +49,4 @@ export class SearchComponent implements OnInit {
   }
 
 }
+

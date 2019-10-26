@@ -75,7 +75,7 @@ export class PlayerScoreListComponent implements OnInit,OnDestroy {
       */
 
       //  Insert Par & Details
-      this.session = session as Session;
+      //  this.session = session as Session[];
 
       //  Admin Check
       members.filter((member) => {

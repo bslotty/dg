@@ -171,6 +171,11 @@ h3 {
   font-weight: 600;
 }
 
+h3 {
+  font-size: .9rem;
+  font-weight: 600;
+}
+
 p,
 label {
   font-size: 14sp;
@@ -344,6 +349,19 @@ p b {
 }
 
 
+.mat-step-label {
+  font-size: 1rem;
+
+}
+
+.mat-step-label-selected {
+  color: $accent !important;
+}
+
+.mat-stepper-horizontal, .mat-stepper-vertical {
+  background-color: $primary-light;
+}
+
 
 // CDK-Drag-Drop
 .cdk-drag-preview {
@@ -369,6 +387,8 @@ p b {
 .drag-list.cdk-drop-list-dragging .drag-item:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+
 
 /*
 
@@ -422,4 +442,12 @@ New Input Styles
 }
 
 .pac-matched {
+}
+
+
+/*
+  BootStrap Fixes
+*/
+.btn-link {
+  color: $accent
 }

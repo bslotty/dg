@@ -1,19 +1,15 @@
-<app-section-header title="Session Format" [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header>
-
-<div>
-  <p class="warn">If you change the format, it will reset the scores.</p>
-</div>
-
-
-<div *ngFor="let format of types;" class='format'>
-  <div>
-    <h2>{{ format.name }}</h2>
-    <div>
+<div *ngFor="let format of sessions.types;" class='format'>
+  <div class="row justify-content-between align-items-center">
+    <div class="col">
+        <h4>{{ format.name }}</h4>
+    </div>
+    
+    <div class="col-xs">
       <a *ngIf="selected == format.enum" mat-flat-button color="accent">
         <label>Selected</label>
       </a>
-      <a *ngIf="selected != format.enum && hasAccess" mat-stroked-button (click)="setFormat(format)">
-        <label>Click to Set</label>
+      <a *ngIf="selected != format.enum" mat-stroked-button (click)="setFormat(format)">
+        <label>Select</label>
       </a>
     </div>
   </div>

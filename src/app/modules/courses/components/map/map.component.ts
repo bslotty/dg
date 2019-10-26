@@ -146,12 +146,12 @@ export class MapComponent implements OnInit {
       this.selectedLocation.next(false);
     } else {
       var course = new Course();
-      course.parkName   = location_obj['park'];
+      course.park_name  = location_obj['park'];
       course.city       = location_obj['locality'];
       course.state      = location_obj['admin_area_l1']
       course.zip        = location_obj['postal_code']
-      course.lat        = this.latitude;
-      course.lng        = this.longitude;
+      course.latitude   = this.latitude;
+      course.longitude  = this.longitude;
 
       //  console.log ("newCourse: ", course)
 

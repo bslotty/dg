@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CoursesRoutingModule } from './courses-routing.module';
@@ -30,19 +30,22 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     }),
   ],
   declarations: [
-    ListComponent, 
-    SearchComponent, 
-    DetailComponent, 
-    MapComponent, 
+    ListComponent,
+    SearchComponent,
+    DetailComponent,
+    MapComponent,
     ShellComponent,
     CourseListItemComponent,
     CreateComponent,
     NearbyComponent,
-    DashboardComponent
+    DashboardComponent,
   ],
   providers: [
     CourseBackend,
     CourseFormService
-  ]
+  ],
+
 })
-export class CoursesModule { }
+export class CoursesModule {
+
+}

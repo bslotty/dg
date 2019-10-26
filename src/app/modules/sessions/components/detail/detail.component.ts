@@ -56,7 +56,7 @@ export class DetailComponent implements OnInit {
     this.sessions.getDetail(this.session).subscribe((session) => {
 
       //  Store Data For Children
-      this.session = session as Session;
+      //  this.session = session as Session;
 
 
       this.formatDisplay();

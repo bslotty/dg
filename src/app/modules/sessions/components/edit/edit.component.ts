@@ -84,6 +84,7 @@ export class EditComponent implements OnInit {
   }
 
   setForm() {
+    /*
     this.sessions.getDetail(this.session).subscribe((v:Session)=>{
       this.session = v;
 
@@ -103,6 +104,7 @@ export class EditComponent implements OnInit {
 
       this.resolve = true;
     });
+    */
   }
 
 
@@ -153,6 +155,7 @@ export class EditComponent implements OnInit {
       var d = new Date(year, month, day, hour, min);
 
       //  Create Session
+      /*
       var session: Session = new Session(
         this.session.id, 
         new Course(this.form.get('course').value), 
@@ -160,9 +163,10 @@ export class EditComponent implements OnInit {
         d, 
         this.form.get('description').value
       );
+      
 
       //  Send Request
-      this.sessions.updateSession(this.league, session).subscribe((res: ServerPayload)=>{
+      this.sessions.updateSession(this.league, {}).subscribe((res: ServerPayload)=>{
         this.resolve = true;
 
         if (res['status'] == 'success') {
@@ -170,6 +174,7 @@ export class EditComponent implements OnInit {
           this.close();
         }
       });
+      */
     }
   }
 

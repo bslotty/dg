@@ -23,7 +23,7 @@ const sessionRoutes: Routes = [
       {
         path: "create",
         component: CreateComponent,
-        canActivate: [PermGuard],
+        canActivate: [],
       }, {
         path: ":session/edit",
         component: EditComponent,
