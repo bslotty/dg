@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FormatDetailsComponent } from './format-details.component';
+import { SelectFormatComponent } from './select-format.component';
 
 describe('FormatDetailsComponent', () => {
-  let component: FormatDetailsComponent;
-  let fixture: ComponentFixture<FormatDetailsComponent>;
+  let component: SelectFormatComponent;
+  let fixture: ComponentFixture<SelectFormatComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FormatDetailsComponent ]
+      declarations: [ SelectFormatComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FormatDetailsComponent);
+    fixture = TestBed.createComponent(SelectFormatComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

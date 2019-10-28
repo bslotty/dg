@@ -4,31 +4,57 @@
 
 <form [formGroup]='form'>
 
-  <mat-horizontal-stepper [linear]="isLinear" #stepper labelPosition="bottom">
+  <mat-horizontal-stepper [linear]="true" #stepper labelPosition="end" class="mb-3">
     <ng-template matStepperIcon="edit" let-index="index">
-      <p class="stepperHeader mb-0">{{ index + 1 }}</p>
+      <!-- p class="stepperHeader mb-0">{{ index + 1 }}</p-->
     </ng-template>
 
     <ng-template matStepperIcon="done">
-      <span class="icon-check"></span>
+      <!--span class="icon-check"></span-->
     </ng-template>
 
     <ng-template matStepperIcon="number" let-index="index">
-      <p class="stepperHeader mb-0">{{ index + 1 }}</p>
+      <!--p class="stepperHeader mb-0">{{ index + 1 }}</p-->
     </ng-template>
 
 
-    <mat-step>
+    <mat-step [stepControl]="form.get('format')">
       <ng-template matStepLabel>Format</ng-template>
-      <app-session-format [format]="session.format"></app-session-format>
+      <app-select-format [selectedFormat]="form.get('format').value" (selected)="selectedFormat($event)"></app-select-format>
     </mat-step>
 
 
-    <mat-step>
+    <mat-step [stepControl]="form.get('course')">
       <ng-template matStepLabel>Course</ng-template>
-      <app-course-selector 
-        (selected)="selectCourse(event)">
-      </app-course-selector>
+      <app-select-course (selected)="selectCourse(event)">
+      </app-select-course>
+    </mat-step>
+
+    <mat-step [stepControl]="form.get('date') && form.get('time')">
+      <ng-template matStepLabel>Time</ng-template>
+
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Choose Start Date" formControlName='date'
+          (focus)="picker.open()" type="text">
+        <mat-datepicker-toggle matSuffix [for]="picker"><span class='icon-calendar'></span></mat-datepicker-toggle>
+        <mat-datepicker #picker startView="year" [startAt]="form.get('date').value" touchUi="true"></mat-datepicker>
+      </mat-form-field>
+
+
+      <mat-form-field>
+        <input matInput [ngxTimepicker]="timePicker" placeholder="Choose Start Time" formControlName='time'
+        type="text">
+        <div matSuffix><a mat-flat-button color="transparent-primary" (click)="timePicker.open()"><span class="icon-clock"></span></a></div>
+        <ngx-material-timepicker #timePicker minutesGap=5></ngx-material-timepicker>
+
+      </mat-form-field>
+      
+
+      <div class="row justify-content-end align-items-center">
+        <a mat-raised-button color="primary" (click)="onFormSubmit()" [disabled]="form.invalid || form.pristine">
+          <label>Create</label>
+        </a>
+      </div>
     </mat-step>
 
     <mat-step>
@@ -47,26 +73,7 @@
       </div>
     </mat-step>
 
-    <mat-step>
-      <ng-template matStepLabel>Time</ng-template>
 
-      <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Choose Start Date" formControlName='start'
-          (focus)="picker.open()" name='start'>
-        <mat-datepicker-toggle matSuffix [for]="picker"><span class='icon-calendar'></span></mat-datepicker-toggle>
-        <mat-datepicker #picker startView="year" [startAt]="form.get('start').value" touchUi="true"></mat-datepicker>
-      </mat-form-field>
-
-
-      <ngb-timepicker (ngModel)="time"></ngb-timepicker>
-      <hr>
-      <pre>Selected time: {{ time | json }}</pre>
-      <div class="row justify-content-end align-items-center">
-        <a mat-raised-button color="primary" (click)="onFormSubmit()" [disabled]="form.invalid || form.pristine">
-          <label>Create</label>
-        </a>
-      </div>
-    </mat-step>
 
   </mat-horizontal-stepper>
 

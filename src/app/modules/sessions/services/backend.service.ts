@@ -231,3 +231,14 @@ export class Session {
     public players?: Player[],
   ) { }
 }
+
+/*
+export class SessionFormat {
+  constructor(
+    public name?: string,
+    public enum?: string,
+    public desc?: string
+  ) { }
+}
+
+*/

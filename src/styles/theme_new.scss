@@ -358,17 +358,30 @@ p b {
   color: $accent !important;
 }
 
+.mat-step-icon {
+  display: none;
+}
+
 .mat-stepper-horizontal, .mat-stepper-vertical {
   background-color: $primary-light;
 }
 
 
+.mat-datepicker-content {
+  background: $primary-light;
+}
+
+.mat-calendar-body,
+.mat-calendar-body-label,
+.mat-calendar-table-header th,
+.mat-calendar-period-button {
+  font-size: 1rem;
+}
+
 // CDK-Drag-Drop
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 4px;
-
-  
 }
 
 .cdk-drag-placeholder {
@@ -388,6 +401,46 @@ p b {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
+//  Time Picker
+.timepicker {
+  width: 350px !important;
+}
+
+.timepicker__header {
+  background: $primary-light !important;
+}
+
+.timepicker-dial__container {
+  justify-content: center !important;
+}
+
+.timepicker__body {
+  background: $primary-light !important;
+}
+
+.timepicker__actions {
+  background: $primary-light !important;
+  justify-content: center !important;  
+}
+
+.timepicker-button {
+  font-size: 1rem !important;
+  line-height: 2rem !important;
+  color: $text-light !important;
+  height: initial !important;
+}
+
+.timepicker-button span {
+  font-size: inherit !important;
+}
+
+
+
+
+
+.clock-face {
+  background: $text-light !important;
+}
 
 
 /*

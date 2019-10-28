@@ -35,6 +35,10 @@ export class SessionFormService {
     Validators.required,
   ]);
 
+  private cTime = new FormControl("", [
+    Validators.required,
+  ]);
+
   private cPlayers = new FormControl("", [
     Validators.required,
   ]);
@@ -61,6 +65,7 @@ export class SessionFormService {
         form.addControl("format", this.cFormat);
         form.addControl("course", this.cCourse);
         form.addControl("date", this.cDate);
+        form.addControl("time", this.cDate);
         form.addControl("players", this.cPlayers);
         break;
 
@@ -68,6 +73,7 @@ export class SessionFormService {
         form.addControl("format", this.cFormat);
         form.addControl("course", this.cCourse);
         form.addControl("date", this.cDate);
+        form.addControl("time", this.cDate);
         form.addControl("players", this.cPlayers);
         break;
     }
@@ -91,6 +97,7 @@ export class SessionFormService {
     this.form.value.get("format").reset();
     this.form.value.get("course").reset();
     this.form.value.get("date").reset();
+    this.form.value.get("time").reset();
     this.form.value.get("players").reset();
   }
 
@@ -98,13 +105,20 @@ export class SessionFormService {
     this.form.value.get("format").setValue(values.cFormat);
     this.form.value.get("course").setValue(values.cCourse);
     this.form.value.get("date").setValue(values.cDate);
+    this.form.value.get("time").setValue(values.cTime);
     this.form.value.get("players").setValue(values.cPlayers);
     this.form.value.markAsDirty();
 
   }
 
+  setFormat(format){
+    this.form.value.get("format").setValue(format);
+  }
+
   SubmitCreation() {
     console.log("SubmitCreation.form: ", this.form);
+
+    //  Append Date + Time;
 
     var session         = new Session();
     session.format      = this.form.value.value.cFormat;
@@ -126,6 +140,52 @@ export class SessionFormService {
         this.router.navigate(["courses/nearby"]);
       }
     });
+
+
+
+    //  Old
+
+    /*
+        if (this.form.valid && this.form.dirty) {
+
+
+      //  Convert Date
+      var d: Date = new Date(this.form.get('start').value);
+      var year = d.getFullYear();
+      var month = d.getMonth();
+      var day = d.getDate();
+
+      var hour = this.form.get('hour').value;
+      var min = this.form.get('min').value;
+      var convert = this.form.get('ampm').value.toLowerCase()
+
+      //  AM/PM Fix
+      if (convert == 'pm' && hour != '12') {
+        hour = (+hour + 12);
+      } else if (convert == 'am' && hour == '12') {
+        hour = "00";
+      }
+
+      //  Set Start Date
+      var d = new Date(year, month, day, hour, min);
+
+      //  Create Session
+      var session: Session = new Session(
+        null,
+        this.form.get('course').value,
+        "ffa",
+        d,
+        this.form.get('description').value
+      );
+
+      //  Send Request
+      this.sessions.createSession(session).subscribe((res: ServerPayload) => {
+        this.feed.finializeLoading(res, true);
+        if (res['status'] == 'success') { }
+
+      });
+    }
+  */
   }
 
 

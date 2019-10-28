@@ -13,65 +13,6 @@ PROJECT_COLORS {
 /*  CSS styling agm-map is required!
     It is really important that you define a height component `agm-map`. 
     Otherwise, you won't see a map on the page!
-
-
-
-    
-    Shipment Requests list from -> Waste Information Profile Inventory
-        CC on email:    Client.KAMEmail: cardinalhealth@veolia.com; 
-                        Site Manager (Requester)
-
-       Include Download Packing slip button (Inventory)
-
-    Include Client on Create and Edit for new KAM Email
-
-
-
-
-
-
-    Overdue Drums
-        -> Create String for Table and attach to email
-            Include ID, Status, and Ship Date;
-
-
-
-
-
-
-
-            SAP Uploader Template
-                Blackrock
-                    -> Sou
-            
-
-            Spits Content to CSV
-            
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 */
 
 agm-map {

@@ -6,7 +6,6 @@ import { SessionBackend, Session } from 'src/app/modules/sessions/services/backe
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { EditComponent } from '../edit/edit.component';
-import { FormatDetailsComponent } from '../format-details/format-details.component';
 
 @Component({
   selector: 'app-detail',
@@ -100,6 +99,7 @@ export class DetailComponent implements OnInit {
     });
   }
 
+  /*
   changeFormat() {
     const formatDiag = this.dialog.open(FormatDetailsComponent, {
       data: { session: this.session, league: this.league }
@@ -109,4 +109,5 @@ export class DetailComponent implements OnInit {
       this.populateData();
     });
   }
+  */
 }

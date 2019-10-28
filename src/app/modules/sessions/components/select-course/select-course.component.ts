@@ -4,11 +4,11 @@ import { CourseBackend, Course } from 'src/app/modules/courses/services/backend.
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
 
 @Component({
-  selector: 'app-course-selector',
-  templateUrl: './course-selector.component.html',
-  styleUrls: ['./course-selector.component.scss']
+  selector: 'app-select-course',
+  templateUrl: './select-course.component.html',
+  styleUrls: ['./select-course.component.scss']
 })
-export class CourseSelectorComponent implements OnInit {
+export class SelectCourseComponent implements OnInit {
   
   form: FormGroup;
   results:Course[] = [];

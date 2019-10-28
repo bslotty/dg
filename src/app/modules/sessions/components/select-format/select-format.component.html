@@ -4,11 +4,11 @@
         <h4>{{ format.name }}</h4>
     </div>
     
-    <div class="col-xs">
-      <a *ngIf="selected == format.enum" mat-flat-button color="accent">
+    <div class="col-xs align-self-end">
+      <a *ngIf="selectedFormat == format.enum" mat-flat-button color="accent">
         <label>Selected</label>
       </a>
-      <a *ngIf="selected != format.enum" mat-stroked-button (click)="setFormat(format)">
+      <a *ngIf="selectedFormat != format.enum" mat-stroked-button (click)="setFormat(format)">
         <label>Select</label>
       </a>
     </div>
