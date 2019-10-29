@@ -1,3 +1,5 @@
+@import "src/styles/colors.scss";
+
 .format {
     margin-top: 3em;
 }
@@ -10,3 +12,7 @@
     margin: 0;
 }
 
+.active {
+    background: $accent;
+    border-top: .3em solid $warn;
+}

@@ -378,6 +378,13 @@ p b {
   font-size: 1rem;
 }
 
+.mat-horizontal-content-container {
+  padding: 0 !important;
+
+}
+
+
+
 // CDK-Drag-Drop
 .cdk-drag-preview {
   box-sizing: border-box;
@@ -400,6 +407,8 @@ p b {
 .drag-list.cdk-drop-list-dragging .drag-item:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+
 
 //  Time Picker
 .timepicker {

@@ -61,9 +61,14 @@ export class CreateComponent implements OnInit {
   }
 
 
-  selectedFormat($event) {
+  selectFormat($event) {
     console.log ("format.selected: ", $event);
     this.sessionForm.setFormat($event);
   } 
+
+  selectCourse($event){
+    console.log ("course.selected: ", $event);
+    this.sessionForm.setCourse($event);
+  }
 
 }

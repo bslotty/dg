@@ -1,14 +1,15 @@
-<div *ngFor="let format of sessions.types;" class='format'>
+<div *ngFor="let format of sessions.types;" 
+[class]='selectedFormat == format ? "format active p-3" : "format p-3"'>
   <div class="row justify-content-between align-items-center">
     <div class="col">
         <h4>{{ format.name }}</h4>
     </div>
     
     <div class="col-xs align-self-end">
-      <a *ngIf="selectedFormat == format.enum" mat-flat-button color="accent">
+      <a *ngIf="selectedFormat == format" mat-flat-button color="accent">
         <label>Selected</label>
       </a>
-      <a *ngIf="selectedFormat != format.enum" mat-stroked-button (click)="setFormat(format)">
+      <a *ngIf="selectedFormat != format" mat-stroked-button (click)="setFormat(format)">
         <label>Select</label>
       </a>
     </div>

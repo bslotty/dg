@@ -20,13 +20,13 @@
 
     <mat-step [stepControl]="form.get('format')">
       <ng-template matStepLabel>Format</ng-template>
-      <app-select-format [selectedFormat]="form.get('format').value" (selected)="selectedFormat($event)"></app-select-format>
+      <app-select-format [selectedFormat]="form.get('format').value" (selected)="selectFormat($event)"></app-select-format>
     </mat-step>
 
 
     <mat-step [stepControl]="form.get('course')">
       <ng-template matStepLabel>Course</ng-template>
-      <app-select-course (selected)="selectCourse(event)">
+      <app-select-course (selected)="selectCourse($event)">
       </app-select-course>
     </mat-step>
 

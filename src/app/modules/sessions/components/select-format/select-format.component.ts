@@ -4,11 +4,11 @@ import { SessionBackend } from '../../services/backend.service';
 @Component({
   selector: 'app-select-format',
   templateUrl: './select-format.component.html',
-  styleUrls: ['./select-format.component.css']
+  styleUrls: ['./select-format.component.scss']
 })
 export class SelectFormatComponent implements OnInit {
 
-  @Input() selectedFormat: string;
+  @Input() selectedFormat;
   @Output() selected:EventEmitter<any> = new EventEmitter();
 
   constructor(

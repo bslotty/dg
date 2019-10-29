@@ -15,6 +15,8 @@ export class SessionFormService {
 
   builder: FormBuilder = new FormBuilder;
 
+  initialized: boolean = false;
+
   /*
   public starts_on?: Date,
   public title?: string,
@@ -43,6 +45,12 @@ export class SessionFormService {
     Validators.required,
   ]);
 
+  private cTerm = new FormControl("", [
+    Validators.required,
+    Validators.minLength(2),
+    Validators.maxLength(128)
+  ]);
+
   /*
   private cTitle = new FormControl("", [
     Validators.required,
@@ -65,7 +73,7 @@ export class SessionFormService {
         form.addControl("format", this.cFormat);
         form.addControl("course", this.cCourse);
         form.addControl("date", this.cDate);
-        form.addControl("time", this.cDate);
+        form.addControl("time", this.cTime);
         form.addControl("players", this.cPlayers);
         break;
 
@@ -73,10 +81,15 @@ export class SessionFormService {
         form.addControl("format", this.cFormat);
         form.addControl("course", this.cCourse);
         form.addControl("date", this.cDate);
-        form.addControl("time", this.cDate);
+        form.addControl("time", this.cTime);
         form.addControl("players", this.cPlayers);
         break;
+
+      case "search":
+          form.addControl("term", this.cTerm);
+      break;
     }
+
 
     this.form.next(form);
   }
@@ -111,8 +124,14 @@ export class SessionFormService {
 
   }
 
-  setFormat(format){
+  setFormat(format) {
+    console.log("setFormat", format);
     this.form.value.get("format").setValue(format);
+  }
+
+  setCourse(course) {
+    console.log("setCourse", course);
+    this.form.value.get("course").setValue(course);
   }
 
   SubmitCreation() {
@@ -120,20 +139,20 @@ export class SessionFormService {
 
     //  Append Date + Time;
 
-    var session         = new Session();
-    session.format      = this.form.value.value.cFormat;
-    session.course      = this.form.value.value.cCourse;
-    session.starts_on   = this.form.value.value.cDate;
-    session.players     = this.form.value.value.cPlayers;
+    var session = new Session();
+    session.format = this.form.value.value.cFormat;
+    session.course = this.form.value.value.cCourse;
+    session.starts_on = this.form.value.value.cDate;
+    session.players = this.form.value.value.cPlayers;
 
     this.sessionService.create(session).subscribe((res) => {
       console.log("course.form.create.res: ", res);
       if (this.courseService.rCheck(res)) {
-          var createdCourse = this.courseService.rGetData(res);
-          this.router.navigate(["courses", createdCourse[0]['id']]);
+        var createdCourse = this.courseService.rGetData(res);
+        this.router.navigate(["courses", createdCourse[0]['id']]);
       } else {
-        console.log ("Nearby?");
-        
+        console.log("Nearby?");
+
         //  Fix
         this.courseService.setCourseList(this.courseService.rGetData(res) as Course[]);
 

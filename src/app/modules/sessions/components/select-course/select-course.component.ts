@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CourseBackend, Course } from 'src/app/modules/courses/services/backend.service';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { SessionFormService } from '../../services/form.service';
 
 @Component({
   selector: 'app-select-course',
@@ -16,16 +17,15 @@ export class SelectCourseComponent implements OnInit {
 
 
   constructor(
-    private builder: FormBuilder,
     private courses: CourseBackend,
     private feed: FeedbackService,
+    private builder: FormBuilder,
+
   ) { }
 
   ngOnInit() {
-
-    //  Setup Form
     this.form = this.builder.group({
-      "term": ["", [Validators.required, Validators.minLength(2)]]
+      term: ["", [Validators.required]],
     });
 
     //  Listen to Course List Changes
@@ -33,6 +33,8 @@ export class SelectCourseComponent implements OnInit {
       this.feed.loading = false;
       this.results = c;
     });
+
+
 
     
     //  Search upon form change; with delay
@@ -48,5 +50,8 @@ export class SelectCourseComponent implements OnInit {
     });
   }
 
+  setCourse(course) {
+    this.selected.emit(course);
+  }
 }
 
