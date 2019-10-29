@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Course } from '../../../services/backend.service';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Course } from '../../modules/courses/services/backend.service';
 
 @Component({
   selector: 'course-list-item',
@@ -8,6 +8,9 @@ import { Course } from '../../../services/backend.service';
 })
 export class CourseListItemComponent implements OnInit {
   @Input() course: Course;
+  @Input() selector: boolean = false; 
+
+  @Output() selected: EventEmitter<Course> = new EventEmitter();
 
   constructor() { }
 
@@ -16,6 +19,10 @@ export class CourseListItemComponent implements OnInit {
 
   favorite(course){
     console.log ("course", course);
+  }
+
+  selectCourse(course){
+    this.selected.emit(course);
   }
 
 }

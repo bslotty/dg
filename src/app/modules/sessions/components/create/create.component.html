@@ -4,7 +4,7 @@
 
 <form [formGroup]='form'>
 
-  <mat-horizontal-stepper [linear]="true" #stepper labelPosition="end" class="mb-3">
+  <mat-vertical-stepper [linear]="true" #stepper labelPosition="end" class="mb-3">
     <ng-template matStepperIcon="edit" let-index="index">
       <!-- p class="stepperHeader mb-0">{{ index + 1 }}</p-->
     </ng-template>
@@ -19,63 +19,77 @@
 
 
     <mat-step [stepControl]="form.get('format')">
-      <ng-template matStepLabel>Format</ng-template>
-      <app-select-format [selectedFormat]="form.get('format').value" (selected)="selectFormat($event)"></app-select-format>
+      <ng-template matStepLabel>
+        <div class="row justify-content-between align-items-center no-gutters">
+          <div class="col">Format</div>
+          <div class="col text-right">{{ form.get('format').value.name }}</div>
+
+        </div>
+      </ng-template>
+      <app-select-format [selectedFormat]="form.get('format').value" (selected)="selectFormat($event)">
+      </app-select-format>
     </mat-step>
 
 
     <mat-step [stepControl]="form.get('course')">
-      <ng-template matStepLabel>Course</ng-template>
+      <ng-template matStepLabel>
+        <div class="row justify-content-between align-items-center no-gutters">
+          <div class="col">Course</div>
+          <div class="col text-right">{{ form.get('course').value.park_name }}</div>
+
+        </div>
+      </ng-template>
       <app-select-course (selected)="selectCourse($event)">
       </app-select-course>
     </mat-step>
 
     <mat-step [stepControl]="form.get('date') && form.get('time')">
-      <ng-template matStepLabel>Time</ng-template>
+      <ng-template matStepLabel>
+        <div class="row justify-content-between align-items-center no-gutters">
+          <div class="col">Time</div>
+          <div class="col text-right" *ngIf="form.get('date').valid && form.get('time').valid">
+            {{ form.get('date').value.toDateString() }} at {{ form.get('time').value }}</div>
 
-      <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Choose Start Date" formControlName='date'
-          (focus)="picker.open()" type="text">
-        <mat-datepicker-toggle matSuffix [for]="picker"><span class='icon-calendar'></span></mat-datepicker-toggle>
-        <mat-datepicker #picker startView="year" [startAt]="form.get('date').value" touchUi="true"></mat-datepicker>
-      </mat-form-field>
+        </div>
+      </ng-template>
+
+      <div class="p-3">
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker" placeholder="Choose Start Date" formControlName='date'
+            (focus)="picker.open()" type="text">
+          <mat-datepicker-toggle matSuffix [for]="picker"><span class='icon-calendar'></span></mat-datepicker-toggle>
+          <mat-datepicker #picker startView="year" [startAt]="form.get('date').value" touchUi="true"></mat-datepicker>
+        </mat-form-field>
 
 
-      <mat-form-field>
-        <input matInput [ngxTimepicker]="timePicker" placeholder="Choose Start Time" formControlName='time'
-        type="text">
-        <div matSuffix><a mat-flat-button color="transparent-primary" (click)="timePicker.open()"><span class="icon-clock"></span></a></div>
-        <ngx-material-timepicker #timePicker minutesGap=5></ngx-material-timepicker>
+        <mat-form-field>
+          <input matInput [ngxTimepicker]="timePicker" placeholder="Choose Start Time" formControlName='time'
+            type="text">
+          <div matSuffix><a mat-flat-button color="transparent-primary" (click)="timePicker.open()"><span
+                class="icon-clock"></span></a></div>
+          <ngx-material-timepicker #timePicker minutesGap=5 (timeSet)="setTime($event)"></ngx-material-timepicker>
 
-      </mat-form-field>
-      
-
-      <div class="row justify-content-end align-items-center">
-        <a mat-raised-button color="primary" (click)="onFormSubmit()" [disabled]="form.invalid || form.pristine">
-          <label>Create</label>
-        </a>
+        </mat-form-field>
       </div>
     </mat-step>
 
     <mat-step>
       <ng-template matStepLabel>Players</ng-template>
-      <div class="row justify-content-end align-items-center">
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
-      </div>
+      <form [formGroup]="searchForm">
+        <mat-form-field>
+          <mat-label>Search</mat-label>
+          <input matInput formControlName="term" placeholder="Name or Email" />
+        </mat-form-field>
+      </form>
     </mat-step>
 
-    <mat-step *ngIf="session.format != ffa">
+    <mat-step *ngIf="form.get('format').value.enum != 'ffa'">
       <ng-template matStepLabel>Teams</ng-template>
-      <div class="row justify-content-end align-items-center">
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
-      </div>
     </mat-step>
 
 
 
-  </mat-horizontal-stepper>
+  </mat-vertical-stepper>
 
 
 </form>

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from 'src/app/modules/sessions/components/select-course/node_modules/@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SelectCourseComponent } from './select-course.component';
 

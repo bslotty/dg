@@ -1,1 +1,10 @@
 <p>player-selector works!</p>
+<div>
+	<form [formGroup]="form">
+		<mat-form-field>
+			<mat-label>Search</mat-label>
+			<input matInput formControlName="term"  placeholder="Name or Email"/>
+		</mat-form-field>
+
+	</form>
+</div>

@@ -2,7 +2,6 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CourseBackend, Course } from 'src/app/modules/courses/services/backend.service';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
-import { SessionFormService } from '../../services/form.service';
 
 @Component({
   selector: 'app-select-course',
@@ -10,11 +9,10 @@ import { SessionFormService } from '../../services/form.service';
   styleUrls: ['./select-course.component.scss']
 })
 export class SelectCourseComponent implements OnInit {
-  
+
   form: FormGroup;
   results:Course[] = [];
   @Output() selected: EventEmitter<Course> = new EventEmitter();
-
 
   constructor(
     private courses: CourseBackend,

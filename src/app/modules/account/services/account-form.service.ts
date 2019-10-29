@@ -70,7 +70,12 @@ export class AccountFormService {
     Validators.maxLength(128)
   ]);
 
-
+  //  Old Password
+  private cTerm = new FormControl("term", [
+    Validators.required,
+    Validators.minLength(2),
+    Validators.maxLength(128)
+  ]);
 
 
   constructor(
@@ -146,6 +151,13 @@ export class AccountFormService {
       case "forgot":
         form.addControl("email", this.cEmail);
         break;
+
+      case "search":
+        form.addControl("term", this.cTerm);
+        form.valueChanges.pipe(this.passwordPipe).subscribe((v)=>{
+          console.log("searchUsers: ", v);
+          this.account.searchUsers(v["term"]);
+        });
 
       default:
         form.setErrors({ invalid: true });
@@ -335,8 +347,5 @@ export class AccountFormService {
       });
     }
   }
-
-
-
 
 }

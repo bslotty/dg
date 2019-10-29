@@ -53,6 +53,7 @@ import { FeedbackComponent } from '../feedback/components/feedback/feedback.comp
 import { PasswordComponent } from 'src/app/templates/form-fields/password/password.component';
 
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { CourseListItemComponent } from 'src/app/templates/course-list-item/course-list-item.component';
 
 @NgModule({
   imports: [
@@ -104,6 +105,7 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     LoaderComponent,
     SectionHeaderComponent,
     PasswordComponent,
+    CourseListItemComponent,
   ],
   exports: [
     FormsModule,
@@ -147,6 +149,7 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
     LoaderComponent,
     SectionHeaderComponent,
     PasswordComponent,
+    CourseListItemComponent,
 
     DragDropModule,
     NgxMaterialTimepickerModule

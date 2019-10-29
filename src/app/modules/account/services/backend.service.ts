@@ -3,7 +3,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { map, debounceTime, distinctUntilChanged } from "rxjs/operators";
-import { pipe } from 'rxjs';
+import { pipe, BehaviorSubject, Observable } from 'rxjs';
 import { ServerPayload } from 'src/app/app.component';
 
 
@@ -14,6 +14,12 @@ export class AccountBackend implements OnInit {
 
   user: Player;
   redirectUrl: string;
+
+  private searchedPlayers: BehaviorSubject<Player[] | undefined> = new BehaviorSubject(undefined);
+  searchedPlayers$: Observable<Player[]> = this.searchedPlayers.asObservable();
+
+  recientPlayers: Player[];
+  friends: Player[];
 
   url: string = environment.apiUrl + '/controllers/players.php';
 
@@ -171,19 +177,24 @@ export class AccountBackend implements OnInit {
   }
 
 
+  searchUsers(term: string) {
+    return this.http.post(this.url, { "action": "search", "term": term }).pipe(
+      map((res: ServerPayload) => {
+        //  Set user if successfull
+        if (this.rCheck(res)) {
+          var players = this.rGetData(res);
+          this.searchedPlayers.next(players as Player[]);
+        }
+
+        //  Return Payload for Feedback
+        return res;
+      }));
+  }
+
 
 
 
   logout() {
-
-    /*
-    var payload = new ServerPayload;
-    payload.status  = "success";
-    payload.msg     = "You are now logged out";
-
-    this.feed.finializeLoading(payload, true);
-    */
-
     this.resetUser();
     this.router.navigate(['account/login']);
   }

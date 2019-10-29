@@ -1,21 +1,33 @@
-<form [formGroup]="form">
-    <mat-form-field>
-        <mat-label>Search</mat-label>
-        <input matInput formControlName="term" placeholder="Park Name, City, or State" />
-    </mat-form-field>
-</form>
+<div class="p-3">
+    <form [formGroup]="form">
+        <mat-form-field>
+            <mat-label>Search</mat-label>
+            <input matInput formControlName="term" placeholder="Park Name, City, or State" />
+        </mat-form-field>
+    </form>
 
 
 
-<div *ngIf="!feed.loading; else loader">
-    <div *ngIf="results.length > 0 && this.form.dirty; else create">
-        <!--    app-course-list [courseList]='results'></app-course-list -->
-        <div *ngFor="let course of results;">
-            <a mat-raised-button color="accent" (click)='setCourse(course)'>{{ course.park_name }}</a>
+    <div *ngIf="!feed.loading; else loader">
+        <div *ngIf="results.length > 0 && this.form.dirty; else create">
+            <div class="col" *ngFor="let course of results;">
+                <div class="row no-gutters">
+                    <div class="col">{{ course.park_name }}</div>
+                    <div class="col">
+                        <a mat-icon-button color="primary" (click)="setCourse(course)">
+                            <span class="icon-share"></span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="row justify-content-start align-items-center no-gutters sub-text">
+                    <div class="col">{{ course.city}}, {{ course.state }} {{ course.zip }}</div>
+                </div>
+            </div>
         </div>
-        
     </div>
 </div>
+
 
 
 <ng-template #create>

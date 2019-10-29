@@ -12,7 +12,6 @@ import { MapComponent } from './components/map/map.component';
 import { ShellComponent } from './components/shell/shell.component';
 
 
-import { CourseListItemComponent } from './components/templates/course-list-item/course-list-item.component';
 import { CreateComponent } from './components/create/create.component';
 import { CourseBackend } from './services/backend.service';
 import { CourseFormService } from './services/course-form.service';
@@ -35,7 +34,6 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     DetailComponent,
     MapComponent,
     ShellComponent,
-    CourseListItemComponent,
     CreateComponent,
     NearbyComponent,
     DashboardComponent,

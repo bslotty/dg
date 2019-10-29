@@ -87,10 +87,21 @@ export class SessionFormService {
 
       case "search":
           form.addControl("term", this.cTerm);
+
+          //  Listen to Changes for Date Time Merge
+          form.valueChanges.subscribe((v)=>{
+            //  console.log ("form.valueChanges.v: ", v);
+
+            if (v.time != "" && v.date instanceof Date && v.date.getHours() == 0) {
+              var d = new Date(v.date.toDateString() + " " + v.time);
+              console.log ("date set: ", d);
+              this.setDate(d);
+            }
+          });
       break;
     }
 
-
+  
     this.form.next(form);
   }
 
@@ -132,6 +143,10 @@ export class SessionFormService {
   setCourse(course) {
     console.log("setCourse", course);
     this.form.value.get("course").setValue(course);
+  }
+
+  setDate(date){
+    this.form.value.get("date").setValue(date);
   }
 
   SubmitCreation() {

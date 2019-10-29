@@ -366,6 +366,18 @@ p b {
   background-color: $primary-light;
 }
 
+.mat-vertical-stepper-header .mat-step-label {
+  width: 100%;
+}
+
+.mat-vertical-stepper-content .mat-vertical-content {
+  padding: 0;
+}
+
+.mat-stepper-vertical-line::before {
+  border-left-color: $primary-dark;
+}
+
 
 .mat-datepicker-content {
   background: $primary-light;

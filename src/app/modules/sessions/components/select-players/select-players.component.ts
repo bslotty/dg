@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountFormService } from 'src/app/modules/account/services/account-form.service';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-select-players',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SelectPlayersComponent implements OnInit {
 
-  constructor() { }
+  form: FormGroup;
+
+  constructor(
+    private accountForm: AccountFormService,
+  ) { }
 
   ngOnInit() {
+    this.accountForm.Setup("search");
+    this.accountForm.form$.subscribe((f)=>{
+      this.form = f;
+    });
+
   }
 
 }
