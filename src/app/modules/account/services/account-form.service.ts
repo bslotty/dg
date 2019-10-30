@@ -17,7 +17,7 @@ export class AccountFormService {
   builder: FormBuilder = new FormBuilder;
 
   private passwordPipe = pipe(
-    debounceTime(400),
+    debounceTime(888),
     distinctUntilChanged(),
   )
 
@@ -156,7 +156,9 @@ export class AccountFormService {
         form.addControl("term", this.cTerm);
         form.valueChanges.pipe(this.passwordPipe).subscribe((v)=>{
           console.log("searchUsers: ", v);
-          this.account.searchUsers(v["term"]);
+          this.account.searchUsers(v["term"]).subscribe((p)=>{
+            console.log ("P:", p);
+          });
         });
 
       default:

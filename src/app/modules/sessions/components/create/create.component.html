@@ -49,8 +49,7 @@
           <div class="col">Time</div>
           <div class="col text-right" *ngIf="form.get('date').valid && form.get('time').valid">
             {{ form.get('date').value.toDateString() }} at {{ form.get('time').value }}</div>
-
-        </div>
+          </div>
       </ng-template>
 
       <div class="p-3">
@@ -75,12 +74,7 @@
 
     <mat-step>
       <ng-template matStepLabel>Players</ng-template>
-      <form [formGroup]="searchForm">
-        <mat-form-field>
-          <mat-label>Search</mat-label>
-          <input matInput formControlName="term" placeholder="Name or Email" />
-        </mat-form-field>
-      </form>
+      <app-select-players (selected)="addPlayer($event)"></app-select-players>
     </mat-step>
 
     <mat-step *ngIf="form.get('format').value.enum != 'ffa'">

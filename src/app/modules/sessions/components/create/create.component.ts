@@ -15,12 +15,11 @@ import { Player, AccountBackend } from 'src/app/modules/account/services/backend
 export class CreateComponent implements OnInit {
 
   form: FormGroup;
-  searchForm: FormGroup;
   insertID: string;
 
   @ViewChild("stepper", {static: true}) stepper: MatStepper;
 
-  searchedPlayers: Player[];
+  
 
   constructor(
     private sessionForm: SessionFormService,
@@ -29,54 +28,16 @@ export class CreateComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.initForm();
-    this.getCourseList();
 
-    //  Listen to Player List Updates
-    this.accounts.searchedPlayers$.subscribe((p)=>{
-      console.log ("SearchedPlayers: ", p);
-      this.searchedPlayers = p;
-    });
-
-    
-  }
-
-
-  initForm() {
-    
+    //  Setup Form
     this.sessionForm.Setup("create");
     this.sessionForm.form$.subscribe((f)=>{
       this.form = f;
     });
-
-    this.accountForm.Setup("search");
-    this.accountForm.form$.subscribe((s)=>{
-      this.searchForm = s;
-
-      //  Listen to Player Searches
-      this.searchForm.valueChanges.subscribe((f)=>{
-        console.log ("formUpdate: ", f);
-        this.accounts.searchUsers(f['term']);
-      });
-    });
-
-
   }
 
 
-  getCourseList() {
-    /*  Broken when adding multiple course lists. Fix when working through a new session
-    this.courses.getList('').subscribe((v: Course[]) => {
-
-      this.courseList = v;
-      this.feed.finializeLoading();
-    });
-    */
-  }
-
-  onFormSubmit() {
-
-  }
+  onFormSubmit() {  }
 
 
   selectFormat($event) {
@@ -95,5 +56,13 @@ export class CreateComponent implements OnInit {
     console.log("timeSet", $event);
     this.stepper.next();
   }
+
+  addPlayer($event) {
+    console.log("addPlayer", $event);
+  }
+
+  removePlayer($event) {
+    console.log("removePlayer", $event);
+  } 
 
 }

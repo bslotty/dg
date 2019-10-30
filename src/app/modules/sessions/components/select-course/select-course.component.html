@@ -13,7 +13,7 @@
             <div class="col" *ngFor="let course of results;">
                 <div class="row no-gutters">
                     <div class="col">{{ course.park_name }}</div>
-                    <div class="col">
+                    <div class="col-xs">
                         <a mat-icon-button color="primary" (click)="setCourse(course)">
                             <span class="icon-share"></span>
                         </a>
@@ -34,16 +34,6 @@
     <div *ngIf="form.get('term').valid && form.get('term').dirty" class="row justify-content-center align-items-center">
         <p class="col message"><i>{{ form.get('term').value }}</i> did not return anything</p>
     </div>
-
-    <div *ngIf="form.get('term').valid && form.get('term').dirty">
-        <div class="row justify-content-center align-items-center no-gutters">
-            <p class="col message">Cant find the course you were looking for?</p>
-        </div>
-        <p class="row justify-content-center align-items-center">
-            <a mat-flat-button color="transparent-accent" class="col" routerLink="/courses/create">Create it!</a>
-        </p>
-    </div>
-
 </ng-template>
 
 

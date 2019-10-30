@@ -164,12 +164,12 @@ class Player
 			`id`,
         	`first_name`,
         	`last_name`,
-        	`email`,
+        	`email`
 		FROM `Players`
 		WHERE POSITION(:term IN CONCAT(
 			`first_name`,
         	`last_name`,
-        	`email`,
+        	`email`
 		)) > 0
 		ORDER BY `modified_on` DESC 
 		LIMIT 10";

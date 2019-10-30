@@ -424,7 +424,7 @@ p b {
 
 //  Time Picker
 .timepicker {
-  width: 350px !important;
+  width: 60vw !important;
 }
 
 .timepicker__header {
@@ -455,7 +455,33 @@ p b {
   font-size: inherit !important;
 }
 
+.clock-face {
+  width: 50vw !important;
+  height: 50vw !important;
+}
 
+.clock-face__number--outer {
+  height: calc(50vw / 2 - 20px) !important;
+}
+
+.clock-face__number > span {
+  font-size: 1.2rem !important;
+}
+
+.clock-face__clock-hand {
+  height: 20vw !important;
+  width: 3px !important;
+  top: calc(50% - 20vw) !important;
+}
+
+.clock-face__number {
+  width: 8vw !important;
+}
+
+.clock-face__number > span {
+  width: 8vw !important;
+  height: 8vw !important;
+}
 
 
 
