@@ -59,10 +59,12 @@ export class CreateComponent implements OnInit {
 
   addPlayer($event) {
     console.log("addPlayer", $event);
+    this.sessionForm.addPlayer($event);
   }
 
   removePlayer($event) {
     console.log("removePlayer", $event);
+    this.sessionForm.removePlayer($event);
   } 
 
 }

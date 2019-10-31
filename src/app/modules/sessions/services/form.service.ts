@@ -41,7 +41,7 @@ export class SessionFormService {
     Validators.required,
   ]);
 
-  private cPlayers = new FormControl("", [
+  private cPlayers = new FormControl([], [
     Validators.required,
   ]);
 
@@ -86,22 +86,22 @@ export class SessionFormService {
         break;
 
       case "search":
-          form.addControl("term", this.cTerm);
+        form.addControl("term", this.cTerm);
 
-          //  Listen to Changes for Date Time Merge
-          form.valueChanges.subscribe((v)=>{
-            //  console.log ("form.valueChanges.v: ", v);
+        //  Listen to Changes for Date Time Merge
+        form.valueChanges.subscribe((v) => {
+          //  console.log ("form.valueChanges.v: ", v);
 
-            if (v.time != "" && v.date instanceof Date && v.date.getHours() == 0) {
-              var d = new Date(v.date.toDateString() + " " + v.time);
-              console.log ("date set: ", d);
-              this.setDate(d);
-            }
-          });
-      break;
+          if (v.time != "" && v.date instanceof Date && v.date.getHours() == 0) {
+            var d = new Date(v.date.toDateString() + " " + v.time);
+            console.log("date set: ", d);
+            this.setDate(d);
+          }
+        });
+        break;
     }
 
-  
+
     this.form.next(form);
   }
 
@@ -145,9 +145,33 @@ export class SessionFormService {
     this.form.value.get("course").setValue(course);
   }
 
-  setDate(date){
+  setDate(date) {
     this.form.value.get("date").setValue(date);
   }
+
+  addPlayer(player) {
+
+    var dupe = false;
+    this.form.value.get("players").value.forEach((v, i) => {
+      if (v.id == player.id) {
+        dupe = true;
+      }
+    });
+
+    if (!dupe) {
+      this.form.value.get('players').value.push(player);
+    }
+  }
+
+  removePlayer(player) {
+    this.form.value.get("players").value.forEach((v, i) => {
+      if (v.id == player.id) {
+        this.form.value.get('players').value.splice(i, 1);
+      }
+    });
+  }
+
+
 
   SubmitCreation() {
     console.log("SubmitCreation.form: ", this.form);

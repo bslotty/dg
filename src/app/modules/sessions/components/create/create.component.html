@@ -49,7 +49,7 @@
           <div class="col">Time</div>
           <div class="col text-right" *ngIf="form.get('date').valid && form.get('time').valid">
             {{ form.get('date').value.toDateString() }} at {{ form.get('time').value }}</div>
-          </div>
+        </div>
       </ng-template>
 
       <div class="p-3">
@@ -73,7 +73,29 @@
     </mat-step>
 
     <mat-step>
-      <ng-template matStepLabel>Players</ng-template>
+      <ng-template matStepLabel>
+
+        <div class="row justify-content-between align-items-center no-gutters">
+          <div class="col">Players</div>
+          <div class="col text-right" *ngIf="form.get('players').value.length == 1">
+            {{ form.get('players').value.length }} Player</div>
+
+          <div class="col text-right" *ngIf="form.get('players').value.length > 1">
+            {{ form.get('players').value.length }} Players</div>
+        </div>
+      </ng-template>
+      <div *ngIf="form.get('players').value.length > 0">
+        <div class="col" *ngFor="let player of form.get('players').value;">
+          <div class="row no-gutters">
+            <div class="col">{{ player.first_name }} {{ player.last_name }}</div>
+            <div class="col-xs">
+              <a mat-icon-button color="primary" (click)="removePlayer(player)">
+                <span class="icon-minus"></span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
       <app-select-players (selected)="addPlayer($event)"></app-select-players>
     </mat-step>
 

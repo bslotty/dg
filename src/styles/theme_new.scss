@@ -363,7 +363,7 @@ p b {
 }
 
 .mat-stepper-horizontal, .mat-stepper-vertical {
-  background-color: $primary-light;
+  background-color: $primary-dark;
 }
 
 .mat-vertical-stepper-header .mat-step-label {
@@ -393,6 +393,10 @@ p b {
 .mat-horizontal-content-container {
   padding: 0 !important;
 
+}
+
+.mat-stepper-vertical-line::before {
+  border-left-color: #FAFAF0;
 }
 
 
@@ -512,6 +516,7 @@ New Input Styles
   text-align: right;
 }
 
+
 /*
   Google Places
 */
@@ -550,4 +555,19 @@ New Input Styles
 */
 .btn-link {
   color: $accent
+}
+
+/*
+  Extra HTML Elements
+*/
+.sub-text {
+	font-size: .8em;
+	color: $text-light-fade;
+	line-height: 1.2em;
+}
+
+.panel {
+  background: $primary-light;
+	color: $text-light;
+	padding: .5em;
 }

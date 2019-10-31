@@ -20,7 +20,7 @@ export class SelectCourseComponent implements OnInit {
     private builder: FormBuilder,
 
   ) { }
-
+ 
   ngOnInit() {
     this.form = this.builder.group({
       term: ["", [Validators.required]],

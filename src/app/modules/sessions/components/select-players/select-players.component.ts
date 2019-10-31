@@ -24,8 +24,6 @@ export class SelectPlayersComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log("resuslts.wtf?" ,this.results);
-
     //  Setup Form
     this.accountForm.Setup("search");
     this.accountForm.form$.subscribe((f)=>{
@@ -43,6 +41,8 @@ export class SelectPlayersComponent implements OnInit {
   }
 
   includePlayer(player) {
+    this.form.reset();
+    this.results = [];
     this.selected.emit(player);
   }
 
