@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { Course } from '../../courses/services/backend.service';
 import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { pipe, BehaviorSubject, Observable } from 'rxjs';
+import { Team } from '../../stats/services/backend.service';
 
 @Injectable({
   providedIn: 'root'
@@ -228,7 +229,7 @@ export class Session {
     public starts_on?: Date,
     public title?: string,
     public par?: Array<any>,
-    public players?: Player[],
+    public scores?: Score[],
   ) { }
 }
 
@@ -242,3 +243,13 @@ export class SessionFormat {
 }
 
 */
+
+export class Score {
+  public id: string;
+  public player: Player;
+  public team: Team;
+  public scores: Array<number>;
+  public handicap: number;
+
+  constructor() {} 
+}

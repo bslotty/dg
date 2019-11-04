@@ -400,8 +400,16 @@ p b {
   border-left-color: #FAFAF0;
 }
 
+.mat-tooltip {
+  font-size: 1rem;
+  color: $primary-light;
+  background: $text-light;
+}
 
 
+.mat-flat-button[disabled][disabled] {
+  background: none;
+}
 
 
 // CDK-Drag-Drop
@@ -520,8 +528,6 @@ New Input Styles
   text-align: right;
 }
 
-<<<<<<< HEAD
-=======
 *:disabled {
   background-color: transparent;
 }
@@ -530,7 +536,6 @@ New Input Styles
 .mat-flat-button[disabled] {
   background-color: transparent;
 }
->>>>>>> 62407a349a68adcc327d562df4d0d93c2dd067e0
 
 /*
   Google Places

@@ -2,11 +2,13 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CourseBackend, Course } from 'src/app/modules/courses/services/backend.service';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { flyInPanelRow } from 'src/app/animations';
 
 @Component({
   selector: 'app-select-course',
   templateUrl: './select-course.component.html',
-  styleUrls: ['./select-course.component.scss']
+  styleUrls: ['./select-course.component.scss'],
+  animations: [flyInPanelRow]
 })
 export class SelectCourseComponent implements OnInit {
 
@@ -33,19 +35,26 @@ export class SelectCourseComponent implements OnInit {
     });
 
 
-
     
     //  Search upon form change; with delay
     this.form.valueChanges.pipe(this.courses.serverPipe).subscribe((c)=>{
-      console.log (c);
-      this.courses.search(c["term"]);
+      if (this.form.valid) {
+        this.courses.search(c["term"]);
+      }
     });
 
 
     //  Display Loader upon change; No delay
     this.form.get('term').valueChanges.subscribe((s)=>{
-      this.feed.loading = true;
+      if (this.form.valid) {
+        this.feed.loading = true;
+      }
     });
+  }
+
+  
+  trackBy(index, item){
+      return item.id;
   }
 
   setCourse(course) {

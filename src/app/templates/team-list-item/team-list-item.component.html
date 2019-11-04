@@ -1,0 +1,17 @@
+<div class="panel row justify-content-between align-items-center no-gutters">
+	<div class="colorChoice">
+		<div class="colorIcon {{ team.color.name }}"></div>
+	</div>
+	<div [style.color]="team.color.hex" class="col ml-3">
+		<label [style.color]="team.color.hex">{{ team.name | titlecase }}</label>
+	</div>
+
+	<div class="col-xs" *ngIf="mode == 'remove'">
+		<a mat-icon-button color="primary" (click)="openSettings()">
+			<span class="icon-settings"></span>
+		</a>
+		<a mat-icon-button color="warn" (click)="remove(team)">
+			<span class="icon-minus"></span>
+		</a>
+	</div>
+</div>

@@ -3,7 +3,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 import { CourseBackend, Course } from '../../courses/services/backend.service';
 import { Router } from '@angular/router';
-import { Session, SessionBackend } from './backend.service';
+import { Session, SessionBackend, Score } from './backend.service';
+import { Team } from '../../stats/services/backend.service';
 
 @Injectable({
   providedIn: 'root'
@@ -41,15 +42,17 @@ export class SessionFormService {
     Validators.required,
   ]);
 
-<<<<<<< HEAD
-  private cPlayers = new FormControl([], [
-=======
   private cPlayers = new FormArray([], [
->>>>>>> 62407a349a68adcc327d562df4d0d93c2dd067e0
     Validators.required,
   ]);
 
   private cTeams = new FormArray([], [
+    Validators.required,
+    Validators.minLength(2),
+    Validators.maxLength(8),
+  ]);
+
+  private cScores = new FormArray([], [
     Validators.required,
     Validators.minLength(2),
     Validators.maxLength(8),
@@ -124,23 +127,6 @@ export class SessionFormService {
         break;
 
       case "search":
-<<<<<<< HEAD
-        form.addControl("term", this.cTerm);
-
-        //  Listen to Changes for Date Time Merge
-        form.valueChanges.subscribe((v) => {
-          //  console.log ("form.valueChanges.v: ", v);
-
-          if (v.time != "" && v.date instanceof Date && v.date.getHours() == 0) {
-            var d = new Date(v.date.toDateString() + " " + v.time);
-            console.log("date set: ", d);
-            this.setDate(d);
-          }
-        });
-        break;
-    }
-
-=======
         form.addControl("", this.cTerm);
         break;
     }
@@ -156,7 +142,6 @@ export class SessionFormService {
       }
     });
 
->>>>>>> 62407a349a68adcc327d562df4d0d93c2dd067e0
 
     this.form.next(form);
   }
@@ -178,7 +163,7 @@ export class SessionFormService {
     this.form.value.get("course").reset();
     this.form.value.get("date").reset();
     this.form.value.get("time").reset();
-    this.form.value.get("players").reset();
+    this.form.value.get("scores").reset();
   }
 
   setForm(values): void {
@@ -186,7 +171,7 @@ export class SessionFormService {
     this.form.value.get("course").setValue(values.cCourse);
     this.form.value.get("date").setValue(values.cDate);
     this.form.value.get("time").setValue(values.cTime);
-    this.form.value.get("players").setValue(values.cPlayers);
+    this.form.value.get("scores").setValue(values.cScores);
     this.form.value.markAsDirty();
 
   }
@@ -197,8 +182,10 @@ export class SessionFormService {
 
     if (format.enum == "ffa" && this.form.value.get('teams')) {
       this.form.value.removeControl("teams");
+      this.form.value.removeControl("roster");
     } else if (format.enum != "ffa" && !this.form.value.get('teams')){
       this.form.value.addControl("teams", this.cTeams);
+      this.form.value.addControl("scores", this.cScores);
     }
   }
 
@@ -210,43 +197,29 @@ export class SessionFormService {
     this.form.value.get("date").setValue(date);
   }
 
-<<<<<<< HEAD
-  addPlayer(player) {
-
-    var dupe = false;
-    this.form.value.get("players").value.forEach((v, i) => {
-      if (v.id == player.id) {
-=======
 
   //  Player Functions
   get playerList() {
-    return this.form.value.get('players') as FormArray; 
+    return this.form.value.get('scores') as FormArray; 
   }
 
   addPlayer(player) {
     var dupe = false;
     this.playerList.controls.forEach((v, i) => {
       if (v.value.id == player.id) {
->>>>>>> 62407a349a68adcc327d562df4d0d93c2dd067e0
         dupe = true;
       }
     });
 
     if (!dupe) {
-<<<<<<< HEAD
-      this.form.value.get('players').value.push(player);
-=======
-      this.playerList.push(new FormControl(player));
->>>>>>> 62407a349a68adcc327d562df4d0d93c2dd067e0
+      // New Score
+      var s = new Score();
+      s.player = player;
+      this.playerList.push(new FormControl(s));
     }
   }
 
   removePlayer(player) {
-<<<<<<< HEAD
-    this.form.value.get("players").value.forEach((v, i) => {
-      if (v.id == player.id) {
-        this.form.value.get('players').value.splice(i, 1);
-=======
     this.playerList.controls.forEach((v, i) => {
       if (player.id == v.value.id) {
         this.playerList.removeAt(i);
@@ -276,27 +249,34 @@ export class SessionFormService {
     this.teamList.controls.forEach((v, i) => {
       if (team == v.value) {
         this.teamList.removeAt(i);
->>>>>>> 62407a349a68adcc327d562df4d0d93c2dd067e0
       }
     });
   }
 
 
 
-<<<<<<< HEAD
-  SubmitCreation() {
-=======
   submitCreation() {
->>>>>>> 62407a349a68adcc327d562df4d0d93c2dd067e0
     console.log("SubmitCreation.form: ", this.form);
 
     //  Append Date + Time;
+    var score: Score[]
+    this.playerList.controls.forEach((v, i) => {
+      var s = new Score();
+      /*
+      s.player = v.player;
+      s.team = v.team;
+      s.handicap = v.handicap;
+      */
+      score.push(s);
+    });
+    
+
 
     var session = new Session();
     session.format = this.form.value.value.cFormat;
     session.course = this.form.value.value.cCourse;
     session.starts_on = this.form.value.value.cDate;
-    session.players = this.form.value.value.cPlayers;
+    session.scores = score;
 
     this.sessionService.create(session).subscribe((res) => {
       console.log ("sessionsService.create.res: ", res)

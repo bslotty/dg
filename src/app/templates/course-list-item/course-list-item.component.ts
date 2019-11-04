@@ -8,7 +8,7 @@ import { Course } from '../../modules/courses/services/backend.service';
 })
 export class CourseListItemComponent implements OnInit {
   @Input() course: Course;
-  @Input() selector: boolean = false; 
+  @Input() mode: string; // List(Fav&&Link), Selector(emit), 
 
   @Output() selected: EventEmitter<Course> = new EventEmitter();
 

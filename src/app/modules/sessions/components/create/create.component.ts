@@ -7,12 +7,13 @@ import { AccountFormService } from 'src/app/modules/account/services/account-for
 import { Player, AccountBackend } from 'src/app/modules/account/services/backend.service';
 import { SelectPlayersComponent } from '../select-players/select-players.component';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { flyInPanelRow } from 'src/app/animations';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
-  animations: []
+  animations: [flyInPanelRow]
 })
 export class CreateComponent implements OnInit {
 
@@ -74,24 +75,17 @@ export class CreateComponent implements OnInit {
   addPlayer($event) {
     console.log("addPlayer", $event);
     this.sessionForm.addPlayer($event);
-<<<<<<< HEAD
-=======
     
->>>>>>> 62407a349a68adcc327d562df4d0d93c2dd067e0
   }
 
   removePlayer($event) {
     console.log("removePlayer", $event);
     this.sessionForm.removePlayer($event);
-<<<<<<< HEAD
-=======
   }
-  
-  openPlayerSettings(player) {
-    console.log ("player.settings: ", player);
->>>>>>> 62407a349a68adcc327d562df4d0d93c2dd067e0
-  } 
 
+  trackPlayers(input, item) {
+    return item.value.id;
+  }
 
 
 
@@ -112,9 +106,11 @@ export class CreateComponent implements OnInit {
     this.sessionForm.removeTeam(team);
   }
 
-  changeTeamColor(team) {
-    console.log ("changeTeamColor: ", team);
+  trackTeamBy(index, item) {
+    item.value.id;
   }
+
+
   
   getRoster(team) {
     var teamIndex:number = 0;
@@ -128,7 +124,6 @@ export class CreateComponent implements OnInit {
   }
 
   rosterDrop(event: CdkDragDrop<string[]>) {
-    console.log (event);
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {

@@ -9,29 +9,8 @@
 </div>
 
 <div *ngIf="!feed.loading; else loader">
-	<div *ngIf="results.length > 0 && this.form.dirty; else create">
-<<<<<<< HEAD
-		<div class="row justify-content-between align-items-end no-gutters panel" *ngFor="let player of results;">
-			<div class="col">{{ player.first_name }} {{ player.last_name }}</div>
-			<div class="col-xs">
-				<a mat-icon-button color="primary" (click)="includePlayer(player)">
-					<span class="icon-plus"></span>
-				</a>
-=======
-		<div class="panel" *ngFor="let player of results;">
-			<div class="row justify-content-between align-items-center no-gutters">
-				<div class="col">
-					<div>{{ player.first_name }} {{ player.last_name }}</div>
-					<div class="sub-text">{{ player.email }}</div>
-				</div>
-				<div class="col-xs">
-					<a mat-icon-button color="primary" (click)="includePlayer(player)">
-						<span class="icon-plus"></span>
-					</a>
-				</div>
->>>>>>> 62407a349a68adcc327d562df4d0d93c2dd067e0
-			</div>
-		</div>
+	<div *ngIf="results.length > 0 && this.form.dirty; else create" @flyInPanelRow>
+		<score-list-item *ngFor="let player of results; trackBy: trackBy" [score]='score' mode='selector' (action)="includePlayer($event)"></score-list-item> 
 	</div>
 </div>
 

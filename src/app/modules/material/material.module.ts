@@ -44,7 +44,7 @@ import {
   MatTooltipModule,
 } from '@angular/material';
 
- 
+
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { SectionHeaderComponent } from '../../templates/section-header/section-header.component';
@@ -54,6 +54,10 @@ import { PasswordComponent } from 'src/app/templates/form-fields/password/passwo
 
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { CourseListItemComponent } from 'src/app/templates/course-list-item/course-list-item.component';
+import { TeamListItemComponent } from 'src/app/templates/team-list-item/team-list-item.component';
+import { TeamSettingsComponent } from 'src/app/templates/team-settings/team-settings.component';
+import { ScoreListItemComponent } from 'src/app/templates/score-list-item/score-list-item.component';
+import { ScoreSettingsComponent } from 'src/app/templates/score-settings/score-settings.component';
 
 @NgModule({
   imports: [
@@ -106,6 +110,10 @@ import { CourseListItemComponent } from 'src/app/templates/course-list-item/cour
     SectionHeaderComponent,
     PasswordComponent,
     CourseListItemComponent,
+    ScoreListItemComponent,
+    TeamListItemComponent,
+    ScoreSettingsComponent,
+    TeamSettingsComponent,
   ],
   exports: [
     FormsModule,
@@ -144,22 +152,30 @@ import { CourseListItemComponent } from 'src/app/templates/course-list-item/cour
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    
+
     FeedbackComponent,
     LoaderComponent,
     SectionHeaderComponent,
     PasswordComponent,
     CourseListItemComponent,
+    ScoreListItemComponent,
+    TeamListItemComponent,
+    ScoreSettingsComponent,
+    TeamSettingsComponent,
 
     DragDropModule,
     NgxMaterialTimepickerModule
-]
+  ],
+  entryComponents: [
+    ScoreSettingsComponent,
+    TeamSettingsComponent,
+  ],
 })
-export class MaterialModule { 
+export class MaterialModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: MaterialModule,
-      providers: [  ]
+      providers: []
     };
   }
 

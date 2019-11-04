@@ -67,7 +67,8 @@
             type="text">
           <div matSuffix><a mat-flat-button color="transparent-primary" (click)="timePicker.open()"><span
                 class="icon-clock"></span></a></div>
-          <ngx-material-timepicker #timePicker minutesGap=5 (timeSet)="setTime($event)"></ngx-material-timepicker>
+          <ngx-material-timepicker #timePicker minutesGap=5 (timeSet)="setTime($event)" disableAnimation="true">
+          </ngx-material-timepicker>
 
         </mat-form-field>
       </div>
@@ -75,53 +76,19 @@
 
     <mat-step>
       <ng-template matStepLabel>
-<<<<<<< HEAD
-
-        <div class="row justify-content-between align-items-center no-gutters">
-          <div class="col">Players</div>
-          <div class="col text-right" *ngIf="form.get('players').value.length == 1">
-            {{ form.get('players').value.length }} Player</div>
-
-          <div class="col text-right" *ngIf="form.get('players').value.length > 1">
-            {{ form.get('players').value.length }} Players</div>
-        </div>
-      </ng-template>
-      <div *ngIf="form.get('players').value.length > 0">
-        <div class="col" *ngFor="let player of form.get('players').value;">
-          <div class="row no-gutters">
-            <div class="col">{{ player.first_name }} {{ player.last_name }}</div>
-            <div class="col-xs">
-              <a mat-icon-button color="primary" (click)="removePlayer(player)">
-                <span class="icon-minus"></span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <app-select-players (selected)="addPlayer($event)"></app-select-players>
-=======
         <div class="row justify-content-between align-items-center no-gutters">
           <div class="col">Players</div>
           <div class="col text-right">{{ form.get('players').controls.length }}</div>
         </div>
       </ng-template>
-      <div *ngFor="let player of form.get('players').controls;">
-        <div class="panel row justify-content-between align-items-center no-gutters">
-          <div class="col">{{ player.value.first_name }} {{ player.value.last_name }}</div>
-          <div class="col-xs">
-            <a mat-icon-button color="primary" (click)="openPlayerSettings(player)">
-              <span class="icon-sliders"></span>
-            </a>
-            <a mat-icon-button color="warn" (click)="removePlayer(player.value)">
-              <span class="icon-minus"></span>
-            </a>
-          </div>
-        </div>
+
+      <div @flyInPanelRow>
+        <score-list-item [score]='score.value' mode='remove' (action)="removePlayer(score.value)"
+          *ngFor="let score of form.get('scores')?.controls; trackBy: trackPlayers"></score-list-item>
       </div>
 
-
       <app-select-players #playerSelect (selected)="addPlayer($event)"></app-select-players>
->>>>>>> 62407a349a68adcc327d562df4d0d93c2dd067e0
+
     </mat-step>
 
     <mat-step *ngIf="form.get('format').value.enum != 'ffa' && form.get('teams')">
@@ -137,24 +104,9 @@
       </ng-template>
 
 
-      <div *ngFor="let team of form.get('teams')?.controls;">
-        <div class="panel row justify-content-between align-items-center no-gutters">
-          <div class="colorChoice">
-            <div class="colorIcon {{ team.value.color.name }}"></div>
-          </div>
-          <div [style.color]="team.value.color.hex" class="col ml-3">
-            <label [style.color]="team.value.color.hex">{{ team.value.name | titlecase }}</label>
-          </div>
-
-          <div class="col-xs">
-            <a mat-icon-button color="primary" (click)="changeTeamColor()">
-              <span class="icon-sliders"></span>
-            </a>
-            <a mat-icon-button color="warn" (click)="removeTeam(team.value)">
-              <span class="icon-minus"></span>
-            </a>
-          </div>
-        </div>
+      <div @flyInPanelRow>
+        <team-list-item *ngFor="let team of form.get('teams')?.controls; trackBy: trackTeamBy" [team]="team.value"
+          mode='remove' (action)='removeTeam(team.value)'></team-list-item>
       </div>
     </mat-step>
 
@@ -162,14 +114,15 @@
       <ng-template matStepLabel>Roster</ng-template>
 
 
-      <div cdkDropListGroup class="row justify-content-between align-items-start">
-        <div class="col teamDropPad {{ team.value.color.name }}" cdkDropList
-          [cdkDropListData]="roster[i]" (cdkDropListDropped)="rosterDrop($event)"
-          *ngFor="let team of form.get('teams').controls; let i = index">
+      <div cdkDropListGroup class="row justify-content-between align-items-start" @flyInPanelRow>
+        <div class="col teamDropPad {{ team.value.color.name }}" cdkDropList [cdkDropListData]="roster[i]"
+          (cdkDropListDropped)="rosterDrop($event)" *ngFor="let team of form.get('teams').controls; let i = index">
+
+
           <label>{{ team.value.name }}</label>
-          <div cdkDrag [cdkDragData]="player" *ngFor="let player of roster[i];">
-            {{ player.first_name }}
-          </div>
+          <score-list-item cdkDrag [cdkDragData]="player" [score]="player" mode="puck"
+            *ngFor="let player of roster[i];">
+          </score-list-item>
         </div>
       </div>
     </mat-step>
@@ -181,8 +134,8 @@
 </form>
 
 <div class="row no-gutters justify-content-stretch align-items-center mt-3">
-  <a mat-raised-button color="primary" class="btn btn-lg btn-block btn-pageAction"
-    (click)="sessionForm.submitCreation()" [disabled]="!sessionForm.ReadyForSubmission()">
+  <a mat-raised-button color="primary" class="btn btn-lg btn-block" (click)="sessionForm.submitCreation()"
+    [disabled]="!sessionForm.ReadyForSubmission()">
     <label>Create</label>
   </a>
 </div>

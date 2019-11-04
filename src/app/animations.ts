@@ -148,16 +148,17 @@ export const flyInPanelRow = trigger('flyInPanelRow', [
 
 export const flyInPanelRow = trigger('flyInPanelRow', [
   transition(':enter', [
-    style({ opacity: 0, overflow: "hidden", /*  height: 0 ,*/ position: "relative", /* border: "1px solid #FF00FF" */}),
+    style({ opacity: 0, overflow: "hidden",   height: 0 , position: "relative", transform: "translateY(-2%)" /* border: "1px solid #FF00FF" */}),
     animate('.3s ease',
-      style({ offset: 1, opacity: 1, /* height: "*" */ })
+      style({ offset: 1, opacity: 1,  height: "*", transform: "translateY(0)"  })
     ),
   ]),
   transition(':leave', [
-    animate('.3s ease',
+    animate('.1s ease',
       style({
         opacity: 0,
-        height: 0
+        /* height: 0 */
+        transform: "translateY(-2%)"
       })
     )
   ]),

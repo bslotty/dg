@@ -3,18 +3,20 @@ import { AccountFormService } from 'src/app/modules/account/services/account-for
 import { FormGroup } from '@angular/forms';
 import { AccountBackend, Player } from 'src/app/modules/account/services/backend.service';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
-import { MatFormFieldControl } from '@angular/material';
+import { flyInPanelRow, scorecardSlide } from 'src/app/animations';
+import { Score } from '../../services/backend.service';
 
 
 @Component({
   selector: 'app-select-players',
   templateUrl: './select-players.component.html',
-  styleUrls: ['./select-players.component.scss']
+  styleUrls: ['./select-players.component.scss'],
+  animations: [flyInPanelRow],
 })
 export class SelectPlayersComponent implements OnInit {
 
   form: FormGroup;
-  results: Player[] = [];
+  results: Score[] = [];
 
   @Output() selected: EventEmitter<Player> = new EventEmitter();
 
@@ -35,7 +37,7 @@ export class SelectPlayersComponent implements OnInit {
 
     //  Load Upon Type
     this.form.valueChanges.subscribe((v)=>{
-      if (v.length > 0) {
+      if (this.form.valid) {
         this.feed.loading = true;
       } 
      
@@ -44,24 +46,29 @@ export class SelectPlayersComponent implements OnInit {
     //  Listen to Player List Updates
     this.accounts.searchedPlayers$.subscribe((p)=>{
       if (p != undefined) {
-        this.results = p;
+        this.results = p.map((v)=>{
+          var s = new Score();
+          s.player = v;
+          return s;
+        });
       }
       this.feed.loading = false;
     });
   }
 
-  includePlayer(player) {
-    this.form.reset();
-    this.results = [];
-    this.selected.emit(player);
+  includePlayer($event) {
+    this.selected.emit($event.score);
 
-    this.results.forEach((v, i) =>{
-      if (v.id == player.id) {
+    this.results.forEach((v, i) => {
+      if (v.id == $event.score.player.id) {
         this.results.splice(i, 1);
       }
     });
 
-    this.form.get('term').reset();
+  }
+
+  trackBy(index, item) {
+    return item.id;
   }
 
   focusSearch() {
