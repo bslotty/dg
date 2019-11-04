@@ -217,17 +217,17 @@ p b {
   color: $primary-light;
 }
 
-.mat-transparent-primary {
+.mat-transparent-primary:not(:disabled) {
   background: transparent;
   color: $text-light;
 }
 
-.mat-transparent-accent {
+.mat-transparent-accent:not(:disabled) {
   background: transparent;
   color: $accent;
 }
 
-.mat-transparent-warn {
+.mat-transparent-warn:not(:disabled) {
   background: transparent;
   color: $warn;
 }
@@ -372,10 +372,11 @@ p b {
 
 .mat-vertical-stepper-content .mat-vertical-content {
   padding: 0;
+  padding-left: .5em;
 }
 
 .mat-stepper-vertical-line::before {
-  border-left-color: $primary-dark;
+  border-left-color: $text-light;
 }
 
 
@@ -401,6 +402,8 @@ p b {
 
 
 
+
+
 // CDK-Drag-Drop
 .cdk-drag-preview {
   box-sizing: border-box;
@@ -423,6 +426,7 @@ p b {
 .drag-list.cdk-drop-list-dragging .drag-item:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
 
 
 
@@ -516,6 +520,17 @@ New Input Styles
   text-align: right;
 }
 
+<<<<<<< HEAD
+=======
+*:disabled {
+  background-color: transparent;
+}
+
+
+.mat-flat-button[disabled] {
+  background-color: transparent;
+}
+>>>>>>> 62407a349a68adcc327d562df4d0d93c2dd067e0
 
 /*
   Google Places

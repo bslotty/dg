@@ -1,8 +1,9 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { AccountFormService } from 'src/app/modules/account/services/account-form.service';
 import { FormGroup } from '@angular/forms';
 import { AccountBackend, Player } from 'src/app/modules/account/services/backend.service';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { MatFormFieldControl } from '@angular/material';
 
 
 @Component({
@@ -17,6 +18,8 @@ export class SelectPlayersComponent implements OnInit {
 
   @Output() selected: EventEmitter<Player> = new EventEmitter();
 
+  @ViewChild("search", {static: true}) search;
+
   constructor(
     private accountForm: AccountFormService,
     private accounts: AccountBackend,
@@ -30,13 +33,20 @@ export class SelectPlayersComponent implements OnInit {
       this.form = f;
     });
 
+    //  Load Upon Type
+    this.form.valueChanges.subscribe((v)=>{
+      if (v.length > 0) {
+        this.feed.loading = true;
+      } 
+     
+    });
+
     //  Listen to Player List Updates
     this.accounts.searchedPlayers$.subscribe((p)=>{
-      console.log ("SearchedPlayers: ", p);
       if (p != undefined) {
         this.results = p;
       }
-      
+      this.feed.loading = false;
     });
   }
 
@@ -44,6 +54,18 @@ export class SelectPlayersComponent implements OnInit {
     this.form.reset();
     this.results = [];
     this.selected.emit(player);
+
+    this.results.forEach((v, i) =>{
+      if (v.id == player.id) {
+        this.results.splice(i, 1);
+      }
+    });
+
+    this.form.get('term').reset();
+  }
+
+  focusSearch() {
+    this.search.nativeElement.focus();
   }
 
 }

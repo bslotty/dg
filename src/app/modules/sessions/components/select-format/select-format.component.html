@@ -1,20 +1,24 @@
-<div *ngFor="let format of sessions.types;" 
-[class]='selectedFormat == format ? "format active p-3" : "format p-3"'>
+<div *ngFor="let format of sessions.types;" [class]='selectedFormat == format ? "format active" : "format"'>
   <div class="row justify-content-between align-items-center">
-    <div class="col">
-        <h4>{{ format.name }}</h4>
+
+    <div class="colorChoice" *ngIf="selectedFormat == format">
+      <div class="colorIcon light"></div>
     </div>
-    
+
+    <div class="col ml-3">
+      <p>{{ format.name }}</p>
+    </div>
+
     <div class="col-xs align-self-end">
-      <a *ngIf="selectedFormat == format" mat-flat-button color="accent">
-        <label>Selected</label>
+      <a mat-flat-button disabled color="transparent-primary" matTooltip="{{ format.desc }}">
+        <span class="icon-help-circle"></span>
       </a>
-      <a *ngIf="selectedFormat != format" mat-stroked-button (click)="setFormat(format)">
-        <label>Select</label>
+      <a *ngIf="selectedFormat == format" mat-flat-button color="transparent-accent">
+        <span class="icon-target"></span>
+      </a>
+      <a *ngIf="selectedFormat != format" mat-flat-button color="transparent-primary" (click)="setFormat(format)">
+        <span class="icon-circle"></span>
       </a>
     </div>
   </div>
-
-  <p>{{ format.desc }}</p>
-
 </div>

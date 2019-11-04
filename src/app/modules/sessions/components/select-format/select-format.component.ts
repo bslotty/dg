@@ -18,7 +18,6 @@ export class SelectFormatComponent implements OnInit {
   ngOnInit() { }
 
   setFormat(type) {
-    console.log ("type: ", type);
     this.selected.emit(type);
   }
 }

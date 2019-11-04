@@ -255,6 +255,12 @@ export class Player {
 
   access = {}
 
+
+  //  For Sessions
+  team = null
+  scores = null;
+  handicap = null
+
   constructor(
     public id,
     public first_name?,
