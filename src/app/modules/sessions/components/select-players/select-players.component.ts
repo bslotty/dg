@@ -1,9 +1,9 @@
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { AccountFormService } from 'src/app/modules/account/services/account-form.service';
 import { FormGroup } from '@angular/forms';
-import { AccountBackend, Player } from 'src/app/modules/account/services/backend.service';
+import { AccountBackend } from 'src/app/modules/account/services/backend.service';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
-import { flyInPanelRow, scorecardSlide } from 'src/app/animations';
+import { flyInPanelRow } from 'src/app/animations';
 import { Score } from '../../services/backend.service';
 
 
@@ -18,7 +18,7 @@ export class SelectPlayersComponent implements OnInit {
   form: FormGroup;
   results: Score[] = [];
 
-  @Output() selected: EventEmitter<Player> = new EventEmitter();
+  @Output() selected: EventEmitter<Score> = new EventEmitter();
 
   @ViewChild("search", {static: true}) search;
 
@@ -56,11 +56,11 @@ export class SelectPlayersComponent implements OnInit {
     });
   }
 
-  includePlayer($event) {
+  include($event) {
     this.selected.emit($event.score);
 
     this.results.forEach((v, i) => {
-      if (v.id == $event.score.player.id) {
+      if (v.player.id == $event.score.player.id) {
         this.results.splice(i, 1);
       }
     });

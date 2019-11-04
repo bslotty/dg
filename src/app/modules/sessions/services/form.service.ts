@@ -54,8 +54,7 @@ export class SessionFormService {
 
   private cScores = new FormArray([], [
     Validators.required,
-    Validators.minLength(2),
-    Validators.maxLength(8),
+    Validators.minLength(1)
   ]);
 
   private cTerm = new FormControl("", [
@@ -198,31 +197,28 @@ export class SessionFormService {
   }
 
 
-  //  Player Functions
-  get playerList() {
+  //  Score Functions
+  get scoreList() {
     return this.form.value.get('scores') as FormArray; 
   }
 
-  addPlayer(player) {
+  addScore(score) {
     var dupe = false;
-    this.playerList.controls.forEach((v, i) => {
-      if (v.value.id == player.id) {
+    this.scoreList.controls.forEach((v, i) => {
+      if (v.value.id == score.player.id) {
         dupe = true;
       }
     });
 
     if (!dupe) {
-      // New Score
-      var s = new Score();
-      s.player = player;
-      this.playerList.push(new FormControl(s));
+      this.scoreList.push(new FormControl(score));
     }
   }
 
-  removePlayer(player) {
-    this.playerList.controls.forEach((v, i) => {
+  removeScore(player) {
+    this.scoreList.controls.forEach((v, i) => {
       if (player.id == v.value.id) {
-        this.playerList.removeAt(i);
+        this.scoreList.removeAt(i);
       }
     });
   }
@@ -235,10 +231,16 @@ export class SessionFormService {
 
   addTeam() {
     if (this.teamList.controls.length < 8) {
+      var id = Math.floor(Math.random() * 100);
       this.teamList.push(new FormControl({
-        name: "Team " + (this.teamList.controls.length + 1),
+        id: id,
+        name: "Team " + id,
         color: this.teamColorList[this.teamList.controls.length]
       }));
+
+      //  Disable Color
+      this.teamColorList[this.teamList.controls.length].available = false;
+
     } else {
       // Too Many
     }
@@ -247,10 +249,14 @@ export class SessionFormService {
 
   removeTeam(team) {
     this.teamList.controls.forEach((v, i) => {
-      if (team == v.value) {
+      if (team.id == v.value.id) {
         this.teamList.removeAt(i);
       }
     });
+  }
+
+  getTeamColor() {
+
   }
 
 
@@ -260,7 +266,7 @@ export class SessionFormService {
 
     //  Append Date + Time;
     var score: Score[]
-    this.playerList.controls.forEach((v, i) => {
+    this.scoreList.controls.forEach((v, i) => {
       var s = new Score();
       /*
       s.player = v.player;

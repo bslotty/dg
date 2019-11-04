@@ -78,16 +78,16 @@
       <ng-template matStepLabel>
         <div class="row justify-content-between align-items-center no-gutters">
           <div class="col">Players</div>
-          <div class="col text-right">{{ form.get('players').controls.length }}</div>
+          <div class="col text-right">{{ form.get('scores')?.controls.length }}</div>
         </div>
       </ng-template>
 
       <div @flyInPanelRow>
-        <score-list-item [score]='score.value' mode='remove' (action)="removePlayer(score.value)"
-          *ngFor="let score of form.get('scores')?.controls; trackBy: trackPlayers"></score-list-item>
+        <score-list-item [score]='score.value' mode='remove' (action)="removeScore(score.value)"
+          *ngFor="let score of form.get('scores')?.controls; trackBy: trackScores"></score-list-item>
       </div>
 
-      <app-select-players #playerSelect (selected)="addPlayer($event)"></app-select-players>
+      <app-select-players #playerSelect (selected)="addScore($event)"></app-select-players>
 
     </mat-step>
 
@@ -115,13 +115,13 @@
 
 
       <div cdkDropListGroup class="row justify-content-between align-items-start" @flyInPanelRow>
-        <div class="col teamDropPad {{ team.value.color.name }}" cdkDropList [cdkDropListData]="roster[i]"
-          (cdkDropListDropped)="rosterDrop($event)" *ngFor="let team of form.get('teams').controls; let i = index">
+        <div class="col teamDropPad {{ team.value.color.name }}" *ngFor="let team of form.get('teams').controls; let i = index"
+          (cdkDropListDropped)="rosterDrop($event)" cdkDropList [cdkDropListData]="getRoster(team)">
 
 
-          <label>{{ team.value.name }}</label>
+          <label>{{ team.value.color.name | titlecase }}</label>
           <score-list-item cdkDrag [cdkDragData]="player" [score]="player" mode="puck"
-            *ngFor="let player of roster[i];">
+            *ngFor="let player of getRoster(team)">
           </score-list-item>
         </div>
       </div>

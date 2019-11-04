@@ -4,7 +4,7 @@ import { Component, OnInit, ViewChild, } from '@angular/core';
 import { SessionFormService } from '../../services/form.service';
 import { MatStepper } from '@angular/material';
 import { AccountFormService } from 'src/app/modules/account/services/account-form.service';
-import { Player, AccountBackend } from 'src/app/modules/account/services/backend.service';
+import { AccountBackend } from 'src/app/modules/account/services/backend.service';
 import { SelectPlayersComponent } from '../select-players/select-players.component';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { flyInPanelRow } from 'src/app/animations';
@@ -68,22 +68,22 @@ export class CreateComponent implements OnInit {
 
 
 
-  get playerList() {
-    return this.form.get("players") as FormArray;
+  get scoreList() {
+    return this.form.get("scores") as FormArray;
   }
 
-  addPlayer($event) {
-    console.log("addPlayer", $event);
-    this.sessionForm.addPlayer($event);
+  addScore($event) {
+    console.log("addScore", $event);
+    this.sessionForm.addScore($event);
     
   }
 
-  removePlayer($event) {
-    console.log("removePlayer", $event);
-    this.sessionForm.removePlayer($event);
+  removeScore($event) {
+    console.log("removeScore", $event);
+    this.sessionForm.removeScore($event);
   }
 
-  trackPlayers(input, item) {
+  trackScores(input, item) {
     return item.value.id;
   }
 
@@ -95,8 +95,8 @@ export class CreateComponent implements OnInit {
 
   addTeam(){
     this.sessionForm.addTeam();
-    if (this.playerList.controls.length > 0 && this.roster.length == 0 ) {
-      this.roster[0] = this.playerList.value;
+    if (this.scoreList.controls.length > 0 && this.roster.length == 0 ) {
+      this.roster[0] = this.scoreList.value;
     } else if (this.roster.length < this.teamList.length){
       this.roster.push([]);
     }
@@ -113,14 +113,13 @@ export class CreateComponent implements OnInit {
 
   
   getRoster(team) {
-    var teamIndex:number = 0;
-    this.teamList.controls.forEach((v, i)=>{
-      if (team.name == v.value.name) {
-        teamIndex = i;
+    var roster = this.scoreList.value.filter((s)=>{
+      if (!s.team) {
+        s.team = this.teamList.value[0];
       }
+      return s.team.id == team.value.id;
     });
-    console.log ("roster:", this.roster);
-    return this.roster[teamIndex];
+    return roster;
   }
 
   rosterDrop(event: CdkDragDrop<string[]>) {

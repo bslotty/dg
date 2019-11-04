@@ -230,6 +230,7 @@ export class Session {
     public title?: string,
     public par?: Array<any>,
     public scores?: Score[],
+    public teams?: Team[],
   ) { }
 }
 
@@ -247,8 +248,8 @@ export class SessionFormat {
 export class Score {
   public id: string;
   public player: Player;
-  public team: Team;
   public scores: Array<number>;
+  public team: number; // Index of Team
   public handicap: number;
 
   constructor() {} 
