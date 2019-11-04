@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 import { CourseBackend, Course } from '../../courses/services/backend.service';
 import { Router } from '@angular/router';
 import { Session, SessionBackend } from './backend.service';
@@ -41,8 +41,14 @@ export class SessionFormService {
     Validators.required,
   ]);
 
-  private cPlayers = new FormControl("", [
+  private cPlayers = new FormArray([], [
     Validators.required,
+  ]);
+
+  private cTeams = new FormArray([], [
+    Validators.required,
+    Validators.minLength(2),
+    Validators.maxLength(8),
   ]);
 
   private cTerm = new FormControl("", [
@@ -51,13 +57,41 @@ export class SessionFormService {
     Validators.maxLength(128)
   ]);
 
-  /*
-  private cTitle = new FormControl("", [
-    Validators.required,
-    Validators.minLength(5),
-    Validators.maxLength(10)
-  ]);
-  */
+
+  //  Team Colors
+  teamColorList = [{
+    name: "red",
+    hex: "ad0000",
+    available: true,
+  }, {
+    name: "blue",
+    hex: "3052ff",
+    available: true,
+  }, {
+    name: "green",
+    hex: "30ff30",
+    available: true,
+  }, {
+    name: "yellow",
+    hex: "fcf22f",
+    available: true,
+  }, {
+    name: "orange",
+    hex: "fcad2e",
+    available: true,
+  }, {
+    name: "purple",
+    hex: "802efc",
+    available: true,
+  }, {
+    name: "pink",
+    hex: "fc2eea",
+    available: true,
+  }, {
+    name: "white",
+    hex: "FFFFFF",
+    available: true,
+  },];
 
   constructor(
     private courseService: CourseBackend,
@@ -86,22 +120,22 @@ export class SessionFormService {
         break;
 
       case "search":
-          form.addControl("term", this.cTerm);
-
-          //  Listen to Changes for Date Time Merge
-          form.valueChanges.subscribe((v)=>{
-            //  console.log ("form.valueChanges.v: ", v);
-
-            if (v.time != "" && v.date instanceof Date && v.date.getHours() == 0) {
-              var d = new Date(v.date.toDateString() + " " + v.time);
-              console.log ("date set: ", d);
-              this.setDate(d);
-            }
-          });
-      break;
+        form.addControl("", this.cTerm);
+        break;
     }
 
-  
+    //  Listen to Changes for Date Time Merge
+    form.valueChanges.pipe(this.sessionService.serverPipe).subscribe((v) => {
+      //  console.log ("form.valueChanges.v: ", v);
+
+      if (v['time'] != "" && v['date'] instanceof Date && v['date'].getHours() == 0) {
+        var d = new Date(v['date'].toDateString() + " " + v['time']);
+        console.log("date set: ", d);
+        this.setDate(d);
+      }
+    });
+
+
     this.form.next(form);
   }
 
@@ -136,20 +170,80 @@ export class SessionFormService {
   }
 
   setFormat(format) {
-    console.log("setFormat", format);
     this.form.value.get("format").setValue(format);
+    //  If Format Changes to/from FFA; Update Controls(Team)
+
+    if (format.enum == "ffa" && this.form.value.get('teams')) {
+      this.form.value.removeControl("teams");
+    } else if (format.enum != "ffa" && !this.form.value.get('teams')){
+      this.form.value.addControl("teams", this.cTeams);
+    }
   }
 
   setCourse(course) {
-    console.log("setCourse", course);
     this.form.value.get("course").setValue(course);
   }
 
-  setDate(date){
+  setDate(date) {
     this.form.value.get("date").setValue(date);
   }
 
-  SubmitCreation() {
+
+  //  Player Functions
+  get playerList() {
+    return this.form.value.get('players') as FormArray; 
+  }
+
+  addPlayer(player) {
+    var dupe = false;
+    this.playerList.controls.forEach((v, i) => {
+      if (v.value.id == player.id) {
+        dupe = true;
+      }
+    });
+
+    if (!dupe) {
+      this.playerList.push(new FormControl(player));
+    }
+  }
+
+  removePlayer(player) {
+    this.playerList.controls.forEach((v, i) => {
+      if (player.id == v.value.id) {
+        this.playerList.removeAt(i);
+      }
+    });
+  }
+
+
+  //  Team Functions
+  get teamList() {
+    return this.form.value.get('teams') as FormArray; 
+  }
+
+  addTeam() {
+    if (this.teamList.controls.length < 8) {
+      this.teamList.push(new FormControl({
+        name: "Team " + (this.teamList.controls.length + 1),
+        color: this.teamColorList[this.teamList.controls.length]
+      }));
+    } else {
+      // Too Many
+    }
+    
+  }
+
+  removeTeam(team) {
+    this.teamList.controls.forEach((v, i) => {
+      if (team == v.value) {
+        this.teamList.removeAt(i);
+      }
+    });
+  }
+
+
+
+  submitCreation() {
     console.log("SubmitCreation.form: ", this.form);
 
     //  Append Date + Time;
@@ -161,18 +255,7 @@ export class SessionFormService {
     session.players = this.form.value.value.cPlayers;
 
     this.sessionService.create(session).subscribe((res) => {
-      console.log("course.form.create.res: ", res);
-      if (this.courseService.rCheck(res)) {
-        var createdCourse = this.courseService.rGetData(res);
-        this.router.navigate(["courses", createdCourse[0]['id']]);
-      } else {
-        console.log("Nearby?");
-
-        //  Fix
-        this.courseService.setCourseList(this.courseService.rGetData(res) as Course[]);
-
-        this.router.navigate(["courses/nearby"]);
-      }
+      console.log ("sessionsService.create.res: ", res)
     });
 
 

@@ -6,7 +6,7 @@
 
   <mat-vertical-stepper [linear]="true" #stepper labelPosition="end" class="mb-3">
     <ng-template matStepperIcon="edit" let-index="index">
-      <!-- p class="stepperHeader mb-0">{{ index + 1 }}</p-->
+      <span class="icon-circle"></span>
     </ng-template>
 
     <ng-template matStepperIcon="done">
@@ -14,6 +14,7 @@
     </ng-template>
 
     <ng-template matStepperIcon="number" let-index="index">
+      <span class="icon-circle"></span>
       <!--p class="stepperHeader mb-0">{{ index + 1 }}</p-->
     </ng-template>
 
@@ -49,10 +50,10 @@
           <div class="col">Time</div>
           <div class="col text-right" *ngIf="form.get('date').valid && form.get('time').valid">
             {{ form.get('date').value.toDateString() }} at {{ form.get('time').value }}</div>
-          </div>
+        </div>
       </ng-template>
 
-      <div class="p-3">
+      <div>
         <mat-form-field>
           <input matInput [matDatepicker]="picker" placeholder="Choose Start Date" formControlName='date'
             (focus)="picker.open()" type="text">
@@ -73,17 +74,89 @@
     </mat-step>
 
     <mat-step>
-      <ng-template matStepLabel>Players</ng-template>
-      <app-select-players (selected)="addPlayer($event)"></app-select-players>
+      <ng-template matStepLabel>
+        <div class="row justify-content-between align-items-center no-gutters">
+          <div class="col">Players</div>
+          <div class="col text-right">{{ form.get('players').controls.length }}</div>
+        </div>
+      </ng-template>
+      <div *ngFor="let player of form.get('players').controls;">
+        <div class="panel row justify-content-between align-items-center no-gutters">
+          <div class="col">{{ player.value.first_name }} {{ player.value.last_name }}</div>
+          <div class="col-xs">
+            <a mat-icon-button color="primary" (click)="openPlayerSettings(player)">
+              <span class="icon-sliders"></span>
+            </a>
+            <a mat-icon-button color="warn" (click)="removePlayer(player.value)">
+              <span class="icon-minus"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+
+      <app-select-players #playerSelect (selected)="addPlayer($event)"></app-select-players>
     </mat-step>
 
-    <mat-step *ngIf="form.get('format').value.enum != 'ffa'">
-      <ng-template matStepLabel>Teams</ng-template>
+    <mat-step *ngIf="form.get('format').value.enum != 'ffa' && form.get('teams')">
+      <ng-template matStepLabel>
+        <div class="row justify-content-between align-items-center no-gutters">
+          <div class="col">Teams</div>
+          <div class="col text-right">
+            <a mat-flat-button color="transparent-primary" (click)="addTeam()">
+              <span class="icon-plus"></span>
+            </a></div>
+        </div>
+
+      </ng-template>
+
+
+      <div *ngFor="let team of form.get('teams')?.controls;">
+        <div class="panel row justify-content-between align-items-center no-gutters">
+          <div class="colorChoice">
+            <div class="colorIcon {{ team.value.color.name }}"></div>
+          </div>
+          <div [style.color]="team.value.color.hex" class="col ml-3">
+            <label [style.color]="team.value.color.hex">{{ team.value.name | titlecase }}</label>
+          </div>
+
+          <div class="col-xs">
+            <a mat-icon-button color="primary" (click)="changeTeamColor()">
+              <span class="icon-sliders"></span>
+            </a>
+            <a mat-icon-button color="warn" (click)="removeTeam(team.value)">
+              <span class="icon-minus"></span>
+            </a>
+          </div>
+        </div>
+      </div>
     </mat-step>
 
+    <mat-step *ngIf="form.get('format').value.enum != 'ffa' && form.get('teams')">
+      <ng-template matStepLabel>Roster</ng-template>
+
+
+      <div cdkDropListGroup class="row justify-content-between align-items-start">
+        <div class="col teamDropPad {{ team.value.color.name }}" cdkDropList
+          [cdkDropListData]="roster[i]" (cdkDropListDropped)="rosterDrop($event)"
+          *ngFor="let team of form.get('teams').controls; let i = index">
+          <label>{{ team.value.name }}</label>
+          <div cdkDrag [cdkDragData]="player" *ngFor="let player of roster[i];">
+            {{ player.first_name }}
+          </div>
+        </div>
+      </div>
+    </mat-step>
 
 
   </mat-vertical-stepper>
 
 
 </form>
+
+<div class="row no-gutters justify-content-stretch align-items-center mt-3">
+  <a mat-raised-button color="primary" class="btn btn-lg btn-block btn-pageAction"
+    (click)="sessionForm.submitCreation()" [disabled]="!sessionForm.ReadyForSubmission()">
+    <label>Create</label>
+  </a>
+</div>
