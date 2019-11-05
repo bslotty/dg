@@ -4,13 +4,24 @@
 	</div>
 
 	<div class="col ml-2" *ngIf="mode != 'puck'">
-		<div>{{ score.player.first_name }} {{ score.player.last_name }}</div>
+		<div>{{ score.player.first_name }} {{ score.player.last_name }} <span
+				*ngIf="score.handicap && score.handicap != 0" class="icon-shield color-accent"></span></div>
 		<div class="sub-text">{{ score.player.email }}</div>
 	</div>
 
 	<div class="col ml-2" *ngIf="mode == 'puck'">
-		{{ (score.player.first_name.length>1)? (score.player.first_name | slice:0:1)+'.' : (score.player.first_name) }}
-		{{ (score.player.last_name.length>8)? (score.player.last_name | slice:0:8)+'..' : (score.player.last_name) }}
+		<div class="row justify-content-between align-items-center no-gutters">
+			<div class="col">
+				{{ (score.player.first_name.length>1)? (score.player.first_name | slice:0:1)+'.' : (score.player.first_name) }}
+				{{ (score.player.last_name.length>8)? (score.player.last_name | slice:0:8)+'..' : (score.player.last_name) }}
+			</div>
+
+			<div class="col-xs">
+				<span *ngIf="score.handicap && score.handicap != 0" class="icon-shield color-accent"></span>
+			</div>
+		</div>
+
+
 	</div>
 
 

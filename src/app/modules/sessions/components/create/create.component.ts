@@ -115,12 +115,17 @@ export class CreateComponent implements OnInit {
 
   
   getRoster(team) {
-    var roster = this.scoreList.value.filter((s)=>{
-      if (!s.team) {
-        s.team = this.teamList.value[0];
-      }
-      return s.team.id == team.value.id;
-    });
+    var roster;
+    if (team == null) {
+      roster = this.scoreList.value.filter((s)=>{return !s.team});
+    } else {
+      roster = this.scoreList.value.filter((s)=>{
+        if (s.team){
+          return s.team == team.value;
+        }
+        
+      })
+    }
     return roster;
   }
 

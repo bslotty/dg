@@ -23,6 +23,8 @@ export class DashboardComponent implements OnInit {
 
   }
 
-
+  testAction() {
+    console.log("action");
+  }
 
 }

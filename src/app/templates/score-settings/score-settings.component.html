@@ -1,1 +1,28 @@
-<p>player-settings works!</p>
+<div class="row justify-content-between align-items-center no-gutters">
+	<div class="col">
+		<h4>Player Settings</h4>
+	</div>
+
+	<div class="col-xs">
+		<a mat-flat-button color="transparent-primary" (click)="close(false)">
+			<span class="icon-x"></span>
+		</a>
+	</div>
+</div>
+
+<div class="m-3">
+	<form [formGroup]="form">
+		<mat-form-field>
+			<mat-label>Handicap</mat-label>
+			<input matInput formControlName="handicap" placeholder="x">
+			<span matPrefix class="icon-shield accent"></span>
+		</mat-form-field>
+	</form>
+
+</div>
+
+<div class="row justify-content-end align-items-center no-gutters">
+	<a mat-flat-button color="primary" class="btn btn-lg" [disabled]="!formCheck()" (click)="save()">
+		Save
+	</a>
+</div>

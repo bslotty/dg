@@ -11,7 +11,7 @@ import { Score } from 'src/app/modules/sessions/services/backend.service';
 })
 export class ScoreListItemComponent implements OnInit {
 
-  @Input() mode: string = ""; 
+  @Input() mode: string = "";
   @Input() score: Score;
   @Input() team: Team;
 
@@ -40,7 +40,13 @@ export class ScoreListItemComponent implements OnInit {
   openSettings() {
     this.dialog.open(ScoreSettingsComponent, {
       data: this.score,
+      width: "80vw",
     })
   }
 
 }
+
+
+
+
+

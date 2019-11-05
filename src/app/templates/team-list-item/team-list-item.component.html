@@ -3,7 +3,7 @@
 		<div class="colorIcon {{ team.color.name }}"></div>
 	</div>
 	<div [style.color]="team.color.hex" class="col ml-3">
-		<label [style.color]="team.color.hex">{{ team.color.name | titlecase }}</label>
+		<label [style.color]="team.color.hex">{{ team.name | titlecase }}</label>
 	</div>
 
 	<div class="col-xs" *ngIf="mode == 'remove'">

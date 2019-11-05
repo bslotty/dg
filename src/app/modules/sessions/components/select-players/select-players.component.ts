@@ -49,6 +49,7 @@ export class SelectPlayersComponent implements OnInit {
         this.results = p.map((v)=>{
           var s = new Score();
           s.player = v;
+          s.handicap = 0;
           return s;
         });
       }

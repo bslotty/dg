@@ -80,20 +80,25 @@ a * {
 }
 
 .panel {
-  background: rgb(80, 100, 80);
-  // box-shadow: 0 3px 3px -2px rgba(0, 0, 0, .2), 0 3px 4px 0 rgba(0, 0, 0, .14), 0 1px 8px 0 rgba(0, 0, 0, .12);
-  border-radius: 3px;
   position: relative;
+  background: $primary-light;
+	color: $text-light;
+	padding: .3rem;
+  border-radius: 3px; 
   margin-bottom: 1vh;
-  padding: .3em;
+  // box-shadow: 0 3px 3px -2px rgba(0, 0, 0, .2), 0 3px 4px 0 rgba(0, 0, 0, .14), 0 1px 8px 0 rgba(0, 0, 0, .12);
+}
 
-  min-height: 2em;
+.sub-text {
+	font-size: .8rem;
+  color: $text-light-fade;
+  font-weight: 100;
+	line-height: 1.2rem;
 }
 
 
-.sub-text {
-  font-weight: 100;
-  font-size: .8em;
+.color-accent {
+  color: $accent;
 }
 
 
@@ -219,60 +224,66 @@ table {
 }
 
 
-.player.red,
+.teamPicker.red:not(:disabled),
 .teamDropPad.red {
   color: #e66969;
   border-color: #e6696977;
-  background: #e6696910;
+  background: #e6696910 !important;
 }
 
-.player.blue,
+.teamPicker.blue:not(:disabled),
 .teamDropPad.blue {
   color: #6ab9e8;
   border-color: #6ab9e877;
-  background: #6ab9e810;
+  background: #6ab9e810 !important;
 }
 
-.player.green,
+.teamPicker.green:not(:disabled),
 .teamDropPad.green {
   color: #60df60;
   border-color: #60df6077;
-  background: #60df6010;
+  background: #60df6010 !important;
 }
 
-.player.yellow,
+.teamPicker.yellow:not(:disabled),
 .teamDropPad.yellow {
   color: #d6d05d;
   border-color: #d6d05d77;
-  background: #d6d05d10;
+  background: #d6d05d10 !important;
 }
 
-.player.orange,
+.teamPicker.orange:not(:disabled),
 .teamDropPad.orange {
   color: #d8a95d;
   border-color: #d8a95d77;
-  background: #d8a95d10;
+  background: #d8a95d10 !important;
 }
 
-.player.purple,
+.teamPicker.purple:not(:disabled),
 .teamDropPad.purple {
   color: #9461e0;
   border-color: #9461e077;
-  background: #9461e010;
+  background: #9461e010 !important;
 }
 
-.player.pink,
+.teamPicker.pink:not(:disabled),
 .teamDropPad.pink {
   color: #cf58c5;
   border-color: #cf58c577;
-  background: #cf58c510;
+  background: #cf58c510 !important;
 }
 
-.player.white,
+.player.white:not(:disabled),
 .teamDropPad.white {
   color: #fff;
   border-color: #FFFFFF77;
-  background: #FFFFFF10;
+  background: #FFFFFF10 !important;
+}
+
+.teamDropPad.unassigned {
+  color: $text-light;
+  border-color: $primary-light;
+  background: $text-dark-fade;
 }
 
 .teamDropPad {
@@ -327,21 +338,4 @@ table {
   position: absolute !important;
   left: 0;
   bottom: -75%;
-}
-
-
-
-/*
-  Extra HTML Elements
-*/
-.sub-text {
-	font-size: .8em;
-	color: $text-light-fade;
-	line-height: 1.2em;
-}
-
-.panel {
-  background: $primary-light;
-	color: $text-light;
-	padding: .5em;
 }

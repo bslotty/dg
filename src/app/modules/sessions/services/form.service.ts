@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators, FormArray, ValidatorFn, AbstractControl } from '@angular/forms';
 import { CourseBackend, Course } from '../../courses/services/backend.service';
 import { Router } from '@angular/router';
 import { Session, SessionBackend, Score } from './backend.service';
@@ -54,7 +54,7 @@ export class SessionFormService {
 
   private cScores = new FormArray([], [
     Validators.required,
-    Validators.minLength(1)
+    Validators.minLength(1),
   ]);
 
   private cTerm = new FormControl("", [
@@ -151,7 +151,17 @@ export class SessionFormService {
   */
   ReadyForSubmission(): boolean {
     if (this.form.value.valid && this.form.value.dirty && !this.form.value.disabled) {
-      return true;
+
+      if (this.teamList.controls.length > 0) {
+        if (this.validateRoster()) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return true;
+      }
+      
     } else {
       return false;
     }
@@ -182,7 +192,7 @@ export class SessionFormService {
     if (format.enum == "ffa" && this.form.value.get('teams')) {
       this.form.value.removeControl("teams");
       this.form.value.removeControl("roster");
-    } else if (format.enum != "ffa" && !this.form.value.get('teams')){
+    } else if (format.enum != "ffa" && !this.form.value.get('teams')) {
       this.form.value.addControl("teams", this.cTeams);
       this.form.value.addControl("scores", this.cScores);
     }
@@ -199,7 +209,7 @@ export class SessionFormService {
 
   //  Score Functions
   get scoreList() {
-    return this.form.value.get('scores') as FormArray; 
+    return this.form.value.get('scores') as FormArray;
   }
 
   addScore(score) {
@@ -226,37 +236,54 @@ export class SessionFormService {
 
   //  Team Functions
   get teamList() {
-    return this.form.value.get('teams') as FormArray; 
+    return this.form.value.get('teams') as FormArray;
   }
 
   addTeam() {
+
+    //  Limit to 8
     if (this.teamList.controls.length < 8) {
-      var id = Math.floor(Math.random() * 100);
-      this.teamList.push(new FormControl({
-        id: id,
-        name: "Team " + id,
-        color: this.teamColorList[this.teamList.controls.length]
-      }));
+      var color = this.teamColorList.find((t) => {
+        return t.available == true;
+      });
 
       //  Disable Color
-      this.teamColorList[this.teamList.controls.length].available = false;
+      color.available = false;
+
+      this.teamList.push(new FormControl({
+        name: color.name,
+        color: color,
+      }));
 
     } else {
       // Too Many
     }
-    
+
   }
 
   removeTeam(team) {
     this.teamList.controls.forEach((v, i) => {
-      if (team.id == v.value.id) {
+      if (team.name == v.value.name) {
+
+        //  Update Availablity Status on Color
+        this.teamColorList.find((c)=>{
+          if (c.name == team.name) {
+            c.available = true;
+            return true;
+          }
+        });
+        
+        //  Remove Team From List
         this.teamList.removeAt(i);
       }
     });
-  }
 
-  getTeamColor() {
-
+    //  Remove Roster for Deleted Team
+    this.scoreList.controls.forEach((s, i) => {
+      if (s.value.team == team) {
+        s.value.team = null;
+      }
+    });
   }
 
 
@@ -264,75 +291,18 @@ export class SessionFormService {
   submitCreation() {
     console.log("SubmitCreation.form: ", this.form);
 
-    //  Append Date + Time;
-    var score: Score[]
-    this.scoreList.controls.forEach((v, i) => {
-      var s = new Score();
-      /*
-      s.player = v.player;
-      s.team = v.team;
-      s.handicap = v.handicap;
-      */
-      score.push(s);
-    });
-    
-
-
     var session = new Session();
-    session.format = this.form.value.value.cFormat;
-    session.course = this.form.value.value.cCourse;
-    session.starts_on = this.form.value.value.cDate;
-    session.scores = score;
+    session.format = this.form.value.value.format;
+    session.course = this.form.value.value.course;
+    session.starts_on = this.form.value.value.date;
+    session.scores = this.scoreList.value;
+
+    console.log("session: ", session);
 
     this.sessionService.create(session).subscribe((res) => {
-      console.log ("sessionsService.create.res: ", res)
+      console.log("sessionsService.create.res: ", res)
     });
 
-
-
-    //  Old
-
-    /*
-        if (this.form.valid && this.form.dirty) {
-
-
-      //  Convert Date
-      var d: Date = new Date(this.form.get('start').value);
-      var year = d.getFullYear();
-      var month = d.getMonth();
-      var day = d.getDate();
-
-      var hour = this.form.get('hour').value;
-      var min = this.form.get('min').value;
-      var convert = this.form.get('ampm').value.toLowerCase()
-
-      //  AM/PM Fix
-      if (convert == 'pm' && hour != '12') {
-        hour = (+hour + 12);
-      } else if (convert == 'am' && hour == '12') {
-        hour = "00";
-      }
-
-      //  Set Start Date
-      var d = new Date(year, month, day, hour, min);
-
-      //  Create Session
-      var session: Session = new Session(
-        null,
-        this.form.get('course').value,
-        "ffa",
-        d,
-        this.form.get('description').value
-      );
-
-      //  Send Request
-      this.sessions.createSession(session).subscribe((res: ServerPayload) => {
-        this.feed.finializeLoading(res, true);
-        if (res['status'] == 'success') { }
-
-      });
-    }
-  */
   }
 
 
@@ -340,6 +310,15 @@ export class SessionFormService {
 
 
 
+  validateRoster(): boolean {
+    var valid = true;
+    this.scoreList.controls.forEach((s)=>{
+      if (s.value.team == null || s.value.team == undefined){
+        valid = false;
+      }
+    });
+    return valid;
+  }
 
 
 

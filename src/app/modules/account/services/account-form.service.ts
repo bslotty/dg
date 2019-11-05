@@ -53,7 +53,7 @@ export class AccountFormService {
 
 
   //  Password
-  private cPass = new FormControl("pass", [
+  private cPass = new FormControl("", [
     Validators.required,
     Validators.minLength(8),
     Validators.maxLength(128)

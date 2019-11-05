@@ -416,6 +416,15 @@ p b {
   background: none;
 }
 
+.mat-expansion-indicator::after {
+  border-width: 0 .15rem .15rem 0 !important;
+  padding: .2rem !important;
+}
+
+.mat-expansion-panel-header {
+  font-size: 1rem;
+}
+
 
 
 // CDK-Drag-Drop

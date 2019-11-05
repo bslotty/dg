@@ -230,7 +230,6 @@ export class Session {
     public title?: string,
     public par?: Array<any>,
     public scores?: Score[],
-    public teams?: Team[],
   ) { }
 }
 
