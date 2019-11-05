@@ -114,7 +114,7 @@ export class SessionFormService {
         form.addControl("course", this.cCourse);
         form.addControl("date", this.cDate);
         form.addControl("time", this.cTime);
-        form.addControl("players", this.cPlayers);
+        form.addControl("scores", this.cScores);
         break;
 
       case "edit":
@@ -122,7 +122,7 @@ export class SessionFormService {
         form.addControl("course", this.cCourse);
         form.addControl("date", this.cDate);
         form.addControl("time", this.cTime);
-        form.addControl("players", this.cPlayers);
+        form.addControl("scores", this.cScores);
         break;
 
       case "search":

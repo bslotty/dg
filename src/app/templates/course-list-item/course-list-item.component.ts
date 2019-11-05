@@ -12,6 +12,8 @@ export class CourseListItemComponent implements OnInit {
 
   @Output() selected: EventEmitter<Course> = new EventEmitter();
 
+  @Input() selectedCourse:Course;
+
   constructor() { }
 
   ngOnInit() {

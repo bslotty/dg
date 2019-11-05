@@ -39,6 +39,8 @@ export class CreateComponent implements OnInit {
     this.sessionForm.form$.subscribe((f)=>{
       this.form = f;
     });
+
+    console.log ("Stepper: ", this.stepper);
   }
 
 
@@ -123,13 +125,37 @@ export class CreateComponent implements OnInit {
   }
 
   rosterDrop(event: CdkDragDrop<string[]>) {
+
+    console.log("event: ", event);
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
+      /*
       transferArrayItem(event.previousContainer.data,
                         event.container.data,
                         event.previousIndex,
                         event.currentIndex);
+      */
+
+      //  Remove from previousContainer.data
+      
+      //  Get Destination Color Name
+      var teamDestName = event.container.id.toString().replace("team-", "");
+      
+      //  Get Team Object From Color Name
+      var teamDest = this.teamList.value.filter((t)=>{
+        return t.color.name == teamDestName;
+      });
+
+      //  Update Player's Team
+      this.scoreList.controls.forEach((s)=>{
+        if (event.item.data.player.id == s.value.player.id) {
+          s.value.team = teamDest[0];
+          console.log ("updated: ", s);
+        }
+      });
+
+    
     }
   }
 

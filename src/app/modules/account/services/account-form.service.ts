@@ -19,6 +19,11 @@ export class AccountFormService {
   private passwordPipe = pipe(
     debounceTime(888),
     distinctUntilChanged(),
+  );
+
+  private searchPipe = pipe(
+    debounceTime(300),
+    distinctUntilChanged(),
   )
 
   //  Fields
@@ -63,14 +68,14 @@ export class AccountFormService {
   ]);
 
 
-  //  Old Password
+  //  Confirm Password
   private cConfirmPass = new FormControl("pass_confirm", [
     Validators.required,
     Validators.minLength(8),
     Validators.maxLength(128)
   ]);
 
-  //  Old Password
+  //  Search
   private cTerm = new FormControl("", [
     Validators.required,
     Validators.minLength(2),
@@ -154,8 +159,7 @@ export class AccountFormService {
 
       case "search":
         form.addControl("term", this.cTerm);
-        form.valueChanges.pipe(this.passwordPipe).subscribe((v)=>{
-          console.log("searchUsers: ", v);
+        form.valueChanges.pipe(this.searchPipe).subscribe((v)=>{
           this.account.searchUsers(v["term"]).subscribe((p)=>{
             console.log ("P:", p);
           });

@@ -5,7 +5,7 @@
       <div class="colorIcon light"></div>
     </div>
 
-    <div class="col ml-3">
+    <div class="col ml-2">
       <p>{{ format.name }}</p>
     </div>
 
@@ -14,7 +14,7 @@
         <span class="icon-help-circle"></span>
       </a>
       <a *ngIf="selectedFormat == format" mat-flat-button color="transparent-accent">
-        <span class="icon-target"></span>
+        <span class="icon-disc"></span>
       </a>
       <a *ngIf="selectedFormat != format" mat-flat-button color="transparent-primary" (click)="setFormat(format)">
         <span class="icon-circle"></span>

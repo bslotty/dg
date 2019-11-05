@@ -1,11 +1,19 @@
 <div class="panel row justify-content-between align-items-center no-gutters">
-  <div class="col">
+  <div class="colorChoice" *ngIf="selectedCourse == course">
+    <div class="colorIcon light"></div>
+  </div>
+
+  <div class="col ml-2">
     <div>{{ course.park_name }}</div>
     <div class="sub-text">{{ course.city}}, {{ course.state }} {{ course.zip }}</div>
   </div>
   <div class="col-xs" *ngIf="mode == 'selector'">
-    <a mat-icon-button color="primary" (click)="selectCourse(course)">
+    <a *ngIf="selectedCourse != course" mat-icon-button color="primary" (click)="selectCourse(course)">
       <span class="icon-circle"></span>
+    </a>
+
+    <a *ngIf="selectedCourse == course" mat-icon-button color="primary" (click)="selectCourse(course)">
+      <span class="icon-disc"></span>
     </a>
   </div>
 

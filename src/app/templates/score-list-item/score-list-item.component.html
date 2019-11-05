@@ -1,12 +1,19 @@
 <div class="panel row justify-content-between align-items-center no-gutters">
-	<div class="colorChoice" *ngIf='team'>
-		<div class="colorIcon {{ score.team.value.color.name }}"></div>
+	<div class="colorChoice" *ngIf='score?.team'>
+		<div class="colorIcon {{ score.team.color.name }}"></div>
 	</div>
 
-	<div class="col">
+	<div class="col ml-2" *ngIf="mode != 'puck'">
 		<div>{{ score.player.first_name }} {{ score.player.last_name }}</div>
-		<div class="sub-text" *ngIf="mode != 'puck'">{{ score.player.email }}</div>
+		<div class="sub-text">{{ score.player.email }}</div>
 	</div>
+
+	<div class="col ml-2" *ngIf="mode == 'puck'">
+		{{ (score.player.first_name.length>1)? (score.player.first_name | slice:0:1)+'.' : (score.player.first_name) }}
+		{{ (score.player.last_name.length>8)? (score.player.last_name | slice:0:8)+'..' : (score.player.last_name) }}
+	</div>
+
+
 
 	<div class="col-xs" *ngIf="mode == 'selector'">
 		<a mat-icon-button color="primary" (click)="include(score.player)">

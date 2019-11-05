@@ -397,7 +397,8 @@ p b {
 }
 
 .mat-stepper-vertical-line::before {
-  border-left-color: #FAFAF0;
+  // border-left-color: #FAFAF0;
+  border-left-color: transparent;
 }
 
 .mat-tooltip {
@@ -406,10 +407,15 @@ p b {
   background: $text-light;
 }
 
+.mat-tooltip * {
+  color: $primary-light;
+}
+
 
 .mat-flat-button[disabled][disabled] {
   background: none;
 }
+
 
 
 // CDK-Drag-Drop
@@ -457,7 +463,7 @@ p b {
 
 .timepicker__actions {
   background: $primary-light !important;
-  justify-content: center !important;  
+  justify-content: space-between !important;  
 }
 
 .timepicker-button {
@@ -470,6 +476,7 @@ p b {
 .timepicker-button span {
   font-size: inherit !important;
 }
+
 
 .clock-face {
   width: 50vw !important;
@@ -499,12 +506,24 @@ p b {
   height: 8vw !important;
 }
 
-
-
 .clock-face {
   background: $text-light !important;
 }
 
+.timepicker-period {
+  flex-direction: row !important;
+  margin-left: 1em !important;
+}
+
+.timepicker-dial__container {
+
+}
+
+
+
+.timepicker-period__btn {
+  font-size: 1.5rem !important;
+}
 
 /*
 
@@ -575,19 +594,4 @@ New Input Styles
 */
 .btn-link {
   color: $accent
-}
-
-/*
-  Extra HTML Elements
-*/
-.sub-text {
-	font-size: .8em;
-	color: $text-light-fade;
-	line-height: 1.2em;
-}
-
-.panel {
-  background: $primary-light;
-	color: $text-light;
-	padding: .5em;
 }

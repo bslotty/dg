@@ -9,7 +9,7 @@
 
 <div *ngIf="!feed.loading; else loader">
     <div *ngIf="results.length > 0 && this.form.dirty; else create" @flyInPanelRow>
-        <course-list-item mode="selector" [course]='course' *ngFor="let course of results; trackBy: trackBy" (selected)="setCourse(course)"></course-list-item>
+        <course-list-item selectedCourse="selectedCourse" mode="selector" [course]='course' *ngFor="let course of results; trackBy: trackBy" (selected)="setCourse(course)"></course-list-item>
     </div>
 </div>
 
