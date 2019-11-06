@@ -19,7 +19,10 @@ export class ScoreSettingsComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.builder.group({
-      handicap: [this.data.handicap || "", [Validators.required]]
+      handicap: [this.data.handicap || "", [
+        Validators.required, 
+        Validators.pattern("[\-0-9]+")
+      ]]
     });
 
     console.log("data: ", this.data);

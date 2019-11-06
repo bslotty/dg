@@ -27,17 +27,14 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/classes/players.php');
 $player = new Player($database);
 
 //  Permissions
-require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/classes/permissions.php');
-$permissions = new Player($database);
+require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/classes/scores.php');
+$scores = new Score($database);
 
 
 switch ($payload['action']) {
-	case "list":
-		$return[] = $sessions->getList($payload['start'], $payload['limit']);
 
-		break;
 
-	/*
+		/*
 	case "recient":
 		$return[] = $courses->UserRecientlyPlayed($payload['user']);
 		break;
@@ -45,10 +42,15 @@ switch ($payload['action']) {
 	case "favorites":
 		$return[] = $courses->UserFavorites($payload['user']);
 		break;
-	*/
 
 	case "search":
 		$return[] = $courses->search($payload['term']);
+		break;
+		*/
+
+	case "list":
+		$return[] = $sessions->getList($payload['start'], $payload['limit'], $payload["user"]);
+
 		break;
 
 	case "create":
@@ -57,60 +59,59 @@ switch ($payload['action']) {
 		$return[] = $user;
 		if ($user["status"] == "success" && count($user['results']) > 0) {
 
-			$session = $sessions->create($payload['session'], $payload['user']);
+			$r_createSession = $sessions->create($payload['session'], $payload['user']);
+			$return[] = $r_createSession;
+			if ($r_createSession['status'] == "success" && $r_createSession['affectedRows']  == 1) {
 
-			if ($session['status'] == "success" && $session['affectedRows']  == 1) {
+				$r_getCreatedSession = $sessions->GetRecientlyCreated($payload['user']);
+				$return[] = $r_getCreatedSession;
+				if ($r_getCreatedSession['status'] == "success" && $r_getCreatedSession['affectedRows']  == 1) {
 
-				$return[] = array(
-					'status' 		=> 'debug',
-					'lastInsert'	=> $database->lastInsertId()
-				);
-
-				foreach($payload["session"]["players"] as $key => $array){
-					//	$permissions -> 
-				}	
-				
-
-			} else {
-				$return[] = array(
-					'status' 	=> 'error',
-					'msg'		=> 'Unable to Create Course'
-				);
-			}
-
-
-
-
-			//	Convert Keys
-			$course = $courses->ConvertFrontBack($payload['course']);
-
-			//	Verify no Course within +/- .005 of lat/lng
-			$nearby = $courses->nearBy($course);
-			if ($nearby['status'] == 'success') {
-				if (count($nearby["results"]) > 0) {
-
-					//	Update Create Status to error, as nearby courses were found;
-					$nearby['status'] = "error";
-					$nearby['msg'] = 'There are similiar courses nearby';
-					$return[] = $nearby;
-				} else {
-					$return[] = $nearby;
-
-					//	Create Course
-					$created = $courses->create($course, $user['results'][0]);
-					$return[] = $created;
-					if ($created['status'] == 'success' && $created["affectedRows"] == 1) {
-
-						//	Return ID for Detail View
-						$return[] = $courses->UserRecientlyCreated($payload['user']);
+					$r_createScores = array();
+					foreach ($payload["session"]["scores"] as $key => $array) {
+						$r_createScores[] = $scores->create($payload["session"], $array, $payload["user"]);
 					}
+
+					//	Verify All Scores Were Created
+					$r_createScores_valid = true;
+					foreach ($r_createScores as $key => $array) {
+						if ($array["status"] != "success") {
+							$r_createScores_valid = false;
+						}
+					}
+
+					if ($r_createScores_valid) {
+						$return[] = array(
+							'status' 	=> 'success',
+							'msg'		=> 'Session Created'
+						);
+					} else {
+						$return[] = array(
+							'status' 	=> 'error',
+							'msg'		=> 'Unable to Create Scores',
+							'scores'	=> $r_createScores
+						);
+					}
+
+				} else {
+					$return[] = array(
+						'status' 	=> 'error',
+						'msg'		=> 'Unable to view Created Session',
+						'scores'	=> $r_getCreatedSession
+					);
 				}
 			} else {
 				$return[] = array(
 					'status' 	=> 'error',
-					'msg'		=> 'Nearby course search failed.'
+					'msg'		=> 'Unable to Create Session',
+					'session'	=> $r_createSession
 				);
 			}
+		} else {
+			$return[] = array(
+				'status' 	=> 'error',
+				'msg'		=> 'Unable to Verify Account'
+			);
 		}
 
 

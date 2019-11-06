@@ -294,7 +294,7 @@ export class SessionFormService {
     var session = new Session();
     session.format = this.form.value.value.format;
     session.course = this.form.value.value.course;
-    session.starts_on = this.form.value.value.date;
+    session.starts_on = this.form.value.value.date.toISOString();
     session.scores = this.scoreList.value;
 
     console.log("session: ", session);

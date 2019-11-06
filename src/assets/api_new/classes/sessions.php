@@ -26,7 +26,7 @@ class Session
 		$this->con = $db->getConnection();
 	}
 
-	public function getList($start = 0, $limit = 100)
+	public function getList($start = 0, $limit = 100, $user)
 	{
 		$query = "SELECT 
 			`id`, 
@@ -34,16 +34,18 @@ class Session
 			`created_on`,
 			`modified_by`,
 			`modified_on`,
-			`park_name`,
-			`city`,
-			`state`,
-			`zip`,
-			`latitude`,
-			`longitude` 
-		FROM `Courses`
+			`starts_on`,
+			`title`,
+			`format`,
+			`par_array`,
+		FROM `Sessions`
+		WHERE `created_by` = :userId
+		ORDER BY `starts_on` DESC
 		LIMIT " . (int) $start . ", " . (int) $limit . ";";
 
-		$values = array();
+		$values = array(
+			":userId" => $user["id"]
+		);
 
 		return $this->db->Query($query, $values);
 	}
@@ -86,7 +88,7 @@ class Session
 
 		$query = "INSERT INTO `Sessions` 
 		(`id`, `created_by`, `created_on`, `modified_by`, `modified_on`, `course_id`, `starts_on`, `title`, `format`, `par_array` ) VALUES 
-		(:id, :created_by, :created_on, :modified_by, :modified_on, :course_id, :starts_on, :title, :format, :par_array, :longitude);";
+		(:id, :created_by, :created_on, :modified_by, :modified_on, :course_id, :starts_on, :title, :format, :par_array);";
 
 		$values = array(
 			':id' 			=> $this->db->generateGUID(),
@@ -95,12 +97,11 @@ class Session
 			':modified_by' 	=> null,
 			':modified_on' 	=> null,
 
-			':course_id' 	=> $session['course_id'],
+			':course_id' 	=> $session['course']["id"],
 			':starts_on' 	=> $session['starts_on'],
-			':state' 		=> $session['state'],
 			':title' 		=> $session['title'],
-			':format' 		=> $session['format'],
-			':par_array' 	=> $session['par_array']
+			':format' 		=> $session['format']['enum'],
+			':par_array' 	=> $session['par_array'] == null ? [] : $session['par_array'] 
 		);
 
 		return $this->db->Query($query, $values);

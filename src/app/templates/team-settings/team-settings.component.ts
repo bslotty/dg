@@ -24,7 +24,7 @@ export class TeamSettingsComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.builder.group({
-      name: [this.data.color.name, [Validators.minLength(1)]]
+      name: [this.data.name , [Validators.minLength(1)]]
     });
 
     console.log("data: ", this.data);

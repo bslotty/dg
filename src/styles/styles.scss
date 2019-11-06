@@ -224,68 +224,6 @@ table {
 }
 
 
-.teamPicker.red:not(:disabled),
-.teamDropPad.red {
-  color: #e66969;
-  border-color: #e6696977;
-  background: #e6696910 !important;
-}
-
-.teamPicker.blue:not(:disabled),
-.teamDropPad.blue {
-  color: #6ab9e8;
-  border-color: #6ab9e877;
-  background: #6ab9e810 !important;
-}
-
-.teamPicker.green:not(:disabled),
-.teamDropPad.green {
-  color: #60df60;
-  border-color: #60df6077;
-  background: #60df6010 !important;
-}
-
-.teamPicker.yellow:not(:disabled),
-.teamDropPad.yellow {
-  color: #d6d05d;
-  border-color: #d6d05d77;
-  background: #d6d05d10 !important;
-}
-
-.teamPicker.orange:not(:disabled),
-.teamDropPad.orange {
-  color: #d8a95d;
-  border-color: #d8a95d77;
-  background: #d8a95d10 !important;
-}
-
-.teamPicker.purple:not(:disabled),
-.teamDropPad.purple {
-  color: #9461e0;
-  border-color: #9461e077;
-  background: #9461e010 !important;
-}
-
-.teamPicker.pink:not(:disabled),
-.teamDropPad.pink {
-  color: #cf58c5;
-  border-color: #cf58c577;
-  background: #cf58c510 !important;
-}
-
-.player.white:not(:disabled),
-.teamDropPad.white {
-  color: #fff;
-  border-color: #FFFFFF77;
-  background: #FFFFFF10 !important;
-}
-
-.teamDropPad.unassigned {
-  color: $text-light;
-  border-color: $primary-light;
-  background: $text-dark-fade;
-}
-
 .teamDropPad {
   padding: .3rem;
   border: .3rem solid;
@@ -299,6 +237,108 @@ table {
   text-align: center;
   font-weight: 600;
 }
+
+.teamDropPad.red {
+  color: #e66969;
+  border-color: #e6696977;
+  background: #e6696910 !important;
+}
+
+.teamDropPad.blue {
+  color: #6ab9e8;
+  border-color: #6ab9e877;
+  background: #6ab9e810 !important;
+}
+
+.teamDropPad.green {
+  color: #60df60;
+  border-color: #60df6077;
+  background: #60df6010 !important;
+}
+
+.teamDropPad.yellow {
+  color: #d6d05d;
+  border-color: #d6d05d77;
+  background: #d6d05d10 !important;
+}
+
+.teamDropPad.orange {
+  color: #d8a95d;
+  border-color: #d8a95d77;
+  background: #d8a95d10 !important;
+}
+
+.teamDropPad.purple {
+  color: #9461e0;
+  border-color: #9461e077;
+  background: #9461e010 !important;
+}
+
+.teamDropPad.pink {
+  color: #cf58c5;
+  border-color: #cf58c577;
+  background: #cf58c510 !important;
+}
+
+.teamDropPad.white {
+  color: #fff;
+  border-color: #FFFFFF77;
+  background: #FFFFFF10 !important;
+}
+
+.teamDropPad.unassigned {
+  background: transparent !important;
+  color: $primary-light;
+}
+
+
+
+
+
+.teamPicker.red:not(:disabled) {
+  background: #e66969;
+  color: #FFF;
+}
+
+.teamPicker.blue:not(:disabled) {
+  background: #6ab9e8;
+  color: #FFF;
+}
+
+.teamPicker.green:not(:disabled) {
+  background: #60df60;
+  color: #FFF;
+}
+
+.teamPicker.yellow:not(:disabled) {
+  background: #d6d05d;
+  color: #FFF;
+}
+
+.teamPicker.orange:not(:disabled) {
+  background: #d8a95d;
+  color: #FFF;
+}
+
+.teamPicker.purple:not(:disabled) {
+  background: #9461e0;
+  color: #FFF;
+}
+
+.teamPicker.pink:not(:disabled) {
+  background: #cf58c5;
+  color: #FFF;
+}
+
+.teamPicker.white:not(:disabled) {
+  background: #fff;
+  color: $primary-light;
+}
+
+
+
+
+
 
 .scores {
   display: flex;
