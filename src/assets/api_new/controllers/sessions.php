@@ -63,13 +63,14 @@ switch ($payload['action']) {
 			$return[] = $r_createSession;
 			if ($r_createSession['status'] == "success" && $r_createSession['affectedRows']  == 1) {
 
-				$r_getCreatedSession = $sessions->GetRecientlyCreated($payload['user']);
+				$r_getCreatedSession = $sessions->UserRecientlyCreated($payload['user']);
 				$return[] = $r_getCreatedSession;
-				if ($r_getCreatedSession['status'] == "success" && $r_getCreatedSession['affectedRows']  == 1) {
+				if ($r_getCreatedSession['status'] == "success" && $r_getCreatedSession['affectedRows'] > 0) {
+					$createdSession = $r_getCreatedSession["results"][0];
 
 					$r_createScores = array();
 					foreach ($payload["session"]["scores"] as $key => $array) {
-						$r_createScores[] = $scores->create($payload["session"], $array, $payload["user"]);
+						$r_createScores[] = $scores->create($createdSession, $array, $payload["user"]);
 					}
 
 					//	Verify All Scores Were Created
@@ -83,7 +84,8 @@ switch ($payload['action']) {
 					if ($r_createScores_valid) {
 						$return[] = array(
 							'status' 	=> 'success',
-							'msg'		=> 'Session Created'
+							'msg'		=> 'Session Created',
+							"test"		=> $database->generateGUID()
 						);
 					} else {
 						$return[] = array(

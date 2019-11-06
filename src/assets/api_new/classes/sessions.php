@@ -39,12 +39,12 @@ class Session
 			`format`,
 			`par_array`,
 		FROM `Sessions`
-		WHERE `created_by` = :userId
+		WHERE `created_by` = :userID
 		ORDER BY `starts_on` DESC
 		LIMIT " . (int) $start . ", " . (int) $limit . ";";
 
 		$values = array(
-			":userId" => $user["id"]
+			":userID" => $user["id"]
 		);
 
 		return $this->db->Query($query, $values);
@@ -101,7 +101,7 @@ class Session
 			':starts_on' 	=> $session['starts_on'],
 			':title' 		=> $session['title'],
 			':format' 		=> $session['format']['enum'],
-			':par_array' 	=> $session['par_array'] == null ? [] : $session['par_array'] 
+			':par_array' 	=> $session['par_array'] == null ? "[]" : json_encode($session['par_array'])
 		);
 
 		return $this->db->Query($query, $values);
@@ -140,11 +140,11 @@ class Session
 
 
 	public function delete($session)
-	{ 
+	{
 		$query = "DELETE FROM `Sessions` WHERE `id`=:id LIMIT 1";
 
 		$values = array(
-			':id' => $session["id"] 
+			':id' => $session["id"]
 		);
 
 		return $this->db->Query($query, $values);
@@ -152,11 +152,11 @@ class Session
 
 	//	For Delete
 	public function getCreator($session, $user)
-	{ 
+	{
 		$query = "SELECT * FROM `Sessions` WHERE `id`=:id AND `created_by`=:userId LIMIT 1";
 
 		$values = array(
-			':id' => $session["id"] 
+			':id' => $session["id"]
 		);
 
 		return $this->db->Query($query, $values);
@@ -184,24 +184,22 @@ class Session
 
 
 
-	
+
 
 	public function UserRecientlyCreated($user)
 	{
-		$query = "SELECT
+		$query = "SELECT 
 			`id`, 
-			`created_by`, 
-			`created_on`, 
-			`modified_by`, 
-			`modified_on`, 
-			`park_name`, 
-			`city`, 
-			`state`, 
-			`zip`, 
-			`latitude`, 
-			`longitude`
-			FROM `Courses` 
-			WHERE `created_by`=:userID 
+			`created_by`,
+			`created_on`,
+			`modified_by`,
+			`modified_on`,
+			`starts_on`,
+			`title`,
+			`format`,
+			`par_array`
+		FROM `Sessions`
+		WHERE `created_by` = :userID
 			ORDER BY `created_on` DESC
 			LIMIT 10;";
 

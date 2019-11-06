@@ -43,7 +43,7 @@ class Score
 			':modified_on' 	=> null,
 
 			':session_id' 	=> $session['id'],
-			':team_id' 		=> $score['team']['id'],
+			':team_id' 		=> $this->db->generateGUID(),
 			':player_id' 	=> $score['player']['id'],
 			':score_array' 	=> json_encode($score['score_array']),
 			':handicap' 	=> $score['handicap']

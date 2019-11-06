@@ -11,7 +11,7 @@ export class SessionListItemComponent implements OnInit {
 
 
   @Input() session;
-  league = new League( this.router.snapshot.paramMap.get("league") );
+  league = new League(this.router.snapshot.paramMap.get("league"));
 
   constructor(
     private router: ActivatedRoute
