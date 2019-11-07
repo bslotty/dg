@@ -107,6 +107,32 @@ class Session
 		return $this->db->Query($query, $values);
 	}
 
+
+
+	public function createTeam($session, $team, $user)
+	{
+
+		$query = "INSERT INTO `Teams` 
+		(`id`, `created_by`, `created_on`, `modified_by`, `modified_on`, `session_id`, `name`, `color` ) VALUES 
+		(:id, :created_by, :created_on, :modified_by, :modified_on, :session_id, :name, :color);";
+
+		$values = array(
+			':id' 			=> $this->db->generateGUID(),
+			':created_by' 	=> $user['id'],
+			':created_on' 	=> date('c'),
+			':modified_by' 	=> null,
+			':modified_on' 	=> null,
+
+			':session_id' 	=> $session["id"],
+			':name' 		=> $team['name'],
+			':color' 		=> json_encode($team['color'])
+		);
+
+		return $this->db->Query($query, $values);
+	}
+
+
+
 	public function update($session, $user)
 	{
 		//	Base Values on each update;

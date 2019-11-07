@@ -152,7 +152,8 @@ export class SessionFormService {
   ReadyForSubmission(): boolean {
     if (this.form.value.valid && this.form.value.dirty && !this.form.value.disabled) {
 
-      if (this.teamList.controls.length > 0) {
+
+      if (this.form.value.get('format').value.enum != 'ffa') {
         if (this.validateRoster()) {
           return true;
         } else {

@@ -69,8 +69,58 @@ switch ($payload['action']) {
 					$createdSession = $r_getCreatedSession["results"][0];
 
 					$r_createScores = array();
+					$teamList = array();
 					foreach ($payload["session"]["scores"] as $key => $array) {
 						$r_createScores[] = $scores->create($createdSession, $array, $payload["user"]);
+
+						//	Create a Team
+						if (!empty($array['team'])) {
+
+							$dupe = false;
+							foreach ($teamList as $key => $team) {
+								if ($team['name'] == $array['team']['name']) {
+									$dupe = true;
+								}
+							}
+
+							if (!$dupe) {
+								$teamList[] = $array['team'];
+							}
+						}
+					}
+
+					//	Create Teams if Exist
+					if (count($teamList) > 0) {
+						$r_createTeams = array();
+						foreach ($teamList as $key => $array) {
+
+							//	Gen GUID
+							$array["id"] = $database->generateGUID();
+
+							//	Create
+							$r_createTeams[] = $sessions->createTeam($createdSession, $array, $payload["user"]);
+						}
+
+						//	Verify All Teams Were Created
+						$r_createTeams_valid = true;
+						foreach ($r_createTeams as $key => $array) {
+							if ($array["status"] != "success") {
+								$r_createTeams_valid = false;
+							}
+						}
+
+						if ($r_createTeams_valid) {
+							$return[] = array(
+								'status' 	=> 'success',
+								'msg'		=> 'Teams Created'
+							);
+						} else {
+							$return[] = array(
+								'status' 	=> 'error',
+								'msg'		=> 'Unable to Create Teams',
+								'scores'	=> $r_createTeams
+							);
+						}
 					}
 
 					//	Verify All Scores Were Created
@@ -84,8 +134,7 @@ switch ($payload['action']) {
 					if ($r_createScores_valid) {
 						$return[] = array(
 							'status' 	=> 'success',
-							'msg'		=> 'Session Created',
-							"test"		=> $database->generateGUID()
+							'msg'		=> 'Scores Created'
 						);
 					} else {
 						$return[] = array(
@@ -94,7 +143,6 @@ switch ($payload['action']) {
 							'scores'	=> $r_createScores
 						);
 					}
-
 				} else {
 					$return[] = array(
 						'status' 	=> 'error',
