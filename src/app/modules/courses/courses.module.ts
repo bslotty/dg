@@ -15,7 +15,6 @@ import { ShellComponent } from './components/shell/shell.component';
 import { CreateComponent } from './components/create/create.component';
 import { CourseBackend } from './services/backend.service';
 import { CourseFormService } from './services/course-form.service';
-import { NearbyComponent } from './components/nearby/nearby.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
@@ -35,13 +34,15 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     MapComponent,
     ShellComponent,
     CreateComponent,
-    NearbyComponent,
     DashboardComponent,
   ],
   providers: [
     CourseBackend,
     CourseFormService
   ],
+  exports: [
+    SearchComponent
+  ]
 
 })
 export class CoursesModule {

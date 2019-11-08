@@ -12,13 +12,14 @@ import { MaterialModule } from './modules/material/material.module';
 import { NavigationModule } from './navigation.module';
 import { AccountModule } from 'src/app/modules/account/account.module';
 import { CoursesModule } from 'src/app/modules/courses/courses.module';
-import { LeaguesModule } from 'src/app/modules/leagues/leagues.module';
+import { SessionsModule } from './modules/sessions/sessions.module';
 import { PageNotFoundComponent } from './404/page-not-found.component';
 import { HomeComponent } from './home/home.component';
 
 /*  Dependancies  */
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RequestInterceptor } from './interceptor';
+
 
 
 @NgModule({
@@ -35,7 +36,7 @@ import { RequestInterceptor } from './interceptor';
 
     /*  Sub Modules / Routes  */
     CoursesModule,
-    LeaguesModule,
+    SessionsModule,
     AccountModule,
 
     /*  Root Route  */

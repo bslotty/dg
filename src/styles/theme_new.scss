@@ -402,13 +402,9 @@ p b {
 }
 
 .mat-tooltip {
-  font-size: 1rem;
-  color: $primary-light;
-  background: $text-light;
-}
-
-.mat-tooltip * {
-  color: $primary-light;
+  font-size: 1rem !important;
+  color: $primary-light !important;
+  background: $text-light !important;
 }
 
 

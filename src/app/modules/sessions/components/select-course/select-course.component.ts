@@ -14,6 +14,9 @@ export class SelectCourseComponent implements OnInit {
 
   form: FormGroup;
   results:Course[] = [];
+
+  @Input() mode: string = "selector"; //  Link, Favorite,
+
   @Input() selectedCourse: Course;
   @Output() selected: EventEmitter<Course> = new EventEmitter();
 

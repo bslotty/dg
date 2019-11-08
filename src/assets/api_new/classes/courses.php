@@ -50,6 +50,54 @@ class Course
 		return $this->db->Query($query, $values);
 	}
 
+	public function getListFavorites($start = 0, $limit = 100) {
+		$query = "SELECT 
+			`c`.`id`, 
+			`c`.`created_by`,
+			`c`.`created_on`,
+			`c`.`modified_by`,
+			`c`.`modified_on`,
+			`c`.`park_name`,
+			`c`.`city`,
+			`c`.`state`,
+			`c`.`zip`,
+			`c`.`latitude`,
+			`c`.`longitude` 
+		FROM `Courses` AS `c`
+		JOIN `Favories` AS `f`
+		WHERE `f`.`related_table` = 'course' AND `c`.`id` = `f`.`related_id`
+		LIMIT " . (int) $start . ", " . (int) $limit . ";";
+
+		$values = array();
+
+		return $this->db->Query($query, $values);
+	}
+	public function getListRecient($start = 0, $limit = 100) {
+		$query = "SELECT 
+			`c`.`id`, 
+			`c`.`created_by`,
+			`c`.`created_on`,
+			`c`.`modified_by`,
+			`c`.`modified_on`,
+			`c`.`park_name`,
+			`c`.`city`,
+			`c`.`state`,
+			`c`.`zip`,
+			`c`.`latitude`,
+			`c`.`longitude` 
+		FROM `Courses` AS `c`
+		JOIN `Sessions` AS `s`
+		WHERE `s`.`course_id` = `c`.`id`
+		ORDER BY `s`.`starts_on` DESC
+		LIMIT " . (int) $start . ", " . (int) $limit . ";";
+
+		$values = array();
+
+		return $this->db->Query($query, $values);
+	}
+
+
+
 	public function search($term, $start = 0, $limit = 100)
 	{
 		$query = "SELECT 

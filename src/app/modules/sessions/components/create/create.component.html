@@ -35,7 +35,7 @@
         </div>
       </ng-template>
 
-      <mat-tab-group>
+      <mat-tab-group dynamicHeight="true">
         <mat-tab>
           <ng-template mat-tab-label>
             <span class="icon-heart"></span>
@@ -51,7 +51,7 @@
           </ng-template>
 
           <p>Recient</p>
-
+          <app-course-search mode="selector" [selectedCourse]="form.get('course').value" (selected)="selectCourse($event)"></app-course-search>
         </mat-tab>
 
         <mat-tab>
@@ -86,7 +86,7 @@
 
 
         <mat-form-field>
-          <input matInput [ngxTimepicker]="timePicker" placeholder="Choose Start Time" formControlName='time'
+          <input matInput [ngxTimepicker]="timePicker" placeholder="Choose Start Time" formControlName='time' (focus)="timePicker.open()"
             type="text">
           <div matSuffix><a mat-flat-button color="transparent-primary" (click)="timePicker.open()"><span
                 class="icon-clock"></span></a></div>
@@ -113,7 +113,7 @@
       </div>
 
 
-      <mat-tab-group>
+      <mat-tab-group dynamicHeight="true">
         <mat-tab>
           <ng-template mat-tab-label>
             <span class="icon-heart"></span>

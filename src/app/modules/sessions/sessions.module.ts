@@ -19,6 +19,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SelectFormatComponent } from './components/select-format/select-format.component';
 import { SelectCourseComponent } from './components/select-course/select-course.component';
 import { SelectPlayersComponent } from './components/select-players/select-players.component';
+import { CoursesModule } from '../courses/courses.module';
 
 @NgModule({
   imports: [
@@ -27,6 +28,9 @@ import { SelectPlayersComponent } from './components/select-players/select-playe
     StatsModule,
     SessionsRoutingModule,
     PipesModule,
+
+    
+    CoursesModule
   ],
   declarations: [    
     SessionList, 

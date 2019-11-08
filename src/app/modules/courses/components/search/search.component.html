@@ -1,39 +1,41 @@
 <app-section-header title="Search Courses"></app-section-header>
 
 <p class="alert alert-light">You can search for a course by Park, City, State</p>
-<div [formGroup]="form">
-  <mat-form-field>
-    <mat-label>Search</mat-label>
-    <input matInput formControlName="term" placeholder="Park Name, City, or State" />
-  </mat-form-field>
-</div>
+
+<form [formGroup]="form">
+    <mat-form-field>
+        <mat-label>Search</mat-label>
+        <input matInput formControlName="term" placeholder="Park Name, City, or State" />
+    </mat-form-field>
+    <mat-error *ngIf="form.get('term').invalid && form.get('term').dirty">
+      Invalid Search Criteria
+    </mat-error>
+</form>
 
 
 
 <div *ngIf="!feed.loading; else loader">
-  <div *ngIf="results.length > 0 && this.form.dirty; else create">
-    <app-course-list [courseList]='results'></app-course-list>
-  </div>
+    <div *ngIf="results.length > 0 && this.form.dirty; else create" @flyInPanelRow>
+        <course-list-item  [mode]="mode" [course]='course' *ngFor="let course of results; trackBy: trackBy"></course-list-item>
+    </div>
 </div>
 
-
 <ng-template #create>
-  <div *ngIf="form.get('term').valid && form.get('term').dirty" class="row justify-content-center align-items-center">
-    <p class="col message"><i>{{ form.get('term').value }}</i> did not return anything</p>
-  </div>
-
-  <div *ngIf="form.get('term').valid && form.get('term').dirty">
-    <div class="row justify-content-center align-items-center no-gutters">
-      <p class="col message">Cant find the course you were looking for?</p>
+    <div *ngIf="form.get('term').valid && form.get('term').dirty && results != null" class="row justify-content-center align-items-center">
+      <p class="col message"><i>{{ form.get('term').value }}</i> did not return anything</p>
     </div>
-    <p class="row justify-content-center align-items-center">
-      <a mat-flat-button color="transparent-accent" class="col" routerLink="/courses/create">Create it!</a>
-    </p>
-  </div>
-
-</ng-template>
+  
+    <div *ngIf="form.get('term').valid && form.get('term').dirty && mode=='link'" >
+      <div class="row justify-content-center align-items-center no-gutters">
+        <p class="col message">Cant find the course you were looking for?</p>
+      </div>
+      <p class="row justify-content-center align-items-center">
+        <a mat-flat-button color="transparent-accent" class="col" routerLink="/courses/create">Create it!</a>
+      </p>
+    </div>
+  </ng-template>
 
 
 <ng-template #loader>
-  <loader></loader>
+    <loader></loader>
 </ng-template>

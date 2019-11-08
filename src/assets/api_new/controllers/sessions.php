@@ -59,95 +59,89 @@ switch ($payload['action']) {
 		$return[] = $user;
 		if ($user["status"] == "success" && count($user['results']) > 0) {
 
-			$r_createSession = $sessions->create($payload['session'], $payload['user']);
+			//	Generate GUID
+			$payload['session']['id'] = $database->generateGUID();
+
+			//	Session Link
+			$createdSession = $payload['session'];
+
+			//	Create Session
+			$r_createSession = $sessions->create($createdSession, $payload['user']);
 			$return[] = $r_createSession;
 			if ($r_createSession['status'] == "success" && $r_createSession['affectedRows']  == 1) {
 
-				$r_getCreatedSession = $sessions->UserRecientlyCreated($payload['user']);
-				$return[] = $r_getCreatedSession;
-				if ($r_getCreatedSession['status'] == "success" && $r_getCreatedSession['affectedRows'] > 0) {
-					$createdSession = $r_getCreatedSession["results"][0];
+				//	Scores
+				$r_createScores = array();
+				$teamList = array();
+				foreach ($payload["session"]["scores"] as $key => $array) {
+					$r_createScores[] = $scores->create($createdSession, $array, $payload["user"]);
 
-					$r_createScores = array();
-					$teamList = array();
-					foreach ($payload["session"]["scores"] as $key => $array) {
-						$r_createScores[] = $scores->create($createdSession, $array, $payload["user"]);
+					//	Get Unique TeamList if Teams
+					if (!empty($array['team'])) {
 
-						//	Create a Team
-						if (!empty($array['team'])) {
-
-							$dupe = false;
-							foreach ($teamList as $key => $team) {
-								if ($team['name'] == $array['team']['name']) {
-									$dupe = true;
-								}
+						$dupe = false;
+						foreach ($teamList as $key => $team) {
+							if ($team['name'] == $array['team']['name']) {
+								$dupe = true;
 							}
+						}
 
-							if (!$dupe) {
-								$teamList[] = $array['team'];
-							}
+						if (!$dupe) {
+							$teamList[] = $array['team'];
 						}
 					}
+				}
 
-					//	Create Teams if Exist
-					if (count($teamList) > 0) {
-						$r_createTeams = array();
-						foreach ($teamList as $key => $array) {
+				//	Create Teams if Exist
+				if (count($teamList) > 0) {
+					$r_createTeams = array();
+					foreach ($teamList as $key => $array) {
 
-							//	Gen GUID
-							$array["id"] = $database->generateGUID();
-
-							//	Create
-							$r_createTeams[] = $sessions->createTeam($createdSession, $array, $payload["user"]);
-						}
-
-						//	Verify All Teams Were Created
-						$r_createTeams_valid = true;
-						foreach ($r_createTeams as $key => $array) {
-							if ($array["status"] != "success") {
-								$r_createTeams_valid = false;
-							}
-						}
-
-						if ($r_createTeams_valid) {
-							$return[] = array(
-								'status' 	=> 'success',
-								'msg'		=> 'Teams Created'
-							);
-						} else {
-							$return[] = array(
-								'status' 	=> 'error',
-								'msg'		=> 'Unable to Create Teams',
-								'scores'	=> $r_createTeams
-							);
-						}
+						//	Create
+						$r_createTeams[] = $sessions->createTeam($createdSession, $array, $payload["user"]);
 					}
 
-					//	Verify All Scores Were Created
-					$r_createScores_valid = true;
-					foreach ($r_createScores as $key => $array) {
+					//	Verify All Teams Were Created
+					$r_createTeams_valid = true;
+					foreach ($r_createTeams as $key => $array) {
 						if ($array["status"] != "success") {
-							$r_createScores_valid = false;
+							$r_createTeams_valid = false;
 						}
 					}
 
-					if ($r_createScores_valid) {
+					if ($r_createTeams_valid) {
 						$return[] = array(
 							'status' 	=> 'success',
-							'msg'		=> 'Scores Created'
+							'msg'		=> 'Teams Created'
 						);
 					} else {
 						$return[] = array(
 							'status' 	=> 'error',
-							'msg'		=> 'Unable to Create Scores',
-							'scores'	=> $r_createScores
+							'msg'		=> 'Unable to Create Teams',
+							'scores'	=> $r_createTeams
 						);
 					}
+				}
+
+				//	Verify All Scores Were Created
+				$r_createScores_valid = true;
+				foreach ($r_createScores as $key => $array) {
+					if ($array["status"] != "success") {
+						$r_createScores_valid = false;
+					}
+				}
+
+				if ($r_createScores_valid) {
+					$return[] = array(
+						'status' 	=> 'success',
+						'msg'		=> 'Scores Created',
+						'scores'	=> $r_createScores
+					);
 				} else {
 					$return[] = array(
 						'status' 	=> 'error',
-						'msg'		=> 'Unable to view Created Session',
-						'scores'	=> $r_getCreatedSession
+						'msg'		=> 'Unable to Create Scores',
+						'scores'	=> $r_createScores
 					);
 				}
 			} else {
@@ -163,8 +157,6 @@ switch ($payload['action']) {
 				'msg'		=> 'Unable to Verify Account'
 			);
 		}
-
-
 
 		break;
 
