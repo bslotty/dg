@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Team } from 'src/app/modules/stats/services/backend.service';
 import { MatDialog } from '@angular/material';
-import { ScoreSettingsComponent } from '../score-settings/score-settings.component';
 import { Score } from 'src/app/modules/sessions/services/backend.service';
+import { ScoreSettingsComponent } from '../../score-settings/score-settings.component';
 
 @Component({
   selector: 'score-list-item',

@@ -53,11 +53,6 @@ import { FeedbackComponent } from '../feedback/components/feedback/feedback.comp
 import { PasswordComponent } from 'src/app/templates/form-fields/password/password.component';
 
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-import { CourseListItemComponent } from 'src/app/templates/course-list-item/course-list-item.component';
-import { TeamListItemComponent } from 'src/app/templates/team-list-item/team-list-item.component';
-import { TeamSettingsComponent } from 'src/app/templates/team-settings/team-settings.component';
-import { ScoreListItemComponent } from 'src/app/templates/score-list-item/score-list-item.component';
-import { ScoreSettingsComponent } from 'src/app/templates/score-settings/score-settings.component';
 
 @NgModule({
   imports: [
@@ -109,11 +104,6 @@ import { ScoreSettingsComponent } from 'src/app/templates/score-settings/score-s
     LoaderComponent,
     SectionHeaderComponent,
     PasswordComponent,
-    CourseListItemComponent,
-    ScoreListItemComponent,
-    TeamListItemComponent,
-    ScoreSettingsComponent,
-    TeamSettingsComponent,
   ],
   exports: [
     FormsModule,
@@ -157,19 +147,12 @@ import { ScoreSettingsComponent } from 'src/app/templates/score-settings/score-s
     LoaderComponent,
     SectionHeaderComponent,
     PasswordComponent,
-    CourseListItemComponent,
-    ScoreListItemComponent,
-    TeamListItemComponent,
-    ScoreSettingsComponent,
-    TeamSettingsComponent,
+
 
     DragDropModule,
     NgxMaterialTimepickerModule
   ],
-  entryComponents: [
-    ScoreSettingsComponent,
-    TeamSettingsComponent,
-  ],
+  entryComponents: [ ],
 })
 export class MaterialModule {
   static forRoot(): ModuleWithProviders {

@@ -1,7 +1,7 @@
-import { Course } from './../../services/backend.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Course } from '../../../services/backend.service';
 
 @Component({
   selector: 'app-course-list',

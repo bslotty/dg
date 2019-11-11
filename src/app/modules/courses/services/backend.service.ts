@@ -86,8 +86,6 @@ export class CourseBackend {
       "start": start,
       "limit": limit
     }).pipe(this.serverPipe,
-
-      /*  Move to GenList so we can handle errors*/
       map((res) => {
         console.log ("res: ", res);
 

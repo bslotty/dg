@@ -1,7 +1,6 @@
 <div>
 
-  <app-section-header title="Sessions" [buttons]="headerButtons" (actionClick)="actionClick($event)">
-  </app-section-header>
+
 
   <div *ngIf="resolve; else loader">
     <div *ngIf="!emptySessions; else noSessions">

@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { SessionBackend } from 'src/app/modules/sessions/services/backend.service';
 import { SessionFormService } from 'src/app/modules/sessions/services/form.service';
 
 @Component({

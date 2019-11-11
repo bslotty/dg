@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Team } from 'src/app/modules/stats/services/backend.service';
 import { MatDialog } from '@angular/material';
-import { TeamSettingsComponent } from '../team-settings/team-settings.component';
+import { TeamSettingsComponent } from '../../team-settings/team-settings.component';
 
 @Component({
   selector: 'team-list-item',

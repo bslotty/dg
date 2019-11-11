@@ -14,7 +14,7 @@ class Score
 	public $player_id;
 	public $score_array;
 	public $handicap;
-					
+
 
 	//	DB
 	public $db;
@@ -27,7 +27,7 @@ class Score
 		$this->con = $db->getConnection();
 	}
 
-	
+
 	public function create($session, $score, $user)
 	{
 
@@ -53,4 +53,31 @@ class Score
 	}
 
 
+	public function getListFromSession($id)
+	{
+		$query = "INSERT INTO `Scores` 
+		(`id`, `created_by`, `created_on`, `modified_by`, `modified_on`, `session_id`, `team_id`, `player_id`, `score_array`, `handicap`  ) VALUES 
+		(:id, :created_by, :created_on, :modified_by, :modified_on, :session_id, :team_id, :player_id, :score_array, :handicap );";
+
+		$query = "SELECT 
+			`id`, 
+			`created_by`, 
+			`created_on`, 
+			`modified_by`, 
+			`modified_on`, 
+			`session_id`, 
+			`team_id`, 
+			`player_id`, 
+			`score_array`, 
+			`handicap`  
+		FROM `Scores`
+		WHERE `session_id` = :id
+		ORDER BY `created_on` DESC";
+
+		$values = array(
+			':id' => $id
+		);
+
+		return $this->db->Query($query, $values);
+	}
 }

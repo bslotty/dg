@@ -50,53 +50,30 @@ class Course
 		return $this->db->Query($query, $values);
 	}
 
-	public function getListFavorites($start = 0, $limit = 100) {
+	public function getDetail($id)
+	{
 		$query = "SELECT 
-			`c`.`id`, 
-			`c`.`created_by`,
-			`c`.`created_on`,
-			`c`.`modified_by`,
-			`c`.`modified_on`,
-			`c`.`park_name`,
-			`c`.`city`,
-			`c`.`state`,
-			`c`.`zip`,
-			`c`.`latitude`,
-			`c`.`longitude` 
-		FROM `Courses` AS `c`
-		JOIN `Favories` AS `f`
-		WHERE `f`.`related_table` = 'course' AND `c`.`id` = `f`.`related_id`
-		LIMIT " . (int) $start . ", " . (int) $limit . ";";
+			`id`, 
+			`created_by`,
+			`created_on`,
+			`modified_by`,
+			`modified_on`,
+			`park_name`,
+			`city`,
+			`state`,
+			`zip`,
+			`latitude`,
+			`longitude` 
+		FROM `Courses`
+		WHERE `id`=:id
+		LIMIT 1;";
 
-		$values = array();
+		$values = array(
+			":id" => $id
+		);
 
 		return $this->db->Query($query, $values);
 	}
-	public function getListRecient($start = 0, $limit = 100) {
-		$query = "SELECT 
-			`c`.`id`, 
-			`c`.`created_by`,
-			`c`.`created_on`,
-			`c`.`modified_by`,
-			`c`.`modified_on`,
-			`c`.`park_name`,
-			`c`.`city`,
-			`c`.`state`,
-			`c`.`zip`,
-			`c`.`latitude`,
-			`c`.`longitude` 
-		FROM `Courses` AS `c`
-		JOIN `Sessions` AS `s`
-		WHERE `s`.`course_id` = `c`.`id`
-		ORDER BY `s`.`starts_on` DESC
-		LIMIT " . (int) $start . ", " . (int) $limit . ";";
-
-		$values = array();
-
-		return $this->db->Query($query, $values);
-	}
-
-
 
 	public function search($term, $start = 0, $limit = 100)
 	{
@@ -192,6 +169,7 @@ class Course
 	{ }
 
 
+
 	/**
 	 *  Input course from frontend format to backend format
 	 */
@@ -208,6 +186,7 @@ class Course
 
 		return $newCourse;
 	}
+
 
 
 	//	Return Nearby Courses
@@ -313,7 +292,7 @@ class Course
 			`c`.`id`=`f`.`related_id` AND 
 			`f`.`related_table`=:related_table AND 
 			`f`.`created_by`=:userId
-		ORDER BY `c`.`created_on` DESC;";
+		ORDER BY `f`.`created_on` DESC;";
 
 		$values = array(
 			':userId' => $user["id"],
@@ -345,7 +324,7 @@ class Course
 			`c`.`id`=`sn`.`course_id` AND 
 			`sn`.`id` = `sc`.`session_id` AND
 			`sc`.`player_id` = :userId
-		ORDER BY `c`.`created_on` DESC;";
+		ORDER BY `sn`.`created_on` DESC;";
 
 		$values = array(
 			':userId' => $user["id"]

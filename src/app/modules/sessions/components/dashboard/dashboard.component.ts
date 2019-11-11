@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SessionBackend, Session } from '../../services/backend.service';
+import { MatExpansionPanelDefaultOptions } from '@angular/material';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,17 +9,30 @@ import { SessionBackend, Session } from '../../services/backend.service';
 })
 export class DashboardComponent implements OnInit {
 
-  list: Session[];
-  
+  upcoming: Session[];
+  recient: Session[];
+
+
+  //  favorites: Session[]; 
+
   constructor(
     private sessionBackend: SessionBackend
   ) { }
 
   ngOnInit() {
 
-    this.sessionBackend.getList();
+    //  Get List
+    this.sessionBackend.listRecient();
     this.sessionBackend.list$.subscribe((s)=>{
-      this.list = s;
+      var d = new Date().getTime();
+
+      this.upcoming = s.filter((s: Session)=>{
+        return d < new Date(s.starts_on).getTime();
+      });
+
+      this.recient = s.filter((s: Session)=>{
+        return d > new Date(s.starts_on).getTime();
+      });
     });
 
   }

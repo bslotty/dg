@@ -37,7 +37,7 @@ class Session
 			`starts_on`,
 			`title`,
 			`format`,
-			`par_array`,
+			`par_array`
 		FROM `Sessions`
 		WHERE `created_by` = :userID
 		ORDER BY `starts_on` DESC
@@ -50,38 +50,6 @@ class Session
 		return $this->db->Query($query, $values);
 	}
 
-	/*
-	public function search($term, $start = 0, $limit = 100)
-	{
-		$query = "SELECT 
-			`id`, 
-			`created_by`,
-			`created_on`,
-			`modified_by`,
-			`modified_on`,
-			`park_name`,
-			`city`,
-			`state`,
-			`zip`,
-			`latitude`,
-			`longitude` 
-		FROM `Courses`
-		HAVING LOWER( CONCAT(
-			`park_name`,';',
-			`city`,';',
-			`state`,';',
-			`zip`
-		)) LIKE CONCAT('%%', :term, '%%')
-		LIMIT " . (int) $start . ", " . (int) $limit . ";";
-
-
-		$values = array(
-			":term" => strtolower($term)
-		);
-
-		return $this->db->Query($query, $values);
-	}
-	*/
 
 	public function create($session, $user)
 	{

@@ -5,7 +5,7 @@ import { CoursesRoutingModule } from './courses-routing.module';
 import { MaterialModule } from './../material/material.module';
 import { AgmCoreModule } from '@agm/core';
 
-import { ListComponent } from './components/list/list.component';
+import { ListComponent } from './components/templates/list/list.component';
 import { SearchComponent } from './components/search/search.component';
 import { DetailComponent } from './components/detail/detail.component';
 import { MapComponent } from './components/map/map.component';
@@ -16,6 +16,10 @@ import { CreateComponent } from './components/create/create.component';
 import { CourseBackend } from './services/backend.service';
 import { CourseFormService } from './services/course-form.service';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+
+import { CourseListItemComponent } from './components/templates/course-list-item/course-list-item.component';
+
+
 
 @NgModule({
   imports: [
@@ -35,13 +39,15 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     ShellComponent,
     CreateComponent,
     DashboardComponent,
+    CourseListItemComponent
   ],
   providers: [
     CourseBackend,
     CourseFormService
   ],
   exports: [
-    SearchComponent
+    SearchComponent,
+    CourseListItemComponent
   ]
 
 })

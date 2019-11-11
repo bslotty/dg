@@ -66,4 +66,7 @@ class Favorites
 
         return $this->db->Query($query, $values);
 	}
+
+
+	
 }

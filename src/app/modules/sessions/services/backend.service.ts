@@ -5,8 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { ServerPayload } from 'src/app/app.component';
 import { environment } from 'src/environments/environment';
 import { Course } from '../../courses/services/backend.service';
-import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { pipe, BehaviorSubject, Observable } from 'rxjs';
+import { map, debounceTime, distinctUntilChanged, catchError } from 'rxjs/operators';
+import { pipe, BehaviorSubject, Observable, of } from 'rxjs';
 import { Team } from '../../stats/services/backend.service';
 
 @Injectable({
@@ -25,15 +25,16 @@ export class SessionBackend  {
   private list: BehaviorSubject<Session[]> = new BehaviorSubject([]);
   list$: Observable<Session[]> = this.list.asObservable();
   
-  /*
   //  Favorites
   private favoriteList: BehaviorSubject<Session[]> = new BehaviorSubject([]);
   favoriteList$: Observable<Session[]> = this.list.asObservable();
 
+  /*
   //  Recient
   private recientList: BehaviorSubject<Session[]> = new BehaviorSubject([]);
   recientList$: Observable<Session[]> = this.list.asObservable();
   */
+
 
   public types = [
     {
@@ -85,46 +86,68 @@ export class SessionBackend  {
     }
   }
 
+  convertProperties(res){
+    var result: Session[] = [];
+
+    this.rGetData(res).forEach((session) => {
+      result.push(new Session(
+        session['id'],
+        session['created_on'],
+        session['created_by'],
+        session['modified_on'],
+        session['modified_by'],
+        session['course'],
+        session['format'],
+        session['starts_on'],
+        session['tiel'],
+        session['par'],
+        session['scores'],
+      ));
+    });
+
+    return result;
+  }
 
 
- 
 
-  //  Load Data List
-  getList() {
+  listFavorites(){
+    this.getList("favorites").subscribe((courses:Session[])=>{
+      console.log ("courses.favorites: ",courses);
+      this.favoriteList.next(courses);
+    });
+  };
+
+  listRecient(){
+    this.getList("list").subscribe((courses:Session[])=>{
+      console.log ("courses.recient: ",courses);
+      this.list.next(courses);
+    });
+  }
+
+
+  getList(list: string, start: number = 0, limit: number = 100) {
     return this.http.post(this.url, { 
-      "action": "list",
+      "action": list,
+      "start": start,
+      "limit": limit,
+      "user": this.account.user
+    }).pipe(this.serverPipe,
+      map((res) => {
+        console.log ("res: ", res);
 
-    }).pipe(
-      map((res: ServerPayload) => {
-
-        if (res.status == "success") {
-          return res['sessions'];
-          /*
-          var result: Session[] = [];
-
-          res.data["sessions"].forEach((session) => {
-            var template = new Session(
-              session.id,
-              new Course(session.course.id, session.course.name),
-              session.format,
-              session.start,
-              session.description,
-              session.isDone,
-              session.isStarted,
-            );
-
-            result.push(template);
-          });
-          
-
-          return result;
-          */
+        if (this.rCheck(res)) {
+          return this.convertProperties(res);
         } else {
           return [];
         }
-      })
-    )
+      }),
+      catchError(
+        (error) => of(`Bad Request ${error}`)
+      )
+    );
   }
+
+
 
   getDetail(session: Session) {
     return this.http.post(this.url, { "session": session }).pipe(

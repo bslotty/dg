@@ -575,8 +575,8 @@ New Input Styles
   line-height: 1em;
   display: flex;
   flex-direction: column;
-  justify-content: start;
-  align-items: start;
+  justify-content: flex-start;
+  align-items: flex-start;
   padding: 0.5em;
 }
 

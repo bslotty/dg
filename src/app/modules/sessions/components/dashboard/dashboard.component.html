@@ -1,23 +1,44 @@
-<p>dashboard works!</p>
-Upcoming(future)
+<app-section-header title="Sessions" [buttons]="headerButtons" (actionClick)="actionClick($event)">
+</app-section-header>
 
-favorites
+<h6>Upcoming</h6>
+<div *ngFor="let session of upcoming; trackBy: trackSession">
+    <mat-expansion-panel disabled="true">
+        <mat-expansion-panel-header collapsedHeight="2rem">
+            <mat-panel-title class="row justify-content-between align-items-center no-gutters">
+                <div class="col">{{ session.starts_on | date:"EEE MMM d"  }}</div>
+                <div class="col">{{ session.starts_on | date:"h:mm a"  }}</div>
+                <div class="col-xs">
+                    <a mat-flat-button color="transparent-warn" (click)="testAction()">
+                        <span class="icon-link-2"></span>
+                    </a>
+                </div>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        STATS
+    </mat-expansion-panel>
+</div>
 
-Recient
-<mat-expansion-panel>
-    <mat-expansion-panel-header>
-        <mat-panel-title class="row justify-content-between align-items-center no-gutters">
-            <div class="col">Tue Jul 09 2019 03:40:00 GM</div>
-            <div class="col-xs">
-                <a mat-flat-button color="transparent-warn" (click)="testAction()">
-                    <span class="icon-link-2"></span>
-                </a>
-            </div>
-        </mat-panel-title>
-    </mat-expansion-panel-header>
+<div *ngFor="let session of favorites; trackBy: trackSession">
+</div>
 
-
-</mat-expansion-panel>
+<h6>Recient</h6>
+<div *ngFor="let session of recient; trackBy: trackSession">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title class="row justify-content-between align-items-center no-gutters">
+                <div class="col">{{ session.starts_on | date:"EEE MMM d"  }}</div>
+                <div class="col">{{ session.starts_on | date:"h:mm a"  }}</div>
+                <div class="col-xs">
+                    <a mat-flat-button color="transparent-warn" (click)="testAction()">
+                        <span class="icon-link-2"></span>
+                    </a>
+                </div>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        STATS
+    </mat-expansion-panel>
+</div>
 
 
 <div class="row ">
