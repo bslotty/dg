@@ -11,7 +11,6 @@ import { StatsModule } from '../stats/stats.module';
 import { SessionsRoutingModule } from './sessions-routing.module';
 
 import { ListComponent as SessionList } from './components/list/list.component';
-import { SessionListItemComponent } from './components/templates/session-list-item/session-list-item.component';
 
 import { DetailComponent } from './components/detail/detail.component';
 import { CreateComponent } from './components/create/create.component';
@@ -44,7 +43,6 @@ import { SelectPlayersComponent } from './components/select-players/select-playe
     CreateComponent, 
     EditComponent, 
     ShellComponent, 
-    SessionListItemComponent, 
     DashboardComponent, 
     SelectCourseComponent, 
     SelectPlayersComponent,

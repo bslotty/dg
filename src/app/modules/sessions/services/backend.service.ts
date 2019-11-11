@@ -5,9 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { ServerPayload } from 'src/app/app.component';
 import { environment } from 'src/environments/environment';
 import { Course } from '../../courses/services/backend.service';
-import { map, debounceTime, distinctUntilChanged, catchError } from 'rxjs/operators';
+import { map, debounceTime, distinctUntilChanged, catchError, takeWhile } from 'rxjs/operators';
 import { pipe, BehaviorSubject, Observable, of } from 'rxjs';
-import { Team } from '../../stats/services/backend.service';
 
 @Injectable({
   providedIn: 'root'

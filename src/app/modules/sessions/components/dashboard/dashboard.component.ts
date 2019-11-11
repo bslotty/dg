@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SessionBackend, Session } from '../../services/backend.service';
 import { MatExpansionPanelDefaultOptions } from '@angular/material';
+import { take } from 'rxjs/operators';
+import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,7 +18,8 @@ export class DashboardComponent implements OnInit {
   //  favorites: Session[]; 
 
   constructor(
-    private sessionBackend: SessionBackend
+    private sessionBackend: SessionBackend,
+    private feed: FeedbackService,
   ) { }
 
   ngOnInit() {
@@ -26,13 +29,19 @@ export class DashboardComponent implements OnInit {
     this.sessionBackend.list$.subscribe((s)=>{
       var d = new Date().getTime();
 
-      this.upcoming = s.filter((s: Session)=>{
+      //  Get Upcoming; Sort by soonest; Limit 5
+      this.upcoming = s.filter((s: Session, i)=>{
         return d < new Date(s.starts_on).getTime();
-      });
+      }).sort((a, b)=>{
+        return new Date(a.starts_on).getTime() - new Date(b.starts_on).getTime();
+      }).slice(0, 5);
+
 
       this.recient = s.filter((s: Session)=>{
         return d > new Date(s.starts_on).getTime();
-      });
+      }).slice(0, 10);
+
+      this.feed.loading = false;
     });
 
   }

@@ -1,22 +1,14 @@
-<div>
-
-
-
-  <div *ngIf="resolve; else loader">
-    <div *ngIf="!emptySessions; else noSessions">
-      <app-session-list-item *ngFor="let session of sessionList; trackBy:itemTrackBy" [session]="session"></app-session-list-item>
-    </div>
-  </div>
-
-</div>
-
-
-<ng-template #noSessions>
-  <div class="panel row">
-    <p class="message">No sessions created yet. Create one now!</p>
-  </div>
-</ng-template>
-
-<ng-template #loader>
-  <loader></loader>
-</ng-template>
+<mat-expansion-panel [disabled]="disabled" *ngFor="let session of list; trackBy: trackSession">
+  <mat-expansion-panel-header collapsedHeight="2.5rem" expandedHeight="3rem">
+    <mat-panel-title class="row justify-content-between align-items-center no-gutters">
+      <div class="col">{{ session.starts_on | date:"EEE MMM d"  }}</div>
+      <div class="col">{{ session.starts_on | date:"h:mm a"  }}</div>
+      <div class="col-xs">
+        <a mat-flat-button color="transparent-warn" routerLink="/sessions/{{ session.id }}">
+          <span class="icon-link-2"></span>
+        </a>
+      </div>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  STATS
+</mat-expansion-panel>

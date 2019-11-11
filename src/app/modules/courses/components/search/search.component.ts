@@ -62,9 +62,7 @@ export class SearchComponent implements OnInit {
   }
 
 
-  trackBy(index, item) {
-    return item.id;
-  }
+
 
   setCourse(course) {
     this.selected.emit(course);

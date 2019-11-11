@@ -37,13 +37,8 @@ h4,
 h5,
 h6 {
   font-family: $font-header;
-  font-weight: 400;
   margin: 0;
   width: 100%;
-}
-
-h1 {
-  font-size: 2em;
 }
 
 p {
@@ -63,6 +58,24 @@ a * {
   text-decoration: none !important;
   transition: color .2s ease-out;
 }
+
+.sub-header {
+  margin: 1.5em 0 .3em 0;
+  padding-left: 1em;
+}
+
+.sub-text {
+	font-size: .8rem;
+  color: $text-light-fade;
+  font-weight: 100;
+	line-height: 1.2rem;
+}
+
+
+.color-accent {
+  color: $accent;
+}
+
 
 
 
@@ -87,18 +100,6 @@ a * {
   border-radius: 3px; 
   margin-bottom: 1vh;
   // box-shadow: 0 3px 3px -2px rgba(0, 0, 0, .2), 0 3px 4px 0 rgba(0, 0, 0, .14), 0 1px 8px 0 rgba(0, 0, 0, .12);
-}
-
-.sub-text {
-	font-size: .8rem;
-  color: $text-light-fade;
-  font-weight: 100;
-	line-height: 1.2rem;
-}
-
-
-.color-accent {
-  color: $accent;
 }
 
 

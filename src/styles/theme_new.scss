@@ -157,21 +157,38 @@ $dgc-theme: mat-dark-theme($dgc-primary, $dgc-accent, $dgc-warn);
     
 */
 h1 {
-  font-size: 34sp;
-  font-weight: 600;
+  font-size: 2rem;
+  font-size: 34sp;    //  Google Material Specs, Doesnt work; Refrence only.
+  font-weight: 100;
 }
 
 h2 {
+  font-size: 1.5rem;
+  font-size: 34sp;
   font-size: 24sp;
   font-weight: 400;
 }
 
 h3 {
+  font-size: 1.2rem;
   font-size: 20sp;
+  font-weight: 400;
+}
+
+h4 {
+  font-size: 1rem;
   font-weight: 600;
 }
 
-h3 {
+h5 {
+  font-size: 1.5rem;
+  font-weight: 600;
+
+  color: $primary-light;
+}
+
+h6 {
+  font-size: 2rem;
   font-size: .9rem;
   font-weight: 600;
 }
@@ -412,13 +429,26 @@ p b {
   background: none;
 }
 
+.mat-expansion-panel {
+  margin-bottom: 5px  !important;
+}
+
+.mat-expansion-panel, .mat-expansion-panel-header:hover {
+  background: $primary-light  !important;
+}
+
+.mat-expansion-panel-header[aria-disabled=true] {
+  color: $text-light !important;
+}
+
+
 .mat-expansion-indicator::after {
   border-width: 0 .15rem .15rem 0 !important;
   padding: .2rem !important;
 }
 
 .mat-expansion-panel-header {
-  font-size: 1rem;
+  font-size: 1rem !important;
 }
 
 

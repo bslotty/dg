@@ -10,6 +10,8 @@ export class FeedbackService implements OnInit {
 
   loading: boolean = true;
 
+  objects: Array<string> = [];
+
   pColor: string = "primary";
   pMode: string = "determinate"
   pValue: string = "100";
@@ -32,8 +34,25 @@ export class FeedbackService implements OnInit {
 
   ngOnInit() {
     this.feedbackMessage = "";
+  }
 
 
+  //  New Functions for section specific loading;
+  check(str: string) {
+    return this.objects.indexOf(str) > -1
+  }
+
+  stop(str: string) {
+    let i = this.objects.indexOf(str);
+    if (i > -1) {
+      this.objects.splice(i, 1);
+    }
+  }
+
+  start(str: string) {
+    if (!this.check(str)){
+      this.objects.push(str);
+    }
   }
 
 
