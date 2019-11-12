@@ -11,7 +11,7 @@ import {
   stagger
 } from '@angular/animations';
 
-export const fade = trigger('fade', [
+export const fadeaaa = trigger('fade', [
   transition('* <=> *', [
     query(':enter', style({
       opacity: 0,

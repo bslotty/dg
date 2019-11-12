@@ -2,7 +2,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MaterialModule } from 'src/app/modules/material/material.module';
+import { MaterialModule } from 'src/app/shared/modules/material/material.module';
 import { ShellComponent } from './components/shell/shell.component';
 import { PipesModule } from '../../pipes/pipes.module';
 import { ChartsModule } from 'src/app/modules/charts/charts.module';

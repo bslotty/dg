@@ -6,7 +6,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 
 /*  Component Features  */
-import { MaterialModule } from './modules/material/material.module';
+import { MaterialModule } from './shared/modules/material/material.module';
 
 /*  Sub-Module Imports  */
 import { NavigationModule } from './navigation.module';

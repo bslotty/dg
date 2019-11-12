@@ -1,7 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Course } from '../../../services/backend.service';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+
 
 @Component({
   selector: 'app-course-list',
@@ -11,57 +10,22 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 })
 export class ListComponent implements OnInit {
 
-  @Input() title: string;
   @Input() courseList: Course[];
-  mode: string;
-  
-  form: FormGroup;
-  courses: any;
-  results: any;
+  @Input() mode: string;
 
+  @Output() selected: EventEmitter<Course> = new EventEmitter();
 
-  constructor(
-    private feed: FeedbackService,
-    private builder: FormBuilder,
-  ) { }
+  constructor() { }
 
-  ngOnInit() {
-    if (this.mode == "search") {
-      this.initSearchExtras();
-    }
-
-  }
+  ngOnInit() {}
 
   trackCourse(index, item) {
     return item.id;
   }
 
- 
-  initSearchExtras() { /*
-    //  Setup Form
-    this.form = this.builder.group({
-      "term": ["", [Validators.required, Validators.minLength(3)]]
-    });
-
-    //  Search upon form change; with delay
-    this.form.valueChanges.pipe(this.courses.serverPipe).subscribe((c) => {
-      if (this.form.valid) {
-        this.courses.search(c["term"]);
-        this.feed.loading = true;
-      }
-    });
-
-    //  Display Loader upon change; No delay
-    this.form.get('term').valueChanges.subscribe((s) => {
-      console.log("update; ", this.form, s);
-      if (this.form.valid) {
-        this.feed.loading = true;
-      } else {
-        this.feed.loading = false;
-      }
-    });
-  */}
-
+  selectCourse(course){
+    this.selected.emit(course);
+  }
 }
 
 

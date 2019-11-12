@@ -47,10 +47,10 @@ import {
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
-import { SectionHeaderComponent } from '../../templates/section-header/section-header.component';
-import { LoaderComponent } from '../feedback/components/loader/loader.component';
-import { FeedbackComponent } from '../feedback/components/feedback/feedback.component';
-import { PasswordComponent } from 'src/app/templates/form-fields/password/password.component';
+import { SectionHeaderComponent } from '../../components/section-header/section-header.component';
+import { LoaderComponent } from '../../../modules/feedback/components/loader/loader.component';
+import { FeedbackComponent } from '../../../modules/feedback/components/feedback/feedback.component';
+import { PasswordComponent } from 'src/app/shared/components/forms/password/password.component';
 
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 

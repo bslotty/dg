@@ -52,6 +52,11 @@ export class CourseFormService {
     Validators.maxLength(9)
   ]);
 
+  private cTerm = new FormControl("", [
+    Validators.required,
+    Validators.minLength(2)
+  ]);
+
   constructor(
     private courseService: CourseBackend,
     private router: Router) { }
@@ -77,6 +82,19 @@ export class CourseFormService {
         form.addControl("zip", this.cZip);
         form.addControl("lat", this.cLat);
         form.addControl("lng", this.cLng);
+        break;
+
+      case "search":
+        form.addControl('search', this.cTerm);
+
+        form.get("search").valueChanges.pipe(this.courseService.serverPipe).subscribe((s)=>{
+          console.log ("CourseSearch: ", s);
+          if (form.valid) {
+            console.log ("CourseSearch.valid: ", s);
+            this.courseService.search(s as string);
+          }
+        });
+
         break;
     }
 
@@ -129,11 +147,11 @@ export class CourseFormService {
     this.courseService.create(course).subscribe((res) => {
       console.log("course.form.create.res: ", res);
       if (this.courseService.rCheck(res)) {
-          var createdCourse = this.courseService.rGetData(res);
-          this.router.navigate(["courses", createdCourse[0]['id']]);
+        var createdCourse = this.courseService.rGetData(res);
+        this.router.navigate(["courses", createdCourse[0]['id']]);
       } else {
-        console.log ("Nearby?");
-        
+        console.log("Nearby?");
+
         //  Fix
         this.courseService.setCourseList(this.courseService.rGetData(res) as Course[]);
 

@@ -5,7 +5,7 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
 
 import { LeaguesRoutingModule } from './leagues-routing.module';
 import { LeagueBackend } from './services/backend.service';
-import { MaterialModule } from './../material/material.module';
+import { MaterialModule } from '../../shared/modules/material/material.module';
 
 import { ListComponent } from './components/list/list.component';
 import { DetailComponent } from './components/detail/detail.component';

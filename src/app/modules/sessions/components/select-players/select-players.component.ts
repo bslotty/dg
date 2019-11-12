@@ -73,6 +73,7 @@ export class SelectPlayersComponent implements OnInit {
   }
 
   focusSearch() {
+    console.log (this.search);
     this.search.nativeElement.focus();
   }
 

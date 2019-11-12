@@ -23,6 +23,8 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.feed.start("session-upcoming");
+    this.feed.start("session-recient");
 
     //  Get List
     this.sessionBackend.listRecient();
@@ -32,17 +34,17 @@ export class DashboardComponent implements OnInit {
       //  Get Upcoming; Sort by soonest; Limit 5
       this.upcoming = s.filter((s: Session, i)=>{
         return d < new Date(s.starts_on).getTime();
-      }).sort((a, b)=>{
+      }).sort((a, b) => {
         return new Date(a.starts_on).getTime() - new Date(b.starts_on).getTime();
-      }).slice(0, 5);
+      }).slice(0, 2);
+      this.feed.stop("session-upcoming");
 
-
+      //  Recient; Limit 10
       this.recient = s.filter((s: Session)=>{
-        return d > new Date(s.starts_on).getTime();
-      }).slice(0, 10);
-
-      this.feed.loading = false;
-    });
+          return d > new Date(s.starts_on).getTime();
+        }).slice(0, 5);
+        this.feed.stop("session-recient");
+      });
 
   }
 

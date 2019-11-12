@@ -388,8 +388,11 @@ p b {
 }
 
 .mat-vertical-stepper-content .mat-vertical-content {
-  padding: 0;
-  padding-left: .5em;
+  padding: 1rem 0;
+}
+
+.mat-vertical-content-container {
+  margin-left: 0 !important;
 }
 
 .mat-stepper-vertical-line::before {
@@ -419,11 +422,12 @@ p b {
 }
 
 .mat-tooltip {
-  font-size: 1rem !important;
+  font-size: .8rem !important;
   color: $primary-light !important;
   background: $text-light !important;
+  padding: .5rem !important;
+  font-weight: 600;
 }
-
 
 .mat-flat-button[disabled][disabled] {
   background: none;
@@ -433,7 +437,10 @@ p b {
   margin-bottom: 5px  !important;
 }
 
-.mat-expansion-panel, .mat-expansion-panel-header:hover {
+.mat-expansion-panel, 
+.mat-expansion-panel-header:hover/*, 
+.mat-step-header, 
+.mat-step-header:hover */ {
   background: $primary-light  !important;
 }
 

@@ -2,206 +2,209 @@
 </app-section-header>
 
 
-<form [formGroup]='form'>
-
-  <mat-vertical-stepper [linear]="true" #stepper labelPosition="end" class="mb-3">
-    <!--  Icon Overrides  -->
-    <ng-template matStepperIcon="edit" let-index="index"></ng-template>
-    <ng-template matStepperIcon="done"></ng-template>
-    <ng-template matStepperIcon="number" let-index="index"></ng-template>
+<div>
 
 
 
-    <mat-step [stepControl]="form.get('format')">
+  <form [formGroup]='form'>
 
-      <ng-template matStepLabel>
-        <div class="row justify-content-between align-items-center no-gutters">
-          <div class="col">Format</div>
-          <div class="col text-right">{{ form.get('format').value.name }}</div>
+    <mat-vertical-stepper [linear]="true" #stepper labelPosition="end" class="mb-3">
+      <!--  Icon Overrides  -->
+      <ng-template matStepperIcon="edit" let-index="index"></ng-template>
+      <ng-template matStepperIcon="done"></ng-template>
+      <ng-template matStepperIcon="number" let-index="index"></ng-template>
+
+
+
+      <mat-step [stepControl]="form.get('format')">
+
+        <ng-template matStepLabel>
+          <div class="row justify-content-between align-items-center no-gutters">
+            <div class="col">Format</div>
+            <div class="col text-right">{{ form.get('format').value.name }}</div>
+          </div>
+        </ng-template>
+
+        <app-select-format [selectedFormat]="form.get('format').value" (selected)="selectFormat($event)">
+        </app-select-format>
+      </mat-step>
+
+
+      <mat-step [stepControl]="form.get('course')" editable='false'>
+        <ng-template matStepLabel>
+          <div class="row justify-content-between align-items-center no-gutters">
+            <div class="col">Course</div>
+            <div class="col text-right">{{ form.get('course').value.park_name }}</div>
+
+          </div>
+        </ng-template>
+
+        <mat-tab-group dynamicHeight="true">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <span class="icon-heart"></span>
+            </ng-template>
+
+            <p>Favorites</p>
+
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <span class="icon-clock"></span>
+            </ng-template>
+
+            <p>Recient</p>
+
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <span class="icon-search"></span>
+            </ng-template>
+            <app-course-search header="false" [selectedCourse]="form.get('course').value"
+              (selected)="selectCourse($event)"></app-course-search>
+          </mat-tab>
+        </mat-tab-group>
+
+      </mat-step>
+
+
+
+      <mat-step [stepControl]="form.get('date')">
+        <ng-template matStepLabel>
+          <div class="row justify-content-between align-items-center no-gutters">
+            <div class="col">Time</div>
+            <div class="col text-right" *ngIf="form.get('date').valid && form.get('time').valid">
+              {{ form.get('date').value.toDateString() }} at {{ form.get('time').value }}</div>
+          </div>
+        </ng-template>
+
+        <div>
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Choose Start Date" formControlName='date'
+              (focus)="picker.open()" type="text">
+            <mat-datepicker-toggle matSuffix [for]="picker"><span class='icon-calendar'></span></mat-datepicker-toggle>
+            <mat-datepicker #picker startView="year" [startAt]="form.get('date').value" touchUi="true"></mat-datepicker>
+          </mat-form-field>
+
+
+          <mat-form-field>
+            <input matInput [ngxTimepicker]="timePicker" placeholder="Choose Start Time" formControlName='time'
+              type="text">
+            <div matSuffix><a mat-flat-button color="transparent-primary" (click)="timePicker.open()"><span
+                  class="icon-clock"></span></a></div>
+            <ngx-material-timepicker #timePicker minutesGap=5 (timeSet)="setTime($event)" disableAnimation="true">
+            </ngx-material-timepicker>
+
+          </mat-form-field>
         </div>
-      </ng-template>
-
-      <app-select-format [selectedFormat]="form.get('format').value" (selected)="selectFormat($event)">
-      </app-select-format>
-    </mat-step>
-
-
-    <mat-step [stepControl]="form.get('course')">
-      <ng-template matStepLabel>
-        <div class="row justify-content-between align-items-center no-gutters">
-          <div class="col">Course</div>
-          <div class="col text-right">{{ form.get('course').value.park_name }}</div>
-
-        </div>
-      </ng-template>
-
-      <mat-tab-group dynamicHeight="true">
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <span class="icon-heart"></span>
-          </ng-template>
-
-          <p>Favorites</p>
-
-        </mat-tab>
-
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <span class="icon-clock"></span>
-          </ng-template>
-
-          <p>Recient</p>
-          <app-course-search mode="selector" [selectedCourse]="form.get('course').value" (selected)="selectCourse($event)"></app-course-search>
-        </mat-tab>
-
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <span class="icon-search"></span>
-          </ng-template>
-          <app-select-course [selectedCourse]="form.get('course').value" (selected)="selectCourse($event)">
-          </app-select-course>
-        </mat-tab>
-      </mat-tab-group>
-
-    </mat-step>
+      </mat-step>
 
 
 
-    <mat-step [stepControl]="form.get('date') && form.get('time')">
-      <ng-template matStepLabel>
-        <div class="row justify-content-between align-items-center no-gutters">
-          <div class="col">Time</div>
-          <div class="col text-right" *ngIf="form.get('date').valid && form.get('time').valid">
-            {{ form.get('date').value.toDateString() }} at {{ form.get('time').value }}</div>
-        </div>
-      </ng-template>
+      <mat-step>
+        <ng-template matStepLabel>
+          <div class="row justify-content-between align-items-center no-gutters">
+            <div class="col">Players</div>
+            <div class="col text-right">{{ form.get('scores')?.controls.length }}</div>
+          </div>
+        </ng-template>
 
-      <div>
-        <mat-form-field>
-          <input matInput [matDatepicker]="picker" placeholder="Choose Start Date" formControlName='date'
-            (focus)="picker.open()" type="text">
-          <mat-datepicker-toggle matSuffix [for]="picker"><span class='icon-calendar'></span></mat-datepicker-toggle>
-          <mat-datepicker #picker startView="year" [startAt]="form.get('date').value" touchUi="true"></mat-datepicker>
-        </mat-form-field>
-
-
-        <mat-form-field>
-          <input matInput [ngxTimepicker]="timePicker" placeholder="Choose Start Time" formControlName='time' (focus)="timePicker.open()"
-            type="text">
-          <div matSuffix><a mat-flat-button color="transparent-primary" (click)="timePicker.open()"><span
-                class="icon-clock"></span></a></div>
-          <ngx-material-timepicker #timePicker minutesGap=5 (timeSet)="setTime($event)" disableAnimation="true">
-          </ngx-material-timepicker>
-
-        </mat-form-field>
-      </div>
-    </mat-step>
-
-
-
-    <mat-step>
-      <ng-template matStepLabel>
-        <div class="row justify-content-between align-items-center no-gutters">
-          <div class="col">Players</div>
-          <div class="col text-right">{{ form.get('scores')?.controls.length }}</div>
-        </div>
-      </ng-template>
-
-      <div @flyInPanelRow>
-        <score-list-item [score]='score.value' mode='remove' (action)="removeScore(score.value)"
-          *ngFor="let score of form.get('scores')?.controls; trackBy: trackScores"></score-list-item>
-      </div>
-
-
-      <mat-tab-group dynamicHeight="true">
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <span class="icon-heart"></span>
-          </ng-template>
-
-          <p>Favorites</p>
-
-        </mat-tab>
-
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <span class="icon-clock"></span>
-          </ng-template>
-
-          <p>Recient</p>
-
-        </mat-tab>
-
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <span class="icon-search"></span>
-          </ng-template>
-          <app-select-players #playerSelect (selected)="addScore($event)"></app-select-players>
-        </mat-tab>
-      </mat-tab-group>
-
-    </mat-step>
-
-
-
-    <mat-step *ngIf="form.get('format').value.enum != 'ffa' && form.get('teams')">
-
-      <ng-template matStepLabel>
-        <div class="row justify-content-between align-items-center no-gutters">
-          <div class="col">Teams</div>
-          <div class="col text-right">{{ form.get('teams')?.controls.length }}</div>
-        </div>
-      </ng-template>
-
-      <div @flyInPanelRow>
-        <team-list-item *ngFor="let team of form.get('teams')?.controls; trackBy: trackTeamBy" [team]="team.value"
-          mode='remove' (action)='removeTeam(team.value)'></team-list-item>
-      </div>
-
-      <div class="row justify-content-end align-items-center">
-        <a mat-flat-button color="transparent-primary" (click)="addTeam()">
-          <span class="icon-plus"></span>
-        </a>
-      </div>
-    </mat-step>
-
-
-
-    <mat-step *ngIf="form.get('format').value.enum != 'ffa' && form.get('teams')">
-      <ng-template matStepLabel>Roster</ng-template>
-
-
-      <div cdkDropListGroup class="row justify-content-center align-items-start" @flyInPanelRow>
-        <div class="col-7 teamDropPad unassigned"
-          (cdkDropListDropped)="rosterDrop($event)" cdkDropList [cdkDropListData]="getRoster(null)"
-          id="team-unassigned">
-
-          <label>Unassigned</label>
-          <score-list-item cdkDrag [cdkDragData]="player" [score]="player" mode="puck"
-            *ngFor="let player of getRoster(null)">
-          </score-list-item>
+        <div @flyInPanelRow>
+          <score-list-item [score]='score.value' mode='remove' (action)="removeScore(score.value)"
+            *ngFor="let score of form.get('scores')?.controls; trackBy: trackScores"></score-list-item>
         </div>
 
 
-        <div class="col teamDropPad {{ team.value.color.name }}"
-          *ngFor="let team of form.get('teams').controls; let i = index" (cdkDropListDropped)="rosterDrop($event)"
-          cdkDropList [cdkDropListData]="getRoster(team)" id="{{ 'team-' + team.value.color.name }}">
+        <mat-tab-group dynamicHeight="true">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <span class="icon-heart"></span>
+            </ng-template>
+
+            <p>Favorites</p>
+
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <span class="icon-clock"></span>
+            </ng-template>
+
+            <p>Recient</p>
+
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <span class="icon-search"></span>
+            </ng-template>
+            <app-select-players (selected)="addScore($event)"></app-select-players>
+          </mat-tab>
+        </mat-tab-group>
+
+      </mat-step>
 
 
-          <label>{{ team.value.name | titlecase }}</label>
-          <score-list-item cdkDrag [cdkDragData]="player" [score]="player" mode="puck"
-            *ngFor="let player of getRoster(team)">
-          </score-list-item>
+
+      <mat-step *ngIf="form.get('format').value.enum != 'ffa' && form.get('teams')">
+
+        <ng-template matStepLabel>
+          <div class="row justify-content-between align-items-center no-gutters">
+            <div class="col">Teams</div>
+            <div class="col text-right">{{ form.get('teams')?.controls.length }}</div>
+          </div>
+        </ng-template>
+
+        <div @flyInPanelRow>
+          <team-list-item *ngFor="let team of form.get('teams')?.controls; trackBy: trackTeamBy" [team]="team.value"
+            mode='remove' (action)='removeTeam(team.value)'></team-list-item>
         </div>
-      </div>
-    </mat-step>
+
+        <div class="row justify-content-end align-items-center ">
+          <a mat-flat-button color="transparent-primary" (click)="addTeam()">
+            <span class="icon-plus"></span>
+          </a>
+        </div>
+      </mat-step>
 
 
-  </mat-vertical-stepper>
+
+      <mat-step *ngIf="form.get('format').value.enum != 'ffa' && form.get('teams')">
+        <ng-template matStepLabel>Roster</ng-template>
 
 
-</form>
+        <div cdkDropListGroup class="row justify-content-center align-items-start no-gutters" @flyInPanelRow>
+          <div class="col-7 teamDropPad unassigned" (cdkDropListDropped)="rosterDrop($event)" cdkDropList
+            [cdkDropListData]="getRoster(null)" id="team-unassigned">
 
+            <label>Unassigned</label>
+            <score-list-item cdkDrag [cdkDragData]="player" [score]="player" mode="puck"
+              *ngFor="let player of getRoster(null)">
+            </score-list-item>
+          </div>
+
+
+          <div class="col teamDropPad {{ team.value.color.name }}"
+            *ngFor="let team of form.get('teams').controls; let i = index" (cdkDropListDropped)="rosterDrop($event)"
+            cdkDropList [cdkDropListData]="getRoster(team)" id="{{ 'team-' + team.value.color.name }}">
+
+
+            <label>{{ team.value.name | titlecase }}</label>
+            <score-list-item cdkDrag [cdkDragData]="player" [score]="player" mode="puck"
+              *ngFor="let player of getRoster(team)">
+            </score-list-item>
+          </div>
+        </div>
+      </mat-step>
+
+
+    </mat-vertical-stepper>
+
+
+  </form>
+</div>
 
 <div class="row no-gutters justify-content-stretch align-items-center mt-3">
   <a mat-raised-button color="primary" class="btn btn-lg btn-block" (click)="sessionForm.submitCreation()"

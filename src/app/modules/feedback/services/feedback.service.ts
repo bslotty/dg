@@ -2,6 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ServerPayload } from 'src/app/app.component';
 import { Router, NavigationEnd } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ export class FeedbackService implements OnInit {
 
   loading: boolean = true;
 
-  objects: Array<string> = [];
+  list: BehaviorSubject<Array<string>> = new BehaviorSubject([]);
+  list$: Observable<Array<string>> = this.list.asObservable();
 
   pColor: string = "primary";
   pMode: string = "determinate"
@@ -37,22 +39,32 @@ export class FeedbackService implements OnInit {
   }
 
 
-  //  New Functions for section specific loading;
-  check(str: string) {
-    return this.objects.indexOf(str) > -1
-  }
+  //  New Functions for section specific loading; Observable Edition
+  stop(str: string): void {
+    //  Current List
+    var list = this.list.value;
 
-  stop(str: string) {
-    let i = this.objects.indexOf(str);
+    //  If Exists; Pop
+    let i = list.indexOf(str);
     if (i > -1) {
-      this.objects.splice(i, 1);
+      list.splice(i, 1);
     }
+
+    //  Emit Updates
+    this.list.next(list);
   }
 
-  start(str: string) {
-    if (!this.check(str)){
-      this.objects.push(str);
+  start(str: string): void {
+    //  Current List
+    var list = this.list.value;
+
+    //  If Not In; Push
+    if (list.indexOf(str) == -1){
+      list.push(str);
     }
+
+    //  Emit Updates
+    this.list.next(list);
   }
 
 

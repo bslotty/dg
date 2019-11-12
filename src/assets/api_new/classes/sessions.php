@@ -38,8 +38,10 @@ class Session
 			`title`,
 			`format`,
 			`par_array`
-		FROM `Sessions`
-		WHERE `created_by` = :userID
+		FROM `Sessions` AS 'sn'
+		JOIN `Scores` AS `sc`
+		WHERE `created_by` = :userID OR 
+			(`sc`.`player_id`=:userID AND `sn`.`id` = `sc`.`session_id`);
 		ORDER BY `starts_on` DESC
 		LIMIT " . (int) $start . ", " . (int) $limit . ";";
 

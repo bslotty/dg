@@ -59,6 +59,11 @@ a * {
   transition: color .2s ease-out;
 }
 
+#container {
+  margin-top: 3rem;
+}
+
+
 .sub-header {
   margin: 1.5em 0 .3em 0;
   padding-left: 1em;
@@ -100,8 +105,9 @@ a * {
   border-radius: 3px; 
   margin-bottom: 1vh;
   // box-shadow: 0 3px 3px -2px rgba(0, 0, 0, .2), 0 3px 4px 0 rgba(0, 0, 0, .14), 0 1px 8px 0 rgba(0, 0, 0, .12);
+  border-bottom: 1px solid $primary-light;
+  border-top: 1px solid $primary-light;
 }
-
 
 
 

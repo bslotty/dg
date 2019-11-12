@@ -1,8 +1,11 @@
 <div class="panel row justify-content-between align-items-center no-gutters">
+
+	<!--	Team Color Bar	-->
 	<div class="colorChoice" *ngIf='score?.team'>
 		<div class="colorIcon {{ score.team.color.name }}"></div>
 	</div>
 
+	<!--	Name	-->
 	<div class="col ml-2" *ngIf="mode != 'puck'">
 		<div>{{ score.player.first_name }} {{ score.player.last_name }} <span
 				*ngIf="score.handicap && score.handicap != 0" class="icon-shield color-accent"></span></div>
@@ -24,8 +27,10 @@
 
 	</div>
 
+	<!--	Scores		-->
 
 
+	<!--	Admin Actions	-->
 	<div class="col-xs" *ngIf="mode == 'selector'">
 		<a mat-icon-button color="primary" (click)="include(score.player)">
 			<span class="icon-plus"></span>

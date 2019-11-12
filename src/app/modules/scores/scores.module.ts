@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '../material/material.module';
+import { MaterialModule } from '../../shared/modules/material/material.module';
 
 import { ScoreListItemComponent } from './components/templates/score-list-item/score-list-item.component';
 import { TeamListItemComponent } from './components/templates/team-list-item/team-list-item.component';

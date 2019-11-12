@@ -1,18 +1,3 @@
-<app-section-header *ngIf="title" title="{{ title }}"></app-section-header>
-
-<div *ngIf="mode == search">
-  <form [formGroup]="form">
-    <mat-form-field>
-      <mat-label>Search</mat-label>
-      <input matInput formControlName="term" placeholder="Park Name, City, or State" />
-      <mat-error *ngIf="form.get('term').invalid && form.get('term').dirty">
-        Invalid Search Criteria
-      </mat-error>
-    </mat-form-field>
-  </form>
-
-</div>
-
 <div>
-  <course-list-item *ngFor="let course of courseList" [course]="course" mode="list"></course-list-item>
+  <course-list-item *ngFor="let course of courseList" [course]="course" [mode]="mode" (selected)="selectCourse(course)"></course-list-item>
 </div>

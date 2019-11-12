@@ -15,7 +15,7 @@ import { ListComponent as SessionList } from './components/list/list.component';
 import { DetailComponent } from './components/detail/detail.component';
 import { CreateComponent } from './components/create/create.component';
 import { EditComponent } from './components/edit/edit.component';
-import { MaterialModule } from '../material/material.module';
+import { MaterialModule } from '../../shared/modules/material/material.module';
 import { ShellComponent } from './components/shell/shell.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 

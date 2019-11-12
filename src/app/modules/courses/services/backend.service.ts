@@ -49,6 +49,10 @@ export class CourseBackend {
     }
   }
 
+  /**
+   * @param ServerPayload res Subscription Response
+   * @returns data results of request;
+   */
   rGetData(res): Array<any> {
     var latest = res.length - 1;
     if (latest > -1) {

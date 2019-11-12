@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { fade, flyIn } from 'src/app/animations';
+import { flyIn } from 'src/app/animations';
 import { FeedbackService } from './modules/feedback/services/feedback.service';
 import { AccountBackend } from './modules/account/services/backend.service';
 
@@ -8,7 +8,7 @@ import { AccountBackend } from './modules/account/services/backend.service';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  animations: [fade, flyIn],
+  animations: [flyIn],
 })
 
 export class AppComponent {

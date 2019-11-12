@@ -130,16 +130,17 @@ export class SessionFormService {
         break;
     }
 
-    //  Listen to Changes for Date Time Merge
-    form.valueChanges.pipe(this.sessionService.serverPipe).subscribe((v) => {
-      //  console.log ("form.valueChanges.v: ", v);
+    if (type != 'search') {
+      //  Listen to Changes for Date Time Merge
+      form.valueChanges.pipe(this.sessionService.serverPipe).subscribe((v) => {
+        if (v['time'] != "" && v['date'] instanceof Date && v['date'].getHours() == 0) {
+          var d = new Date(v['date'].toDateString() + " " + v['time']);
+          console.log("date set: ", d);
+          this.setDate(d);
+        }
+      });
+    }
 
-      if (v['time'] != "" && v['date'] instanceof Date && v['date'].getHours() == 0) {
-        var d = new Date(v['date'].toDateString() + " " + v['time']);
-        console.log("date set: ", d);
-        this.setDate(d);
-      }
-    });
 
 
     this.form.next(form);
@@ -162,7 +163,7 @@ export class SessionFormService {
       } else {
         return true;
       }
-      
+
     } else {
       return false;
     }
@@ -267,13 +268,13 @@ export class SessionFormService {
       if (team.name == v.value.name) {
 
         //  Update Availablity Status on Color
-        this.teamColorList.find((c)=>{
+        this.teamColorList.find((c) => {
           if (c.name == team.name) {
             c.available = true;
             return true;
           }
         });
-        
+
         //  Remove Team From List
         this.teamList.removeAt(i);
       }
@@ -301,7 +302,12 @@ export class SessionFormService {
     console.log("session: ", session);
 
     this.sessionService.create(session).subscribe((res) => {
-      console.log("sessionsService.create.res: ", res)
+      console.log("sessionsService.create.res: ", res);
+      if (this.courseService.rCheck(res)) {
+
+        var session = this.courseService.rGetData(res);
+        this.router.navigate(["/sessions", session['id']]);
+      }
     });
 
   }
@@ -313,8 +319,8 @@ export class SessionFormService {
 
   validateRoster(): boolean {
     var valid = true;
-    this.scoreList.controls.forEach((s)=>{
-      if (s.value.team == null || s.value.team == undefined){
+    this.scoreList.controls.forEach((s) => {
+      if (s.value.team == null || s.value.team == undefined) {
         valid = false;
       }
     });

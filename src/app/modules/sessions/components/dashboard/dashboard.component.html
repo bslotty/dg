@@ -1,30 +1,31 @@
 <app-section-header title="Sessions" [buttons]="headerButtons" (actionClick)="actionClick($event)">
 </app-section-header>
-<div *ngIf="!feed.loading; else loader">
-    <h5 class="sub-header">Upcoming</h5>
-    <mat-accordion>
-        <session-list disabled="true" [list]="upcoming"></session-list>
-    </mat-accordion>
 
-    <div *ngFor="let session of favorites; trackBy: trackSession">
-    </div>
+<h5 class="sub-header">Upcoming</h5>
+<mat-accordion>
+    <session-list disabled="true" [list]="upcoming"></session-list>
+</mat-accordion>
 
-    <h5 class="sub-header">Recient</h5>
+<div *ngFor="let session of favorites; trackBy: trackSession"></div>
+
+<h5 class="sub-header">Recient</h5>
+<mat-accordion>
     <session-list [list]="recient"></session-list>
+</mat-accordion>
 
 
 
-    <div class="row ">
-        <div class="message">
-            <p>
-                <a mat-flat-button color="transparent-accent" routerLink="/sessions/create">
-                    Create
-                </a>
-            </p>
-        </div>
+
+<div class="row ">
+    <div class="message">
+        <p>
+            <a mat-flat-button color="transparent-accent" routerLink="/sessions/create">
+                Create
+            </a>
+        </p>
     </div>
-
 </div>
+
 
 <ng-template #noSessions>
     <div class="panel row">

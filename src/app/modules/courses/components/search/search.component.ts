@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { CourseBackend, Course } from '../../services/backend.service';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
 import { flyInPanelRow } from 'src/app/animations';
+import { CourseFormService } from '../../services/course-form.service';
 
 @Component({
   selector: 'app-course-search',
@@ -15,22 +16,24 @@ export class SearchComponent implements OnInit {
   form: FormGroup;
   results: Course[] = null;
 
-  @Input() mode: string = "selector"; //  Link, Favorite,
-
   @Input() selectedCourse: Course;
   @Output() selected: EventEmitter<Course> = new EventEmitter();
 
+  @Input() header: boolean = true;
+
   constructor(
-    private builder: FormBuilder,
     private courses: CourseBackend,
+    private coursesForm: CourseFormService,
     private feed: FeedbackService,
   ) { }
+
 
   ngOnInit() {
 
     //  Setup Form
-    this.form = this.builder.group({
-      "term": ["", [Validators.required, Validators.minLength(3)]]
+    this.coursesForm.Setup('search');
+    this.coursesForm.form$.subscribe((f) => {
+      this.form = f;
     });
 
     //  Listen to Course List Changes
@@ -39,32 +42,21 @@ export class SearchComponent implements OnInit {
       this.results = c;
     });
 
-
-
-    //  Search upon form change; with delay
-    this.form.valueChanges.pipe(this.courses.serverPipe).subscribe((c) => {
-      if (this.form.valid) {
-        this.courses.search(c["term"]);
-        this.feed.loading = true;
-      }
-    });
-
-
+    /*
     //  Display Loader upon change; No delay
-    this.form.get('term').valueChanges.subscribe((s) => {
-      console.log("update; ", this.form, s );
+    this.form.get('search').valueChanges.subscribe((s) => {
       if (this.form.valid) {
         this.feed.loading = true;
       } else {
         this.feed.loading = false;
       }
     });
+    */
   }
 
-
-
-
-  setCourse(course) {
-    this.selected.emit(course);
+  selectCourse($event) {
+    this.selected.emit($event);
+    this.form.reset();
+    this.results = null;
   }
 }

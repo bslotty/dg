@@ -6,8 +6,9 @@ import { MatStepper } from '@angular/material';
 import { AccountFormService } from 'src/app/modules/account/services/account-form.service';
 import { AccountBackend } from 'src/app/modules/account/services/backend.service';
 import { SelectPlayersComponent } from '../select-players/select-players.component';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { flyInPanelRow } from 'src/app/animations';
+import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
 
 @Component({
   selector: 'app-create',
@@ -21,8 +22,6 @@ export class CreateComponent implements OnInit {
   insertID: string;
 
   @ViewChild("stepper", {static: true}) stepper: MatStepper;
-  @ViewChild("playerSelect", {static: true}) playerSelect: SelectPlayersComponent;
-
 
   roster = [];
 
@@ -30,6 +29,7 @@ export class CreateComponent implements OnInit {
     private sessionForm: SessionFormService,
     private accountForm: AccountFormService,
     private accounts: AccountBackend,
+    private feed: FeedbackService,
   ) { }
 
   ngOnInit() {
@@ -39,13 +39,7 @@ export class CreateComponent implements OnInit {
     this.sessionForm.form$.subscribe((f)=>{
       this.form = f;
     });
-
-    console.log ("Stepper: ", this.stepper);
   }
-
-
-  onFormSubmit() {  }
-
 
   selectFormat($event) {
     this.sessionForm.setFormat($event);
@@ -55,14 +49,12 @@ export class CreateComponent implements OnInit {
   selectCourse($event){
     this.sessionForm.setCourse($event);
     this.stepper.next();
+
   }
 
   setTime($event){
-    
-    //  Fix for stepper.next not working
-    this.playerSelect.focusSearch();
     this.stepper.next();
-    
+    console.log("selected.step.after.next(): ", this.stepper.selected);
   }
 
 
@@ -74,7 +66,6 @@ export class CreateComponent implements OnInit {
 
   addScore($event) {
     this.sessionForm.addScore($event);
-    
   }
 
   removeScore($event) {
@@ -84,6 +75,8 @@ export class CreateComponent implements OnInit {
   trackScores(input, item) {
     return item.value.id;
   }
+
+
 
 
 
@@ -107,6 +100,8 @@ export class CreateComponent implements OnInit {
   trackTeamBy(index, item) {
     item.value.id;
   }
+
+
 
 
   

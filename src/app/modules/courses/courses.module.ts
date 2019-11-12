@@ -2,7 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CoursesRoutingModule } from './courses-routing.module';
-import { MaterialModule } from './../material/material.module';
+import { MaterialModule } from '../../shared/modules/material/material.module';
 import { AgmCoreModule } from '@agm/core';
 
 import { ListComponent } from './components/templates/list/list.component';
