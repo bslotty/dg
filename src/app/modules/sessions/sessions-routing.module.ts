@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DetailComponent } from './components/detail/detail.component';
-import { EditComponent } from './components/edit/edit.component';
 import { CreateComponent } from './components/create/create.component';
 
 import { ShellComponent } from './components/shell/shell.component';
@@ -11,8 +9,10 @@ import { PlayerScoreListComponent } from '../stats/components/player-score-list/
 
 
 import { AuthGuard } from 'src/app/guards/auth.service';
-import { PermGuard } from '../../guards/perm.service';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { SessionAdminGuard } from 'src/app/guards/session-admin.guard';
+
+import { SessionResolverService } from './services/resolver.service';
 
 const sessionRoutes: Routes = [
   {
@@ -25,21 +25,26 @@ const sessionRoutes: Routes = [
         component: CreateComponent,
         canActivate: [],
       }, {
-        path: ":session/edit",
-        component: EditComponent,
-        canActivate: [PermGuard],
-      }, {
+        path: ":session",
+        component: CreateComponent,
+        //component: EditComponent,
+        canActivate: [SessionAdminGuard],
+        resolve: {
+          session: SessionResolverService
+        }
+      },  {
+        path: ":session",
+        component: CreateComponent,
+        //  component: DetailComponent,
+        canActivate: [!SessionAdminGuard],
+      },{
         path: ":session/play",
         component: PlayerScoreListComponent,
-        canActivate: [PermGuard],
-      }, {
-        path: ":session",
-        component: DetailComponent,
-        canActivate: [PermGuard],
+        canActivate: [],
       },{
         path: "",
         component: DashboardComponent,
-        canActivate: [PermGuard],
+        canActivate: [],
 
       }
     ]

@@ -66,7 +66,7 @@ a * {
 
 .sub-header {
   margin: 1.5em 0 .3em 0;
-  padding-left: 1em;
+  padding-left: 1em !important;;
 }
 
 .sub-text {
@@ -99,14 +99,12 @@ a * {
 
 .panel {
   position: relative;
-  background: $primary-light;
-	color: $text-light;
-	padding: .3rem;
-  border-radius: 3px; 
-  margin-bottom: 1vh;
-  // box-shadow: 0 3px 3px -2px rgba(0, 0, 0, .2), 0 3px 4px 0 rgba(0, 0, 0, .14), 0 1px 8px 0 rgba(0, 0, 0, .12);
-  border-bottom: 1px solid $primary-light;
-  border-top: 1px solid $primary-light;
+  background: #506450;
+  color: #fafaf0;
+  padding: 0.3rem;
+  margin-bottom: .2rem;
+  box-shadow: 0 3px 3px -2px rgba(0, 0, 0, .2), 0 3px 4px 0 rgba(0, 0, 0, .14), 0 1px 8px 0 rgba(0, 0, 0, .12);
+
 }
 
 
@@ -232,7 +230,7 @@ table {
 
 
 .teamDropPad {
-  padding: .3rem;
+  padding: .2rem !important;
   border: .3rem solid;
   margin: .2rem;
   min-height: 7rem;
@@ -302,42 +300,42 @@ table {
 
 
 
-.teamPicker.red:not(:disabled) {
+.teamPicker.red:not([disabled]) {
   background: #e66969;
   color: #FFF;
 }
 
-.teamPicker.blue:not(:disabled) {
+.teamPicker.blue:not([disabled]) {
   background: #6ab9e8;
   color: #FFF;
 }
 
-.teamPicker.green:not(:disabled) {
+.teamPicker.green:not([disabled]) {
   background: #60df60;
   color: #FFF;
 }
 
-.teamPicker.yellow:not(:disabled) {
+.teamPicker.yellow:not([disabled]) {
   background: #d6d05d;
   color: #FFF;
 }
 
-.teamPicker.orange:not(:disabled) {
+.teamPicker.orange:not([disabled]) {
   background: #d8a95d;
   color: #FFF;
 }
 
-.teamPicker.purple:not(:disabled) {
+.teamPicker.purple:not([disabled]) {
   background: #9461e0;
   color: #FFF;
 }
 
-.teamPicker.pink:not(:disabled) {
+.teamPicker.pink:not([disabled]) {
   background: #cf58c5;
   color: #FFF;
 }
 
-.teamPicker.white:not(:disabled) {
+.teamPicker.white:not([disabled]) {
   background: #fff;
   color: $primary-light;
 }

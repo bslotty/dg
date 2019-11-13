@@ -11,7 +11,7 @@ import {
   stagger
 } from '@angular/animations';
 
-export const fadeaaa = trigger('fade', [
+export const fade = trigger('fade', [
   transition('* <=> *', [
     query(':enter', style({
       opacity: 0,
@@ -178,27 +178,38 @@ export const flyInPanelRow = trigger('flyInPanelRow', [
 
 
 
-/*
 
 
-export const flyInPanelRow = trigger('flyInPanelRow', [
+
+//  Generic Animations for Chaining
+export const growHeight = trigger('fallOut', [
   transition(':enter', [
-    style({ opacity: 0, overflow: "hidden" }),
+    style({ overflow: "hidden",  height: 0, position: 'relative' }),
     animate('.3s ease',
-      keyframes([
-        style({ offset: 0.8, transform: "translateY(5em)", height: 0 }),
-        style({ offset: 1, transform: "translateY(0)", opacity: 1, height: "*" })
-      ]),
+      style({ offset: 1, height: "*" })
     ),
   ]),
   transition(':leave', [
     animate('.1s ease',
       style({
-        opacity: 0,
-        transform: "translateY(9em)",
         height: 0
       })
     )
-  ])
-])
-*/
+  ]),
+
+]);
+
+export const fall = trigger('fall', [
+  transition(':enter', [
+    style({ opacity: 0, transform: "scale(1.5)", position: 'relative'}),
+    animate('1s ease',
+      style({ offset: 1, transform: "scale(1)"  })
+    ),
+  ]),
+  transition(':leave', [
+    animate('1s ease',
+      style({ opacity: 0, transform: "scale(.5)" })
+    )
+  ]),
+
+]);

@@ -1,8 +1,10 @@
-<div class="loaderContainer" [@flyInPanelRow]> 
-  <mat-progress-spinner 
-    [color]='feed?.pColor ? feed.pColor : "warn"' 
-    mode='indeterminate'
-    [value]='feed?.pValue  ? feed.pValue : "100"' 
-    strokeWidth="1">
-  </mat-progress-spinner>
+<div class="row justify-content-center align-items-center no-gutters">
+  <div [class]="small ? 'loaderContainer  small' : 'loaderContainer'">
+    <mat-progress-spinner [@fall]
+      mode='indeterminate' 
+      color='primary' 
+      [strokeWidth]="strokeWidth" 
+      [diameter]="diameter">
+    </mat-progress-spinner>
+  </div>
 </div>

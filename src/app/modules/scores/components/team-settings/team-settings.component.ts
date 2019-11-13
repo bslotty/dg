@@ -53,6 +53,21 @@ export class TeamSettingsComponent implements OnInit {
   pickColor(color) {
     if (color.available) {
       this.form.markAsDirty();
+      
+      //  Update Availablity
+      this.sessionForm.teamColorList.forEach((c)=>{
+        //  Restrict new
+        if (c.name == color.name) {
+          c.available = false;
+        } 
+        
+        //  Allow Old
+        if (c.name == this.data.color.name) {
+          c.available = true;
+        }
+      });
+
+      //  Update Color
       this.data.color = color;
     }
 

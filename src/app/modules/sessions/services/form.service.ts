@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { FormGroup, FormBuilder, FormControl, Validators, FormArray, ValidatorFn, AbstractControl } from '@angular/forms';
-import { CourseBackend, Course } from '../../courses/services/backend.service';
+import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
+import { CourseBackend } from '../../courses/services/backend.service';
 import { Router } from '@angular/router';
-import { Session, SessionBackend, Score } from './backend.service';
-import { Team } from '../../stats/services/backend.service';
+import { Session, SessionBackend } from './backend.service';
+import { HelperService } from 'src/app/shared/services/helper.service';
 
 @Injectable({
   providedIn: 'root'
@@ -100,6 +100,7 @@ export class SessionFormService {
   },];
 
   constructor(
+    private helper: HelperService,
     private courseService: CourseBackend,
     private sessionService: SessionBackend,
     private router: Router) { }
@@ -178,11 +179,17 @@ export class SessionFormService {
   }
 
   setForm(values): void {
-    this.form.value.get("format").setValue(values.cFormat);
-    this.form.value.get("course").setValue(values.cCourse);
-    this.form.value.get("date").setValue(values.cDate);
-    this.form.value.get("time").setValue(values.cTime);
-    this.form.value.get("scores").setValue(values.cScores);
+    this.form.value.get("format").setValue(values.format);
+    this.form.value.get("course").setValue(values.course);
+
+    //  Date/Time
+    var date = new Date(values.date).toLocaleDateString();
+    var time = new Date(values.date).toLocaleTimeString();
+    this.form.value.get("date").setValue(date);
+    this.form.value.get("time").setValue(time);
+
+    //  Players
+    this.form.value.get("scores").setValue(values.scores);
     this.form.value.markAsDirty();
 
   }
@@ -293,25 +300,31 @@ export class SessionFormService {
   submitCreation() {
     console.log("SubmitCreation.form: ", this.form);
 
-    var session = new Session();
-    session.format = this.form.value.value.format;
-    session.course = this.form.value.value.course;
-    session.starts_on = this.form.value.value.date.toISOString();
-    session.scores = this.scoreList.value;
-
-    console.log("session: ", session);
+    var session = this.getSessionFromForm();
 
     this.sessionService.create(session).subscribe((res) => {
       console.log("sessionsService.create.res: ", res);
-      if (this.courseService.rCheck(res)) {
+      if (this.helper.rCheck(res)) {
 
-        var session = this.courseService.rGetData(res);
+        var session = this.helper.rGetData(res)[0];
+        console.log("submitCreation.session: ", session);
         this.router.navigate(["/sessions", session['id']]);
       }
     });
 
   }
 
+
+
+  getSessionFromForm(): Session {
+    var session = new Session();
+    session.format = this.form.value.value.format;
+    session.course = this.form.value.value.course;
+    session.starts_on = this.form.value.value.date.toISOString();
+    session.scores = this.scoreList.value;
+
+    return session;
+  }
 
 
 

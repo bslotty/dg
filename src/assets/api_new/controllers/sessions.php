@@ -136,7 +136,7 @@ switch ($payload['action']) {
 						'status' 	=> 'success',
 						'msg'		=> 'Scores Created',
 						'scores'	=> $r_createScores,
-						'results'	=> $createdSession
+						'results'	=> array($createdSession)
 					);
 				} else {
 					$return[] = array(

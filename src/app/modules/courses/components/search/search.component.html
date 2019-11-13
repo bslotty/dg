@@ -10,16 +10,16 @@
     <mat-error *ngIf="form.get('search').invalid && form.get('search').touched">
       Invalid Search Criteria
     </mat-error>
+    <div matSuffix *ngIf='feed.loading'>
+        <loader small='true'></loader>
+    </div>
   </mat-form-field>
 </form>
 
-
-
-<div *ngIf="!feed.loading; else loader">
-  <div *ngIf="results != null && form.valid; else create" @flyInPanelRow>
-    <app-course-list mode="selector" [courseList]="results" (selected)="selectCourse($event)"></app-course-list>
-  </div>
+<div *ngIf="results != null && form.valid; else create" @flyInPanelRow>
+  <app-course-list mode="selector" [courseList]="results" (selected)="selectCourse($event)"></app-course-list>
 </div>
+
 
 
 

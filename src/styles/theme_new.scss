@@ -184,13 +184,13 @@ h5 {
   font-size: 1.5rem;
   font-weight: 600;
 
-  color: $primary-light;
+  color: lighten($primary-light, 20%);
 }
 
 h6 {
-  font-size: 2rem;
-  font-size: .9rem;
+  font-size: 1.2rem;
   font-weight: 600;
+  color: lighten($primary-light, 20%);
 }
 
 p,
@@ -379,6 +379,16 @@ p b {
   display: none;
 }
 
+.mat-tab-header {
+  background: $primary-light;
+}
+
+.mat-tab-label-active {
+  background: lighten($primary-light, 20%);
+}
+
+
+
 .mat-stepper-horizontal, .mat-stepper-vertical {
   background-color: $primary-dark;
 }
@@ -432,6 +442,8 @@ p b {
 .mat-flat-button[disabled][disabled] {
   background: none;
 }
+
+
 
 .mat-expansion-panel {
   margin-bottom: 5px  !important;
@@ -555,10 +567,6 @@ p b {
 .timepicker-period {
   flex-direction: row !important;
   margin-left: 1em !important;
-}
-
-.timepicker-dial__container {
-
 }
 
 

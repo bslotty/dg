@@ -1,7 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ServerPayload } from 'src/app/app.component';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -30,8 +30,19 @@ export class FeedbackService implements OnInit {
     this.router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         this.feedbackMessage = "";
+        this.loading = false;
       }
+
+      //  Test and possibly remove
+      //  Automatic Loading when route loads;
+      //  Might need for pre-fetching data;
+      if (e instanceof NavigationStart) {
+        this.loading = true;
+      }
+
     });
+
+    //  Load Upon Router Start? //  End?
   }
 
   ngOnInit() {
