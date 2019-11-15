@@ -26,7 +26,7 @@ $sessions = new Session($database);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/classes/players.php');
 $player = new Player($database);
 
-//  Permissions
+//  Scores
 require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/classes/scores.php');
 $scores = new Score($database);
 
@@ -49,7 +49,76 @@ switch ($payload['action']) {
 		*/
 
 	case "list":
-		$return[] = $sessions->getList($payload['start'], $payload['limit'], $payload["user"]);
+		//	Loop Each Session
+		$sessionList = $sessions->getList($payload['start'], $payload['limit'], $payload["user"]);
+		if ($sessionList['status'] == 'success') {
+
+			foreach ($sessionList['results'] as $sK => $s) {
+
+				//	Get Scores
+				if ($s['format'] != 'ffa') {
+					$scoreList = $scores->getScoresWithTeams($s);
+				} else {
+					$scoreList = $scores->getScores($s);
+				}
+
+
+
+				if ($scoreList['status'] == 'success') {
+
+					if ($scoreList['affectedRows'] > 0) {
+						//	Format Scores Data; Update
+						$formattedScores = array();
+						foreach ($scoreList['results'] as $pK => $p) {
+							$formattedScores[] = array(
+								'id' 			=> $p["id"],
+								'created_on' 	=> $p["created_on"],
+								'created_by' 	=> $p["created_by"],
+								'modified_on' 	=> $p["modified_on"],
+								'modified_by' 	=> $p["modified_by"],
+								'score_array' 	=> $p["score_array"],
+								'handicap'	 	=> $p["handicap"],
+								'team'			=> array(
+									"id"		=> $p['teamID'],
+									"name"		=> $p['teamName'],
+									"color"		=> $p['teamColor']
+								),
+								'player'		=> array(
+									"id"			=> $p['playerID'],
+									"first_name"	=> $p['playerFirst'],
+									"last_name"		=> $p['playerLast'],
+									"first_name"	=> $p['playerEmail'],
+								)
+							);
+						}
+					}
+
+
+					//	Format Session Data
+					$s['scores'] = $formattedScores;
+
+					$return[] = $scoreList;
+					$return[] = $formattedScores;
+				} else {
+					$return[] = array(
+						'status' 	=> 'error',
+						'msg'		=> 'Unable to get Score List',
+						'sessions'	=> $sessionList,
+						'scores'	=> $scoreList
+					);
+				}
+			}
+
+			$return[] = $sessionList;
+		} else {
+			$return[] = array(
+				'status' 	=> 'error',
+				'msg'		=> 'Unable to get Session List',
+				'sessions'	=> $sessionList
+			);
+		}
+
+
 
 		break;
 

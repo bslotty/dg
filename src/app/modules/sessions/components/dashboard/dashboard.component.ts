@@ -13,6 +13,7 @@ export class DashboardComponent implements OnInit {
 
   upcoming: Session[];
   recient: Session[];
+  list: Session[];
 
 
   //  favorites: Session[]; 
@@ -30,6 +31,9 @@ export class DashboardComponent implements OnInit {
     this.sessionBackend.listRecient();
     this.sessionBackend.list$.subscribe((s)=>{
       var d = new Date().getTime();
+
+      //  Total amount for HTML;
+      this.list = s;
 
       //  Get Upcoming; Sort by soonest; Limit 5
       this.upcoming = s.filter((s: Session, i)=>{

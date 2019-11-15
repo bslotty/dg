@@ -29,21 +29,23 @@ class Session
 	public function getList($start = 0, $limit = 100, $user)
 	{
 		$query = "SELECT 
-			`id`, 
-			`created_by`,
-			`created_on`,
-			`modified_by`,
-			`modified_on`,
-			`starts_on`,
-			`title`,
-			`format`,
-			`par_array`
-		FROM `Sessions` AS 'sn'
-		JOIN `Scores` AS `sc`
-		WHERE `created_by` = :userID OR 
-			(`sc`.`player_id`=:userID AND `sn`.`id` = `sc`.`session_id`);
-		ORDER BY `starts_on` DESC
-		LIMIT " . (int) $start . ", " . (int) $limit . ";";
+			`sn`.`id`, 
+			`sn`.`created_by`,
+			`sn`.`created_on`,
+			`sn`.`modified_by`,
+			`sn`.`modified_on`,
+			`sn`.`starts_on`,
+			`sn`.`title`,
+			`sn`.`format`,
+			`sn`.`par_array`,
+			`sc`.`session_id`
+		FROM `Sessions` AS `sn`
+		INNER JOIN `Scores` AS `sc`
+		WHERE `sc`.`session_id` = `sn`.`id` AND 
+			(`sn`.`created_by` = :userID OR 
+			(`sc`.`player_id`=:userID AND `sn`.`id` = `sc`.`session_id`))
+		ORDER BY `sn`.`starts_on` DESC
+		LIMIT " . (int)$start . ", " . (int)$limit . ";";
 
 		$values = array(
 			":userID" => $user["id"]

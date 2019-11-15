@@ -1,35 +1,41 @@
 <app-section-header title="Sessions" [buttons]="headerButtons" (actionClick)="actionClick($event)">
 </app-section-header>
 
-<h5 class="sub-header">Upcoming</h5>
-<mat-accordion>
-    <session-list disabled="true" [list]="upcoming"></session-list>
-</mat-accordion>
+<div *ngIf='list.length > 0; else create'>
+    <h5 class="sub-header">Upcoming</h5>
+    <mat-accordion>
+        <session-list disabled="true" [list]="upcoming"></session-list>
+    </mat-accordion>
 
-<div *ngFor="let session of favorites; trackBy: trackSession"></div>
+    <div *ngFor="let session of favorites; trackBy: trackSession"></div>
 
-<h5 class="sub-header">Recient</h5>
-<mat-accordion>
-    <session-list [list]="recient"></session-list>
-</mat-accordion>
-
-
-
-
-<div class="row ">
-    <div class="message">
-        <p>
-            <a mat-flat-button color="transparent-accent" routerLink="/sessions/create">
-                Create
-            </a>
-        </p>
+    <h5 class="sub-header">Recient</h5>
+    <mat-accordion>
+        <session-list [list]="recient"></session-list>
+    </mat-accordion>
+    <div class="row ">
+        <div class="message">
+            <p>
+                <a mat-flat-button color="transparent-accent" routerLink="/sessions/create">
+                    Create
+                </a>
+            </p>
+        </div>
     </div>
 </div>
 
 
-<ng-template #noSessions>
+
+
+
+
+
+
+<ng-template #create>
     <div class="panel row">
-        <p class="message">No sessions created yet. Create one now!</p>
+        <p class="message">No sessions created yet.
+            <a mat-flat-button color="transparent-accent" routerLink="/sessions/create">Create</a> one now!
+        </p>
     </div>
 </ng-template>
 

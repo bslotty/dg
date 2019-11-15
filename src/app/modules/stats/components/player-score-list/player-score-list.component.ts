@@ -65,7 +65,7 @@ export class PlayerScoreListComponent implements OnInit,OnDestroy {
     combineLatest(
       this.stats.getList(this.session),
       this.permissions.memberList(this.league),
-      this.sessions.getDetail(this.session),
+      this.sessions.detail$,
     ).subscribe(([players, members, session]) => {
       /*
       console.log("\nPlayerScoreList");

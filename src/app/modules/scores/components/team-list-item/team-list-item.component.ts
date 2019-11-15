@@ -1,12 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Team } from 'src/app/modules/stats/services/backend.service';
 import { MatDialog } from '@angular/material';
-import { TeamSettingsComponent } from '../../team-settings/team-settings.component';
+import { TeamSettingsComponent } from '../team-settings/team-settings.component';
+import { Team } from 'src/app/modules/stats/services/backend.service';
+import { flyInPanelRow } from 'src/app/animations';
 
 @Component({
   selector: 'team-list-item',
   templateUrl: './team-list-item.component.html',
-  styleUrls: ['./team-list-item.component.scss']
+  styleUrls: ['./team-list-item.component.scss'],
+  animations: [flyInPanelRow]
 })
 export class TeamListItemComponent implements OnInit {
 

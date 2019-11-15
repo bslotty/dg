@@ -6,7 +6,6 @@ import { Course } from '../../../services/backend.service';
   selector: 'app-course-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css'],
-  animations: [],
 })
 export class ListComponent implements OnInit {
 

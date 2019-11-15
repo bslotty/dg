@@ -5,7 +5,7 @@ import { SessionFormService } from '../../services/form.service';
 import { AccountFormService } from 'src/app/modules/account/services/account-form.service';
 import { AccountBackend } from 'src/app/modules/account/services/backend.service';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { flyInPanelRow } from 'src/app/animations';
+import { flyInPanelRow, flyIn, fall } from 'src/app/animations';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
 import { ActivatedRoute } from '@angular/router';
 import { SessionBackend, Session } from '../../services/backend.service';
@@ -14,7 +14,7 @@ import { SessionBackend, Session } from '../../services/backend.service';
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
-  animations: [flyInPanelRow]
+  animations: [flyInPanelRow, flyIn, fall]
 })
 export class CreateComponent implements OnInit {
 
@@ -34,11 +34,10 @@ export class CreateComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.session.id = this.route.snapshot.paramMap.get('session');
 
-
-    //  Consolidate Create/Edit/Detail pages into one. Similar page layout for each
     // Get Page Type: Edit/View/Create
-    if (this.route.snapshot.paramMap.get('session') == "create") {
+    if (this.session.id == null) {
       this.mode = "create";
       //  Setup Form
       this.sessionForm.Setup("create");
@@ -52,9 +51,7 @@ export class CreateComponent implements OnInit {
       });
 
 
-      //  this.session.id = this.route.snapshot.paramMap.get('session');
-      //  this.sessionBackend.setSessionFromID(this.session.id);
-      /*
+      this.sessionBackend.getDetail((this.session));
       this.sessionBackend.detail$.subscribe((s) => {
         console.log("foundSession: ", s);
         this.session = s;
@@ -67,17 +64,9 @@ export class CreateComponent implements OnInit {
           this.mode = "view";
         }
       });
-      */
-
-      console.log (this.route.data);
-      this.route.data.subscribe((d)=>{
-        console.log ("resolver.route.data: ", d);
-      });
-
-     
       
     }
-    console.log("session.mode: ", this.mode);
+    console.log("session.mode: ", this.mode, this.session.id);
 
 
 

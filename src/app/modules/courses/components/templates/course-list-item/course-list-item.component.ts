@@ -1,10 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Course } from '../../../services/backend.service';
+import { flyInPanelRow } from 'src/app/animations';
 
 @Component({
   selector: 'course-list-item',
   templateUrl: './course-list-item.component.html',
-  styleUrls: ['./course-list-item.component.scss']
+  styleUrls: ['./course-list-item.component.scss'],
+  animations: [flyInPanelRow]
 })
 export class CourseListItemComponent implements OnInit {
   @Input() course: Course;

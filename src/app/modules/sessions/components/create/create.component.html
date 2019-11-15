@@ -19,7 +19,7 @@
     </app-select-format>
 
     <div @flyInPanelRow *ngIf="mode == 'view'">
-      <div class="row justify-content-between align-items-center panel">
+      <div class="row justify-content-between align-items-center no-gutters panel">
         <div class="col ml-2">
           <p>{{ form.get('format').value.name }}</p>
         </div>
@@ -79,10 +79,13 @@
     <!--  Time  -->
     <div class="row justify-content-between align-items-end no-gutters">
       <h6 class="col sub-header">Time</h6>
+      <div *ngIf="(form.get('date').touched && form.get('date').invalid) || (form.get('time').touched && form.get('time').invalid)" class="warn text-right">
+        <span class="icon-triangle"></span>
+      </div>
     </div>
 
     <div *ngIf="mode == 'view'">
-      <div class="row justify-content-between align-items-center panel">
+      <div class="row justify-content-between align-items-center no-gutters panel">
         <div class="col ml-2">
           <p>{{ form.get('date').value.toString() }} {{ form.get('time').value }}</p>
         </div>
@@ -97,6 +100,9 @@
             (focus)="picker.open()" type="text">
           <mat-datepicker-toggle matSuffix [for]="picker"><span class='icon-calendar'></span></mat-datepicker-toggle>
           <mat-datepicker #picker startView="year" [startAt]="form.get('date').value" touchUi="true"></mat-datepicker>
+          <mat-error *ngIf="form.get('date').touched && form.get('date').invalid">
+            Invalid Date 
+          </mat-error>
         </mat-form-field>
       </div>
 
@@ -110,6 +116,9 @@
                 class="icon-clock"></span></a></div>
           <ngx-material-timepicker #timePicker minutesGap=5 disableAnimation="true">
           </ngx-material-timepicker>
+          <mat-error *ngIf="form.get('time').touched && form.get('time').invalid">
+              Invalid Time 
+            </mat-error>
         </mat-form-field>
       </div>
 
@@ -128,9 +137,9 @@
 
       </div>
 
-      <div @flyInPanelRow>
+      <div>
         <team-list-item *ngFor="let team of form.get('teams')?.controls; trackBy: trackTeamBy" [team]="team.value"
-          mode='remove' (action)='removeTeam(team.value)'></team-list-item>
+          mode='remove' (action)='removeTeam(team.value)' @flyInPanelRow></team-list-item>
       </div>
     </div>
 
@@ -141,9 +150,9 @@
       <h6 class="col sub-header">Players</h6>
     </div>
 
-    <div @flyInPanelRow>
+    <div>
       <score-list-item [score]='score.value' mode='remove' (action)="removeScore(score.value)"
-        *ngFor="let score of form.get('scores')?.controls; trackBy: trackScores"></score-list-item>
+        *ngFor="let score of form.get('scores')?.controls; trackBy: trackScores" @flyInPanelRow></score-list-item>
     </div>
 
     <div *ngIf="mode != 'view'">
@@ -183,26 +192,25 @@
         <h6 class="col sub-header">Roster</h6>
       </div>
 
-      <div *ngIf="mode != 'view'" cdkDropListGroup class="row justify-content-center align-items-start no-gutters"
-        @flyInPanelRow>
-        <div class="col-7 teamDropPad unassigned" (cdkDropListDropped)="rosterDrop($event)" cdkDropList
+      <div *ngIf="mode != 'view'" cdkDropListGroup class="row justify-content-center align-items-start no-gutters"l>
+        <div class="col-12 teamDropPad unassigned mb-3" (cdkDropListDropped)="rosterDrop($event)" cdkDropList
           [cdkDropListData]="getRoster(null)" id="team-unassigned">
 
           <label>Unassigned</label>
           <score-list-item cdkDrag [cdkDragData]="player" [score]="player" mode="puck"
-            *ngFor="let player of getRoster(null)">
+            *ngFor="let player of getRoster(null)" @fall>
           </score-list-item>
         </div>
 
 
-        <div class="col teamDropPad {{ team.value.color.name }}"
+        <div class="col-5 teamDropPad {{ team.value.color.name }}"
           *ngFor="let team of form.get('teams').controls; let i = index" (cdkDropListDropped)="rosterDrop($event)"
           cdkDropList [cdkDropListData]="getRoster(team)" id="{{ 'team-' + team.value.color.name }}">
 
 
           <label>{{ team.value.name | titlecase }}</label>
           <score-list-item cdkDrag [cdkDragData]="player" [score]="player" mode="puck"
-            *ngFor="let player of getRoster(team)">
+            *ngFor="let player of getRoster(team)" @fall>
           </score-list-item>
         </div>
       </div>

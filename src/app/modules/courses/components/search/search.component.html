@@ -16,7 +16,7 @@
   </mat-form-field>
 </form>
 
-<div *ngIf="results != null && form.valid; else create" @flyInPanelRow>
+<div *ngIf="results != null && form.valid; else create">
   <app-course-list mode="selector" [courseList]="results" (selected)="selectCourse($event)"></app-course-list>
 </div>
 

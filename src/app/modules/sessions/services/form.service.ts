@@ -5,6 +5,7 @@ import { CourseBackend } from '../../courses/services/backend.service';
 import { Router } from '@angular/router';
 import { Session, SessionBackend } from './backend.service';
 import { HelperService } from 'src/app/shared/services/helper.service';
+import { AccountBackend } from '../../account/services/backend.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,16 +35,16 @@ export class SessionFormService {
     Validators.required,
   ]);
 
-  private cDate = new FormControl("", [
+  private cDate = new FormControl("", {updateOn: "blur", validators: [
     Validators.required,
-  ]);
+  ]});
 
-  private cTime = new FormControl("", [
+  private cTime = new FormControl("", {updateOn: "submit", validators: [
     Validators.required,
-  ]);
+  ]});
 
   private cPlayers = new FormArray([], [
-    Validators.required,
+    Validators.required
   ]);
 
   private cTeams = new FormArray([], [
@@ -103,6 +104,7 @@ export class SessionFormService {
     private helper: HelperService,
     private courseService: CourseBackend,
     private sessionService: SessionBackend,
+    private accountService: AccountBackend,
     private router: Router) { }
 
   Setup(type) {
@@ -318,6 +320,8 @@ export class SessionFormService {
 
   getSessionFromForm(): Session {
     var session = new Session();
+    session.created_by = this.accountService.user.id
+    session.created_on = new Date();
     session.format = this.form.value.value.format;
     session.course = this.form.value.value.course;
     session.starts_on = this.form.value.value.date.toISOString();

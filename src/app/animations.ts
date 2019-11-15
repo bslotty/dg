@@ -148,17 +148,17 @@ export const flyInPanelRow = trigger('flyInPanelRow', [
 
 export const flyInPanelRow = trigger('flyInPanelRow', [
   transition(':enter', [
-    style({ opacity: 0, overflow: "hidden",   height: 0 , position: "relative", transform: "translateY(-2%)" /* border: "1px solid #FF00FF" */}),
-    animate('.3s ease',
+    style({ opacity: 0, overflow: "hidden", height: 0 , display: "block", position: "relative", transform: "translateY(-100%)" /* border: "1px solid #FF00FF" */}),
+    animate('.3s ease-out',
       style({ offset: 1, opacity: 1,  height: "*", transform: "translateY(0)"  })
     ),
   ]),
   transition(':leave', [
+    style({ display: "block", position: "relative"}),
     animate('.1s ease',
       style({
         opacity: 0,
-        /* height: 0 */
-        transform: "translateY(-2%)"
+        transform: "translateY(-100%)"
       })
     )
   ]),
@@ -201,14 +201,18 @@ export const growHeight = trigger('fallOut', [
 
 export const fall = trigger('fall', [
   transition(':enter', [
-    style({ opacity: 0, transform: "scale(1.5)", position: 'relative'}),
-    animate('1s ease',
-      style({ offset: 1, transform: "scale(1)"  })
+    style({ opacity: 0, overflow: "hidden", display: "block", position: "relative", transform: "scale(1.3)" /* border: "1px solid #FF00FF" */}),
+    animate('.3s ease-out',
+      style({ offset: 1, opacity: 1, transform: "scale(1)"  })
     ),
   ]),
   transition(':leave', [
-    animate('1s ease',
-      style({ opacity: 0, transform: "scale(.5)" })
+    style({ display: "block", position: "relative"}),
+    animate('.1s ease',
+      style({
+        opacity: 0,
+        transform: "scale(.5)"
+      })
     )
   ]),
 

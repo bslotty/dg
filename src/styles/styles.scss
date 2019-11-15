@@ -12,6 +12,10 @@ agm-map {
   box-sizing: border-box;
 }
 
+:host {
+  display: block;
+}
+
 html {
   font-family: $font-header;
   font-size: 28px;
@@ -126,13 +130,6 @@ a:hover {
 
 
 
-:host {
-  display: flex;
-  overflow: hidden;
-  height: 100vh;
-  width: 100%;
-  margin-top: 3em;
-}
 
 router-outlet ~ * {
   width: 1050px;
@@ -244,57 +241,91 @@ table {
 }
 
 .teamDropPad.red {
-  color: #e66969;
+  color: $c-red;
   border-color: #e6696977;
   background: #e6696910 !important;
+
+  .cdk-drag-placeholder > * {
+    border-color: #e6696977;
+  }
 }
 
 .teamDropPad.blue {
   color: #6ab9e8;
   border-color: #6ab9e877;
   background: #6ab9e810 !important;
+
+  .cdk-drag-placeholder > * {
+    border-color: #6ab9e877;
+  }
 }
 
 .teamDropPad.green {
   color: #60df60;
   border-color: #60df6077;
   background: #60df6010 !important;
+
+  .cdk-drag-placeholder > * {
+    border-color: #60df6077;
+  }
 }
 
 .teamDropPad.yellow {
   color: #d6d05d;
   border-color: #d6d05d77;
   background: #d6d05d10 !important;
+
+  .cdk-drag-placeholder > * {
+    border-color: #d6d05d77;
+  }
 }
 
 .teamDropPad.orange {
   color: #d8a95d;
   border-color: #d8a95d77;
   background: #d8a95d10 !important;
+
+  .cdk-drag-placeholder > * {
+    border-color: #d8a95d77;
+  }
 }
 
 .teamDropPad.purple {
   color: #9461e0;
   border-color: #9461e077;
   background: #9461e010 !important;
+
+  .cdk-drag-placeholder > * {
+    border-color: #9461e077;
+  }
 }
 
 .teamDropPad.pink {
   color: #cf58c5;
   border-color: #cf58c577;
   background: #cf58c510 !important;
+
+  .cdk-drag-placeholder > * {
+    border-color: #cf58c577;
+  }
 }
 
 .teamDropPad.white {
   color: #fff;
   border-color: #FFFFFF77;
   background: #FFFFFF10 !important;
+
+  .cdk-drag-placeholder > * {
+    border-color: #FFFFFF77;
+  }
 }
 
 .teamDropPad.unassigned {
   background: transparent !important;
   color: $primary-light;
 }
+
+
 
 
 

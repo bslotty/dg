@@ -52,7 +52,8 @@ export class DetailComponent implements OnInit {
 
   populateData() {
     //  Subscribe to Required Observables
-    this.sessions.getDetail(this.session).subscribe((session) => {
+    this.sessions.getDetail(this.session);
+    this.sessions.detail$.subscribe((session) => {
 
       //  Store Data For Children
       //  this.session = session as Session;

@@ -2,14 +2,13 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CourseBackend, Course } from '../../services/backend.service';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
-import { flyInPanelRow } from 'src/app/animations';
 import { CourseFormService } from '../../services/course-form.service';
 
 @Component({
   selector: 'app-course-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css'],
-  animations: [flyInPanelRow]
+  animations: []
 })
 export class SearchComponent implements OnInit {
 

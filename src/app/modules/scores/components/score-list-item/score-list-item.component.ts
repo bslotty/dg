@@ -2,12 +2,14 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Team } from 'src/app/modules/stats/services/backend.service';
 import { MatDialog } from '@angular/material';
 import { Score } from 'src/app/modules/sessions/services/backend.service';
-import { ScoreSettingsComponent } from '../../score-settings/score-settings.component';
+import { ScoreSettingsComponent } from '../score-settings/score-settings.component';
+import { flyInPanelRow } from 'src/app/animations';
 
 @Component({
   selector: 'score-list-item',
   templateUrl: './score-list-item.component.html',
-  styleUrls: ['./score-list-item.component.scss']
+  styleUrls: ['./score-list-item.component.scss'],
+  animations: [flyInPanelRow]
 })
 export class ScoreListItemComponent implements OnInit {
 

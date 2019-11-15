@@ -10,9 +10,7 @@ import { PlayerScoreListComponent } from '../stats/components/player-score-list/
 
 import { AuthGuard } from 'src/app/guards/auth.service';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { SessionAdminGuard } from 'src/app/guards/session-admin.guard';
 
-import { SessionResolverService } from './services/resolver.service';
 
 const sessionRoutes: Routes = [
   {
@@ -28,15 +26,13 @@ const sessionRoutes: Routes = [
         path: ":session",
         component: CreateComponent,
         //component: EditComponent,
-        canActivate: [SessionAdminGuard],
-        resolve: {
-          session: SessionResolverService
-        }
+        canActivate: [],
+
       },  {
         path: ":session",
         component: CreateComponent,
         //  component: DetailComponent,
-        canActivate: [!SessionAdminGuard],
+        canActivate: [],
       },{
         path: ":session/play",
         component: PlayerScoreListComponent,

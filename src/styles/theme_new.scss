@@ -478,9 +478,12 @@ p b {
   border-radius: 4px;
 }
 
-.cdk-drag-placeholder {
-  opacity: 0;
-  background: #F00;
+
+
+.cdk-drag-placeholder > * {
+  border: 0.3rem dotted;
+  background: transparent !important;
+  color: transparent !important;
 }
 
 .cdk-drag-animating {
