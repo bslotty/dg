@@ -20,7 +20,6 @@ import { ShellComponent } from './components/shell/shell.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 import { SelectFormatComponent } from './components/select-format/select-format.component';
-import { SelectCourseComponent } from './components/select-course/select-course.component';
 import { SelectPlayersComponent } from './components/select-players/select-players.component';
 
 
@@ -44,7 +43,6 @@ import { SelectPlayersComponent } from './components/select-players/select-playe
     EditComponent, 
     ShellComponent, 
     DashboardComponent, 
-    SelectCourseComponent, 
     SelectPlayersComponent,
     SelectFormatComponent, 
   ],
@@ -52,7 +50,6 @@ import { SelectPlayersComponent } from './components/select-players/select-playe
     SessionList
   ],
   entryComponents: [
-    SelectCourseComponent, 
     SelectPlayersComponent,
     SelectFormatComponent, 
   ]

@@ -37,18 +37,41 @@ class Session
 			`sn`.`starts_on`,
 			`sn`.`title`,
 			`sn`.`format`,
-			`sn`.`par_array`,
-			`sc`.`session_id`
+			`sn`.`par_array`
 		FROM `Sessions` AS `sn`
-		INNER JOIN `Scores` AS `sc`
-		WHERE `sc`.`session_id` = `sn`.`id` AND 
-			(`sn`.`created_by` = :userID OR 
-			(`sc`.`player_id`=:userID AND `sn`.`id` = `sc`.`session_id`))
+		LEFT JOIN `Scores` AS `sc` ON `sn`.`id`=`sc`.`session_id`
+		WHERE `sn`.`created_by` = :userID OR 
+			`sc`.`player_id` = :userID
 		ORDER BY `sn`.`starts_on` DESC
-		LIMIT " . (int)$start . ", " . (int)$limit . ";";
+		LIMIT " . (int) $start . ", " . (int) $limit . ";";
 
 		$values = array(
 			":userID" => $user["id"]
+		);
+
+		return $this->db->Query($query, $values);
+	}
+
+	public function getDetails($session, $user)
+	{
+		$query = "SELECT
+			`sn`.`id`, 
+			`sn`.`created_by`,
+			`sn`.`created_on`,
+			`sn`.`modified_by`,
+			`sn`.`modified_on`,
+			`sn`.`starts_on`,
+			`sn`.`title`,
+			`sn`.`format`,
+			`sn`.`par_array`
+			FROM `Sessions` AS `sn`
+			LEFT JOIN `Scores` AS `sc` ON `sn`.`id`=`sc`.`session_id`
+			WHERE `sn`.`id` = :sessionID AND `sc`.`player_id` = :userID
+			LIMIT 1;";
+
+		$values = array(
+			"userID" 		=> $user['id'],
+			"sessionID"		=> $session['id']
 		);
 
 		return $this->db->Query($query, $values);
@@ -63,7 +86,7 @@ class Session
 		(:id, :created_by, :created_on, :modified_by, :modified_on, :course_id, :starts_on, :title, :format, :par_array);";
 
 		$values = array(
-			':id' 			=> $this->db->generateGUID(),
+			':id' 			=> $session["id"],
 			':created_by' 	=> $user['id'],
 			':created_on' 	=> date('c'),
 			':modified_by' 	=> null,
@@ -89,7 +112,7 @@ class Session
 		(:id, :created_by, :created_on, :modified_by, :modified_on, :session_id, :name, :color);";
 
 		$values = array(
-			':id' 			=> $this->db->generateGUID(),
+			':id' 			=> $team['id'],
 			':created_by' 	=> $user['id'],
 			':created_on' 	=> date('c'),
 			':modified_by' 	=> null,

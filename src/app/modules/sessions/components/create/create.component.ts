@@ -51,18 +51,18 @@ export class CreateComponent implements OnInit {
       });
 
 
-      this.sessionBackend.getDetail((this.session));
+      this.sessionBackend.getDetail(this.session);
       this.sessionBackend.detail$.subscribe((s) => {
         console.log("foundSession: ", s);
         this.session = s;
+        this.sessionForm.setForm(s);
+
         if (this.session.created_by == this.accountBackend.user.id) {
           this.mode = "edit";
-
-          this.sessionForm.setForm(s);
-
         } else {
           this.mode = "view";
         }
+        
       });
       
     }

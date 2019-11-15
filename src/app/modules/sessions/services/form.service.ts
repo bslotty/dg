@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 import { CourseBackend } from '../../courses/services/backend.service';
 import { Router } from '@angular/router';
-import { Session, SessionBackend } from './backend.service';
+import { Session, SessionBackend, SessionFormat } from './backend.service';
 import { HelperService } from 'src/app/shared/services/helper.service';
 import { AccountBackend } from '../../account/services/backend.service';
 
@@ -35,11 +35,11 @@ export class SessionFormService {
     Validators.required,
   ]);
 
-  private cDate = new FormControl("", {updateOn: "blur", validators: [
+  private cDate = new FormControl("", {updateOn: "change", validators: [
     Validators.required,
   ]});
 
-  private cTime = new FormControl("", {updateOn: "submit", validators: [
+  private cTime = new FormControl("", {updateOn: "change", validators: [
     Validators.required,
   ]});
 
@@ -138,7 +138,7 @@ export class SessionFormService {
       form.valueChanges.pipe(this.sessionService.serverPipe).subscribe((v) => {
         if (v['time'] != "" && v['date'] instanceof Date && v['date'].getHours() == 0) {
           var d = new Date(v['date'].toDateString() + " " + v['time']);
-          console.log("date set: ", d);
+          console.log("date set: ", d, v);
           this.setDate(d);
         }
       });
@@ -181,19 +181,53 @@ export class SessionFormService {
   }
 
   setForm(values): void {
-    this.form.value.get("format").setValue(values.format);
+    console.log ("new values for form: ", values);
+
+
+    //  If these are not proper formats -> get
+
+    if (values.format instanceof SessionFormat) {
+      this.form.value.get("format").setValue(values.format);
+    } else {
+      var type = this.getFormatFromName(values.format);
+      this.form.value.get("format").setValue(type);
+    }
+    
     this.form.value.get("course").setValue(values.course);
 
     //  Date/Time
-    var date = new Date(values.date).toLocaleDateString();
-    var time = new Date(values.date).toLocaleTimeString();
+    var time = new Date(values.starts_on).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true });
+    var date = new Date(values.starts_on);
     this.form.value.get("date").setValue(date);
     this.form.value.get("time").setValue(time);
 
     //  Players
-    this.form.value.get("scores").setValue(values.scores);
+    if (values.scores == undefined) {
+      this.getScores();
+    } else {
+      console.log ("WHY IS SCORES UNAVAILABLE: ", values.scores, this.form.value);
+      /*
+      var arrayHelper = this.form.value.get('scores') as FormArray;
+      arrayHelper.push(values.scores);
+      */
+      this.form.value.get('scores').setValue(values.scores);
+    }
+    
     this.form.value.markAsDirty();
 
+  }
+
+
+
+  getFormatFromName(str) {
+    var format = this.sessionService.types.find((t)=>{
+      if (t.enum == str) {
+        return true;
+      }
+    });
+
+    console.log ("found Format: ", format);
+    return format;
   }
 
   setFormat(format) {
@@ -213,10 +247,19 @@ export class SessionFormService {
     this.form.value.get("course").setValue(course);
   }
 
-  setDate(date) {
+  setDate(date: Date): void {
+    console.log ("date?");
+
     this.form.value.get("date").setValue(date);
+    this.form.value.get("time").setValue(date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true }));
   }
 
+  getScores() {
+    //  To be called if scores == undefined;
+    console.warn("GET THOSE SCORES");
+    this.sessionService.getScores();
+    
+  }
 
   //  Score Functions
   get scoreList() {
@@ -269,7 +312,6 @@ export class SessionFormService {
     } else {
       // Too Many
     }
-
   }
 
   removeTeam(team) {
@@ -297,6 +339,10 @@ export class SessionFormService {
     });
   }
 
+
+  getTeamsFromScores() {
+
+  }
 
 
   submitCreation() {

@@ -52,17 +52,15 @@ switch ($payload['action']) {
 		//	Loop Each Session
 		$sessionList = $sessions->getList($payload['start'], $payload['limit'], $payload["user"]);
 		if ($sessionList['status'] == 'success') {
-
+			/*
 			foreach ($sessionList['results'] as $sK => $s) {
-
+				
 				//	Get Scores
-				if ($s['format'] != 'ffa') {
+				if (strpos($s['format'], "team") != false) {
 					$scoreList = $scores->getScoresWithTeams($s);
 				} else {
 					$scoreList = $scores->getScores($s);
 				}
-
-
 
 				if ($scoreList['status'] == 'success') {
 
@@ -91,6 +89,13 @@ switch ($payload['action']) {
 								)
 							);
 						}
+					} else {
+						$return[] = array(
+							'status' 	=> 'error',
+							'msg'		=> 'Score List was Empty',
+							'sessions'	=> $sessionList,
+							'scores'	=> $scoreList
+						);
 					}
 
 
@@ -102,12 +107,13 @@ switch ($payload['action']) {
 				} else {
 					$return[] = array(
 						'status' 	=> 'error',
-						'msg'		=> 'Unable to get Score List',
+						'msg'		=> 'Failed to retrieve Score List',
 						'sessions'	=> $sessionList,
 						'scores'	=> $scoreList
 					);
 				}
 			}
+			*/
 
 			$return[] = $sessionList;
 		} else {
@@ -143,10 +149,13 @@ switch ($payload['action']) {
 				$r_createScores = array();
 				$teamList = array();
 				foreach ($payload["session"]["scores"] as $key => $array) {
-					$r_createScores[] = $scores->create($createdSession, $array, $payload["user"]);
 
 					//	Get Unique TeamList if Teams
 					if (!empty($array['team'])) {
+
+						//	Create GUID For Team
+						$teamID = $database->generateGUID();
+						$array['team']['id'] = $teamID;
 
 						$dupe = false;
 						foreach ($teamList as $key => $team) {
@@ -159,6 +168,9 @@ switch ($payload['action']) {
 							$teamList[] = $array['team'];
 						}
 					}
+
+
+					$r_createScores[] = $scores->create($createdSession, $array, $payload["user"]);
 				}
 
 				//	Create Teams if Exist
@@ -225,6 +237,75 @@ switch ($payload['action']) {
 			$return[] = array(
 				'status' 	=> 'error',
 				'msg'		=> 'Unable to Verify Account'
+			);
+		}
+
+		break;
+
+	case "detail":
+		$sessionDetails = $sessions->getDetails($payload["session"], $payload["user"]);
+		if ($sessionDetails['status'] == 'success' && $sessionDetails['affectedRows'] == 1) {
+			$session = $sessionDetails["results"][0];
+
+			//	Get Scores
+			if (strpos($session['format'], "team") >= 0) {
+				$r_scoreList = $scores->getScoresWithTeams($session);
+			} else {
+				$r_scoreList = $scores->getScores($session);
+			}
+
+			if ($r_scoreList['status'] == 'success') {
+				if ($r_scoreList['affectedRows'] > 0) {
+					//	Format Scores Data; Update
+					$formattedScores = array();
+					foreach ($r_scoreList['results'] as $pK => $p) {
+						$formattedScores[] = array(
+							'id' 			=> $p["id"],
+							'created_on' 	=> $p["created_on"],
+							'created_by' 	=> $p["created_by"],
+							'modified_on' 	=> $p["modified_on"],
+							'modified_by' 	=> $p["modified_by"],
+							'score_array' 	=> $p["score_array"],
+							'handicap'	 	=> $p["handicap"],
+							'team'			=> array(
+								"id"		=> $p['teamID'],
+								"name"		=> $p['teamName'],
+								"color"		=> json_decode($p['teamColor'])
+							),
+							'player'		=> array(
+								"id"			=> $p['playerID'],
+								"first_name"	=> $p['playerFirst'],
+								"last_name"		=> $p['playerLast'],
+								"first_name"	=> $p['playerEmail'],
+							)
+						);
+					}
+
+					$sessionDetails["results"][0]['scores'] = $formattedScores;
+					$return[] = $r_scoreList;
+					$return[] = $sessionDetails;
+
+				} else {
+					$return[] = array(
+						'status' 	=> 'error',
+						'msg'		=> 'Score List was Empty',
+						'sessions'	=> $sessionDetails,
+						'scores'	=> $r_scoreList
+					);
+				}
+			} else {
+				$return[] = array(
+					'status' 	=> 'error',
+					'msg'		=> 'Failed to retrieve Score List',
+					'sessions'	=> $sessionList,
+					'scores'	=> $scoreList
+				);
+			}
+		} else {
+			$return[] = array(
+				"status" 	=> "error",
+				"msg"		=> "Error getting session be detail",
+				"debug"		=> $sessionDetails
 			);
 		}
 

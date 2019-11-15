@@ -21,9 +21,7 @@ export class TeamListItemComponent implements OnInit {
     private dialog: MatDialog,
   ) { }
 
-  ngOnInit() {
-    console.log ("teamListItem.team: ", this.team);
-  }
+  ngOnInit() { }
 
   remove() {
     this.action.emit({

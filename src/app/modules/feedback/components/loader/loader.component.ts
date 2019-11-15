@@ -13,7 +13,7 @@ export class LoaderComponent implements OnInit {
   @Input() small:boolean = false;
 
   diameter: number = 100;
-  strokeWidth: number = 1;
+  strokeWidth: number = 2;
 
   constructor(
     public feed: FeedbackService,

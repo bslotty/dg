@@ -31,13 +31,13 @@ export class SessionBackend {
 
   //  Single View
   private detail: Subject<Session> = new Subject();
-  detail$: Observable<Session> = this.detail.asObservable().pipe(map((d)=>{
-    console.log ("detailSet: ", d);
+  detail$: Observable<Session> = this.detail.asObservable().pipe(map((d) => {
+    console.log("detailSet: ", d);
     return d;
   }));
 
   //  Session Modes
-  public types = [
+  public types:SessionFormat[] = [
     {
       name: 'Free For All',
       enum: 'ffa',
@@ -131,8 +131,27 @@ export class SessionBackend {
 
   getDetail(session: Session): void {
 
+    //  Just Grab All info from the server for the specific details; Other information may not be available; fix;
+    this.http.post(this.url, {
+      "action": "detail",
+      "session": session,
+      "user": this.account.user
+    }).pipe().subscribe((res) => {
+      if (this.helper.rCheck(res)) {
+
+        var session = this.convertProperties(res)[0];
+        console.log("session.getDetail: ", session);
+        
+        this.detail.next(session);
+      } else {
+        console.log ("Error with server Response: ", res);
+      }
+    });
+
+
     //  Check if Session is already grabbed from List; Otherwise Poll Server
 
+    /*
     var found = this.list.value.filter((s) => {
       return s.id == session.id;
     });
@@ -140,21 +159,26 @@ export class SessionBackend {
     console.log("session already loaded?: ", found[0]);
 
     if (found.length > 0) {
+      this.convertSession(found[0]);
+
       this.detail.next(found[0]);
     } else {
       this.http.post(this.url, {
         "action": "detail",
-        "session": session
+        "session": session,
+        "user": this.account.user
       }).pipe().subscribe((res) => {
         if (this.helper.rCheck(res)) {
 
           var session = this.convertProperties(res)[0];
           console.log("session.getDetail: ", session);
           this.detail.next(session);
-        } 
+        } else {
+          console.log ("Error with server Response: ", res);
+        }
       });
     }
-
+    */
 
   }
 
@@ -206,7 +230,10 @@ export class SessionBackend {
       })
     );
   }
+  
+  convertSession(session) {
 
+  }
 
   /*  MFD
   setSessionFormat(league: League, session: Session) {
@@ -259,6 +286,12 @@ export class SessionBackend {
   }
 
 
+  //  Gonna have to move this to a new service; URL conflicts;
+  getScores() {
+    
+  }
+
+
   /*  MFD
   convertSession(res) {
     var result = [];
@@ -270,6 +303,12 @@ export class SessionBackend {
     console.log ("session.updateFormat: ", type);
   }
   */
+}
+
+export class SessionFormat {
+  name: string;
+  enum: string;
+  desc: string;
 }
 
 
@@ -289,16 +328,8 @@ export class Session {
   ) { }
 }
 
-/*
-export class SessionFormat {
-  constructor(
-    public name?: string,
-    public enum?: string,
-    public desc?: string
-  ) { }
-}
 
-*/
+
 
 export class Score {
   public id: string;

@@ -11,18 +11,23 @@ export class HelperService {
   //  Migrate all calls from other services to here
   //  This Service should house all common service functions.
 
-    /**
-   * @param ServerPayload res Subscription Response
-   * @returns boolean true if the latest query ran by the server was successfull;
-   * -- else false
-   */
+  /**
+ * @param ServerPayload res Subscription Response
+ * @returns boolean true if the latest query ran by the server was successfull;
+ * -- else false
+ */
   rCheck(res): boolean {
-    var latest = res.length - 1;
-    if (res[latest]["status"] == "success") {
-      return true;
+    if (res != null) {
+      var latest = res.length - 1;
+      if (res[latest]["status"] == "success") {
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }
+
   }
 
   rGetData(res): Array<any> {

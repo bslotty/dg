@@ -46,6 +46,8 @@ export class SelectPlayersComponent implements OnInit {
     //  Listen to Player List Updates
     this.accounts.searchedPlayers$.subscribe((p)=>{
       if (p != undefined) {
+        //  Verify new users arent already in
+
         this.results = p.map((v)=>{
           var s = new Score();
           s.player = v;

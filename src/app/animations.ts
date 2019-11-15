@@ -201,7 +201,7 @@ export const growHeight = trigger('fallOut', [
 
 export const fall = trigger('fall', [
   transition(':enter', [
-    style({ opacity: 0, overflow: "hidden", display: "block", position: "relative", transform: "scale(1.3)" /* border: "1px solid #FF00FF" */}),
+    style({ opacity: 0, overflow: "hidden", display: "inline-block", position: "relative", transform: "scale(1.3)" /* border: "1px solid #FF00FF" */}),
     animate('.3s ease-out',
       style({ offset: 1, opacity: 1, transform: "scale(1)"  })
     ),
