@@ -50,7 +50,7 @@ class Course
 		return $this->db->Query($query, $values);
 	}
 
-	public function getDetail($id)
+	public function getDetails($id)
 	{
 		$query = "SELECT 
 			`id`, 

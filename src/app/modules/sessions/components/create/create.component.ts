@@ -51,6 +51,7 @@ export class CreateComponent implements OnInit {
       });
 
 
+      
       this.sessionBackend.getDetail(this.session);
       this.sessionBackend.detail$.subscribe((s) => {
         console.log("foundSession: ", s);

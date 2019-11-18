@@ -54,29 +54,29 @@ export const flyIn = trigger('flyIn', [
     query(':enter',
       style({
         opacity: 0,
-        transform: "translateY(9em)",
+        height: 0,
+        transform: "translateY(-10%)",
+        overflow: "hidden",
         position: 'relative',
       }),
       { optional: true }),
 
     group([
       query(':leave', [
-        stagger(1000, [
+        stagger(100, [
           animate('.1s ease',
             style({
               opacity: 0,
-              transform: "translateY(9em)"
+              height: 0,
+              transform: "translateY(-20%)"
             })
           ),
         ])
       ], { optional: true }),
       query(':enter',
-        stagger(1000, [
-          animate('.3s ease',
-            keyframes([
-              style({ transform: "translateY(5em)", opacity: 1, }),
-              style({ transform: "translateY(.2em)" })
-            ]),
+        stagger(75, [
+          animate('.1s ease',
+            style({ transform: "translateY(0)", opacity: 1, height: "*",})
           )]
         ), { optional: true })
     ])
@@ -97,73 +97,28 @@ export const scorecardSlide = trigger('scorecardSlide', [
     }),
     animate('0.3s ease-out', style({transform: 'translateX(0)', opacity: 1,}))
   ])
-  /*
-  transition(':increment', group([
-    query(':enter', [
-      style({
-        transform: 'translateX(3em)'
-      }),
-      animate('0.5s ease-out', style({transform: 'translateX(0)'}))
-    ], { optional: true }),
-    query(':leave', [
-      animate('0.5s ease-out', style({
-        transform: 'translateX(-3em)'
-      }))
-    ], { optional: true })
-  ])),
-  transition(':decrement', group([
-    query(':enter', [
-      style({
-        transform: 'translateX(-3em)'
-      }),
-      animate('0.5s ease-out', style({transform: 'translateX(0)'}))
-    ], { optional: true }),
-    query(':leave', [
-      animate('0.5s ease-out', style({
-        transform: 'translateX(3em)'
-      }))
-    ], { optional: true })
-  ]))
-  */
 ]);
-
-
-
-/*  Failed Stagger attempt; unused
-export const flyInPanelRow = trigger('flyInPanelRow', [
-  transition(':enter', [
-    query('.panel',
-      stagger(-300,
-        animate('.3s ease',
-          keyframes([
-            style({ transform: "translateY(5em)", opacity: 1, }),
-            style({ transform: "translateY(.2em)" })
-          ]),
-        )
-      ), { optional: true }),
-
-  ])
-]);
-*/
 
 export const flyInPanelRow = trigger('flyInPanelRow', [
   transition(':enter', [
-    style({ opacity: 0, overflow: "hidden", height: 0 , display: "block", position: "relative", transform: "translateY(-100%)" /* border: "1px solid #FF00FF" */}),
-    animate('.3s ease-out',
+    style({ opacity: 0, overflow: "hidden", height: 0 , display: "block", position: "relative", transform: "translateY(-10%)" /* border: "1px solid #FF00FF" */}),
+    animate('2s ease-out',
       style({ offset: 1, opacity: 1,  height: "*", transform: "translateY(0)"  })
     ),
   ]),
   transition(':leave', [
     style({ display: "block", position: "relative"}),
-    animate('.1s ease',
+    animate('1s ease',
       style({
         opacity: 0,
+        overflow: "hidden",
         transform: "translateY(-100%)"
       })
     )
   ]),
-
 ])
+
+
 
 
 
@@ -201,7 +156,7 @@ export const growHeight = trigger('fallOut', [
 
 export const fall = trigger('fall', [
   transition(':enter', [
-    style({ opacity: 0, overflow: "hidden", display: "inline-block", position: "relative", transform: "scale(1.3)" /* border: "1px solid #FF00FF" */}),
+    style({ opacity: 0, overflow: "hidden", display: "inline-block", position: "relative", transform: "scale(1.1)" /* border: "1px solid #FF00FF" */}),
     animate('.3s ease-out',
       style({ offset: 1, opacity: 1, transform: "scale(1)"  })
     ),
@@ -211,7 +166,7 @@ export const fall = trigger('fall', [
     animate('.1s ease',
       style({
         opacity: 0,
-        transform: "scale(.5)"
+        transform: "scale(.8)"
       })
     )
   ]),

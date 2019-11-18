@@ -1,6 +1,7 @@
 import { SessionBackend, Session } from './../../services/backend.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { flyInPanelRow } from 'src/app/animations';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'session-list',
@@ -10,7 +11,7 @@ import { flyInPanelRow } from 'src/app/animations';
 })
 export class ListComponent implements OnInit {
 
-  @Input() list: Session[] = [];
+  @Input() list: Observable<Session[]>;
   @Input() disabled: boolean = false;
 
   constructor( ) { }

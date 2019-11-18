@@ -1,20 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { SessionBackend, Session } from '../../services/backend.service';
 import { MatExpansionPanelDefaultOptions } from '@angular/material';
-import { take } from 'rxjs/operators';
+import { take, filter, map } from 'rxjs/operators';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { flyIn } from 'src/app/animations';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  animations: [flyIn]
 })
 export class DashboardComponent implements OnInit {
 
-  upcoming: Session[];
-  recient: Session[];
+
+  //  recient: Session[];
   list: Session[];
 
+  upcoming: Observable<Session[]>;
+  recient: Observable<Session[]>;
 
   //  favorites: Session[]; 
 
@@ -29,31 +34,21 @@ export class DashboardComponent implements OnInit {
 
     //  Get List
     this.sessionBackend.listRecient();
-    this.sessionBackend.list$.subscribe((s)=>{
-      var d = new Date().getTime();
 
-      //  Total amount for HTML;
-      this.list = s;
 
-      //  Get Upcoming; Sort by soonest; Limit 5
-      this.upcoming = s.filter((s: Session, i)=>{
-        return d < new Date(s.starts_on).getTime();
-      }).sort((a, b) => {
-        return new Date(a.starts_on).getTime() - new Date(b.starts_on).getTime();
-      }).slice(0, 2);
-      this.feed.stop("session-upcoming");
+    var d = new Date().getTime();
+    this.recient = this.sessionBackend.list$.pipe(
+      map((a, i) => {
+        return a.filter((s: Session) => d > new Date(s.starts_on).getTime());
+      })
+    );
 
-      //  Recient; Limit 10
-      this.recient = s.filter((s: Session)=>{
-          return d > new Date(s.starts_on).getTime();
-        }).slice(0, 5);
-        this.feed.stop("session-recient");
-      });
-
-  }
-
-  testAction() {
-    console.log("action");
+    //  Get Upcoming; Sort by soonest; Limit 5
+    this.upcoming = this.sessionBackend.list$.pipe(
+      map((a, i) => {
+        return a.filter((s: Session) => d < new Date(s.starts_on).getTime());
+      })
+    );
   }
 
 }

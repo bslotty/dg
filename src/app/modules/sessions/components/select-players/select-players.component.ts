@@ -3,7 +3,7 @@ import { AccountFormService } from 'src/app/modules/account/services/account-for
 import { FormGroup } from '@angular/forms';
 import { AccountBackend } from 'src/app/modules/account/services/backend.service';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
-import { flyInPanelRow } from 'src/app/animations';
+import { flyInPanelRow, flyIn } from 'src/app/animations';
 import { Score } from '../../services/backend.service';
 
 
@@ -11,7 +11,7 @@ import { Score } from '../../services/backend.service';
   selector: 'app-select-players',
   templateUrl: './select-players.component.html',
   styleUrls: ['./select-players.component.scss'],
-  animations: [flyInPanelRow],
+  animations: [flyInPanelRow, flyIn],
 })
 export class SelectPlayersComponent implements OnInit {
 

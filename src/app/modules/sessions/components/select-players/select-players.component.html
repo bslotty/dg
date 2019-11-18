@@ -11,7 +11,7 @@
 	</form>
 </div>
 
-<div *ngIf="results.length > 0 && this.form.dirty; else create" @flyInPanelRow>
+<div *ngIf="results.length > 0 && this.form.dirty; else create" @flyIn>
 	<score-list-item *ngFor="let score of results; trackBy: trackBy" [score]='score' mode='selector'
 		(action)="include($event)"></score-list-item>
 </div>
@@ -19,7 +19,7 @@
 
 <ng-template #create>
 	<div *ngIf="form.get('term').valid && form.get('term').dirty" class="row justify-content-center align-items-center">
-		<p class="col message"><i>{{ form.get('term').value }}</i> did not return anything</p>
+		<p class="col message"><i>Empty List</i></p>
 	</div>
 </ng-template>
 

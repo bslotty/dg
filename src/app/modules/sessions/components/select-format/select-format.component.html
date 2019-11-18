@@ -1,7 +1,7 @@
 <div *ngFor="let format of sessions.types;" [class]='selectedFormat == format ? "panel active" : "panel"'>
-  <div class="row justify-content-between align-items-center">
+  <div class="row justify-content-between align-items-center no-gutters">
 
-    <div class="col ml-2 {{ selectedFormat == format ? 'color-accent' : '' }}">
+    <div class="col ml-3 {{ selectedFormat == format ? 'color-accent' : '' }}">
       <p>{{ format.name }}</p>
     </div>
 

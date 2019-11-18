@@ -14,11 +14,11 @@
       <h6 class="col sub-header">Format</h6>
     </div>
 
-    <app-select-format *ngIf='mode != "view"' [selectedFormat]="form.get('format').value"
+    <app-select-format @flyIn *ngIf='mode != "view"' [selectedFormat]="form.get('format').value"
       (selected)="selectFormat($event)">
     </app-select-format>
 
-    <div @flyInPanelRow *ngIf="mode == 'view'">
+    <div @flyIn *ngIf="mode == 'view'">
       <div class="row justify-content-between align-items-center no-gutters panel">
         <div class="col ml-2">
           <p>{{ form.get('format').value.name }}</p>
@@ -192,7 +192,7 @@
         <h6 class="col sub-header">Roster</h6>
       </div>
 
-      <div *ngIf="mode != 'view'" cdkDropListGroup class="row justify-content-center align-items-start no-gutters"l>
+      <div *ngIf="mode != 'view'" cdkDropListGroup class="row justify-content-center align-items-start no-gutters">
         <div class="col-12 teamDropPad unassigned mb-3" (cdkDropListDropped)="rosterDrop($event)" cdkDropList
           [cdkDropListData]="getRoster(null)" id="team-unassigned">
 

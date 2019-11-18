@@ -1,4 +1,4 @@
-<mat-expansion-panel [disabled]="disabled" *ngFor="let session of list; trackBy: trackSession">
+<mat-expansion-panel [disabled]="disabled" expanded="false"  *ngFor="let session of list | async; trackBy: trackSession">
   <mat-expansion-panel-header collapsedHeight="2.5rem" expandedHeight="3rem">
     <mat-panel-title class="row justify-content-between align-items-center no-gutters">
       <div class="col">{{ session.starts_on | date:"EEE MMM d"  }}</div>
@@ -10,5 +10,8 @@
       </div>
     </mat-panel-title>
   </mat-expansion-panel-header>
-  STATS
+
+  <ng-template matExpansionPanelContent>
+    STATS
+  </ng-template>
 </mat-expansion-panel>

@@ -39,9 +39,9 @@ class Session
 			`sn`.`format`,
 			`sn`.`par_array`
 		FROM `Sessions` AS `sn`
-		LEFT JOIN `Scores` AS `sc` ON `sn`.`id`=`sc`.`session_id`
 		WHERE `sn`.`created_by` = :userID OR 
-			`sc`.`player_id` = :userID
+			(SELECT null FROM `Scores` AS `sc` WHERE `sc`.`player_id` = :userID AND `sc`.`session_id`=`sn`.`id`)
+		GROUP BY `sn`.`id`
 		ORDER BY `sn`.`starts_on` DESC
 		LIMIT " . (int) $start . ", " . (int) $limit . ";";
 
@@ -63,7 +63,8 @@ class Session
 			`sn`.`starts_on`,
 			`sn`.`title`,
 			`sn`.`format`,
-			`sn`.`par_array`
+			`sn`.`par_array`,
+			`sn`.`course_id`
 			FROM `Sessions` AS `sn`
 			LEFT JOIN `Scores` AS `sc` ON `sn`.`id`=`sc`.`session_id`
 			WHERE `sn`.`id` = :sessionID AND `sc`.`player_id` = :userID

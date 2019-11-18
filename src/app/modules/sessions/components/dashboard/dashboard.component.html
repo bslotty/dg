@@ -1,10 +1,10 @@
 <app-section-header title="Sessions" [buttons]="headerButtons" (actionClick)="actionClick($event)">
 </app-section-header>
 
-<div *ngIf='list.length > 0; else create'>
+<div >
     <h5 class="sub-header">Upcoming</h5>
     <mat-accordion>
-        <session-list disabled="true" [list]="upcoming"></session-list>
+        <session-list disabled="true" [list]="upcoming" @flyIn></session-list>
     </mat-accordion>
 
     <div *ngFor="let session of favorites; trackBy: trackSession"></div>
