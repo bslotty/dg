@@ -65,24 +65,23 @@ export class CourseBackend {
 
   listFavorites(){
     this.getList("favorites").subscribe((courses:Course[])=>{
-      console.log ("courses.favorites: ", courses);
       this.favoriteList.next(courses);
     });
   };
 
   listRecient(){
     this.getList("recient").subscribe((courses:Course[])=>{
-      console.log ("courses.recient: ",courses);
       this.recientList.next(courses);
     });
   }
 
   listTop() {
     this.getList("list").subscribe((courses:Course[]) => {
-      console.log ("list.top: ", courses);
       this.list.next(courses);
     });
   }
+
+  //  SearchList?
 
 
   getList(list: string, start: number = 0, limit: number = 20) {
@@ -140,6 +139,10 @@ export class CourseBackend {
 
   setCourseList(courses: Course[]) {
     this.list.next(courses);
+  }
+
+  resetList() {
+    this.list.next([]);
   }
 
   convertProperties(res){

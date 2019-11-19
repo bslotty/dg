@@ -1,4 +1,4 @@
-<div class="panel row justify-content-between align-items-center no-gutters" @flyInPanelRow>
+<div class="panel row justify-content-between align-items-center no-gutters" >
 
 	<!--	Team Color Bar	-->
 	<div class="colorChoice" *ngIf='score?.team'>
@@ -7,7 +7,7 @@
 
 	<!--	Name	-->
 	<div class="col ml-3" *ngIf="mode != 'puck'">
-		<div>{{ score.player.first_name }} {{ score.player.last_name }} <span
+		<div>{{ score.player.first_name | titlecase}} {{ score.player.last_name | titlecase}} <span
 				*ngIf="score.handicap && score.handicap != 0" class="icon-shield color-accent"></span></div>
 		<div class="sub-text" *ngIf="mode == 'selector'">{{ score.player.email }}</div>
 	</div>
@@ -15,8 +15,8 @@
 	<div class="col ml-3" *ngIf="mode == 'puck'">
 		<div class="row justify-content-between align-items-center no-gutters">
 			<div class="col">
-				{{ (score.player.first_name | slice:0:1)+'.' }}
-				{{ (score.player.last_name.length>8)? (score.player.last_name | slice:0:8)+'..' : (score.player.last_name) }}
+				{{ ((score.player.first_name | titlecase) | slice:0:1)+'.' }}
+				{{ (score.player.last_name.length > 8 ) ? ((score.player.last_name | titlecase) | slice:0:8)+'..' : (score.player.last_name | titlecase) }}
 			</div>
 
 			<div class="col-xs">
@@ -31,7 +31,7 @@
 
 
 	<!--	Admin Actions	-->
-	<div class="col-xs" *ngIf="mode != 'selector' && mode != 'puck'">
+	<div class="col-xs" *ngIf="mode == 'admin'">
 		<a mat-icon-button color="primary" [matMenuTriggerFor]="appMenu">
 			<span class="icon-more-vertical"></span>
 		</a>

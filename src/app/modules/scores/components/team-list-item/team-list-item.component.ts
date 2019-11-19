@@ -2,40 +2,42 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { TeamSettingsComponent } from '../team-settings/team-settings.component';
 import { Team } from 'src/app/modules/stats/services/backend.service';
-import { flyInPanelRow } from 'src/app/animations';
+import { SessionFormService } from 'src/app/modules/sessions/services/form.service';
 
 @Component({
   selector: 'team-list-item',
   templateUrl: './team-list-item.component.html',
-  styleUrls: ['./team-list-item.component.scss'],
-  animations: [flyInPanelRow]
+  styleUrls: ['./team-list-item.component.scss']
 })
 export class TeamListItemComponent implements OnInit {
 
   @Input() mode: string = ""; 
   @Input() team: Team;
 
-  @Output() action: EventEmitter<Object> = new EventEmitter();
-
   constructor(
     private dialog: MatDialog,
+    private sessionsF:SessionFormService,
   ) { }
 
   ngOnInit() { }
 
-  remove() {
-    this.action.emit({
-      "action": "remove",
-      "player": this.team
-    });
+  addToSession() {
+
   }
 
-  include() {
-    this.action.emit({
-      "action": "add",
-      "player": this.team
-    });
+  removeFromSession() {
+
   }
+
+  addTeam() {
+    this.sessionsF.addTeam();
+
+  }
+
+  removeTeam(team) {
+    this.sessionsF.removeTeam(team);
+  }
+
 
   openSettings() {
     this.dialog.open(TeamSettingsComponent, {

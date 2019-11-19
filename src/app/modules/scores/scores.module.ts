@@ -33,7 +33,6 @@ import { TeamListItemComponent } from './components/team-list-item/team-list-ite
     TeamSettingsComponent,
   ],
   providers: [
-
   ]
 })
 export class ScoresModule { }

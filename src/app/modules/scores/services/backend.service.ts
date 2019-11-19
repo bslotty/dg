@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class BackendService {
+export class ScoresBackend {
 
   /**   !!!!!!!!!!!!
    *  Might move score operations to here

@@ -42,6 +42,7 @@ h5,
 h6 {
   font-family: $font-header;
   margin: 0;
+  margin-left: $ml;
   width: 100%;
 }
 
@@ -69,8 +70,8 @@ a * {
 
 
 .sub-header {
-  margin: 1.5em 0 .3em 0;
-  padding-left: 1em !important;;
+  margin-top: 1.5em;
+  margin-bottom: 0.3em;
 }
 
 .sub-text {
@@ -80,12 +81,17 @@ a * {
 	line-height: 1.2rem;
 }
 
-
 .color-accent {
   color: $accent;
 }
 
+.color-warn {
+  color: $warn;
+}
 
+.ml {
+  margin-left: $ml;
+}
 
 
 

@@ -20,8 +20,6 @@ export class LoaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log("loader type small?: ", this.small);
-
     if (this.small) {
       this.diameter = 36;
       this.strokeWidth = 5;

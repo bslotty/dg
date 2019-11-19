@@ -5,72 +5,72 @@
 
 
 <div>
-  <form [formGroup]='form'>
+  <form [formGroup]='form' @flyIn>
 
     <!--  Format  -->
     <div class="row justify-content-between align-items-center no-gutters">
-      <h6 class="col sub-header">Format</h6>
+      <h6 class="col sub-header ml">Format</h6>
     </div>
     <app-select-format @flyIn [selectedFormat]='form.get("format").value'></app-select-format>
 
 
     <!--  Course  -->
-    <div class="row justify-content-between align-items-center no-gutters">
-      <h6 class="col sub-header">Course</h6>
+    <div class="row justify-content-between align-items-end no-gutters">
+      <h6 class="col sub-header ml">Course</h6>
+      <div class="col-xs" *ngIf="form.get('course').value">
+        <a mat-flat-button color="transparent-warn" (click)="clearCourse()">
+          <span class="icon-x-circle"></span>
+        </a>
+      </div>
     </div>
 
-    <div @flyIn *ngIf="form.get('course').value">
+    <div @flyIn *ngIf="form.get('course').value; else coursePicker">
       <course-list-item [course]='form.get("course").value' mode='list'></course-list-item>
     </div>
 
-    <mat-tab-group dynamicHeight="true">
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <span class="icon-heart" matTooltip='Favorites'></span>
-        </ng-template>
 
-        <h3>Favorites</h3>
-        <app-course-list type='favorites' mode='selector'></app-course-list>
+    <ng-template #coursePicker>
+      <mat-tab-group dynamicHeight="true">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <span class="icon-heart" matTooltip='Favorites'></span>
+          </ng-template>
+
+          <h3>Favorites</h3>
+          <app-course-list type='favorites' mode='selector'></app-course-list>
 
 
-      </mat-tab>
+        </mat-tab>
 
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <span class="icon-clock" matTooltip="Recient"></span>
-        </ng-template>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <span class="icon-clock" matTooltip="Recient"></span>
+          </ng-template>
 
-        <h3>Recient</h3>
-        <app-course-list type='recient' mode='selector'></app-course-list>
-      </mat-tab>
+          <h3>Recient</h3>
+          <app-course-list type='recient' mode='selector'></app-course-list>
+        </mat-tab>
 
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <span class="icon-search" matTooltip="Search"></span>
-        </ng-template>
-        <app-course-search header="false">
-        </app-course-search>
-      </mat-tab>
-    </mat-tab-group>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <span class="icon-search" matTooltip="Search"></span>
+          </ng-template>
+          <app-course-search header="false">
+          </app-course-search>
+        </mat-tab>
+      </mat-tab-group>
+    </ng-template>
+
+
 
 
     <!--  Time  -->
     <div class="row justify-content-between align-items-end no-gutters">
-      <h6 class="col sub-header">Time</h6>
-      <div
-        *ngIf="(form.get('date').touched && form.get('date').invalid) || (form.get('time').touched && form.get('time').invalid)"
-        class="warn text-right">
-        <span class="icon-triangle"></span>
-      </div>
+      <h6 class="col sub-header ml">Time</h6>
+
     </div>
 
-    <div *ngIf="mode == 'view'">
-      <div class="row justify-content-between align-items-center no-gutters panel">
-        <div class="col ml-2">
-          <p>{{ form.get('date').value.toString() }} {{ form.get('time').value }}</p>
-        </div>
-      </div>
-    </div>
+
 
     <div *ngIf="mode != 'view'" class="row justify-content-between align-items-end">
       <div class="col">
@@ -106,10 +106,10 @@
 
 
     <!--  Teams -->
-    <div *ngIf="form.get('format').value.enum != 'ffa'">
+    <div *ngIf="form.get('format').valid && form.get('format').value.enum != 'ffa'">
       <div class="row justify-content-between align-items-end no-gutters">
-        <h6 class="col sub-header">Teams</h6>
-        <div class="col-xs" *ngIf='mode != view'>
+        <h6 class="col sub-header ml">Teams</h6>
+        <div class="col-xs">
           <a mat-flat-button color="transparent-primary" (click)="addTeam()">
             <span class="icon-plus"></span>
           </a>
@@ -117,9 +117,9 @@
 
       </div>
 
-      <div>
+      <div @flyIn>
         <team-list-item *ngFor="let team of form.get('teams')?.controls; trackBy: trackTeamBy" [team]="team.value"
-          mode='remove' (action)='removeTeam(team.value)' @flyInPanelRow></team-list-item>
+          mode='remove'></team-list-item>
       </div>
     </div>
 
@@ -127,15 +127,10 @@
 
     <!--  Players  -->
     <div class="row justify-content-between align-items-center no-gutters">
-      <h6 class="col sub-header">Players</h6>
+      <h6 class="col sub-header ml">Players</h6>
     </div>
 
     <div>
-      <score-list-item [score]='score.value' mode='remove' (action)="removeScore(score.value)"
-        *ngFor="let score of form.get('scores')?.controls; trackBy: trackScores" @flyInPanelRow></score-list-item>
-    </div>
-
-    <div *ngIf="mode != 'view'">
       <mat-tab-group dynamicHeight="true">
         <mat-tab>
           <ng-template mat-tab-label>
@@ -167,16 +162,19 @@
 
 
     <!--  Roster  -->
-    <div *ngIf="form.get('format').value.enum != 'ffa' && form.get('teams')">
-      <div class="row justify-content-between align-items-center no-gutters">
-        <h6 class="col sub-header">Roster</h6>
+    <div>
+      <div class="row justify-content-between align-items-end no-gutters">
+        <h6 class="col sub-header ml">Roster</h6>
+        <div *ngIf='teamGame && form.get("teams").controls.length == 0' class='col color-warn message'>
+          Add Teams!
+        </div>
       </div>
 
-      <div *ngIf="mode != 'view'" cdkDropListGroup class="row justify-content-center align-items-start no-gutters">
+      <div cdkDropListGroup class="row justify-content-center align-items-start no-gutters">
         <div class="col-12 teamDropPad unassigned mb-3" (cdkDropListDropped)="rosterDrop($event)" cdkDropList
           [cdkDropListData]="getRoster(null)" id="team-unassigned">
 
-          <label>Unassigned</label>
+          <label>{{ teamGame ? 'Unassigned' : 'Free Agents' }}</label>
           <score-list-item cdkDrag [cdkDragData]="player" [score]="player" mode="puck"
             *ngFor="let player of getRoster(null)">
           </score-list-item>
@@ -190,7 +188,7 @@
 
           <label>{{ team.value.name | titlecase }}</label>
           <score-list-item cdkDrag [cdkDragData]="player" [score]="player" mode="puck"
-            *ngFor="let player of getRoster(team)" @fall>
+            *ngFor="let player of getRoster(team)">
           </score-list-item>
         </div>
       </div>
@@ -201,27 +199,12 @@
   </form>
 
 
-  <div *ngIf="mode != 'view'" class="row no-gutters justify-content-stretch align-items-center mt-3">
+  <div class="row no-gutters justify-content-stretch align-items-center mt-3 mb-5">
 
-    <div class="col" *ngIf="mode == 'create'">
+    <div class="col">
       <a mat-raised-button color="primary" class="btn btn-lg btn-block" (click)="sessionForm.submitCreation()"
         [disabled]="!sessionForm.ReadyForSubmission()">
         <label>Create</label>
       </a>
     </div>
-
-    <div class="col" *ngIf="mode == 'edit'">
-      <a mat-raised-button color="warn" class="btn btn-lg btn-block" (click)="sessionForm.submitCreation()"
-        [disabled]="!sessionForm.ReadyForSubmission()">
-        <label>Delete</label>
-      </a>
-    </div>
-
-    <div class="col" *ngIf="mode == 'edit'">
-      <a mat-raised-button color="primary" class="btn btn-lg btn-block" (click)="sessionForm.submitCreation()"
-        [disabled]="!sessionForm.ReadyForSubmission()">
-        <label>Play</label>
-      </a>
-    </div>
-
   </div>

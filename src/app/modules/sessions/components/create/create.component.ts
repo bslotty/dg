@@ -2,20 +2,15 @@
 import { FormGroup, FormArray } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { SessionFormService } from '../../services/form.service';
-import { AccountFormService } from 'src/app/modules/account/services/account-form.service';
-import { AccountBackend } from 'src/app/modules/account/services/backend.service';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { flyInPanelRow, flyIn, fall } from 'src/app/animations';
-import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
-import { ActivatedRoute } from '@angular/router';
-import { SessionBackend, Session } from '../../services/backend.service';
-import { CourseBackend } from 'src/app/modules/courses/services/backend.service';
+import { flyIn } from 'src/app/animations';
+import { Session } from '../../services/backend.service';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
-  animations: [flyInPanelRow, flyIn]
+  animations: [flyIn]
 })
 export class CreateComponent implements OnInit {
 
@@ -23,39 +18,26 @@ export class CreateComponent implements OnInit {
   roster = [];
 
   session: Session = new Session();
-  mode: string = "view";
-
 
   constructor(
-    private route: ActivatedRoute,
     private sessionForm: SessionFormService
   ) { }
 
   ngOnInit() {
-    this.session.id = this.route.snapshot.paramMap.get('session');
 
     //  Setup Form
     this.sessionForm.Setup("create");
     this.sessionForm.form$.subscribe((f) => {
       this.form = f;
     });
+  }
 
-    // Get Page Type: Edit/View/Create
-    if (this.session.id == null) {
-      this.mode = "create";
-      
+  get teamGame(): boolean {
+    if (this.form.get('format').valid && this.form.get('format').value.enum.indexOf("team") > -1) {
+      return true
     } else {
-      this.sessionForm.Setup("edit");
-      this.sessionForm.form$.subscribe((f) => {
-        this.form = f;
-      });
-
-
+      return false;
     }
-    console.log("session.mode: ", this.mode, this.session.id);
-
-
-
   }
 
   selectFormat($event) {
@@ -64,7 +46,10 @@ export class CreateComponent implements OnInit {
 
   selectCourse($event) {
     this.sessionForm.setCourse($event);
+  }
 
+  clearCourse() {
+    this.sessionForm.resetCourse();
   }
 
 
@@ -94,24 +79,15 @@ export class CreateComponent implements OnInit {
     return this.form.get("teams") as FormArray;
   }
 
-  addTeam() {
-    this.sessionForm.addTeam();
-    if (this.scoreList.controls.length > 0 && this.roster.length == 0) {
-      this.roster[0] = this.scoreList.value;
-    } else if (this.roster.length < this.teamList.length) {
-      this.roster.push([]);
-    }
-  }
 
-  removeTeam(team) {
-    this.sessionForm.removeTeam(team);
-  }
 
   trackTeamBy(index, item) {
     item.value.id;
   }
 
-
+  addTeam() {
+    this.sessionForm.addTeam();
+  }
 
 
 

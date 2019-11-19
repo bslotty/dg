@@ -1,6 +1,6 @@
 <div class="row justify-content-between align-items-end no-gutters">
     <div class="col">
-        <h5>Courses</h5>
+        <h1>Courses</h1>
     </div>
 
     <div class="col-xs">
@@ -8,10 +8,9 @@
             <span class="icon-search"></span>
         </a>
     </div>
-
 </div>
 
-<div *ngIf="topCourses | async as courseList; else loader" >
+<div *ngIf="topCourses | async as courseList; else loader">
     <div *ngIf="courseList.length; else none" @flyIn>
         <course-list-item *ngFor="let course of courseList" [course]="course" mode="list"></course-list-item>
     </div>
@@ -19,7 +18,10 @@
 
 
 <div *ngIf="account.user">
+    <h6 class="sub-header">Favorites</h6>
     <app-course-list type="Favorites"></app-course-list>
+    
+    <h6 class="sub-header">Recient</h6>
     <app-course-list type="Recient"></app-course-list>
 </div>
 

@@ -54,7 +54,7 @@ export const flyIn = trigger('flyIn', [
     query(':enter',
       style({
         opacity: 0,
-        height: 0,
+        //  height: 0,
         transform: "translateY(-50%)",
         overflow: "hidden",
         position: 'relative',
@@ -68,7 +68,7 @@ export const flyIn = trigger('flyIn', [
           animate('100ms ease',
             style({
               opacity: 0,
-              height: 0,
+              //  height: 0,
               transform: "translateY(-20%)"
             })
           ),
@@ -77,7 +77,11 @@ export const flyIn = trigger('flyIn', [
       query(':enter',
         stagger(30, [
           animate('300ms ease',
-            style({ transform: "translateY(0)", opacity: 1, height: "*",})
+            style({ 
+              transform: "translateY(0)", 
+              opacity: 1, 
+              height: "*",
+            })
           )]
         ), { optional: true })
     ])

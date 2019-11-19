@@ -38,6 +38,4 @@ export class SearchComponent implements OnInit {
     this.results = this.courses.list$;
 
   }
-
-  selectCourse($event) {  }
 }

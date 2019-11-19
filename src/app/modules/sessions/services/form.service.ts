@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Session, SessionBackend, SessionFormat } from './backend.service';
 import { HelperService } from 'src/app/shared/services/helper.service';
 import { AccountBackend } from '../../account/services/backend.service';
+import { Team } from '../../stats/services/backend.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,9 @@ export class SessionFormService {
 
   private form: BehaviorSubject<FormGroup | undefined> = new BehaviorSubject(undefined);
   form$: Observable<FormGroup> = this.form.asObservable();
+
+  private teams: BehaviorSubject<Team[] | undefined> = new BehaviorSubject(undefined);
+  teams$: Observable<Team[]> = this.teams.asObservable();
 
   builder: FormBuilder = new FormBuilder;
 
@@ -48,9 +52,11 @@ export class SessionFormService {
   ]);
 
   private cTeams = new FormArray([], [
+    /*  If not FFA Then apply;
     Validators.required,
     Validators.minLength(2),
     Validators.maxLength(8),
+    */
   ]);
 
   private cScores = new FormArray([], [
@@ -118,6 +124,7 @@ export class SessionFormService {
         form.addControl("date", this.cDate);
         form.addControl("time", this.cTime);
         form.addControl("scores", this.cScores);
+        form.addControl("teams", this.cTeams);
         break;
 
       case "edit":
@@ -126,6 +133,9 @@ export class SessionFormService {
         form.addControl("date", this.cDate);
         form.addControl("time", this.cTime);
         form.addControl("scores", this.cScores);
+        form.addControl("teams", this.cTeams);
+
+        //  Get Data & Populate
         break;
 
       case "search":
@@ -142,6 +152,7 @@ export class SessionFormService {
           this.setDate(d);
         }
       });
+
     }
 
 
@@ -178,6 +189,12 @@ export class SessionFormService {
     this.form.value.get("date").reset();
     this.form.value.get("time").reset();
     this.form.value.get("scores").reset();
+    this.form.value.get("teams").reset();
+  }
+  
+  resetCourse() {
+    this.courseService.resetList();
+    this.form.value.get("course").reset();
   }
 
   setForm(values): void {
@@ -232,19 +249,12 @@ export class SessionFormService {
 
   setFormat(format) {
     this.form.value.get("format").setValue(format);
-    //  If Format Changes to/from FFA; Update Controls(Team)
-
-    if (format.enum == "ffa" && this.form.value.get('teams')) {
-      this.form.value.removeControl("teams");
-      this.form.value.removeControl("roster");
-    } else if (format.enum != "ffa" && !this.form.value.get('teams')) {
-      this.form.value.addControl("teams", this.cTeams);
-      this.form.value.addControl("scores", this.cScores);
-    }
   }
 
   setCourse(course) {
+    console.log("setCourse: ", course);
     this.form.value.get("course").setValue(course);
+    this.courseService.resetList();
   }
 
   setDate(date: Date): void {
@@ -294,6 +304,14 @@ export class SessionFormService {
   }
 
   addTeam() {
+    /*
+    if (this.scoreList.controls.length > 0 && this.roster.length == 0) {
+      this.roster[0] = this.scoreList.value;
+    } else if (this.roster.length < this.teamList.length) {
+      this.roster.push([]);
+    }
+    */
+
 
     //  Limit to 8
     if (this.teamList.controls.length < 8) {

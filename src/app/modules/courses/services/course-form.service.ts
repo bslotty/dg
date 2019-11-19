@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CourseBackend, Course } from './backend.service';
 import { Router } from '@angular/router';
+import { FeedbackService } from '../../feedback/services/feedback.service';
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +60,9 @@ export class CourseFormService {
 
   constructor(
     private courseService: CourseBackend,
-    private router: Router) { }
+    private router: Router,
+    private feed: FeedbackService,
+    ) { }
 
   Setup(type) {
 
@@ -88,9 +91,10 @@ export class CourseFormService {
         form.addControl('search', this.cTerm);
 
         form.get("search").valueChanges.pipe(this.courseService.serverPipe).subscribe((s)=>{
-          console.log ("CourseSearch: ", s);
           if (form.valid) {
             console.log ("CourseSearch.valid: ", s);
+
+            this.feed.loading = true;
             this.courseService.search(s as string);
           }
         });
