@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Course } from '../../../services/backend.service';
 import { flyInPanelRow } from 'src/app/animations';
+import { FavoritesService } from 'src/app/shared/services/favorites.service';
+import { SessionFormService } from 'src/app/modules/sessions/services/form.service';
+import { Course } from '../../services/backend.service';
 
 @Component({
   selector: 'course-list-item',
@@ -12,21 +14,28 @@ export class CourseListItemComponent implements OnInit {
   @Input() course: Course;
   @Input() mode: string; // List(Fav&&Link), Selector(emit), 
 
+
   @Output() selected: EventEmitter<Course> = new EventEmitter();
 
   @Input() selectedCourse:Course;
 
-  constructor() { }
+  constructor(
+    private favorites_: FavoritesService,
+    private sessionsF: SessionFormService,
+  ) { }
 
-  ngOnInit() {
+  ngOnInit() {  }
+
+  setFavorite(course){
+    this.favorites_.addFavorite("course", course);
   }
 
-  favorite(course){
-    console.log ("course", course);
+  removeFavorite(course) {
+    this.favorites_.removeFavorite("course", course);
   }
 
   selectCourse(course){
-    this.selected.emit(course);
+    this.sessionsF.setCourse(course);
   }
 
 }

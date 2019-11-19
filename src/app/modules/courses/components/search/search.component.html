@@ -3,32 +3,30 @@
   <p class="alert alert-light">You can search for a course by Park, City, State</p>
 </div>
 
-<form [formGroup]="form">
-  <mat-form-field>
-    <mat-label matPrefix>Search</mat-label>
-    <input matInput formControlName="search" placeholder="Park Name, City, or State" />
-    <mat-error *ngIf="form.get('search').invalid && form.get('search').touched">
-      Invalid Search Criteria
-    </mat-error>
-    <div matSuffix *ngIf='feed.loading'>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label matPrefix>Search</mat-label>
+      <input matInput formControlName="search" placeholder="Park Name, City, or State" />
+      <mat-error *ngIf="form.get('search').invalid && form.get('search').touched">
+        Invalid Search Criteria
+      </mat-error>
+      <div matSuffix *ngIf='!results | async'>
         <loader small='true'></loader>
+      </div>
+    </mat-form-field>
+  </form>
+
+  <div *ngIf="results | async as courseList">
+    <div *ngIf="courseList.length; else none" @flyIn>
+      <course-list-item *ngFor="let course of courseList" [course]="course" mode="list" mode="selector">
+      </course-list-item>
     </div>
-  </mat-form-field>
-</form>
-
-<div *ngIf="results != null && form.valid; else create">
-  <app-course-list mode="selector" [courseList]="results" (selected)="selectCourse($event)"></app-course-list>
-</div>
-
-
-
-
+  </div>
 
 
 
 <ng-template #create>
-  <div *ngIf="form.valid && results?.length == 0"
-    class="row justify-content-center align-items-center">
+  <div *ngIf="form.valid && results?.length == 0" class="row justify-content-center align-items-center">
     <p class="col message"><i>{{ form.get('search').value }}</i> did not return anything</p>
   </div>
 
@@ -45,4 +43,11 @@
 
 <ng-template #loader>
   <loader></loader>
+</ng-template>
+
+
+<ng-template #none>
+  <div class="message">
+    <p><i>No items returned</i></p>
+  </div>
 </ng-template>

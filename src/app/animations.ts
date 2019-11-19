@@ -55,16 +55,17 @@ export const flyIn = trigger('flyIn', [
       style({
         opacity: 0,
         height: 0,
-        transform: "translateY(-10%)",
+        transform: "translateY(-50%)",
         overflow: "hidden",
         position: 'relative',
+        display: "block",
       }),
       { optional: true }),
 
     group([
       query(':leave', [
-        stagger(100, [
-          animate('.1s ease',
+        stagger(90, [
+          animate('100ms ease',
             style({
               opacity: 0,
               height: 0,
@@ -74,8 +75,8 @@ export const flyIn = trigger('flyIn', [
         ])
       ], { optional: true }),
       query(':enter',
-        stagger(75, [
-          animate('.1s ease',
+        stagger(30, [
+          animate('300ms ease',
             style({ transform: "translateY(0)", opacity: 1, height: "*",})
           )]
         ), { optional: true })

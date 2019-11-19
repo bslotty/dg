@@ -1,8 +1,6 @@
 <div>
-  <app-section-header *ngIf="mode == 'create'" title="Create Session" [buttons]="headerButtons"
-    (actionClick)="actionClick($event)"></app-section-header>
-  <app-section-header *ngIf="mode != 'create'" title="Session" [buttons]="headerButtons"
-    (actionClick)="actionClick($event)"></app-section-header>
+  <app-section-header *ngIf="mode == 'create'" title="{{ mode == 'create' ? 'Create Session' : 'Session'}}"
+    [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header>
 </div>
 
 
@@ -13,25 +11,7 @@
     <div class="row justify-content-between align-items-center no-gutters">
       <h6 class="col sub-header">Format</h6>
     </div>
-
-    <app-select-format @flyIn *ngIf='mode != "view"' [selectedFormat]="form.get('format').value"
-      (selected)="selectFormat($event)">
-    </app-select-format>
-
-    <div @flyIn *ngIf="mode == 'view'">
-      <div class="row justify-content-between align-items-center no-gutters panel">
-        <div class="col ml-2">
-          <p>{{ form.get('format').value.name }}</p>
-        </div>
-
-        <div class="col-xs align-self-end">
-          <a mat-flat-button disabled color="" matTooltip="{{ form.get('format').value.desc }}">
-            <span class="icon-help-circle"></span>
-          </a>
-        </div>
-      </div>
-    </div>
-
+    <app-select-format @flyIn [selectedFormat]='form.get("format").value'></app-select-format>
 
 
     <!--  Course  -->
@@ -39,47 +19,47 @@
       <h6 class="col sub-header">Course</h6>
     </div>
 
-    <div @flyInPanelRow *ngIf="form.get('course').value">
+    <div @flyIn *ngIf="form.get('course').value">
       <course-list-item [course]='form.get("course").value' mode='list'></course-list-item>
     </div>
 
-    <div *ngIf="mode != 'view'">
-      <mat-tab-group dynamicHeight="true">
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <span class="icon-heart"></span>
-          </ng-template>
+    <mat-tab-group dynamicHeight="true">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span class="icon-heart" matTooltip='Favorites'></span>
+        </ng-template>
 
-          <p>Favorites</p>
+        <h3>Favorites</h3>
+        <app-course-list type='favorites' mode='selector'></app-course-list>
 
-        </mat-tab>
 
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <span class="icon-clock"></span>
-          </ng-template>
+      </mat-tab>
 
-          <p>Recient</p>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span class="icon-clock" matTooltip="Recient"></span>
+        </ng-template>
 
-        </mat-tab>
+        <h3>Recient</h3>
+        <app-course-list type='recient' mode='selector'></app-course-list>
+      </mat-tab>
 
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <span class="icon-search"></span>
-          </ng-template>
-          <app-course-search header="false" [selectedCourse]="form.get('course').value"
-            (selected)="selectCourse($event)">
-          </app-course-search>
-        </mat-tab>
-      </mat-tab-group>
-
-    </div>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span class="icon-search" matTooltip="Search"></span>
+        </ng-template>
+        <app-course-search header="false">
+        </app-course-search>
+      </mat-tab>
+    </mat-tab-group>
 
 
     <!--  Time  -->
     <div class="row justify-content-between align-items-end no-gutters">
       <h6 class="col sub-header">Time</h6>
-      <div *ngIf="(form.get('date').touched && form.get('date').invalid) || (form.get('time').touched && form.get('time').invalid)" class="warn text-right">
+      <div
+        *ngIf="(form.get('date').touched && form.get('date').invalid) || (form.get('time').touched && form.get('time').invalid)"
+        class="warn text-right">
         <span class="icon-triangle"></span>
       </div>
     </div>
@@ -101,7 +81,7 @@
           <mat-datepicker-toggle matSuffix [for]="picker"><span class='icon-calendar'></span></mat-datepicker-toggle>
           <mat-datepicker #picker startView="year" [startAt]="form.get('date').value" touchUi="true"></mat-datepicker>
           <mat-error *ngIf="form.get('date').touched && form.get('date').invalid">
-            Invalid Date 
+            Invalid Date
           </mat-error>
         </mat-form-field>
       </div>
@@ -117,8 +97,8 @@
           <ngx-material-timepicker #timePicker minutesGap=5 disableAnimation="true">
           </ngx-material-timepicker>
           <mat-error *ngIf="form.get('time').touched && form.get('time').invalid">
-              Invalid Time 
-            </mat-error>
+            Invalid Time
+          </mat-error>
         </mat-form-field>
       </div>
 

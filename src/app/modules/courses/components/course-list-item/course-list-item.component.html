@@ -1,0 +1,31 @@
+<div class="panel row justify-content-between align-items-center no-gutters">
+  <div class="colorChoice" *ngIf="selectedCourse == course">
+    <div class="colorIcon light"></div>
+  </div>
+
+  <div class="col ml-2">
+    <div>{{ course.park_name }}</div>
+    <div class="sub-text">{{ course.city}}, {{ course.state }} {{ course.zip }}</div>
+  </div>
+  <div class="col-xs" *ngIf="mode == 'selector'">
+
+    <a *ngIf="selectedCourse == course" mat-flat-button color="transparent-primary">
+      <span class="icon-check-circle"></span>
+    </a>
+
+    <a *ngIf="selectedCourse != course" mat-flat-button color="transparent-primary" (click)="selectCourse(course)">
+      <span class="icon-circle"></span>
+    </a>
+
+  </div>
+
+  <div class="col-xs" *ngIf="mode == 'list'">
+    <a *ngIf='account_?.user' mat-flat-button color="accent" (click)="favorite(course)" class="ml-1">
+      <span class="icon-heart"></span>
+    </a>
+
+    <a mat-flat-button matTooltip='View Course Page' color="transparent-primary" routerLink="/courses/{{ course.id }}" class="ml-1">
+      <span class="icon-external-link"></span>
+    </a>
+  </div>
+</div>

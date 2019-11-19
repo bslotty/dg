@@ -19,6 +19,7 @@ import { HomeComponent } from './home/home.component';
 /*  Dependancies  */
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RequestInterceptor } from './interceptor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -32,6 +33,7 @@ import { RequestInterceptor } from './interceptor';
     /*  Dependancies  */
     HttpClientModule,
     RouterModule,
+    BrowserAnimationsModule,
     MaterialModule.forRoot(),
 
     /*  Sub Modules / Routes  */

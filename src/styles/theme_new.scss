@@ -152,6 +152,11 @@ $dgc-theme: mat-dark-theme($dgc-primary, $dgc-accent, $dgc-warn);
 // include the custom theme object into the angular material theme
 @include angular-material-theme($dgc-theme);
 
+::ng-deep :host {
+  position: relative;
+  display: block;
+}
+
 /*
     Angular Material Font Guidelines
     

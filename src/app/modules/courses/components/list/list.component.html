@@ -1,0 +1,18 @@
+<div *ngIf="list$ | async as courseList; else loader">
+  <div *ngIf="courseList.length; else none" @flyIn>
+    <course-list-item *ngFor="let course of courseList" [course]="course" [mode]="mode">
+    </course-list-item>
+  </div>
+</div>
+
+
+<ng-template #loader>
+  <loader></loader>
+</ng-template>
+
+
+<ng-template #none>
+  <div class="message">
+    <p><i>No items returned</i></p>
+  </div>
+</ng-template>

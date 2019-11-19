@@ -1,23 +1,26 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { SessionBackend } from '../../services/backend.service';
+import { Component, OnInit, Input } from '@angular/core';
+import { flyIn } from 'src/app/animations';
+import { SessionFormService } from '../../services/form.service';
+import { SessionFormat, SessionBackend } from '../../services/backend.service';
 
 @Component({
   selector: 'app-select-format',
   templateUrl: './select-format.component.html',
-  styleUrls: ['./select-format.component.scss']
+  styleUrls: ['./select-format.component.scss'],
+  animations: [flyIn],
 })
 export class SelectFormatComponent implements OnInit {
 
-  @Input() selectedFormat;
-  @Output() selected:EventEmitter<any> = new EventEmitter();
+  @Input() selectedFormat: SessionFormat;
 
   constructor(
-    private sessions: SessionBackend,
+    private sessions_: SessionBackend,
+    private sessionsF: SessionFormService
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   setFormat(type) {
-    this.selected.emit(type);
+    this.sessionsF.setFormat(type);
   }
 }

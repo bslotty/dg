@@ -2,17 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { Course, CourseBackend } from '../../services/backend.service';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
 import { AccountBackend } from 'src/app/modules/account/services/backend.service';
+import { Observable } from 'rxjs';
+import { flyIn } from 'src/app/animations';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  animations: [flyIn]
 })
 export class DashboardComponent implements OnInit {
 
+  topCourses: Observable<Course[]>;
+
   recientCourses: Course[];
   favoriteCourses: Course[];
-  topCourses: Course[];
+  
 
   constructor(
     private feed: FeedbackService,
@@ -22,18 +27,11 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    //  Populate Lists
+    this.courses.listTop();
 
     //  Subscribe to lists
-    this.courses.list$.subscribe((courses) => {
-      this.topCourses = courses;
-      this.feed.loading = false;
-    });
-
-    //  Populate Lists
-    if (this.topCourses == undefined) {
-      this.courses.listTop();
-    }
-
+    this.topCourses = this.courses.list$;
 
     //  Account Required Lists
     if (this.account.user) {

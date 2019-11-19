@@ -36,6 +36,22 @@ export class DashboardComponent implements OnInit {
     this.sessionBackend.listRecient();
 
 
+    /*
+    this.sessionBackend.getDetail(this.session);
+    this.sessionBackend.detail$.subscribe((s) => {
+      console.log("foundSession: ", s);
+      this.session = s;
+      this.sessionForm.setForm(s);
+
+      if (this.session.created_by == this.accountBackend.user.id) {
+        this.mode = "edit";
+      } else {
+        this.mode = "view";
+      }
+      
+    });
+    */
+
     var d = new Date().getTime();
     this.recient = this.sessionBackend.list$.pipe(
       map((a, i) => {

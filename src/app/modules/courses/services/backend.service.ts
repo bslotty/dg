@@ -24,11 +24,11 @@ export class CourseBackend {
   
   //  Favorites
   private favoriteList: BehaviorSubject<Course[]> = new BehaviorSubject([]);
-  favoriteList$: Observable<Course[]> = this.list.asObservable();
+  favoriteList$: Observable<Course[]> = this.favoriteList.asObservable();
 
   //  Recient
   private recientList: BehaviorSubject<Course[]> = new BehaviorSubject([]);
-  recientList$: Observable<Course[]> = this.list.asObservable();
+  recientList$: Observable<Course[]> = this.recientList.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -65,7 +65,7 @@ export class CourseBackend {
 
   listFavorites(){
     this.getList("favorites").subscribe((courses:Course[])=>{
-      console.log ("courses.favorites: ",courses);
+      console.log ("courses.favorites: ", courses);
       this.favoriteList.next(courses);
     });
   };
@@ -79,6 +79,7 @@ export class CourseBackend {
 
   listTop() {
     this.getList("list").subscribe((courses:Course[]) => {
+      console.log ("list.top: ", courses);
       this.list.next(courses);
     });
   }
@@ -88,11 +89,10 @@ export class CourseBackend {
     return this.http.post(this.url, { 
       "action": list,
       "start": start,
-      "limit": limit
+      "limit": limit,
+      "user" : this.account.user
     }).pipe(this.serverPipe,
       map((res) => {
-        console.log ("res: ", res);
-
         if (this.rCheck(res)) {
           return this.convertProperties(res);
         } else {

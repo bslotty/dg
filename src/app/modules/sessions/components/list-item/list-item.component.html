@@ -1,0 +1,17 @@
+<mat-expansion-panel expanded="false">
+    <mat-expansion-panel-header collapsedHeight="2rem" expandedHeight="2rem">
+        <mat-panel-title class="row justify-content-between align-items-center no-gutters">
+            <div class="col">{{ session.starts_on | date:"EEE MMM d"  }}</div>
+            <div class="col">{{ session.starts_on | date:"h:mm a"  }}</div>
+            <div class="col-xs">
+                <a mat-flat-button color="transparent-warn" routerLink="/sessions/{{ session.id }}">
+                    <span class="icon-link-2"></span>
+                </a>
+            </div>
+        </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <ng-template matExpansionPanelContent>
+        STATS
+    </ng-template>
+</mat-expansion-panel>

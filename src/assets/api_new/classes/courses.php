@@ -292,6 +292,7 @@ class Course
 			`c`.`id`=`f`.`related_id` AND 
 			`f`.`related_table`=:related_table AND 
 			`f`.`created_by`=:userId
+		GROUP BY	`c`.`id`
 		ORDER BY `f`.`created_on` DESC;";
 
 		$values = array(
@@ -324,6 +325,7 @@ class Course
 			`c`.`id`=`sn`.`course_id` AND 
 			`sn`.`id` = `sc`.`session_id` AND
 			`sc`.`player_id` = :userId
+		GROUP BY	`c`.`id`
 		ORDER BY `sn`.`created_on` DESC;";
 
 		$values = array(

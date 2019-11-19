@@ -9,12 +9,13 @@ import { flyInPanelRow, flyIn, fall } from 'src/app/animations';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
 import { ActivatedRoute } from '@angular/router';
 import { SessionBackend, Session } from '../../services/backend.service';
+import { CourseBackend } from 'src/app/modules/courses/services/backend.service';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
-  animations: [flyInPanelRow, flyIn, fall]
+  animations: [flyInPanelRow, flyIn]
 })
 export class CreateComponent implements OnInit {
 
@@ -24,26 +25,25 @@ export class CreateComponent implements OnInit {
   session: Session = new Session();
   mode: string = "view";
 
+
   constructor(
     private route: ActivatedRoute,
-    private sessionForm: SessionFormService,
-    private sessionBackend: SessionBackend,
-    private accountForm: AccountFormService,
-    private accountBackend: AccountBackend,
-    private feed: FeedbackService,
+    private sessionForm: SessionFormService
   ) { }
 
   ngOnInit() {
     this.session.id = this.route.snapshot.paramMap.get('session');
 
+    //  Setup Form
+    this.sessionForm.Setup("create");
+    this.sessionForm.form$.subscribe((f) => {
+      this.form = f;
+    });
+
     // Get Page Type: Edit/View/Create
     if (this.session.id == null) {
       this.mode = "create";
-      //  Setup Form
-      this.sessionForm.Setup("create");
-      this.sessionForm.form$.subscribe((f) => {
-        this.form = f;
-      });
+      
     } else {
       this.sessionForm.Setup("edit");
       this.sessionForm.form$.subscribe((f) => {
@@ -51,21 +51,6 @@ export class CreateComponent implements OnInit {
       });
 
 
-      
-      this.sessionBackend.getDetail(this.session);
-      this.sessionBackend.detail$.subscribe((s) => {
-        console.log("foundSession: ", s);
-        this.session = s;
-        this.sessionForm.setForm(s);
-
-        if (this.session.created_by == this.accountBackend.user.id) {
-          this.mode = "edit";
-        } else {
-          this.mode = "view";
-        }
-        
-      });
-      
     }
     console.log("session.mode: ", this.mode, this.session.id);
 

@@ -5,7 +5,7 @@ import { CoursesRoutingModule } from './courses-routing.module';
 import { MaterialModule } from '../../shared/modules/material/material.module';
 import { AgmCoreModule } from '@agm/core';
 
-import { ListComponent } from './components/templates/list/list.component';
+
 import { SearchComponent } from './components/search/search.component';
 import { DetailComponent } from './components/detail/detail.component';
 import { MapComponent } from './components/map/map.component';
@@ -17,7 +17,9 @@ import { CourseBackend } from './services/backend.service';
 import { CourseFormService } from './services/course-form.service';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
-import { CourseListItemComponent } from './components/templates/course-list-item/course-list-item.component';
+import { CourseListItemComponent } from './components/course-list-item/course-list-item.component';
+
+import { ListComponent as CourseListComponent } from './components/list/list.component';
 
 
 
@@ -32,14 +34,14 @@ import { CourseListItemComponent } from './components/templates/course-list-item
     }),
   ],
   declarations: [
-    ListComponent,
+    CourseListComponent,
     SearchComponent,
     DetailComponent,
     MapComponent,
     ShellComponent,
     CreateComponent,
     DashboardComponent,
-    CourseListItemComponent
+    CourseListItemComponent,
   ],
   providers: [
     CourseBackend,
@@ -47,6 +49,7 @@ import { CourseListItemComponent } from './components/templates/course-list-item
   ],
   exports: [
     SearchComponent,
+    CourseListComponent,
     CourseListItemComponent
   ]
 

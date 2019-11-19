@@ -1,55 +1,27 @@
-<app-section-header title="session" back="true" [buttons]='headerButtons' (actionClick)="actionClick($event)"></app-section-header>
+<app-section-header title="session" back="true">
+</app-section-header>
 
-<div *ngIf="resolve; else loader">
-
-  <div class="panel row" @flyInPanelRow>
-    <div>
-      <label>Time</label>
-    </div>
-    <div class="col-md">
-      <label class="col-lg"> {{ +(session.start + "000") | date:"E" }} {{ +(session.start + "000") | date:"MMM d" }} </label>
-      <label class="col-md"> {{ +(session.start + "000") | date:"h:mm a" }} </label>
-    </div>
-  </div>
-
-  <div class="panel row" @flyInPanelRow>
-    <div>
-      <label>Course</label>
+<div @flyIn>
+  <div class="row justify-content-between align-items-center no-gutters panel">
+    <div class="col ml-2">
+      <p>{{ form.get('format').value.name }}</p>
     </div>
 
-    <div class="col-md">
-      <a mat-flat-button color="accent" routerLink="/courses/{{ session?.course?.id }}" class="col">
-        <span class='icon-map-pin'></span>
-        {{ session?.course?.name }}
+    <div class="col-xs align-self-end">
+      <a mat-flat-button disabled color="" matTooltip="{{ form.get('format').value.desc }}">
+        <span class="icon-help-circle"></span>
       </a>
     </div>
-
   </div>
-
-
-  <div class="panel row" @flyInPanelRow>
-    <div>
-      <label> Format </label>
-    </div>
-
-    <div class="col-md">
-      <a mat-flat-button color="primary" (click)="changeFormat()" class="col"> 
-        <label>{{ format }}</label>
-      </a>
-    </div>
-
-  </div>
-
-
-
-  
-  <app-team-list *ngIf="session.format?.indexOf('team') > -1" [league]="league" [session]="session">
-  </app-team-list>
-
-  <app-player-list [league]="league" [session]="session">
-  </app-player-list>
-
 </div>
+
+
+
+<app-team-list *ngIf="session.format?.indexOf('team') > -1" [league]="league" [session]="session">
+</app-team-list>
+
+<app-player-list [league]="league" [session]="session">
+</app-player-list>
 
 
 <ng-template #loader>
