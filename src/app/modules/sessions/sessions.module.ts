@@ -38,7 +38,7 @@ import { ListItemComponent as SessionListItemComponent } from './components/list
     DashboardComponent, 
     SelectPlayersComponent,
     SelectFormatComponent,
-    SessionListItemComponent, 
+    SessionListItemComponent,
   ],
   exports: [],
   entryComponents: [

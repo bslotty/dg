@@ -1,12 +1,9 @@
-<app-section-header title="Sessions" [buttons]="headerButtons" (actionClick)="actionClick($event)">
-</app-section-header>
-
 <div>
     <h5 class="sub-header">Upcoming</h5>
 
 
     <div *ngIf="upcoming | async as sessionList; else loader">
-        <mat-accordion *ngIf="sessionList.length; else none" >
+        <mat-accordion *ngIf="sessionList.length; else none">
             <session-list-item *ngFor="let session of sessionList" [session]="session" @flyIn></session-list-item>
         </mat-accordion>
     </div>
@@ -15,7 +12,7 @@
 
     <h5 class="sub-header">Recient</h5>
     <div *ngIf="recient | async as sessionList; else loader">
-        <mat-accordion *ngIf="sessionList.length; else none" >
+        <mat-accordion *ngIf="sessionList.length; else none">
             <session-list-item *ngFor="let session of sessionList" [session]="session" @flyIn></session-list-item>
         </mat-accordion>
     </div>

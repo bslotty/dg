@@ -174,7 +174,7 @@
         <div class="col-12 teamDropPad unassigned mb-3" (cdkDropListDropped)="rosterDrop($event)" cdkDropList
           [cdkDropListData]="getRoster(null)" id="team-unassigned">
 
-          <label>{{ teamGame ? 'Unassigned' : 'Free Agents' }}</label>
+          <label>{{ teamGame ? 'Unassigned' : 'Players' }}</label>
           <score-list-item cdkDrag [cdkDragData]="player" [score]="player" mode="puck"
             *ngFor="let player of getRoster(null)">
           </score-list-item>

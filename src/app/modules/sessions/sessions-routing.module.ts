@@ -10,6 +10,7 @@ import { PlayerScoreListComponent } from '../stats/components/player-score-list/
 
 import { AuthGuard } from 'src/app/guards/auth.service';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DetailComponent } from './components/detail/detail.component';
 
 
 const sessionRoutes: Routes = [
@@ -22,16 +23,9 @@ const sessionRoutes: Routes = [
         path: "create",
         component: CreateComponent,
         canActivate: [],
-      }, {
+      },{
         path: ":session",
-        component: CreateComponent,
-        //component: EditComponent,
-        canActivate: [],
-
-      },  {
-        path: ":session",
-        component: CreateComponent,
-        //  component: DetailComponent,
+        component: DetailComponent,
         canActivate: [],
       },{
         path: ":session/play",

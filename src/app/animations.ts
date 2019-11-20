@@ -62,14 +62,22 @@ export const flyIn = trigger('flyIn', [
       }),
       { optional: true }),
 
+    query(':leave',
+      style({
+        opacity: 0,
+      }),
+      { optional: true }),
+
     group([
       query(':leave', [
         stagger(90, [
-          animate('100ms ease',
+          animate('1000ms ease',
             style({
+              //  position: 'absolute',
+              //  display: "block",
               opacity: 0,
               //  height: 0,
-              transform: "translateY(-20%)"
+              //  transform: "translateY(-20%)"
             })
           ),
         ])
@@ -77,9 +85,9 @@ export const flyIn = trigger('flyIn', [
       query(':enter',
         stagger(30, [
           animate('300ms ease',
-            style({ 
-              transform: "translateY(0)", 
-              opacity: 1, 
+            style({
+              transform: "translateY(0)",
+              opacity: 1,
               height: "*",
             })
           )]
@@ -91,28 +99,28 @@ export const flyIn = trigger('flyIn', [
 
 export const scorecardSlide = trigger('scorecardSlide', [
   transition(':increment', [
-      style({
+    style({
       transform: 'translateX(1em)', opacity: 0,
     }),
-    animate('0.3s ease-out', style({transform: 'translateX(0)', opacity: 1,}))
-  ]), 
+    animate('0.3s ease-out', style({ transform: 'translateX(0)', opacity: 1, }))
+  ]),
   transition(':decrement', [
-      style({
+    style({
       transform: 'translateX(-1em)', opacity: 0,
     }),
-    animate('0.3s ease-out', style({transform: 'translateX(0)', opacity: 1,}))
+    animate('0.3s ease-out', style({ transform: 'translateX(0)', opacity: 1, }))
   ])
 ]);
 
 export const flyInPanelRow = trigger('flyInPanelRow', [
   transition(':enter', [
-    style({ opacity: 0, overflow: "hidden", height: 0 , display: "block", position: "relative", transform: "translateY(-10%)" /* border: "1px solid #FF00FF" */}),
+    style({ opacity: 0, overflow: "hidden", height: 0, display: "block", position: "relative", transform: "translateY(-10%)" /* border: "1px solid #FF00FF" */ }),
     animate('2s ease-out',
-      style({ offset: 1, opacity: 1,  height: "*", transform: "translateY(0)"  })
+      style({ offset: 1, opacity: 1, height: "*", transform: "translateY(0)" })
     ),
   ]),
   transition(':leave', [
-    style({ display: "block", position: "relative"}),
+    style({ display: "block", position: "relative" }),
     animate('1s ease',
       style({
         opacity: 0,
@@ -144,7 +152,7 @@ export const flyInPanelRow = trigger('flyInPanelRow', [
 //  Generic Animations for Chaining
 export const growHeight = trigger('fallOut', [
   transition(':enter', [
-    style({ overflow: "hidden",  height: 0, position: 'relative' }),
+    style({ overflow: "hidden", height: 0, position: 'relative' }),
     animate('.3s ease',
       style({ offset: 1, height: "*" })
     ),
@@ -161,13 +169,13 @@ export const growHeight = trigger('fallOut', [
 
 export const fall = trigger('fall', [
   transition(':enter', [
-    style({ opacity: 0, overflow: "hidden", display: "inline-block", position: "relative", transform: "scale(1.1)" /* border: "1px solid #FF00FF" */}),
+    style({ opacity: 0, overflow: "hidden", display: "inline-block", position: "relative", transform: "scale(1.1)" /* border: "1px solid #FF00FF" */ }),
     animate('.3s ease-out',
-      style({ offset: 1, opacity: 1, transform: "scale(1)"  })
+      style({ offset: 1, opacity: 1, transform: "scale(1)" })
     ),
   ]),
   transition(':leave', [
-    style({ display: "block", position: "relative"}),
+    style({ display: "block", position: "relative" }),
     animate('.1s ease',
       style({
         opacity: 0,
@@ -176,4 +184,112 @@ export const fall = trigger('fall', [
     )
   ]),
 
+]);
+
+
+
+
+
+
+
+
+
+
+
+
+//  Header Components
+export const flyLeft = trigger('flyLeft', [
+  transition('* <=> *', [
+    query(':enter',
+      style({
+        opacity: 0,
+        transform: "translateX(50%)",
+        overflow: "hidden",
+        position: 'relative',
+        display: "block",
+      }),
+      { optional: true }),
+
+    query(':leave',
+      style({
+        opacity: 0,
+        transform: "translateX(50%)",
+      }),
+      { optional: true }),
+
+    group([
+      query(':leave', [
+        stagger(90, [
+          animate('1000ms ease',
+            style({
+              //  position: 'absolute',
+              //  display: "block",
+              opacity: 0,
+              transform: "translateX(50%)",
+              //  height: 0,
+              //  transform: "translateY(-20%)"
+            })
+          ),
+        ])
+      ], { optional: true }),
+      query(':enter',
+        stagger(30, [
+          animate('2000ms ease',
+            style({
+              transform: "translateX(0)",
+              opacity: 1,
+              height: "*",
+            })
+          )]
+        ), { optional: true })
+    ])
+  ])
+]);
+
+export const flyRight = trigger('flyRight', [
+  transition('* <=> *', [
+    query(':enter',
+      style({
+        opacity: 0,
+        transform: "translateX(-50%)",
+        overflow: "hidden",
+        position: 'relative',
+        display: "block",
+      }),
+      { optional: true }),
+
+    query(':leave',
+      style({
+        opacity: 0,
+        transform: "translateX(-50%)",
+      }),
+      { optional: true }),
+
+    group([
+      query(':leave', [
+        stagger(90, [
+          animate('1000ms ease',
+            style({
+              //  position: 'absolute',
+              //  display: "block",
+              opacity: 0,
+              transform: "translateX(-50%)",
+              //  height: 0,
+              //  transform: "translateY(-20%)"
+            })
+          ),
+        ])
+      ], { optional: true }),
+      query(':enter',
+        stagger(30, [
+          animate('300ms ease',
+            style({
+              transform: "translateX(0)",
+              opacity: 1,
+              height: "*",
+            })
+          )]
+        ), { optional: true })
+    ])
+  ])
 ]);

@@ -1,5 +1,5 @@
 <div *ngIf="header == true">
-  <app-section-header title="Search Courses"></app-section-header>
+  <app-section-header title="Search"></app-section-header>
   <p class="alert alert-light">You can search for a course by Park, City, State</p>
 </div>
 
@@ -16,14 +16,13 @@
   </mat-form-field>
 </form>
 
-<div *ngIf="!feed.loading; else loader">
-  <div *ngIf="results | async as courseList; else loader">
-    <div *ngIf="courseList.length; else none" @flyIn>
-      <course-list-item *ngFor="let course of courseList" [course]="course" mode="list" mode="selector">
-      </course-list-item>
-    </div>
+<div *ngIf="results | async as courseList; else loader">
+  <div *ngIf="courseList.length; else none" @flyIn>
+    <course-list-item *ngFor="let course of courseList" [course]="course" mode="list" mode="selector">
+    </course-list-item>
   </div>
 </div>
+
 
 
 

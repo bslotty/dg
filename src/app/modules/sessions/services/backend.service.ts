@@ -147,39 +147,6 @@ export class SessionBackend {
         console.log ("Error with server Response: ", res);
       }
     });
-
-
-    //  Check if Session is already grabbed from List; Otherwise Poll Server
-
-    /*
-    var found = this.list.value.filter((s) => {
-      return s.id == session.id;
-    });
-
-    console.log("session already loaded?: ", found[0]);
-
-    if (found.length > 0) {
-      this.convertSession(found[0]);
-
-      this.detail.next(found[0]);
-    } else {
-      this.http.post(this.url, {
-        "action": "detail",
-        "session": session,
-        "user": this.account.user
-      }).pipe().subscribe((res) => {
-        if (this.helper.rCheck(res)) {
-
-          var session = this.convertProperties(res)[0];
-          console.log("session.getDetail: ", session);
-          this.detail.next(session);
-        } else {
-          console.log ("Error with server Response: ", res);
-        }
-      });
-    }
-    */
-
   }
 
 

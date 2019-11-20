@@ -31,7 +31,7 @@ export class SessionFormService {
   */
 
   //  Form Field Control Setup;
-  private cFormat = new FormControl("", [
+  private cFormat = new FormControl(this.sessionService.types[0], [
     Validators.required
   ]);
 
@@ -136,6 +136,10 @@ export class SessionFormService {
         form.addControl("teams", this.cTeams);
 
         //  Get Data & Populate
+        this.sessionService.detail$.subscribe((s)=>{
+          console.log ("formService.detail.setForm:", s);
+          this.setForm(s);
+        });
         break;
 
       case "search":
@@ -219,16 +223,7 @@ export class SessionFormService {
     this.form.value.get("time").setValue(time);
 
     //  Players
-    if (values.scores == undefined) {
-      this.getScores();
-    } else {
-      console.log ("WHY IS SCORES UNAVAILABLE: ", values.scores, this.form.value);
-      /*
-      var arrayHelper = this.form.value.get('scores') as FormArray;
-      arrayHelper.push(values.scores);
-      */
-      this.form.value.get('scores').setValue(values.scores);
-    }
+    this.form.value.get('scores').setValue(values.scores);
     
     this.form.value.markAsDirty();
 

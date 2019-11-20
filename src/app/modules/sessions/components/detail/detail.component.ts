@@ -1,6 +1,10 @@
 
 import { Component, OnInit } from '@angular/core';
 import { flyIn } from 'src/app/animations';
+import { FormGroup } from '@angular/forms';
+import { SessionFormService } from '../../services/form.service';
+import { SessionBackend, Session } from '../../services/backend.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-detail',
@@ -10,8 +14,28 @@ import { flyIn } from 'src/app/animations';
 })
 export class DetailComponent implements OnInit {
 
-  constructor() { }
+  session: Session = new Session();
+  form: FormGroup;
+  
+  constructor(
+    private _sessionsForm: SessionFormService,
+    private _sessions: SessionBackend,
+    private router: ActivatedRoute,
+  ) { }
 
-  ngOnInit() {;
+  ngOnInit() {
+    
+    //  Setup Form
+    this._sessionsForm.Setup("edit");
+    this._sessionsForm.form$.subscribe((f)=>{
+      this.form = f;
+    });
+
+    //  Populate Data for form
+    this.session.id = this.router.snapshot.paramMap.get("session");
+    this._sessions.getDetail(this.session);
+    
+
+
   }
 }
