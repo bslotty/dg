@@ -191,19 +191,21 @@ switch ($payload['action']) {
 			$r_getCourse = $courses->getDetails($session["course_id"]);
 			$return[] = $r_getCourse;
 			if ($r_getCourse['status'] == 'success' && $r_getCourse['affectedRows'] == 1) {
-				$session['course'] = $r_getCourse['results'][0];
-			}
 
-			//	Get Scores
-			if (strpos($session['format'], "team") >= 0) {
-				$r_scoreList = $scores->getScoresWithTeams($session);
-			} else {
-				$r_scoreList = $scores->getScores($session);
-			}
+				//	Set Course
+				$sessionDetails["results"][0]["course"] = $r_getCourse['results'][0];
 
-			if ($r_scoreList['status'] == 'success') {
-				if ($r_scoreList['affectedRows'] > 0) {
-					//	Format Scores Data; Update
+				//	Get Scores
+				if (strpos($session['format'], "team") === false) {
+					$r_scoreList = $scores->getScores($session);
+				} else {
+					$r_scoreList = $scores->getScoresWithTeams($session);
+				}
+				$return[] = $r_scoreList;
+
+				//	Format Scores
+				if ($r_scoreList['status'] == 'success' && $r_scoreList['affectedRows'] > 0) {
+
 					$formattedScores = array();
 					foreach ($r_scoreList['results'] as $pK => $p) {
 						$formattedScores[] = array(
@@ -228,30 +230,29 @@ switch ($payload['action']) {
 						);
 					}
 
+					//	Replace Scores with format
 					$sessionDetails["results"][0]['scores'] = $formattedScores;
-					$return[] = $r_scoreList;
 					$return[] = $sessionDetails;
 
 				} else {
 					$return[] = array(
 						'status' 	=> 'error',
-						'msg'		=> 'Score List was Empty',
+						'msg'		=> 'Failed to retrieve Score List',
 						'sessions'	=> $sessionDetails,
-						'scores'	=> $r_scoreList
+						'scores'	=> $scoreList
 					);
 				}
 			} else {
 				$return[] = array(
-					'status' 	=> 'error',
-					'msg'		=> 'Failed to retrieve Score List',
-					'sessions'	=> $sessionList,
-					'scores'	=> $scoreList
+					"status" 	=> "error",
+					"msg"		=> "Failed to retrieve Course",
+					"debug"		=> $sessionDetails
 				);
 			}
 		} else {
 			$return[] = array(
 				"status" 	=> "error",
-				"msg"		=> "Error getting session be detail",
+				"msg"		=> "Failed to retrieve Session",
 				"debug"		=> $sessionDetails
 			);
 		}

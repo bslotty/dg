@@ -13,17 +13,21 @@ import { flyInPanelRow } from 'src/app/animations';
 })
 export class ScoreListItemComponent implements OnInit {
 
-  @Input() mode: string = "";
-  @Input() score: Score;
-  @Input() team: Team;
+  @Input() nameMode: string = "full"; // short
+  @Input() actionMode: string[]
 
+  @Input() mode: string[]
+
+  @Input() score: Score;
   @Output() action: EventEmitter<Object> = new EventEmitter();
 
   constructor(
     private dialog: MatDialog,
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    console.log ("mode: ", this.mode);
+   }
 
   remove() {
     this.action.emit({

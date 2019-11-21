@@ -1,35 +1,47 @@
-<app-section-header title="session" back="true">
-</app-section-header>
+<!--  Format  -->
+<div class="row justify-content-between align-items-center no-gutters">
+  <h6 class="col sub-header ml">Format</h6>
+</div>
+<div class="row justify-content-between align-items-center no-gutters panel" @flyIn>
+  <div class="col ml-2">
+    <p>{{ form.get('format').value.name }}</p>
+  </div>
 
-<div @flyIn>
-  <div class="row justify-content-between align-items-center no-gutters panel">
-    <div class="col ml-2">
-      <p>{{ form.get('format').value.name }}</p>
-    </div>
-
-    <div class="col-xs align-self-end">
-      <a mat-flat-button disabled color="" matTooltip="{{ form.get('format').value.desc }}">
-        <span class="icon-help-circle"></span>
-      </a>
-    </div>
+  <div class="col-xs align-self-end">
+    <a mat-flat-button disabled color="" matTooltip="{{ form.get('format').value.desc }}">
+      <span class="icon-help-circle"></span>
+    </a>
   </div>
 </div>
 
 
-<div *ngIf="mode == 'view'">
-  <div class="row justify-content-between align-items-center no-gutters panel">
-    <div class="col ml-2">
-      <p>{{ form.get('date').value.toString() }} {{ form.get('time').value }}</p>
-    </div>
+
+<!--  Course  -->
+<div class="row justify-content-between align-items-end no-gutters">
+  <h6 class="col sub-header ml">Course</h6>
+  <div class="col-xs" *ngIf="form.get('course').value">
+    <a mat-flat-button color="transparent-warn" (click)="clearCourse()">
+      <span class="icon-x-circle"></span>
+    </a>
   </div>
 </div>
 
+<div @flyIn *ngIf="form.get('course').value">
+  <course-list-item [course]='form.get("course").value' mode='list'></course-list-item>
+</div>
 
-<app-team-list *ngIf="session.format?.indexOf('team') > -1" [league]="league" [session]="session">
-</app-team-list>
 
-<app-player-list [league]="league" [session]="session">
-</app-player-list>
+
+<!--  Date  -->
+<div class="row justify-content-between align-items-center no-gutters">
+  <h6 class="col sub-header ml">Time</h6>
+</div>
+<div class="row justify-content-between align-items-center no-gutters panel">
+  <div class="col ml-2">
+    <p>{{ form.get('date').value.toString() }} {{ form.get('time').value }}</p>
+  </div>
+</div>
+
 
 
 
@@ -46,6 +58,8 @@
     <label>Play</label>
   </a>
 </div>
+
+
 <ng-template #loader>
   <loader></loader>
 </ng-template>

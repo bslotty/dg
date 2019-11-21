@@ -17,6 +17,7 @@ export class SelectPlayersComponent implements OnInit {
 
   form: FormGroup;
   results: Score[] = [];
+  playerMode: string[] = ["full","email","selector"];
 
   @Output() selected: EventEmitter<Score> = new EventEmitter();
 

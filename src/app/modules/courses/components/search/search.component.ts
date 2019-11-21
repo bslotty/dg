@@ -3,14 +3,14 @@ import { FormGroup } from '@angular/forms';
 import { CourseBackend, Course } from '../../services/backend.service';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
 import { CourseFormService } from '../../services/course-form.service';
-import { flyIn } from 'src/app/animations';
+import { flyIn, flyLeft } from 'src/app/animations';
 import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-course-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css'],
-  animations: [flyIn]
+  animations: [flyIn, flyLeft]
 })
 export class SearchComponent implements OnInit {
 

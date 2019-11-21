@@ -1,4 +1,4 @@
-<div class="panel row justify-content-between align-items-center no-gutters" >
+<div class="panel row justify-content-between align-items-center no-gutters">
 
 	<!--	Team Color Bar	-->
 	<div class="colorChoice" *ngIf='score?.team'>
@@ -6,58 +6,49 @@
 	</div>
 
 	<!--	Name	-->
-	<div class="col ml-3" *ngIf="mode != 'puck'">
-		<div>{{ score.player.first_name | titlecase}} {{ score.player.last_name | titlecase}} <span
-				*ngIf="score.handicap && score.handicap != 0" class="icon-shield color-accent"></span></div>
-		<div class="sub-text" *ngIf="mode == 'selector'">{{ score.player.email }}</div>
+	<div class="col ml-3" *ngIf="mode.indexOf('full') > -1">
+		<div>{{ score.player.first_name | titlecase}} {{ score.player.last_name | titlecase}}</div>
+		<div class="sub-text" *ngIf="mode.indexOf('email') > -1">{{ score.player.email }}</div>
 	</div>
 
-	<div class="col ml-3" *ngIf="mode == 'puck'">
-		<div class="row justify-content-between align-items-center no-gutters">
-			<div class="col">
-				{{ ((score.player.first_name | titlecase) | slice:0:1)+'.' }}
-				{{ (score.player.last_name.length > 8 ) ? ((score.player.last_name | titlecase) | slice:0:8)+'..' : (score.player.last_name | titlecase) }}
-			</div>
-
-			<div class="col-xs">
-				<span *ngIf="score.handicap && score.handicap != 0" class="icon-shield color-accent"></span>
-			</div>
-		</div>
-
-
+	<div class="col ml-3" *ngIf="mode.indexOf('short') > -1">
+		{{ ((score.player.first_name | titlecase) | slice:0:1)+'.' }}
+		{{ (score.player.last_name.length > 8 ) ? ((score.player.last_name | titlecase) | slice:0:8)+'..' : (score.player.last_name | titlecase) }}
 	</div>
+
+
+
+
+
 
 	<!--	Scores		-->
+	<div>
+		<div class='col-xs'>
+			<span *ngIf="score.handicap && score.handicap != 0" class="icon-shield color-accent"></span>
+		</div>
+		<div class="col" *ngIf="mode.indexOf('scores') > -1">
+			<span class='icon-warning-octagon color-warn'></span>
+		</div>
+	</div>
 
 
 	<!--	Admin Actions	-->
-	<div class="col-xs" *ngIf="mode == 'admin'">
-		<a mat-icon-button color="primary" [matMenuTriggerFor]="appMenu">
+	<div class="col-xs" *ngIf="mode.indexOf('admin') > -1">
+		<a mat-flat-button color="transparent-primary" [matMenuTriggerFor]="appMenu">
 			<span class="icon-more-vertical"></span>
 		</a>
 
 		<mat-menu #appMenu="matMenu">
 			<a mat-menu-item (click)="openSettings(score.player)">Set Handicap</a>
-			<a mat-menu-item color="warn" (click)="remove(score.player)">Remove </a>
+			<a mat-menu-item color="warn" class="color-warn" (click)="remove(score.player)">Remove </a>
 		</mat-menu>
 	</div>
 
 
-	<div class="col-xs" *ngIf="mode == 'selector'">
-		<a mat-icon-button color="primary" (click)="include(score.player)">
-			<span class="icon-plus"></span>
+	<!--	Selector	-->
+	<div class="col-xs" *ngIf="mode.indexOf('selector') > -1">
+		<a mat-flat-button color="transparent-accent" (click)="include(score.player)">
+			<span class="icon-plus-circle"></span>
 		</a>
 	</div>
-
-	<!--		Move to Admin Burger Menu 	
-
-	<div class="col-xs" *ngIf="mode == 'remove'">
-		<a mat-icon-button color="primary" (click)="openSettings(score.player)">
-			<span class="icon-settings"></span>
-		</a>
-		<a mat-icon-button color="warn" (click)="remove(score.player)">
-			<span class="icon-minus"></span>
-		</a>
-	</div>
-	-->
 </div>

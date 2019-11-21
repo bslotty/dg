@@ -3,14 +3,14 @@ import { FormGroup, FormArray } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { SessionFormService } from '../../services/form.service';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { flyIn } from 'src/app/animations';
+import { flyIn, flyLeft } from 'src/app/animations';
 import { Session } from '../../services/backend.service';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
-  animations: [flyIn]
+  animations: [flyIn, flyLeft]
 })
 export class CreateComponent implements OnInit {
 
@@ -18,6 +18,8 @@ export class CreateComponent implements OnInit {
   roster = [];
 
   session: Session = new Session();
+
+  playerModes: string[] = ["admin", "short"];
 
   constructor(
     private sessionForm: SessionFormService

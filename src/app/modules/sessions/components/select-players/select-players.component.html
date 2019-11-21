@@ -12,7 +12,7 @@
 </div>
 
 <div *ngIf="results.length > 0 && this.form.dirty; else create" @flyIn>
-	<score-list-item *ngFor="let score of results; trackBy: trackBy" [score]='score' mode='selector'
+	<score-list-item *ngFor="let score of results; trackBy: trackBy" [score]='score' [mode]='playerMode'
 		(action)="include($event)"></score-list-item>
 </div>
 

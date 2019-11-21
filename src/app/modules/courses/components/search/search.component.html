@@ -17,8 +17,8 @@
 </form>
 
 <div *ngIf="results | async as courseList; else loader">
-  <div *ngIf="courseList.length; else none" @flyIn>
-    <course-list-item *ngFor="let course of courseList" [course]="course" mode="list" mode="selector">
+  <div *ngIf="courseList.length; else none" [@flyIn]>
+    <course-list-item  *ngFor="let course of courseList" [course]="course" mode="list" mode="selector">
     </course-list-item>
   </div>
 </div>

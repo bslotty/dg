@@ -104,11 +104,9 @@ class Score
 			`p`.`email` AS `playerEmail`
 
 		FROM `Scores` AS `s`
-		JOIN `Teams` AS `t`
-		JOIN `Players` AS `p`
-		WHERE 	`s`.`session_id` 	= :id 		AND 
-				`s`.`team_id` 		= `t`.`id` 	AND 
-				`s`.`player_id` 	= `p`.`id`";
+		JOIN `Teams` AS `t` 	ON `s`.`team_id` 	= `t`.`id`
+		JOIN `Players` AS `p` 	ON `s`.`player_id` 	= `p`.`id`
+		WHERE `s`.`session_id` = :id;";
 
 		$values = array(
 			':id' => $session['id']

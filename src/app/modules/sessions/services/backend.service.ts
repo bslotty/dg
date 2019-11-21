@@ -31,10 +31,7 @@ export class SessionBackend {
 
   //  Single View
   private detail: Subject<Session> = new Subject();
-  detail$: Observable<Session> = this.detail.asObservable().pipe(map((d) => {
-    console.log("detailSet: ", d);
-    return d;
-  }));
+  detail$: Observable<Session> = this.detail.asObservable();
 
   //  Session Modes
   public types:SessionFormat[] = [

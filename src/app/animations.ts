@@ -65,8 +65,10 @@ export const flyIn = trigger('flyIn', [
     query(':leave',
       style({
         opacity: 0,
+        position: 'relative',
+        display: "block",
       }),
-      { optional: true }),
+      { optional: true }), animateChild(),
 
     group([
       query(':leave', [
@@ -81,7 +83,7 @@ export const flyIn = trigger('flyIn', [
             })
           ),
         ])
-      ], { optional: true }),
+      ], { optional: true }), animateChild(),
       query(':enter',
         stagger(30, [
           animate('300ms ease',
@@ -91,8 +93,8 @@ export const flyIn = trigger('flyIn', [
               height: "*",
             })
           )]
-        ), { optional: true })
-    ])
+        ), { optional: true }), animateChild(),
+    ]), animateChild()
   ])
 ]);
 
@@ -138,14 +140,6 @@ export const flyInPanelRow = trigger('flyInPanelRow', [
 //  PUTT Animation for panel entry: 
 //    In:  Slow Raise Up From Bottom-85% -> bounceAbove -> Fast Down to normal POS.
 //    Out: Rotate to and fall off 
-
-
-
-
-
-
-
-
 
 
 
@@ -199,50 +193,17 @@ export const fall = trigger('fall', [
 
 //  Header Components
 export const flyLeft = trigger('flyLeft', [
-  transition('* <=> *', [
-    query(':enter',
-      style({
-        opacity: 0,
-        transform: "translateX(50%)",
-        overflow: "hidden",
-        position: 'relative',
-        display: "block",
-      }),
-      { optional: true }),
-
-    query(':leave',
-      style({
-        opacity: 0,
-        transform: "translateX(50%)",
-      }),
-      { optional: true }),
-
-    group([
-      query(':leave', [
-        stagger(90, [
-          animate('1000ms ease',
-            style({
-              //  position: 'absolute',
-              //  display: "block",
-              opacity: 0,
-              transform: "translateX(50%)",
-              //  height: 0,
-              //  transform: "translateY(-20%)"
-            })
-          ),
-        ])
-      ], { optional: true }),
-      query(':enter',
-        stagger(30, [
-          animate('2000ms ease',
-            style({
-              transform: "translateX(0)",
-              opacity: 1,
-              height: "*",
-            })
-          )]
-        ), { optional: true })
-    ])
+  transition(':enter', [
+    style({
+      transform: 'translateX(1em)', opacity: 0, overflow: "hidden",
+    }),
+    animate('1s ease-out', style({ transform: 'translateX(0)', opacity: 1, })), animateChild()
+  ]),
+  transition(':leave', [
+    style({
+      transform: 'translateX(-1em)', opacity: 0,
+    }),
+    animate('1s ease-out', style({ transform: 'translateX(0)', opacity: 1, })), animateChild()
   ])
 ]);
 
@@ -256,14 +217,14 @@ export const flyRight = trigger('flyRight', [
         position: 'relative',
         display: "block",
       }),
-      { optional: true }),
+      { optional: true }), animateChild(),
 
     query(':leave',
       style({
         opacity: 0,
         transform: "translateX(-50%)",
       }),
-      { optional: true }),
+      { optional: true }), animateChild(),
 
     group([
       query(':leave', [
@@ -279,7 +240,7 @@ export const flyRight = trigger('flyRight', [
             })
           ),
         ])
-      ], { optional: true }),
+      ], { optional: true }), animateChild(),
       query(':enter',
         stagger(30, [
           animate('300ms ease',
@@ -289,7 +250,7 @@ export const flyRight = trigger('flyRight', [
               height: "*",
             })
           )]
-        ), { optional: true })
+        ), { optional: true }), animateChild(),
     ])
   ])
 ]);

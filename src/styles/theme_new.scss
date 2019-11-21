@@ -3,45 +3,23 @@
 
 // Be sure that you only ever include 'mat-core' mixin once!
 // it should not be included for each theme.
+
+
+//  https://material.angular.io/guide/typography
 $custom-typography: mat-typography-config(
   $font-family: $font-header
+  /*
+    Other Options
+    
+
+
+
+
+
+  */
 );
 @include mat-core($custom-typography);
 
-/*
-$md-primary: (
-  50: #e5e6e4,
-  100: #bfc2bc,
-  200: #94998f,
-  300: #697062,
-  400: #485140,
-  500: #28321e,
-  600: #242d1a,
-  700: #1e2616,
-  800: #181f12,
-  900: #0f130a,
-  A100: #fafaf0,
-  A200: #a78a6c,
-  A400: #6e4e2e,
-  A700: #492e13,
-  contrast: (
-    50: $text-dark,
-    100: $text-dark,
-    200: $text-dark,
-    300: $text-light,
-    400: $text-light,
-    500: $text-light,
-    600: $text-light,
-    700: $text-light,
-    800: $text-light,
-    900: $text-light,
-    A100: $text-dark,
-    A200: $text-dark,
-    A400: $text-dark,
-    A700: $text-dark
-  )
-);
-*/
 $md-primary: (
   50: #fefefd,
   100: #fefefb,
@@ -169,7 +147,6 @@ h1 {
 
 h2 {
   font-size: 1.5rem;
-  font-size: 34sp;
   font-size: 24sp;
   font-weight: 400;
 }
