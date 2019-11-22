@@ -34,13 +34,7 @@ export class CreateComponent implements OnInit {
     });
   }
 
-  get teamGame(): boolean {
-    if (this.form.get('format').valid && this.form.get('format').value.enum.indexOf("team") > -1) {
-      return true
-    } else {
-      return false;
-    }
-  }
+  
 
   selectFormat($event) {
     this.sessionForm.setFormat($event);

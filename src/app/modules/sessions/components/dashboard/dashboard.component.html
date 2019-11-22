@@ -1,16 +1,12 @@
-<div @flyIn *ngIf="(upcoming && recient) | async; else create" >
+<div @flyIn *ngIf="(upcoming && recient) | async; else create">
     <h6 class="sub-header">Upcoming</h6>
-    <div *ngIf="upcoming | async as sessionList; else loader">
-        <mat-accordion *ngIf="sessionList.length; else none">
-            <session-list-item *ngFor="let session of sessionList" [session]="session" @flyIn></session-list-item>
-        </mat-accordion>
+    <div *ngIf="upcoming | async as sessionList; else loader" @flyIn>
+        <session-list-item *ngFor="let session of sessionList" [session]="session"></session-list-item>
     </div>
 
     <h6 class="sub-header">Recient</h6>
-    <div *ngIf="recient | async as sessionList; else loader">
-        <mat-accordion *ngIf="sessionList.length; else none">
-            <session-list-item *ngFor="let session of sessionList" [session]="session" @flyIn></session-list-item>
-        </mat-accordion>
+    <div *ngIf="recient | async as sessionList; else loader" @flyIn>
+        <session-list-item *ngFor="let session of sessionList" [session]="session" ></session-list-item>
     </div>
 
     <div class="row ">

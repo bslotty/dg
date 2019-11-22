@@ -8,6 +8,7 @@ import { Course } from '../../courses/services/backend.service';
 import { map, debounceTime, distinctUntilChanged, catchError, takeWhile } from 'rxjs/operators';
 import { pipe, BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { HelperService } from 'src/app/shared/services/helper.service';
+import { Score } from '../../scores/services/backend.service';
 
 @Injectable({
   providedIn: 'root'
@@ -138,7 +139,7 @@ export class SessionBackend {
 
         var session = this.convertProperties(res)[0];
         console.log("session.getDetail: ", session);
-        
+
         this.detail.next(session);
       } else {
         console.log ("Error with server Response: ", res);
@@ -194,28 +195,6 @@ export class SessionBackend {
       })
     );
   }
-  
-  convertSession(session) {
-
-  }
-
-  /*  MFD
-  setSessionFormat(league: League, session: Session) {
-    let url = environment.apiUrl + "/sessions/setFormat.php";
-    return this.http.post(url, {
-      "user": this.account.user,
-      "league": league,
-      "session": session,
-    }).pipe(
-      map((res: ServerPayload) => {
-
-        //  Return Server Response for Error Handling
-        return res;
-      })
-    );
-  }
-  */
-
 
 
   sortSession(list) {
@@ -248,25 +227,6 @@ export class SessionBackend {
       this.getDetail(sessionId);
     }
   }
-
-
-  //  Gonna have to move this to a new service; URL conflicts;
-  getScores() {
-    
-  }
-
-
-  /*  MFD
-  convertSession(res) {
-    var result = [];
-
-    return result;
-  }
-
-  updateFormat(type) {
-    console.log ("session.updateFormat: ", type);
-  }
-  */
 }
 
 export class SessionFormat {
@@ -295,12 +255,4 @@ export class Session {
 
 
 
-export class Score {
-  public id: string;
-  public player: Player;
-  public scores: Array<number>;
-  public team: string; // Index of Team
-  public handicap: number;
 
-  constructor() { }
-}

@@ -7,6 +7,7 @@ import { Session, SessionBackend, SessionFormat } from './backend.service';
 import { HelperService } from 'src/app/shared/services/helper.service';
 import { AccountBackend } from '../../account/services/backend.service';
 import { Team } from '../../stats/services/backend.service';
+import { ScoresBackend } from '../../scores/services/backend.service';
 
 @Injectable({
   providedIn: 'root'
@@ -39,13 +40,17 @@ export class SessionFormService {
     Validators.required,
   ]);
 
-  private cDate = new FormControl("", {updateOn: "change", validators: [
-    Validators.required,
-  ]});
+  private cDate = new FormControl("", {
+    updateOn: "change", validators: [
+      Validators.required,
+    ]
+  });
 
-  private cTime = new FormControl("", {updateOn: "change", validators: [
-    Validators.required,
-  ]});
+  private cTime = new FormControl("", {
+    updateOn: "change", validators: [
+      Validators.required,
+    ]
+  });
 
   private cPlayers = new FormArray([], [
     Validators.required
@@ -111,7 +116,17 @@ export class SessionFormService {
     private courseService: CourseBackend,
     private sessionService: SessionBackend,
     private accountService: AccountBackend,
-    private router: Router) { }
+    private router: Router) 
+  { }
+
+  get teamGame(): boolean {
+    if (this.form.value.get('format').valid && this.form.value.get('format').value.enum.indexOf("team") > -1) {
+      return true
+    } else {
+      return false;
+    }
+  }
+
 
   Setup(type) {
 
@@ -136,8 +151,8 @@ export class SessionFormService {
         form.addControl("teams", this.cTeams);
 
         //  Get Data & Populate
-        this.sessionService.detail$.subscribe((s)=>{
-          console.log ("formService.detail.setForm:", s);
+        this.sessionService.detail$.subscribe((s) => {
+          console.log("formService.detail.setForm:", s);
           this.setForm(s);
         });
         break;
@@ -195,14 +210,14 @@ export class SessionFormService {
     this.form.value.get("scores").reset();
     this.form.value.get("teams").reset();
   }
-  
+
   resetCourse() {
     this.courseService.resetList();
     this.form.value.get("course").reset();
   }
 
   setForm(values): void {
-    console.log ("new values for form: ", values);
+    console.log("new values for form: ", values);
 
 
     //  If these are not proper formats -> get
@@ -213,32 +228,33 @@ export class SessionFormService {
       var type = this.getFormatFromName(values.format);
       this.form.value.get("format").setValue(type);
     }
-    
+
     this.form.value.get("course").setValue(values.course);
 
     //  Date/Time
-    var time = new Date(values.starts_on).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true });
+    var time = new Date(values.starts_on).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
     var date = new Date(values.starts_on);
     this.form.value.get("date").setValue(date);
     this.form.value.get("time").setValue(time);
 
     //  Players
-    this.form.value.get('scores').setValue(values.scores);
-    
-    this.form.value.markAsDirty();
+    values.scores.forEach((s, i) => { this.scoreList.push(new FormControl(s)) });
 
+    console.log ("this.form.set: ", this.form.value);
+
+    this.form.value.markAsDirty();
   }
 
 
 
   getFormatFromName(str) {
-    var format = this.sessionService.types.find((t)=>{
+    var format = this.sessionService.types.find((t) => {
       if (t.enum == str) {
         return true;
       }
     });
 
-    console.log ("found Format: ", format);
+    console.log("found Format: ", format);
     return format;
   }
 
@@ -253,18 +269,15 @@ export class SessionFormService {
   }
 
   setDate(date: Date): void {
-    console.log ("date?");
+    console.log("date?");
 
     this.form.value.get("date").setValue(date);
-    this.form.value.get("time").setValue(date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true }));
+    this.form.value.get("time").setValue(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }));
   }
 
-  getScores() {
-    //  To be called if scores == undefined;
-    console.warn("GET THOSE SCORES");
-    this.sessionService.getScores();
-    
-  }
+
+
+
 
   //  Score Functions
   get scoreList() {

@@ -191,7 +191,7 @@
   <div>
     <div class="row justify-content-between align-items-end no-gutters">
       <h6 class="col sub-header ml">Roster</h6>
-      <div *ngIf='teamGame && form.get("teams").controls.length == 0' class='col color-warn message'>
+      <div *ngIf='sessionForm.teamGame && form.get("teams").controls.length == 0' class='col color-warn message'>
         <label class="mat-body-strong">Add Teams!</label>
       </div>
     </div>
@@ -203,7 +203,7 @@
       <div class="col-12 teamDropPad unassigned mb-3" (cdkDropListDropped)="rosterDrop($event)" cdkDropList
         [cdkDropListData]="getRoster(null)" id="team-unassigned">
 
-        <label>{{ teamGame ? 'Unassigned' : 'Players' }}</label>
+        <label>{{ sessionForm.teamGame ? 'Unassigned' : 'Players' }}</label>
         <score-list-item cdkDrag [cdkDragData]="player" [score]="player" [mode]="playerModes"
           *ngFor="let player of getRoster(null)">
         </score-list-item>

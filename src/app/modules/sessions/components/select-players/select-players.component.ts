@@ -4,7 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { AccountBackend } from 'src/app/modules/account/services/backend.service';
 import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
 import { flyInPanelRow, flyIn } from 'src/app/animations';
-import { Score } from '../../services/backend.service';
+import { Score } from 'src/app/modules/scores/services/backend.service';
 
 
 @Component({

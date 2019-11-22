@@ -5,6 +5,7 @@ import { FormGroup } from '@angular/forms';
 import { SessionFormService } from '../../services/form.service';
 import { SessionBackend, Session } from '../../services/backend.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ScoresBackend } from 'src/app/modules/scores/services/backend.service';
 
 @Component({
   selector: 'app-detail',
@@ -20,6 +21,7 @@ export class DetailComponent implements OnInit {
   constructor(
     private _sessionsForm: SessionFormService,
     private _sessions: SessionBackend,
+    private _scores: ScoresBackend,
     private router: ActivatedRoute,
   ) { }
 
@@ -35,7 +37,9 @@ export class DetailComponent implements OnInit {
     this.session.id = this.router.snapshot.paramMap.get("session");
     this._sessions.getDetail(this.session);
     
+  }
 
-
+  getRoster($event) {
+    console.log ("getRoster: ", $event);
   }
 }
