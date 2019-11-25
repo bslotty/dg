@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Player } from '../../account/services/backend.service';
-import { SessionBackend } from '../../sessions/services/backend.service';
+import { SessionBackend, SessionFormat } from '../../sessions/services/backend.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,17 +30,28 @@ export class ScoresBackend {
   ) {
     this._sessions.detail$.subscribe((s)=>{
       console.log ("scores.session.detail$: ", s);
+
+      //  Teams
+      if (s.format.enum.indexOf("team") > -1) {
+        this.setTeams(s.scores);
+      }
+
+      //  Scores 
+      this.setScores(s.scores);
     });
   }
 
   getTeamsFromScoreList(scores):Team[] {
-    var teamList = scores.filter()
+    //  Get Teams From Each Scores
+    var teamList = scores.map((s)=>{
+      return s.team;
+    });
+    console.log("teamList: ", teamList);
 
 
-    const uniqueArray = scores.filter((object,index) => index === scores.findIndex(obj => JSON.stringify(obj) === JSON.stringify(object)));
-
-    console.log ("unique: ", uniqueArray);
-    return [];
+    var unique = teamList.filter((e, i) => teamList.findIndex(a => a.id === e.id) === i);
+    console.log("unique: ", unique);
+    return unique;
   }
 
   setTeams(scores): void {
@@ -49,8 +60,18 @@ export class ScoresBackend {
   }
 
   setScores(scores): void {
-
     this.scores.next(scores);
+  }
+
+  getRoster(team: Team): Score[] {
+    if (team != null) {
+      var list = this.scores.value.filter(scores => scores.team.name == team.name);
+      console.log ("scores: ", list);
+      return this.scores.value.filter(scores => scores.team.name == team.name);
+    } else {
+      return this.scores.value;
+    }
+    
   }
 }
 

@@ -244,7 +244,7 @@ export class Session {
     public modified_on?: Date,
     public modified_by?: string, /* User? */
     public course?: Course,
-    public format?: string,
+    public format?: SessionFormat,
     public starts_on?: Date,
     public title?: string,
     public par?: Array<any>,

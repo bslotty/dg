@@ -59,32 +59,27 @@
 <!--  Roster  -->
 <div>
   <div class="row justify-content-between align-items-end no-gutters">
-    <h6 class="col sub-header ml">Roster</h6>
+    <h6 class="col sub-header ml">Roster {{ _sessionsForm.teamGame }} </h6>
   </div>
 
   <div cdkDropListGroup class="row justify-content-center align-items-start no-gutters">
 
-    <div *ngIf="!_sessionsForm.teamGame" class="col-12 teamDropPad unassigned mb-3" id="team-unassigned" cdkDropList
-      (cdkDropListDropped)="rosterDrop($event)" [cdkDropListData]="getRoster(null)">
-
+    <div *ngIf="!_sessionsForm.teamGame" class="col-12">
       <label>Players</label>
-      <score-list-item *ngFor="let player of getRoster(null)" cdkDrag [cdkDragData]="player" [score]="player"
-        [mode]="playerModes">
+      <score-list-item *ngFor="let player of _scores.getRoster(null)" [score]="player" [mode]="playerModes">
       </score-list-item>
     </div>
 
-
     <div *ngIf="_sessionsForm.teamGame">
-      <div *ngFor="let team of form.get('teams').controls; let i = index" cdkDropList
-        (cdkDropListDropped)="rosterDrop($event)" [cdkDropListData]="getRoster(team)"
-        class="col-12 teamDropPad {{ team.value.color.name }}" id="{{ 'team-' + team.value.color.name }}">
-
-
+      <div *ngFor="let team of form.get('teams').controls; let i = index" class="col-12">
         <label>{{ team.value.name | titlecase }}</label>
         <!--  Team Bar  -->
-        <score-list-item cdkDrag [cdkDragData]="player" [score]="player" [mode]="playerModes"
-          *ngFor="let player of getRoster(team)">
-        </score-list-item>
+        <div *ngFor="let player of _scores.getRoster(team)">
+          
+          <score-list-item cdkDrag [cdkDragData]="player" [score]="player" [mode]="playerModes">
+          </score-list-item>
+        </div>
+
       </div>
     </div>
   </div>

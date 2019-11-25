@@ -97,7 +97,7 @@ export class CreateComponent implements OnInit {
           return s.team == team.value;
         }
 
-      })
+      });
     }
     return roster;
   }

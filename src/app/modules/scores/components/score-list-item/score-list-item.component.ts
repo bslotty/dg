@@ -24,9 +24,7 @@ export class ScoreListItemComponent implements OnInit {
     private dialog: MatDialog,
   ) { }
 
-  ngOnInit() {
-    console.log ("mode: ", this.mode);
-   }
+  ngOnInit() { }
 
   remove() {
     this.action.emit({

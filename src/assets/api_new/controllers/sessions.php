@@ -8,6 +8,36 @@ $payload = json_decode(file_get_contents('php://input'), TRUE);
 //  Init Return
 $return = array();
 
+/**
+ * 	Get Team List From Score Array
+ * 	@param $scores: Scores
+ * 	@return Team[]
+ */
+function GetUniqueTeams($scores){
+	$teamList = array();
+	foreach ($scores as $key => $array) {
+
+		//	Get Unique TeamList if Teams
+		if (!empty($array['team'])) {
+
+			$dupe = false;
+			foreach ($teamList as $key => $team) {
+				if ($team['name'] == $array['team']['name']) {
+					$dupe = true;
+				}
+			}
+
+			if (!$dupe) {
+				$teamList[] = $array['team'];
+			}
+		}
+
+	}
+
+	return $teamList;
+}
+
+
 //	Debug
 /**
  * Future feature, do not return each step in DB; only return last; Can flag with this later on
@@ -87,39 +117,20 @@ switch ($payload['action']) {
 
 				//	Scores
 				$r_createScores = array();
-				$teamList = array();
-				foreach ($payload["session"]["scores"] as $key => $array) {
-
-					//	Get Unique TeamList if Teams
-					if (!empty($array['team'])) {
-
-						//	Create GUID For Team
-						$teamID = $database->generateGUID();
-						$array['team']['id'] = $teamID;
-
-						$dupe = false;
-						foreach ($teamList as $key => $team) {
-							if ($team['name'] == $array['team']['name']) {
-								$dupe = true;
-							}
-						}
-
-						if (!$dupe) {
-							$teamList[] = $array['team'];
-						}
-					}
-
-
-					$r_createScores[] = $scores->create($createdSession, $array, $payload["user"]);
-				}
+				$teamList = GetUniqueTeams($payload["session"]["scores"]);
+				
 
 				//	Create Teams if Exist
 				if (count($teamList) > 0) {
 					$r_createTeams = array();
 					foreach ($teamList as $key => $array) {
 
+						//	Create GUID For Team
+						$teamID = $database->generateGUID();
+						$teamList[$key]['id'] = $teamID;
+
 						//	Create
-						$r_createTeams[] = $sessions->createTeam($createdSession, $array, $payload["user"]);
+						$r_createTeams[] = $sessions->createTeam($createdSession, $teamList[$key], $payload["user"]);
 					}
 
 					//	Verify All Teams Were Created
@@ -133,15 +144,36 @@ switch ($payload['action']) {
 					if ($r_createTeams_valid) {
 						$return[] = array(
 							'status' 	=> 'success',
-							'msg'		=> 'Teams Created'
+							'msg'		=> 'Teams Created',
+							'debug'		=> $r_createTeams,
+							'teamList'	=> $teamList
 						);
 					} else {
 						$return[] = array(
 							'status' 	=> 'error',
 							'msg'		=> 'Unable to Create Teams',
-							'scores'	=> $r_createTeams
+							'teams'	=> $r_createTeams
 						);
 					}
+				}
+
+
+
+				
+
+
+				//	Scores
+				foreach ($payload["session"]["scores"] as $key => $array) {
+					//	Update Team Ids
+					if (count($teamList) > 0) {
+						foreach ($teamList as $key => $ta) {
+							if ($array["team"]["name"] == $ta["name"]) {
+								$array["team"]["id"] = $ta["id"];
+							}
+						}
+					}
+
+					$r_createScores[] = $scores->create($createdSession, $array, $payload["user"]);
 				}
 
 				//	Verify All Scores Were Created
@@ -151,6 +183,7 @@ switch ($payload['action']) {
 						$r_createScores_valid = false;
 					}
 				}
+
 
 				if ($r_createScores_valid) {
 					$return[] = array(

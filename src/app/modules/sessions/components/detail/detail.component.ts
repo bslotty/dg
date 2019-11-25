@@ -38,8 +38,4 @@ export class DetailComponent implements OnInit {
     this._sessions.getDetail(this.session);
     
   }
-
-  getRoster($event) {
-    console.log ("getRoster: ", $event);
-  }
 }

@@ -116,8 +116,15 @@ export class SessionFormService {
     private courseService: CourseBackend,
     private sessionService: SessionBackend,
     private accountService: AccountBackend,
-    private router: Router) 
-  { }
+    private router: Router) {
+    //  Get Data & Populate
+    this.sessionService.detail$.subscribe((s) => {
+
+      //  Format
+      s.format = this.getFormatFromName(s.format);
+      this.setForm(s);
+    });
+  }
 
   get teamGame(): boolean {
     if (this.form.value.get('format').valid && this.form.value.get('format').value.enum.indexOf("team") > -1) {
@@ -149,12 +156,6 @@ export class SessionFormService {
         form.addControl("time", this.cTime);
         form.addControl("scores", this.cScores);
         form.addControl("teams", this.cTeams);
-
-        //  Get Data & Populate
-        this.sessionService.detail$.subscribe((s) => {
-          console.log("formService.detail.setForm:", s);
-          this.setForm(s);
-        });
         break;
 
       case "search":
@@ -217,18 +218,10 @@ export class SessionFormService {
   }
 
   setForm(values): void {
-    console.log("new values for form: ", values);
 
 
-    //  If these are not proper formats -> get
 
-    if (values.format instanceof SessionFormat) {
-      this.form.value.get("format").setValue(values.format);
-    } else {
-      var type = this.getFormatFromName(values.format);
-      this.form.value.get("format").setValue(type);
-    }
-
+    //  Course
     this.form.value.get("course").setValue(values.course);
 
     //  Date/Time
@@ -237,25 +230,27 @@ export class SessionFormService {
     this.form.value.get("date").setValue(date);
     this.form.value.get("time").setValue(time);
 
+    this.form.value.get("format").setValue(values.format);
+
     //  Players
     values.scores.forEach((s, i) => { this.scoreList.push(new FormControl(s)) });
-
-    console.log ("this.form.set: ", this.form.value);
 
     this.form.value.markAsDirty();
   }
 
 
 
-  getFormatFromName(str) {
-    var format = this.sessionService.types.find((t) => {
-      if (t.enum == str) {
-        return true;
-      }
-    });
-
-    console.log("found Format: ", format);
-    return format;
+  getFormatFromName(str: string | SessionFormat) {
+    if (str instanceof SessionFormat) {
+      return str;
+    } else {
+      var format = this.sessionService.types.find((t) => {
+        if (t.enum == str) {
+          return true;
+        }
+      });
+      return format;
+    }
   }
 
   setFormat(format) {
