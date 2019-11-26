@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material';
 import { ScoreSettingsComponent } from '../score-settings/score-settings.component';
 import { flyInPanelRow } from 'src/app/animations';
 import { Score } from '../../services/backend.service';
+import { SessionBackend } from 'src/app/modules/sessions/services/backend.service';
 
 @Component({
   selector: 'score-list-item',
@@ -22,15 +23,17 @@ export class ScoreListItemComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
+    private sessions_: SessionBackend,
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {  }
 
   remove() {
     this.action.emit({
       "action": "remove",
       "score": this.score
     });
+    this.sessions_.removeScore(this.score);
   }
 
   include() {

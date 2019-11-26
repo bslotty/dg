@@ -247,7 +247,7 @@ switch ($payload['action']) {
 							'created_by' 	=> $p["created_by"],
 							'modified_on' 	=> $p["modified_on"],
 							'modified_by' 	=> $p["modified_by"],
-							'score_array' 	=> $p["score_array"],
+							'score_array' 	=> json_decode($p["score_array"]),
 							'handicap'	 	=> $p["handicap"],
 							'team'			=> array(
 								"id"		=> $p['teamID'],
@@ -258,7 +258,7 @@ switch ($payload['action']) {
 								"id"			=> $p['playerID'],
 								"first_name"	=> $p['playerFirst'],
 								"last_name"		=> $p['playerLast'],
-								"first_name"	=> $p['playerEmail']
+								"email"			=> $p['playerEmail']
 							)
 						);
 					}

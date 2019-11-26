@@ -19,6 +19,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SelectFormatComponent } from './components/select-format/select-format.component';
 import { SelectPlayersComponent } from './components/select-players/select-players.component';
 import { ListItemComponent as SessionListItemComponent } from './components/list-item/list-item.component';
+import { SelectTimeComponent } from './dialogs/select-time/select-time.component';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { ListItemComponent as SessionListItemComponent } from './components/list
     SelectPlayersComponent,
     SelectFormatComponent,
     SessionListItemComponent,
+    SelectTimeComponent,
   ],
   exports: [],
   entryComponents: [

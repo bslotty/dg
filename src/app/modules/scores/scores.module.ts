@@ -7,6 +7,9 @@ import { ScoreSettingsComponent } from './components/score-settings/score-settin
 import { TeamSettingsComponent } from './components/team-settings/team-settings.component';
 import { ScoreListItemComponent } from './components/score-list-item/score-list-item.component';
 import { TeamListItemComponent } from './components/team-list-item/team-list-item.component';
+import { TeamSelectComponent } from './components/team-select/team-select.component';
+import { TeamListComponent } from './components/team-list/team-list.component';
+import { ScoresListComponent } from './components/scores-list/scores-list.component';
 
 
 
@@ -17,6 +20,9 @@ import { TeamListItemComponent } from './components/team-list-item/team-list-ite
     TeamListItemComponent,
     ScoreSettingsComponent,
     TeamSettingsComponent,
+    TeamSelectComponent,
+    TeamListComponent,
+    ScoresListComponent,
   ],
   imports: [
     CommonModule,

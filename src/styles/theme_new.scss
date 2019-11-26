@@ -4,11 +4,9 @@
 // Be sure that you only ever include 'mat-core' mixin once!
 // it should not be included for each theme.
 
-
 //  https://material.angular.io/guide/typography
 $custom-typography: mat-typography-config(
-  $font-family: $font-header
-  /*
+  $font-family: $font-header /*
     Other Options
     
 
@@ -141,7 +139,7 @@ $dgc-theme: mat-dark-theme($dgc-primary, $dgc-accent, $dgc-warn);
 */
 h1 {
   font-size: 2rem;
-  font-size: 34sp;    //  Google Material Specs, Doesnt work; Refrence only.
+  font-size: 34sp; //  Google Material Specs, Doesnt work; Refrence only.
   font-weight: 100;
 }
 
@@ -231,6 +229,44 @@ p b {
   color: $warn;
 }
 
+.mat-transparent-red:not(:disabled) {
+  background: transparent;
+  color: $c-red;
+}
+
+.mat-transparent-blue:not(:disabled) {
+  background: transparent;
+  color: $c-blue;
+}
+
+.mat-transparent-green:not(:disabled) {
+  background: transparent;
+  color: $c-green;
+}
+
+.mat-transparent-yellow:not(:disabled) {
+  background: transparent;
+  color: $c-yellow;
+}
+
+.mat-transparent-orange:not(:disabled) {
+  background: transparent;
+  color: $c-orange;
+}
+
+.mat-transparent-purple:not(:disabled) {
+  background: transparent;
+  color: $c-purple;
+}
+
+.mat-transparent-pink:not(:disabled) {
+  background: transparent;
+  color: $c-pink;
+}
+
+
+
+
 .mat-button,
 .mat-menu-item {
   font-size: 20px !important;
@@ -273,10 +309,9 @@ p b {
 .mat-fab,
 .mat-icon-button,
 .mat-mini-fab {
-  width: 2em  !important;
-  border-radius: 100%  !important;
+  width: 2em !important;
+  border-radius: 100% !important;
 }
-
 
 .mat-pseudo-checkbox {
   width: 32px !important;
@@ -347,10 +382,8 @@ p b {
   color: rgba(255, 255, 255, 0.4);
 }
 
-
 .mat-step-label {
   font-size: 1rem;
-
 }
 
 .mat-step-label-selected {
@@ -369,9 +402,8 @@ p b {
   //  background: lighten($primary-light, 20%);
 }
 
-
-
-.mat-stepper-horizontal, .mat-stepper-vertical {
+.mat-stepper-horizontal,
+.mat-stepper-vertical {
   background-color: $primary-dark;
 }
 
@@ -391,7 +423,6 @@ p b {
   border-left-color: $text-light;
 }
 
-
 .mat-datepicker-content {
   background: $primary-light;
 }
@@ -405,7 +436,6 @@ p b {
 
 .mat-horizontal-content-container {
   padding: 0 !important;
-
 }
 
 .mat-stepper-vertical-line::before {
@@ -414,10 +444,10 @@ p b {
 }
 
 .mat-tooltip {
-  font-size: .8rem !important;
+  font-size: 0.8rem !important;
   color: $primary-light !important;
   background: $text-light !important;
-  padding: .5rem !important;
+  padding: 0.5rem !important;
   font-weight: 600;
 }
 
@@ -425,42 +455,35 @@ p b {
   background: none;
 }
 
-
-
 .mat-expansion-panel {
-  margin-bottom: 5px  !important;
+  margin-bottom: 5px !important;
 }
 
 .mat-expansion-panel, 
 .mat-expansion-panel-header:hover/*, 
 .mat-step-header, 
 .mat-step-header:hover */ {
-  background: $primary-light  !important;
+  background: $primary-light !important;
 }
 
-.mat-expansion-panel-header[aria-disabled=true] {
+.mat-expansion-panel-header[aria-disabled="true"] {
   color: $text-light !important;
 }
 
-
 .mat-expansion-indicator::after {
-  border-width: 0 .15rem .15rem 0 !important;
-  padding: .2rem !important;
+  border-width: 0 0.15rem 0.15rem 0 !important;
+  padding: 0.2rem !important;
 }
 
 .mat-expansion-panel-header {
   font-size: 1rem !important;
 }
 
-
-
 // CDK-Drag-Drop
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 4px;
 }
-
-
 
 .cdk-drag-placeholder > * {
   border: 0.3rem dotted;
@@ -479,9 +502,6 @@ p b {
 .drag-list.cdk-drop-list-dragging .drag-item:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
-
-
-
 
 //  Time Picker
 .timepicker {
@@ -502,7 +522,7 @@ p b {
 
 .timepicker__actions {
   background: $primary-light !important;
-  justify-content: space-between !important;  
+  justify-content: space-between !important;
 }
 
 .timepicker-button {
@@ -515,7 +535,6 @@ p b {
 .timepicker-button span {
   font-size: inherit !important;
 }
-
 
 .clock-face {
   width: 50vw !important;
@@ -554,8 +573,6 @@ p b {
   margin-left: 1em !important;
 }
 
-
-
 .timepicker-period__btn {
   font-size: 1.5rem !important;
 }
@@ -585,7 +602,6 @@ New Input Styles
 *:disabled {
   background-color: transparent;
 }
-
 
 .mat-flat-button[disabled] {
   background-color: transparent;
@@ -623,10 +639,9 @@ New Input Styles
 .pac-matched {
 }
 
-
 /*
   BootStrap Fixes
 */
 .btn-link {
-  color: $accent
+  color: $accent;
 }

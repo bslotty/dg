@@ -1,54 +1,54 @@
-<div class="panel row justify-content-between align-items-center no-gutters">
+<div class="panel row justify-content-end align-items-center no-gutters">
 
 	<!--	Team Color Bar	-->
-	<div class="colorChoice" *ngIf='score?.team'>
-		<div class="colorIcon {{ score.team.color.name }}"></div>
+	<div class="colorChoice" *ngIf='score.team.color'>
+		<div class="colorIcon {{ score.team.color?.name }}"></div>
 	</div>
 
 	<!--	Name	-->
-	<div class="col ml-3" *ngIf="mode.indexOf('full') > -1">
+	<div class="col ml" *ngIf="mode.indexOf('full') != -1">
 		<div>{{ score.player.first_name | titlecase}} {{ score.player.last_name | titlecase}}</div>
-		<div class="sub-text" *ngIf="mode.indexOf('email') > -1">{{ score.player.email }}</div>
+		<div class="sub-text" *ngIf="mode.indexOf('email') != -1">{{ score.player.email }}</div>
 	</div>
 
-	<div class="col ml-3" *ngIf="mode.indexOf('short') > -1">
+	<div class="col ml" *ngIf="mode.indexOf('short') != -1">
 		{{ ((score.player.first_name | titlecase) | slice:0:1)+'.' }}
 		{{ (score.player.last_name.length > 8 ) ? ((score.player.last_name | titlecase) | slice:0:8)+'..' : (score.player.last_name | titlecase) }}
 	</div>
 
 
 
-
-
+	<!--	Handicap	-->
+	<div class="col-2">
+		<a mat-flat-button matToolTip="Set Handicap" color="{{ +score.handicap != 0 ? 'transparent-accent' : 'transparent-primary'}}" (click)="openSettings(score.player)" class="row justify-content-center align-items-center no-gutters">
+			<span class="icon-shield color-accent"></span>
+		</a>
+	</div>
 
 	<!--	Scores		-->
-	<div>
-		<div class='col-xs'>
-			<span *ngIf="score.handicap && score.handicap != 0" class="icon-shield color-accent"></span>
-		</div>
-		<div class="col" *ngIf="mode.indexOf('scores') > -1">
-			<span class='icon-warning-octagon color-warn'></span>
-		</div>
+	<div class="col-2" *ngIf="score.score_array?.length;">
+		<span class='icon-alert-triangle color-warn'></span>
 	</div>
 
 
 	<!--	Admin Actions	-->
-	<div class="col-xs" *ngIf="mode.indexOf('admin') > -1">
+	<div class="col-1" *ngIf="mode.indexOf('admin') != -1">
 		<a mat-flat-button color="transparent-primary" [matMenuTriggerFor]="appMenu">
 			<span class="icon-more-vertical"></span>
 		</a>
 
 		<mat-menu #appMenu="matMenu">
 			<a mat-menu-item (click)="openSettings(score.player)">Set Handicap</a>
-			<a mat-menu-item color="warn" class="color-warn" (click)="remove(score.player)">Remove </a>
+			<a mat-menu-item color="warn" class="color-warn" (click)="remove(score.player)">Remove <span
+					class="icon-delete"></span></a>
 		</mat-menu>
 	</div>
 
 
 	<!--	Selector	-->
-	<div class="col-xs" *ngIf="mode.indexOf('selector') > -1">
+	<div class="col-xs" *ngIf="mode.indexOf('selector') != -1">
 		<a mat-flat-button color="transparent-accent" (click)="include(score.player)">
-			<span class="icon-plus-circle"></span>
+			<span class="icon-plus"></span>
 		</a>
 	</div>
 </div>

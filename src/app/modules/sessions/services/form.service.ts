@@ -115,14 +115,19 @@ export class SessionFormService {
     private helper: HelperService,
     private courseService: CourseBackend,
     private sessionService: SessionBackend,
+    private scoresService: ScoresBackend,
     private accountService: AccountBackend,
     private router: Router) {
+
     //  Get Data & Populate
     this.sessionService.detail$.subscribe((s) => {
 
-      //  Format
-      s.format = this.getFormatFromName(s.format);
-      this.setForm(s);
+      if (s != undefined) {
+        //  Format
+        s.format = this.getFormatFromName(s.format);
+        this.setForm(s);
+      }
+      
     });
   }
 
@@ -235,6 +240,13 @@ export class SessionFormService {
     //  Players
     values.scores.forEach((s, i) => { this.scoreList.push(new FormControl(s)) });
 
+    //  Teams
+    if (values.format.enum.indexOf("team") > -1) {
+      var uTeams = this.scoresService.getTeamsFromScoreList(values.scores);
+      uTeams.forEach((t, i) => { this.teamList.push(new FormControl(t)); });
+    }
+
+
     this.form.value.markAsDirty();
   }
 
@@ -292,9 +304,9 @@ export class SessionFormService {
     }
   }
 
-  removeScore(player) {
+  removeScore(score) {
     this.scoreList.controls.forEach((v, i) => {
-      if (player.id == v.value.id) {
+      if (score.player.id == v.value.id) {
         this.scoreList.removeAt(i);
       }
     });

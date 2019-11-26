@@ -31,7 +31,7 @@ export class SessionBackend {
   favoriteList$: Observable<Session[]> = this.list.asObservable();
 
   //  Single View
-  private detail: Subject<Session> = new Subject();
+  private detail: BehaviorSubject<Session> = new BehaviorSubject(undefined);
   detail$: Observable<Session> = this.detail.asObservable();
 
   //  Session Modes
@@ -227,6 +227,18 @@ export class SessionBackend {
       this.getDetail(sessionId);
     }
   }
+
+
+
+  removeScore(score) {
+    console.log ("session.backend.removeScore: ", score);
+    console.log ("session.detail: ", this.detail);
+    this.detail.value.scores = this.detail.value.scores.filter(s => s.id != score.id);
+
+    console.log ("session.detail: ", this.detail);
+    this.detail.next(this.detail.value);
+  }
+
 }
 
 export class SessionFormat {
@@ -244,7 +256,7 @@ export class Session {
     public modified_on?: Date,
     public modified_by?: string, /* User? */
     public course?: Course,
-    public format?: SessionFormat,
+    public format?: string | SessionFormat,
     public starts_on?: Date,
     public title?: string,
     public par?: Array<any>,

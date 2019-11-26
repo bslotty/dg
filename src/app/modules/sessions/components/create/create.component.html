@@ -1,9 +1,3 @@
-<div>
-  <app-section-header *ngIf="mode == 'create'" title="{{ mode == 'create' ? 'Create Session' : 'Session'}}"
-    [buttons]="headerButtons" (actionClick)="actionClick($event)"></app-section-header>
-</div>
-
-
 <form [formGroup]='form' [@flyIn]>
 
   <!--  Format  -->

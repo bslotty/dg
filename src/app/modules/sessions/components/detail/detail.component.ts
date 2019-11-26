@@ -17,6 +17,8 @@ export class DetailComponent implements OnInit {
 
   session: Session = new Session();
   form: FormGroup;
+
+  playerModes = ["full", "admin"];
   
   constructor(
     private _sessionsForm: SessionFormService,
@@ -31,11 +33,17 @@ export class DetailComponent implements OnInit {
     this._sessionsForm.Setup("edit");
     this._sessionsForm.form$.subscribe((f)=>{
       this.form = f;
+
+      console.log ("this.f: ", this.form);
     });
 
     //  Populate Data for form
     this.session.id = this.router.snapshot.paramMap.get("session");
     this._sessions.getDetail(this.session);
     
+  }
+
+  scoreAction($event) {
+    console.log("$event: ", $event);
   }
 }
