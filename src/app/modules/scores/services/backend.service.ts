@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ComponentFactoryResolver } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Player } from '../../account/services/backend.service';
 import { SessionBackend, SessionFormat } from '../../sessions/services/backend.service';
@@ -38,6 +38,12 @@ export class ScoresBackend {
 
       //  Scores 
       this.setScores(s.scores);
+    });
+
+
+    //  Debug
+    this.scores$.subscribe((s)=>{
+      console.log ("scores$", s)
     });
   }
 

@@ -72,7 +72,7 @@ export class CreatePlayerComponent implements OnInit {
   }
 
   initForm() {
-    if (this.session.format != 'ffa') {
+    if (this.session.format.enum != 'ffa') {
       this.form = this.builder.group({
         player: ["", Validators.required],
         team: ["", Validators.required],

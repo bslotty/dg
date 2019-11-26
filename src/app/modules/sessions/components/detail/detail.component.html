@@ -66,7 +66,7 @@
 
     <div *ngIf="!_sessionsForm.teamGame" class="col-12">
       <label>Players</label>
-      <score-list-item *ngFor="let player of _scores.getRoster(null)" [score]="player" [mode]="playerModes">
+      <score-list-item *ngFor="let player of _scores.scores$ | async" [score]="player" [mode]="playerModes">
       </score-list-item>
     </div>
 
@@ -74,13 +74,18 @@
       <div *ngFor="let team of form.get('teams').controls; let i = index" class="col-12">
         <label>{{ team.value.name | titlecase }}</label>
         <!--  Team Bar  -->
-        <div *ngFor="let player of _scores.getRoster(team)">
-          
-          <score-list-item cdkDrag [cdkDragData]="player" [score]="player" [mode]="playerModes">
-          </score-list-item>
+        <div>
+
+
         </div>
 
       </div>
+
+      <div *ngIf="_scores.scores$ | async as roster" class="row justify-content-center align-items-center no-gutters">
+        <score-list-item *ngFor="let player of roster" [score]="player" mode="full admin" class="col">
+        </score-list-item>
+      </div>
+
     </div>
   </div>
 
