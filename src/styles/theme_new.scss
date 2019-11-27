@@ -563,6 +563,9 @@ p b {
   width: 8vw !important;
   height: 8vw !important;
 }
+.clock-face__number--outer[_ngcontent-whs-c31] > span[_ngcontent-whs-c31] {
+  color: $primary-light;
+}
 
 .clock-face {
   background: $text-light !important;
