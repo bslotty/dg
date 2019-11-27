@@ -1,1 +1,25 @@
-<p>team-select works!</p>
+<div cdkDropListGroup class="row justify-content-center align-items-start no-gutters">
+
+
+
+	<div class="col-12 teamDropPad unassigned mb-3" (cdkDropListDropped)="rosterDrop($event)" cdkDropList
+		[cdkDropListData]="getRoster(null)" id="team-unassigned">
+
+		<label>{{ sessionForm.teamGame ? 'Unassigned' : 'Players' }}</label>
+		<score-list-item cdkDrag [cdkDragData]="player" [score]="player" [mode]="playerModes"
+			*ngFor="let player of getRoster(null)">
+		</score-list-item>
+	</div>
+
+
+	<div class="col-12 teamDropPad {{ team.value.color.name }}"
+		*ngFor="let team of form.get('teams').controls; let i = index" (cdkDropListDropped)="rosterDrop($event)"
+		cdkDropList [cdkDropListData]="getRoster(team)" id="{{ 'team-' + team.value.color.name }}">
+
+
+		<label>{{ team.value.name | titlecase }}</label>
+		<score-list-item cdkDrag [cdkDragData]="player" [score]="player" [mode]="playerModes"
+			*ngFor="let player of getRoster(team)">
+		</score-list-item>
+	</div>
+</div>

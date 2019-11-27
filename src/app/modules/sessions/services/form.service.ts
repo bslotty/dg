@@ -169,20 +169,6 @@ export class SessionFormService {
         break;
     }
 
-    if (type != 'search') {
-      //  Listen to Changes for Date Time Merge
-      form.valueChanges.pipe(this.session_.serverPipe).subscribe((v) => {
-        if (v['time'] != "" && v['date'] instanceof Date && v['date'].getHours() == 0) {
-          var d = new Date(v['date'].toDateString() + " " + v['time']);
-          console.log("date set: ", d, v);
-          this.setDate(d);
-        }
-      });
-
-    }
-
-
-
     this.form.next(form);
   }
 
@@ -229,10 +215,7 @@ export class SessionFormService {
 
     //  Date/Time
     if (values.starts_on != undefined) {
-      var time = new Date(values.starts_on).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-      var date = new Date(values.starts_on);
-      this.form.value.get("date").setValue(date);
-      this.form.value.get("time").setValue(time);
+      this.setDate(values.starts_on);
     }
 
     if (values.format != undefined) {
@@ -280,10 +263,8 @@ export class SessionFormService {
   }
 
   setDate(date: Date): void {
-    console.log("date?");
-
     this.form.value.get("date").setValue(date);
-    this.form.value.get("time").setValue(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }));
+    this.form.value.get("time").setValue(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).replace(":00 ", " "));
   }
 
 

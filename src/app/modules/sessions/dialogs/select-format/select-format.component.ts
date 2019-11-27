@@ -12,8 +12,6 @@ import { skip } from 'rxjs/operators';
 })
 export class SelectFormatComponent implements OnInit {
 
-  @Input() selectedFormat: SessionFormat;
-
   constructor(
     private dialogRef: MatDialogRef<SelectFormatComponent>,
     @Inject(MAT_DIALOG_DATA) private data,

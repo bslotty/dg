@@ -239,6 +239,15 @@ export class SessionBackend {
     this.detail.next(this.detail.value);
   }
 
+  setDate(date:Date, time:string ):void {
+
+    var d = new Date(date.toDateString() + " " + time);
+    console.log("date set: ", d);
+
+    
+    this.detail.value.starts_on = d;
+    this.detail.next(this.detail.value);
+  }
 
 
   removeScore(score) {

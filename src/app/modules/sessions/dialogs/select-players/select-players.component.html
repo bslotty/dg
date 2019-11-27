@@ -1,28 +1,52 @@
 <div>
-	<form [formGroup]="form">
-		<mat-form-field>
-			<mat-label matPrefix>Search</mat-label>
-			<input matInput formControlName="term" placeholder="Name or Email" #search />
-			<div matSuffix *ngIf='feed.loading'>
-				<loader small='true'></loader>
+	<mat-tab-group dynamicHeight="true">
+		<mat-tab>
+			<ng-template mat-tab-label>
+				<span class="icon-heart"></span>
+			</ng-template>
+
+			<p>Favorites</p>
+
+		</mat-tab>
+
+		<mat-tab>
+			<ng-template mat-tab-label>
+				<span class="icon-clock"></span>
+			</ng-template>
+
+			<p>Recient</p>
+
+		</mat-tab>
+
+		<mat-tab>
+			<ng-template mat-tab-label>
+				<span class="icon-search"></span>
+			</ng-template>
+			<div>
+				<form [formGroup]="form">
+					<mat-form-field>
+						<mat-label matPrefix>Search</mat-label>
+						<input matInput formControlName="term" placeholder="Name or Email" #search />
+						<div matSuffix *ngIf='feed.loading'>
+							<loader small='true'></loader>
+						</div>
+					</mat-form-field>
+
+				</form>
 			</div>
-		</mat-form-field>
 
-	</form>
+			<div *ngIf="results.length > 0 && this.form.dirty; else none" @flyIn>
+				<score-list-item *ngFor="let score of results; trackBy: trackBy" [score]='score' [mode]='playerMode'
+					(action)="include($event)"></score-list-item>
+			</div>
+		</mat-tab>
+	</mat-tab-group>
+
 </div>
 
-<div *ngIf="results.length > 0 && this.form.dirty; else create" @flyIn>
-	<score-list-item *ngFor="let score of results; trackBy: trackBy" [score]='score' [mode]='playerMode'
-		(action)="include($event)"></score-list-item>
-</div>
 
-
-<ng-template #create>
+<ng-template #none>
 	<div *ngIf="form.get('term').valid && form.get('term').dirty" class="row justify-content-center align-items-center">
 		<p class="col message"><i>Empty List</i></p>
 	</div>
-</ng-template>
-
-<ng-template #loader>
-	<loader></loader>
 </ng-template>

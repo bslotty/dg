@@ -19,10 +19,6 @@ export class SelectPlayersComponent implements OnInit {
   results: Score[] = [];
   playerMode: string[] = ["full","email","selector"];
 
-  @Output() selected: EventEmitter<Score> = new EventEmitter();
-
-  @ViewChild("search", {static: true}) search;
-
   constructor(
     private accountForm: AccountFormService,
     private accounts: AccountBackend,
@@ -61,7 +57,7 @@ export class SelectPlayersComponent implements OnInit {
   }
 
   include($event) {
-    this.selected.emit($event.score);
+    //  this.selected.emit($event.score);
 
     this.results.forEach((v, i) => {
       if (v.player.id == $event.score.player.id) {
@@ -75,9 +71,14 @@ export class SelectPlayersComponent implements OnInit {
     return item.id;
   }
 
-  focusSearch() {
-    console.log (this.search);
-    this.search.nativeElement.focus();
+
+
+  addScore($event) {
+    //  this.sessionForm.addScore($event);
+  }
+
+  addTeam() {
+    //  this.sessionForm.addTeam();
   }
 
 }
