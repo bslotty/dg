@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ServerPayload } from 'src/app/app.component';
 import { AccountBackend } from 'src/app/modules/account/services/backend.service';
 import { Router } from '@angular/router';
-import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { loading } from 'src/app/animations';
 
 @Component({

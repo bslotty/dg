@@ -20,7 +20,7 @@ import { SetPasswordComponent } from './components/set-password/set-password.com
 
 import { MaterialModule } from 'src/app/shared/modules/material/material.module';
 import { ShellComponent } from './components/shell/shell.component';
-import { FavoritesService } from 'src/app/shared/services/favorites.service';
+import { FavoritesService } from 'src/app/shared/modules/favorites/services/favorites.service';
 
 
 

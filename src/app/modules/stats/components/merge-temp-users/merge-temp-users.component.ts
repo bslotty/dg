@@ -4,7 +4,7 @@ import { Component, OnInit, Inject, Input } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { StatsBackend } from '../../services/backend.service';
-import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 
 @Component({
   selector: 'app-merge-temp-users',

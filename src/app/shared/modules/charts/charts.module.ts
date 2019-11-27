@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LineComponent } from 'src/app/modules/charts/line/line.component';
+import { LineComponent } from 'src/app/shared/modules/charts/line/line.component';
 import { ScoreboardComponent } from './scoreboard/scoreboard.component';
 import { GoogleChartsModule } from 'angular-google-charts';
-import { MaterialModule } from '../../shared/modules/material/material.module';
+import { MaterialModule } from '../material/material.module';
 import { LineSettingsComponent } from './line-settings/line-settings.component';
 
 @NgModule({

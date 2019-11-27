@@ -4,7 +4,7 @@ import { League } from 'src/app/modules/leagues/services/backend.service';
 import { MatSort, MatPaginator } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { StatsBackend, Stats, Team } from '../../services/backend.service';
-import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { combineLatest, interval, of, Observable } from 'rxjs';
 import { flyInPanelRow, scorecardSlide } from 'src/app/animations';
 import { PermissionBackend, Permission } from 'src/app/modules/permissions/services/backend.service';

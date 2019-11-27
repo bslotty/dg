@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { Stats, Team } from '../../stats/services/backend.service';
+import { Stats, Team } from '../../../../modules/stats/services/backend.service';
 
 @Component({
   selector: 'app-line-settings',

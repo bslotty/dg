@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/cor
 import { AccountFormService } from 'src/app/modules/account/services/account-form.service';
 import { FormGroup } from '@angular/forms';
 import { AccountBackend } from 'src/app/modules/account/services/backend.service';
-import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { flyInPanelRow, flyIn } from 'src/app/animations';
 import { Score } from 'src/app/modules/scores/services/backend.service';
 

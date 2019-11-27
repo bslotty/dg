@@ -1,6 +1,6 @@
 import { FormGroup } from '@angular/forms';
 import { Component, OnInit, Input } from '@angular/core';
-import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { AccountFormService } from '../../services/account-form.service';
 
 @Component({

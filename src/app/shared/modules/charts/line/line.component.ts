@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { LineSettingsComponent } from '../line-settings/line-settings.component';
-import { StatsBackend } from '../../stats/services/backend.service';
+import { StatsBackend } from '../../../../modules/stats/services/backend.service';
 import { flyInPanelRow } from 'src/app/animations';
 
 @Component({

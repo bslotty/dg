@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { CreateTeamComponent } from '../create-team/create-team.component';
 import { StatsBackend, Team } from '../../services/backend.service';
-import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { combineLatest } from 'rxjs';
 
 @Component({

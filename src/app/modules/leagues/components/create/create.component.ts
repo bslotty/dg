@@ -1,5 +1,5 @@
 import { ServerPayload } from 'src/app/app.component';
-import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LeagueBackend, League } from '../../services/backend.service';

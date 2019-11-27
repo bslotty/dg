@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CourseBackend, Course } from '../../services/backend.service';
-import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { CourseFormService } from '../../services/course-form.service';
 import { flyIn, flyLeft } from 'src/app/animations';
 import { Observable } from 'rxjs';

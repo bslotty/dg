@@ -1,4 +1,4 @@
-import { FeedbackService } from './../../../feedback/services/feedback.service';
+import { FeedbackService } from '../../../../shared/modules/feedback/services/feedback.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup} from '@angular/forms';
 import { AccountFormService } from '../../services/account-form.service';

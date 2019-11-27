@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LeagueBackend, League } from '../../services/backend.service';
 import { ActivatedRoute,Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { ServerPayload } from 'src/app/app.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 

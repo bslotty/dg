@@ -29,7 +29,7 @@ import {
 import { Observable } from 'rxjs';
 
 import { AccountBackend } from './modules/account/services/backend.service';
-import { FeedbackService } from './modules/feedback/services/feedback.service';
+import { FeedbackService } from './shared/modules/feedback/services/feedback.service';
 import { map } from 'rxjs/operators';
 
 @Injectable()

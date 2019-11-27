@@ -1,6 +1,6 @@
 import { PermissionBackend } from './../../services/backend.service';
 import { Component, OnInit, Inject } from '@angular/core';
-import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { ServerPayload } from 'src/app/app.component';
 

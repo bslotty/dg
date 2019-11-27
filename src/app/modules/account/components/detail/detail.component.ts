@@ -1,6 +1,6 @@
 import { AccountBackend } from 'src/app/modules/account/services/backend.service';
 import { Component, OnInit } from '@angular/core';
-import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { ServerPayload } from 'src/app/app.component';
 import { flyInPanelRow } from 'src/app/animations';
 

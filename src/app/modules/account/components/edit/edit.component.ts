@@ -1,5 +1,5 @@
 
-import { FeedbackService } from './../../../feedback/services/feedback.service';
+import { FeedbackService } from '../../../../shared/modules/feedback/services/feedback.service';
 import { flyInPanelRow } from './../../../../animations';
 import { FormGroup} from '@angular/forms';
 import { Component, OnInit } from '@angular/core';

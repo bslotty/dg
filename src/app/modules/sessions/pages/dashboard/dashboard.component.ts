@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SessionBackend, Session } from '../../services/backend.service';
 import { MatExpansionPanelDefaultOptions } from '@angular/material';
 import { take, filter, map } from 'rxjs/operators';
-import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { flyIn } from 'src/app/animations';
 import { Observable } from 'rxjs';
 

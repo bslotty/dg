@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from 'src/app/shared/modules/material/material.module';
 import { ShellComponent } from './components/shell/shell.component';
 import { PipesModule } from '../../pipes/pipes.module';
-import { ChartsModule } from 'src/app/modules/charts/charts.module';
+import { ChartsModule } from 'src/app/shared/modules/charts/charts.module';
 
 import { CreateTeamComponent } from './components/create-team/create-team.component';
 import { TeamListComponent } from './components/team-list/team-list.component';

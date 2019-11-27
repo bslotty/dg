@@ -3,7 +3,7 @@ import { League, LeagueBackend } from 'src/app/modules/leagues/services/backend.
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Session } from 'src/app/modules/sessions/services/backend.service';
 import { StatsBackend, Team } from '../../services/backend.service';
-import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Permission, PermissionBackend } from 'src/app/modules/permissions/services/backend.service';
 import { CreateComponent } from 'src/app/modules/account/components/create/create.component';
@@ -55,7 +55,7 @@ export class EditPlayerComponent implements OnInit {
   }
 
   initForm() {
-    if (this.session.format.enum != 'ffa') {
+    if (this.session.format != 'ffa') {
       this.form = this.builder.group({
         player: ["", Validators.required],
         team: ["", Validators.required],

@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { flyInPanelRow } from 'src/app/animations';
-import { FavoritesService } from 'src/app/shared/services/favorites.service';
 import { SessionFormService } from 'src/app/modules/sessions/services/form.service';
 import { Course } from '../../services/backend.service';
+import { FavoritesService } from 'src/app/shared/modules/favorites/services/favorites.service';
 
 @Component({
   selector: 'course-list-item',

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { flyIn, fall } from 'src/app/animations';
-import { FeedbackService } from '../modules/feedback/services/feedback.service';
+import { FeedbackService } from '../shared/modules/feedback/services/feedback.service';
 
 @Component({
   selector: 'app-home',

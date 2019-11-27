@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { League } from 'src/app/modules/leagues/services/backend.service';
 import { Permission, PermissionBackend } from 'src/app/modules/permissions/services/backend.service';
 import { Team, StatsBackend, Stats } from '../../services/backend.service';
-import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { CreateComponent } from 'src/app/modules/account/components/create/create.component';
 import { CreateTempUsersComponent } from '../create-temp-users/create-temp-users.component';
@@ -72,7 +72,7 @@ export class CreatePlayerComponent implements OnInit {
   }
 
   initForm() {
-    if (this.session.format.enum != 'ffa') {
+    if (this.session.format != 'ffa') {
       this.form = this.builder.group({
         player: ["", Validators.required],
         team: ["", Validators.required],

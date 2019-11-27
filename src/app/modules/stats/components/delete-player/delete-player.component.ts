@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { StatsBackend } from '../../services/backend.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 
 @Component({
   selector: 'app-delete-player',

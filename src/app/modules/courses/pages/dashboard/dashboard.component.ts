@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Course, CourseBackend } from '../../services/backend.service';
-import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { AccountBackend } from 'src/app/modules/account/services/backend.service';
 import { Observable } from 'rxjs';
 import { flyIn } from 'src/app/animations';

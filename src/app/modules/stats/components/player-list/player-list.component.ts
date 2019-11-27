@@ -4,7 +4,7 @@ import { Team, StatsBackend, Stats } from '../../services/backend.service';
 import { League } from 'src/app/modules/leagues/services/backend.service';
 import { ActivatedRoute } from '@angular/router';
 import { AccountBackend } from 'src/app/modules/account/services/backend.service';
-import { FeedbackService } from 'src/app/modules/feedback/services/feedback.service';
+import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { MatDialog } from '@angular/material';
 import { PermGuard } from 'src/app/guards/perm.service';
 import { combineLatest } from 'rxjs';
@@ -14,7 +14,7 @@ import { flyInPanelRow } from 'src/app/animations';
 import { EditPlayerComponent } from '../edit-player/edit-player.component';
 import { DeletePlayerComponent } from '../delete-player/delete-player.component';
 import { MergeTempUsersComponent } from '../merge-temp-users/merge-temp-users.component';
-import { Chart } from 'src/app/modules/charts/line/line.component';
+import { Chart } from 'src/app/shared/modules/charts/line/line.component';
 
 @Component({
   selector: 'app-player-list',
