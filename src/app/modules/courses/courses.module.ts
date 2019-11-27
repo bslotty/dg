@@ -7,15 +7,15 @@ import { AgmCoreModule } from '@agm/core';
 
 
 import { SearchComponent } from './components/search/search.component';
-import { DetailComponent } from './components/detail/detail.component';
+import { DetailComponent } from './pages/detail/detail.component';
 import { MapComponent } from './components/map/map.component';
-import { ShellComponent } from './components/shell/shell.component';
+import { ShellComponent } from './pages/shell/shell.component';
 
 
-import { CreateComponent } from './components/create/create.component';
+import { CreateComponent } from './pages/create/create.component';
 import { CourseBackend } from './services/backend.service';
 import { CourseFormService } from './services/course-form.service';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 import { CourseListItemComponent } from './components/course-list-item/course-list-item.component';
 

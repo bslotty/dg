@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { ScoreSettingsComponent } from '../score-settings/score-settings.component';
+import { ScoreSettingsComponent } from '../../dialogs/score-settings/score-settings.component';
 import { flyInPanelRow } from 'src/app/animations';
 import { Score } from '../../services/backend.service';
 import { SessionBackend } from 'src/app/modules/sessions/services/backend.service';

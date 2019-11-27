@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ShellComponent } from './components/shell/shell.component';
 
 
-import { DetailComponent as SessionDetailComponent } from '../sessions/components/detail/detail.component';
+import { DetailComponent as SessionDetailComponent } from '../sessions/pages/detail/detail.component';
 import { PermGuard } from 'src/app/guards/perm.service';
 import { LeagueGuard } from 'src/app/guards/league.service';
 import { MergeTempUsersComponent } from './components/merge-temp-users/merge-temp-users.component';

@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CreateComponent } from './components/create/create.component';
+import { CreateComponent } from './pages/create/create.component';
 
-import { ShellComponent } from './components/shell/shell.component';
+import { ShellComponent } from './pages/shell/shell.component';
 
 
 import { PlayerScoreListComponent } from '../stats/components/player-score-list/player-score-list.component';
 
 
 import { AuthGuard } from 'src/app/guards/auth.service';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { DetailComponent } from './components/detail/detail.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { DetailComponent } from './pages/detail/detail.component';
 
 
 const sessionRoutes: Routes = [
