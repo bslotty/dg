@@ -30,6 +30,10 @@ export class CourseBackend {
   private recientList: BehaviorSubject<Course[]> = new BehaviorSubject([]);
   recientList$: Observable<Course[]> = this.recientList.asObservable();
 
+  //  Search
+  private search: BehaviorSubject<Course[]> = new BehaviorSubject([]);
+  search$: Observable<Course[]> = this.search.asObservable();
+
   constructor(
     private http: HttpClient,
     private account: AccountBackend,
@@ -117,12 +121,12 @@ export class CourseBackend {
     }));
   }
 
-  search(term: string) {
+  getSearch(term: string) {
     this.http.post(this.url, { action: "search", term: term }).pipe(this.serverPipe).subscribe((res: ServerPayload) => {
       if (this.rCheck(res)) {
-        this.list.next(this.convertProperties(res));
+        this.search.next(this.convertProperties(res));
       } else {
-        this.list.next([]);
+        this.search.next([]);
       }
     });
   }

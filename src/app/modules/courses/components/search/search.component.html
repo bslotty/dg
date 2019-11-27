@@ -1,8 +1,3 @@
-<div *ngIf="header == true">
-  <app-section-header title="Search"></app-section-header>
-  <p class="alert alert-light">You can search for a course by Park, City, State</p>
-</div>
-
 <form [formGroup]="form">
   <mat-form-field>
     <mat-label matPrefix>Search</mat-label>
@@ -16,37 +11,12 @@
   </mat-form-field>
 </form>
 
-<div *ngIf="results | async as courseList; else loader">
+<div *ngIf="results | async as courseList;">
   <div *ngIf="courseList.length; else none" [@flyIn]>
     <course-list-item  *ngFor="let course of courseList" [course]="course" mode="list" mode="selector">
     </course-list-item>
   </div>
 </div>
-
-
-
-
-
-<ng-template #create>
-  <div *ngIf="form.valid && results?.length == 0" class="row justify-content-center align-items-center">
-    <p class="col message"><i>{{ form.get('search').value }}</i> did not return anything</p>
-  </div>
-
-  <div *ngIf="form.valid && mode == 'link'">
-    <div class="row justify-content-center align-items-center no-gutters">
-      <p class="col message">Cant find the course you were looking for?</p>
-    </div>
-    <p class="row justify-content-center align-items-center">
-      <a mat-flat-button color="transparent-accent" class="col" routerLink="/courses/create">Create it!</a>
-    </p>
-  </div>
-</ng-template>
-
-
-<ng-template #loader>
-  <loader></loader>
-</ng-template>
-
 
 <ng-template #none>
   <div class="message">

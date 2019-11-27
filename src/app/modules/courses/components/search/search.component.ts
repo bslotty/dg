@@ -1,16 +1,16 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CourseBackend, Course } from '../../services/backend.service';
 import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { CourseFormService } from '../../services/course-form.service';
-import { flyIn, flyLeft } from 'src/app/animations';
+import { flyIn } from 'src/app/animations';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-course-search',
+  selector: 'course-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css'],
-  animations: [flyIn, flyLeft]
+  animations: [flyIn]
 })
 export class SearchComponent implements OnInit {
 
@@ -35,7 +35,7 @@ export class SearchComponent implements OnInit {
     });
 
     //  Listen to Course List Changes
-    this.results = this.courses.list$;
+    this.results = this.courses.search$;
 
   }
 }

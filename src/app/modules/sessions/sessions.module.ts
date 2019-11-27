@@ -20,6 +20,7 @@ import { SelectFormatComponent } from './dialogs/select-format/select-format.com
 import { SelectPlayersComponent } from './dialogs/select-players/select-players.component';
 import { ListItemComponent as SessionListItemComponent } from './components/list-item/list-item.component';
 import { SelectTimeComponent } from './dialogs/select-time/select-time.component';
+import { SelectCourseComponent } from './dialogs/select-course/select-course.component';
 
 
 @NgModule({
@@ -41,11 +42,14 @@ import { SelectTimeComponent } from './dialogs/select-time/select-time.component
     SelectFormatComponent,
     SessionListItemComponent,
     SelectTimeComponent,
+    SelectCourseComponent,
   ],
   exports: [],
   entryComponents: [
     SelectPlayersComponent,
     SelectFormatComponent, 
+    SelectTimeComponent,
+    SelectCourseComponent,
   ]
 })
 export class SessionsModule { }

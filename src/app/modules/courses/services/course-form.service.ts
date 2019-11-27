@@ -95,7 +95,7 @@ export class CourseFormService {
             console.log ("CourseSearch.valid: ", s);
 
             this.feed.loading = true;
-            this.courseService.search(s as string);
+            this.courseService.getSearch(s as string);
           }
         });
 

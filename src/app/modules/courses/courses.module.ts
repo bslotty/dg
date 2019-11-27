@@ -6,7 +6,7 @@ import { MaterialModule } from '../../shared/modules/material/material.module';
 import { AgmCoreModule } from '@agm/core';
 
 
-import { SearchComponent } from './components/search/search.component';
+import { SearchComponent as SearchComponentPage } from './pages/search/search.component';
 import { DetailComponent } from './pages/detail/detail.component';
 import { MapComponent } from './components/map/map.component';
 import { ShellComponent } from './pages/shell/shell.component';
@@ -20,6 +20,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { CourseListItemComponent } from './components/course-list-item/course-list-item.component';
 
 import { ListComponent as CourseListComponent } from './components/list/list.component';
+import { SearchComponent } from './components/search/search.component';
 
 
 
@@ -42,6 +43,7 @@ import { ListComponent as CourseListComponent } from './components/list/list.com
     CreateComponent,
     DashboardComponent,
     CourseListItemComponent,
+    SearchComponentPage
   ],
   providers: [
     CourseBackend,

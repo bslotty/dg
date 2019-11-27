@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Inject } from '@angular/core';
 import { flyIn } from 'src/app/animations';
-import { SessionFormService } from '../../services/form.service';
 import { SessionFormat, SessionBackend } from '../../services/backend.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { skip } from 'rxjs/operators';
 
 @Component({
   selector: 'app-select-format',
@@ -14,13 +15,24 @@ export class SelectFormatComponent implements OnInit {
   @Input() selectedFormat: SessionFormat;
 
   constructor(
+    private dialogRef: MatDialogRef<SelectFormatComponent>,
+    @Inject(MAT_DIALOG_DATA) private data,
     private sessions_: SessionBackend,
-    private sessionsF: SessionFormService
   ) { }
 
-  ngOnInit() {}
-
-  setFormat(type) {
-    this.sessionsF.setFormat(type);
+  ngOnInit() {
+    this.sessions_.detail$.pipe(skip(1)).subscribe((s)=>{
+      this.close();
+    });
   }
+
+  setFormat(format) {
+    this.sessions_.setFormat(format);
+  }
+
+
+  close(bool = false) {
+    this.dialogRef.close(bool);
+  }
+
 }

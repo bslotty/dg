@@ -32,7 +32,7 @@ export class SessionFormService {
   */
 
   //  Form Field Control Setup;
-  private cFormat = new FormControl(this.sessionService.types[0], [
+  private cFormat = new FormControl("", [
     Validators.required
   ]);
 
@@ -114,20 +114,21 @@ export class SessionFormService {
   constructor(
     private helper: HelperService,
     private courseService: CourseBackend,
-    private sessionService: SessionBackend,
+    private session_: SessionBackend,
     private scoresService: ScoresBackend,
     private accountService: AccountBackend,
     private router: Router) {
 
     //  Get Data & Populate
-    this.sessionService.detail$.subscribe((s) => {
+    this.session_.detail$.subscribe((s) => {
 
-      if (s != undefined) {
+      if (typeof s.format == "string") {
         //  Format
         s.format = this.getFormatFromName(s.format);
-        this.setForm(s);
       }
-      
+
+      console.log("SessionFormUpdate: ", s);
+      this.setForm(s);
     });
   }
 
@@ -170,7 +171,7 @@ export class SessionFormService {
 
     if (type != 'search') {
       //  Listen to Changes for Date Time Merge
-      form.valueChanges.pipe(this.sessionService.serverPipe).subscribe((v) => {
+      form.valueChanges.pipe(this.session_.serverPipe).subscribe((v) => {
         if (v['time'] != "" && v['date'] instanceof Date && v['date'].getHours() == 0) {
           var d = new Date(v['date'].toDateString() + " " + v['time']);
           console.log("date set: ", d, v);
@@ -217,37 +218,42 @@ export class SessionFormService {
     this.form.value.get("teams").reset();
   }
 
-  resetCourse() {
-    this.courseService.resetList();
-    this.form.value.get("course").reset();
-  }
 
   setForm(values): void {
 
-
-
     //  Course
-    this.form.value.get("course").setValue(values.course);
-
-    //  Date/Time
-    var time = new Date(values.starts_on).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-    var date = new Date(values.starts_on);
-    this.form.value.get("date").setValue(date);
-    this.form.value.get("time").setValue(time);
-
-    this.form.value.get("format").setValue(values.format);
-
-    //  Players
-    values.scores.forEach((s, i) => { this.scoreList.push(new FormControl(s)) });
-
-    //  Teams
-    if (values.format.enum.indexOf("team") > -1) {
-      var uTeams = this.scoresService.getTeamsFromScoreList(values.scores);
-      uTeams.forEach((t, i) => { this.teamList.push(new FormControl(t)); });
+    if (values.course != undefined) {
+      this.form.value.get("course").setValue(values.course);
     }
 
 
-    this.form.value.markAsDirty();
+    //  Date/Time
+    if (values.starts_on != undefined) {
+      var time = new Date(values.starts_on).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+      var date = new Date(values.starts_on);
+      this.form.value.get("date").setValue(date);
+      this.form.value.get("time").setValue(time);
+    }
+
+    if (values.format != undefined) {
+      this.form.value.get("format").setValue(values.format);
+    }
+
+
+    //  Players
+    if (values.scores != undefined) {
+      values.scores.forEach((s, i) => { this.scoreList.push(new FormControl(s)) });
+
+      //  Teams
+      if (values.format.enum.indexOf("team") > -1) {
+        var uTeams = this.scoresService.getTeamsFromScoreList(values.scores);
+        uTeams.forEach((t, i) => { this.teamList.push(new FormControl(t)); });
+      }
+
+    }
+
+
+    //  this.form.value.markAsDirty();
   }
 
 
@@ -256,7 +262,7 @@ export class SessionFormService {
     if (str instanceof SessionFormat) {
       return str;
     } else {
-      var format = this.sessionService.types.find((t) => {
+      var format = this.session_.types.find((t) => {
         if (t.enum == str) {
           return true;
         }
@@ -270,9 +276,7 @@ export class SessionFormService {
   }
 
   setCourse(course) {
-    console.log("setCourse: ", course);
     this.form.value.get("course").setValue(course);
-    this.courseService.resetList();
   }
 
   setDate(date: Date): void {
@@ -383,7 +387,7 @@ export class SessionFormService {
 
     var session = this.getSessionFromForm();
 
-    this.sessionService.create(session).subscribe((res) => {
+    this.session_.create(session).subscribe((res) => {
       console.log("sessionsService.create.res: ", res);
       if (this.helper.rCheck(res)) {
 

@@ -31,11 +31,11 @@ export class SessionBackend {
   favoriteList$: Observable<Session[]> = this.list.asObservable();
 
   //  Single View
-  private detail: BehaviorSubject<Session> = new BehaviorSubject(undefined);
+  private detail: BehaviorSubject<Session> = new BehaviorSubject(new Session());
   detail$: Observable<Session> = this.detail.asObservable();
 
   //  Session Modes
-  public types:SessionFormat[] = [
+  public types: SessionFormat[] = [
     {
       name: 'Free For All',
       enum: 'ffa',
@@ -142,7 +142,7 @@ export class SessionBackend {
 
         this.detail.next(session);
       } else {
-        console.log ("Error with server Response: ", res);
+        console.log("Error with server Response: ", res);
       }
     });
   }
@@ -228,14 +228,25 @@ export class SessionBackend {
     }
   }
 
+  setFormat(format) {
+    console.log("formatUpdate;" , format);
+    this.detail.value.format = format;
+    this.detail.next(this.detail.value);
+  }
+
+  setCourse(course) {
+    this.detail.value.course = course;
+    this.detail.next(this.detail.value);
+  }
+
 
 
   removeScore(score) {
-    console.log ("session.backend.removeScore: ", score);
-    console.log ("session.detail: ", this.detail);
+    console.log("session.backend.removeScore: ", score);
+    console.log("session.detail: ", this.detail);
     this.detail.value.scores = this.detail.value.scores.filter(s => s.id != score.id);
 
-    console.log ("session.detail: ", this.detail);
+    console.log("session.detail: ", this.detail);
     this.detail.next(this.detail.value);
   }
 

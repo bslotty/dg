@@ -1,20 +1,28 @@
-<div *ngFor="let format of sessions_.types;" [class]='selectedFormat == format ? " active" : ""'>
-  <div class="row justify-content-between align-items-center no-gutters">
+<div class="row justify-content-between align-items-center no-gutters">
+  <div class="col">
+    <h4>Select a Format</h4>
+  </div>
 
-    <div class="col ml {{ selectedFormat == format ? 'color-accent' : '' }}">
-      <p>{{ format.name }}</p>
-    </div>
+  <div class="col-xs">
+    <a mat-flat-button color="transparent-primary" (click)="close(false)">
+      <span class="icon-x"></span>
+    </a>
+  </div>
+</div>
 
-    <div class="col-xs align-self-end">
-      <a mat-flat-button disabled color="" matTooltip="{{ format.desc }}">
-        <span class="icon-help-circle"></span>
-      </a>
-      <a *ngIf="selectedFormat == format" mat-flat-button color="transparent-accent">
-        <span class="icon-check-circle"></span>
-      </a>
-      <a *ngIf="selectedFormat != format" mat-flat-button color="transparent-primary" (click)="setFormat(format)">
-        <span class="icon-circle"></span>
-      </a>
-    </div>
+
+<div *ngFor="let format of sessions_.types" class="row justify-content-between align-items-center no-gutters" @flyIn>
+
+  <div class="col ml ">
+    <p>{{ format.name }}</p>
+  </div>
+
+  <div class="col-xs">
+    <a mat-flat-button disabled color="" matTooltip="{{ format.desc }}">
+      <span class="icon-help-circle"></span>
+    </a>
+    <a mat-flat-button color="transparent-primary" (click)="setFormat(format)">
+      <span class="icon-circle"></span>
+    </a>
   </div>
 </div>

@@ -46,7 +46,6 @@ export class ScoreListItemComponent implements OnInit {
   openSettings() {
     this.dialog.open(ScoreSettingsComponent, {
       data: this.score,
-      width: "80vw",
     })
   }
 

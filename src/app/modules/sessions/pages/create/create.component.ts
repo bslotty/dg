@@ -4,7 +4,10 @@ import { Component, OnInit } from '@angular/core';
 import { SessionFormService } from '../../services/form.service';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { flyIn, flyLeft } from 'src/app/animations';
-import { Session } from '../../services/backend.service';
+import { Session, SessionBackend } from '../../services/backend.service';
+import { MatDialog } from '@angular/material';
+import { SelectCourseComponent } from '../../dialogs/select-course/select-course.component';
+import { SelectFormatComponent } from '../../dialogs/select-format/select-format.component';
 
 @Component({
   selector: 'app-create',
@@ -22,7 +25,9 @@ export class CreateComponent implements OnInit {
   playerModes: string[] = ["admin", "short"];
 
   constructor(
-    private sessionForm: SessionFormService
+    private sessionForm: SessionFormService,
+    private sessions_: SessionBackend,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -32,22 +37,19 @@ export class CreateComponent implements OnInit {
     this.sessionForm.form$.subscribe((f) => {
       this.form = f;
     });
+
+    this.sessions_.detail$.subscribe((s)=>{
+      console.log ("sessions.create.detail: ", s);
+    })
   }
 
-  
-
-  selectFormat($event) {
-    this.sessionForm.setFormat($event);
+  selectCourse() {
+    this.dialog.open(SelectCourseComponent, { });
   }
 
-  selectCourse($event) {
-    this.sessionForm.setCourse($event);
+  selectFormat() {
+    this.dialog.open(SelectFormatComponent, { });
   }
-
-  clearCourse() {
-    this.sessionForm.resetCourse();
-  }
-
 
 
 

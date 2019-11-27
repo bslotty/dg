@@ -2,12 +2,36 @@
 
   <!--  Format  -->
   <div>
-    <div class="row justify-content-between align-items-center no-gutters">
+    <div class="row justify-content-between align-items-end no-gutters">
       <h6 class="col sub-header ml">Format</h6>
+
+      <div class="col-xs" *ngIf="form.get('format').value">
+        <a mat-flat-button color="transparent-warn" (click)="selectFormat()">
+          <span class="icon-x"></span>
+        </a>
+      </div>
     </div>
-    <div >
-      <app-select-format [selectedFormat]='form.get("format").value'></app-select-format>
+
+    <div *ngIf="form.get('format').value; else pickFormat" class="row justify-content-between align-items-center no-gutters panel" @flyIn>
+      <div class="col ml">
+        <p>{{ form.get('format').value.name }}</p>
+      </div>
+
+      <div class="col-xs">
+        <a mat-flat-button disabled color="" matTooltip="{{ form.get('format').value.desc }}">
+          <span class="icon-help-circle"></span>
+        </a>
+      </div>
     </div>
+
+    <ng-template #pickFormat>
+      <div class="row justify-content-center align-items-center no-gutters">
+        <div class="col">
+          <a mat-raised-button class="btn btn-block btn-lg" color="accent" (click)="selectFormat()">Select a Match Format</a>
+        </div>
+      </div>
+
+    </ng-template>
   </div>
 
 
@@ -24,55 +48,19 @@
       </div>
     </div>
 
-    <div [@flyIn] *ngIf="form.get('course').value; else coursePicker">
+    <div [@flyIn] *ngIf="form.get('course').value; else pickCourse">
       <course-list-item [course]='form.get("course").value' mode='list'></course-list-item>
     </div>
 
-    <ng-template #coursePickerDialog>
+    <ng-template #pickCourse>
       <div class="row justify-content-center align-items-center no-gutters">
         <div class="col">
-          <a mat-raised-button class="btn btn-block btn-lg" color="accent">Select a Course</a>
+          <a mat-raised-button class="btn btn-block btn-lg" color="accent" (click)="selectCourse()">Select a Course</a>
         </div>
       </div>
 
     </ng-template>
-    
 
-
-    <ng-template #coursePicker>
-      <div [@flyIn]>
-        <mat-tab-group dynamicHeight="true">
-          <mat-tab>
-            <ng-template mat-tab-label>
-              <span class="icon-heart" matTooltip='Favorites'></span>
-            </ng-template>
-
-            <h3>Favorites</h3>
-            <app-course-list type='favorites' mode='selector'></app-course-list>
-
-
-          </mat-tab>
-
-          <mat-tab>
-            <ng-template mat-tab-label>
-              <span class="icon-clock" matTooltip="Recient"></span>
-            </ng-template>
-
-            <h3>Recient</h3>
-            <app-course-list type='recient' mode='selector'></app-course-list>
-          </mat-tab>
-
-          <mat-tab>
-            <ng-template mat-tab-label>
-              <span class="icon-search" matTooltip="Search"></span>
-            </ng-template>
-            <app-course-search header="false">
-            </app-course-search>
-          </mat-tab>
-        </mat-tab-group>
-      </div>
-
-    </ng-template>
   </div>
 
 
