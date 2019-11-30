@@ -9,7 +9,7 @@ import { ScoreListItemComponent } from './components/score-list-item/score-list-
 import { TeamListItemComponent } from './components/team-list-item/team-list-item.component';
 import { TeamSelectComponent } from './dialogs/team-select/team-select.component';
 import { TeamListComponent } from './components/team-list/team-list.component';
-import { ScoresListComponent } from './components/scores-list/scores-list.component';
+import { ScoreListComponent } from './components/score-list/score-list.component';
 
 
 
@@ -21,8 +21,9 @@ import { ScoresListComponent } from './components/scores-list/scores-list.compon
     ScoreSettingsComponent,
     TeamSettingsComponent,
     TeamSelectComponent,
+
     TeamListComponent,
-    ScoresListComponent,
+    ScoreListComponent,
   ],
   imports: [
     CommonModule,
@@ -33,6 +34,11 @@ import { ScoresListComponent } from './components/scores-list/scores-list.compon
     TeamListItemComponent,
     ScoreSettingsComponent,
     TeamSettingsComponent,
+
+    TeamSelectComponent,
+
+    TeamListComponent,
+    ScoreListComponent,
   ],
   entryComponents: [
     ScoreSettingsComponent,

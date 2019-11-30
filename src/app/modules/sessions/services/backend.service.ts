@@ -10,6 +10,7 @@ import { pipe, BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { HelperService } from 'src/app/shared/services/helper.service';
 import { Score } from '../../scores/services/backend.service';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -229,7 +230,7 @@ export class SessionBackend {
   }
 
   setFormat(format) {
-    console.log("formatUpdate;" , format);
+    console.log("formatUpdate;", format);
     this.detail.value.format = format;
     this.detail.next(this.detail.value);
   }
@@ -239,24 +240,41 @@ export class SessionBackend {
     this.detail.next(this.detail.value);
   }
 
-  setDate(date:Date, time:string ):void {
+  setDate(date: Date, time: string): void {
 
     var d = new Date(date.toDateString() + " " + time);
     console.log("date set: ", d);
 
-    
+
     this.detail.value.starts_on = d;
     this.detail.next(this.detail.value);
   }
 
+  addScore(score) {
+    if (this.detail.value.scores == undefined) {
+      this.detail.value.scores = [score];
+    } else {
+
+      var dupe = this.detail.value.scores.find(e => e.player.id == score.player.id );
+
+      if (dupe == undefined) {
+        this.detail.value.scores.push(score);
+      }
+    }
+
+    this.detail.next(this.detail.value);
+  }
 
   removeScore(score) {
-    console.log("session.backend.removeScore: ", score);
-    console.log("session.detail: ", this.detail);
-    this.detail.value.scores = this.detail.value.scores.filter(s => s.id != score.id);
+    console.log("-RemoveScore: ", score);
+    this.detail.value.scores = this.detail.value.scores.filter(s => s.player.id != score.player.id);
 
-    console.log("session.detail: ", this.detail);
+    console.log("newList: ", this.detail.value.scores);
     this.detail.next(this.detail.value);
+  }
+
+  getScore(score): boolean {
+    return this.detail.value.scores != undefined && this.detail.value.scores.find(s => s.id == score.id) != undefined;
   }
 
 }

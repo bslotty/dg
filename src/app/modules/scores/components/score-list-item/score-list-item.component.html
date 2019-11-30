@@ -1,7 +1,7 @@
-<div class="panel row justify-content-end align-items-center no-gutters">
+<div class="row justify-content-end align-items-center no-gutters {{ backdrop ? 'panel' : '' }}">
 
 	<!--	Team Color Bar	-->
-	<div class="colorChoice" *ngIf='score.team.color'>
+	<div class="colorChoice" *ngIf='score.team?.color'>
 		<div class="colorIcon {{ score.team.color?.name }}"></div>
 	</div>
 
@@ -20,8 +20,10 @@
 
 	<!--	Handicap	-->
 	<div class="col-2">
-		<a mat-flat-button matToolTip="Set Handicap" color="{{ +score.handicap != 0 ? 'transparent-accent' : 'transparent-primary'}}" (click)="openSettings(score.player)" class="row justify-content-center align-items-center no-gutters">
-			<span class="icon-shield color-accent"></span>
+		<a mat-flat-button matTooltip="Set Handicap"
+			color="{{ +score.handicap != 0 ? 'transparent-accent' : 'transparent-info'}}"
+			(click)="openSettings(score.player)" class="row justify-content-center align-items-center no-gutters">
+			<span class="icon-shield {{ +score.handicap != 0 ? 'color-accent' : 'color-info'}}"></span>
 		</a>
 	</div>
 
@@ -31,7 +33,7 @@
 	</div>
 
 
-	<!--	Admin Actions	-->
+	<!--	Admin Actions	
 	<div class="col-1" *ngIf="mode.indexOf('admin') != -1">
 		<a mat-flat-button color="transparent-primary" [matMenuTriggerFor]="appMenu">
 			<span class="icon-more-vertical"></span>
@@ -43,12 +45,18 @@
 					class="icon-delete"></span></a>
 		</mat-menu>
 	</div>
+	-->
+
+	<!--	Remove	-->
+	<div class="col-xs" *ngIf="mode.indexOf('remove') != -1">
+		<a mat-flat-button color="transparent-warn" (click)="remove()">
+			<span class="icon-x"></span>
+		</a>
+	</div>
 
 
 	<!--	Selector	-->
 	<div class="col-xs" *ngIf="mode.indexOf('selector') != -1">
-		<a mat-flat-button color="transparent-accent" (click)="include(score.player)">
-			<span class="icon-plus"></span>
-		</a>
+		<mat-checkbox (change)="toggleScore($event, score)" [value]="selectorCheckbox"></mat-checkbox>
 	</div>
 </div>

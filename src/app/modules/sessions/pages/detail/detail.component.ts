@@ -33,8 +33,6 @@ export class DetailComponent implements OnInit {
     this._sessionsForm.Setup("edit");
     this._sessionsForm.form$.subscribe((f)=>{
       this.form = f;
-
-      console.log ("this.f: ", this.form);
     });
 
     //  Populate Data for form

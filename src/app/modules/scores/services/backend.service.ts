@@ -36,13 +36,13 @@ export class ScoresBackend {
       console.log("scores.session.detail$: ", s);
 
       if (s != undefined) {
+
+        console.log("------- undefined");
         //  Scores 
         this.setScores(s.scores);
 
         //  Teams
-        if (typeof s.format == 'string' && s.format.indexOf("team") > -1) {
-          this.setTeams(s.scores);
-        } else if (s.format instanceof SessionFormat && s.format.enum.indexOf("team") > -1) {
+        if (s.format != undefined && s.format['enum'].indexOf("team") > -1) {
           this.setTeams(s.scores);
         }
       }
@@ -65,16 +65,16 @@ export class ScoresBackend {
   }
 
   getTeamsFromScoreList(scores): Team[] {
-    //  Get Teams From Each Scores
-    var teamList = scores.map((s) => {
-      return s.team;
-    });
-
-    var unique = teamList.filter((e, i) => teamList.findIndex(a => a.id === e.id) === i);
-    return unique;
+    if (scores != undefined) {
+      var teamList = scores.map((s) => s.team);
+      var unique = teamList.filter((e, i) => teamList.findIndex(a => a.name === e.name) === i);
+      return unique;
+    }
   }
 
   getTeamPlayers(uniqueTeams: Team[]): void {
+
+    console.log("------- GetTeamPlayers");
     if (this.scores.value != undefined) {
       var roster = [];
 
@@ -87,7 +87,9 @@ export class ScoresBackend {
   }
 
   setTeams(scores): void {
+    console.log("------- setTeams");
     var teamList = this.getTeamsFromScoreList(scores);
+    console.log("------- teamList", teamList);
     this.teams.next(teamList);
     this.getTeamPlayers(teamList);
   }
@@ -131,7 +133,15 @@ export class Team {
   constructor(
     public id: string,
     public name?: string,
-    public color?: string,
+    public color?: TeamColor,
     public hex?: string,
+  ) { }
+}
+
+export class TeamColor {
+  constructor(
+    public name?: string,
+    public hex?: string,
+    public available?: boolean
   ) { }
 }

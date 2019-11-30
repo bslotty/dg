@@ -14,8 +14,8 @@ export class CourseListItemComponent implements OnInit {
   @Input() course: Course;
   @Input() mode: string; // List(Fav&&Link), Selector(emit), 
 
+  @Input() backdrop: boolean = false;
 
-  @Output() selected: EventEmitter<Course> = new EventEmitter();
 
   constructor(
     private favorites_: FavoritesService,

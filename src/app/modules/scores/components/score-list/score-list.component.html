@@ -1,0 +1,3 @@
+<div *ngIf="scores$ | async as scoreList;">
+    <score-list-item  *ngFor="let score of scoreList" [score]="score" [mode]="modes" [backdrop]='backdrop'></score-list-item>
+</div>

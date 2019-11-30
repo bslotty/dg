@@ -26,16 +26,6 @@ export class SelectTimeComponent implements OnInit {
       this.form = f;
     });
 
-    combineLatest(
-      this.form.get('date').valueChanges,
-      this.form.get('time').valueChanges,
-    ).subscribe((date) => {
-      console.log("TimeEmmitted: ", date);
-
-      // this.sessions_.setDate(date[0], date[1]);
-    });
-
-
     this.sessions_.detail$.pipe(skip(1)).subscribe((s) => {
       this.close();
     });

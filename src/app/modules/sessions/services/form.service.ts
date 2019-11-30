@@ -7,7 +7,8 @@ import { Session, SessionBackend, SessionFormat } from './backend.service';
 import { HelperService } from 'src/app/shared/services/helper.service';
 import { AccountBackend } from '../../account/services/backend.service';
 import { Team } from '../../stats/services/backend.service';
-import { ScoresBackend } from '../../scores/services/backend.service';
+import { ScoresBackend, TeamColor } from '../../scores/services/backend.service';
+import { combineLatest } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -41,14 +42,16 @@ export class SessionFormService {
   ]);
 
   private cDate = new FormControl("", {
-    updateOn: "change", validators: [
+    updateOn: "blur", validators: [
       Validators.required,
+      //  Validators.pattern("(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)")
     ]
   });
 
   private cTime = new FormControl("", {
-    updateOn: "change", validators: [
+    updateOn: "blur", validators: [
       Validators.required,
+      //  Validators.pattern("((1[0-2]|0?[1-9]):([0-5][0-9]) ?([AaPp][Mm]))")
     ]
   });
 
@@ -77,7 +80,7 @@ export class SessionFormService {
 
 
   //  Team Colors
-  teamColorList = [{
+  teamColorList: TeamColor[] = [{
     name: "red",
     hex: "ad0000",
     available: true,
@@ -169,6 +172,8 @@ export class SessionFormService {
         break;
     }
 
+
+    //  Push Initial Form
     this.form.next(form);
   }
 
@@ -228,7 +233,7 @@ export class SessionFormService {
       values.scores.forEach((s, i) => { this.scoreList.push(new FormControl(s)) });
 
       //  Teams
-      if (values.format.enum.indexOf("team") > -1) {
+      if (values.format && values.format.enum.indexOf("team") > -1) {
         var uTeams = this.scoresService.getTeamsFromScoreList(values.scores);
         uTeams.forEach((t, i) => { this.teamList.push(new FormControl(t)); });
       }
@@ -263,8 +268,14 @@ export class SessionFormService {
   }
 
   setDate(date: Date): void {
+    var date = new Date(date);
     this.form.value.get("date").setValue(date);
     this.form.value.get("time").setValue(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).replace(":00 ", " "));
+  }
+
+  validateDate(): void {
+    this.form.value.get("date").updateValueAndValidity();
+    this.form.value.get("time").updateValueAndValidity();
   }
 
 
@@ -358,18 +369,16 @@ export class SessionFormService {
   }
 
 
-  getTeamsFromScores() {
-
-  }
-
 
   submitCreation() {
     console.log("SubmitCreation.form: ", this.form);
 
-    var session = this.getSessionFromForm();
+    var session; 
+    this.session_.detail$.subscribe(s => session = s);
+
+    //  session.starts_on = this.form.value.value.date.toISOString();
 
     this.session_.create(session).subscribe((res) => {
-      console.log("sessionsService.create.res: ", res);
       if (this.helper.rCheck(res)) {
 
         var session = this.helper.rGetData(res)[0];
@@ -379,23 +388,6 @@ export class SessionFormService {
     });
 
   }
-
-
-
-  getSessionFromForm(): Session {
-    var session = new Session();
-    session.created_by = this.accountService.user.id
-    session.created_on = new Date();
-    session.format = this.form.value.value.format;
-    session.course = this.form.value.value.course;
-    session.starts_on = this.form.value.value.date.toISOString();
-    session.scores = this.scoreList.value;
-
-    return session;
-  }
-
-
-
 
 
   validateRoster(): boolean {

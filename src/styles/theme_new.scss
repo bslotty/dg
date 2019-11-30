@@ -264,6 +264,16 @@ p b {
   color: $c-pink;
 }
 
+.mat-transparent-info:not(:disabled) {
+  background: transparent;
+  color: $text-light;
+
+  span {
+    background: transparent;
+    color: $text-light !important;
+  }
+}
+
 
 
 
@@ -478,6 +488,14 @@ p b {
 .mat-expansion-panel-header {
   font-size: 1rem !important;
 }
+
+.mat-checkbox-inner-container {
+  width: 1.3rem !important;
+  height: 1.3rem !important;
+}
+
+
+
 
 // CDK-Drag-Drop
 .cdk-drag-preview {

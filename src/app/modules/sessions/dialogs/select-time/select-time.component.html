@@ -18,10 +18,13 @@
 				<mat-label matPrefix>Date</mat-label>
 				<input matInput [matDatepicker]="picker" placeholder="mm/dd/yyyy" formControlName='date'
 					(focus)="picker.open()" type="text">
+
 				<mat-datepicker-toggle matSuffix [for]="picker"><span class='icon-calendar'></span>
 				</mat-datepicker-toggle>
-				<mat-datepicker #picker startView="year" [startAt]="form.get('date').value" touchUi="true">
+
+				<mat-datepicker #picker startView="month" [startAt]="form.get('date').value" touchUi="true">
 				</mat-datepicker>
+
 				<mat-error *ngIf="form.get('date').touched && form.get('date').invalid">
 					Invalid Date
 				</mat-error>
@@ -35,10 +38,16 @@
 				<mat-label matPrefix>Time</mat-label>
 				<input matInput [ngxTimepicker]="timePicker" placeholder="hh:mm AM/PM" formControlName='time'
 					type="text">
-				<div matSuffix><a mat-flat-button color="transparent-primary" (click)="timePicker.open()"><span
-							class="icon-clock"></span></a></div>
+
+				<div matSuffix>
+					<a mat-flat-button color="transparent-primary" (click)="timePicker.open()">
+						<span class="icon-clock"></span>
+					</a>
+				</div>
+
 				<ngx-material-timepicker #timePicker minutesGap=5 disableAnimation="true">
 				</ngx-material-timepicker>
+
 				<mat-error *ngIf="form.get('time').touched && form.get('time').invalid">
 					Invalid Time
 				</mat-error>
@@ -48,7 +57,8 @@
 </form>
 
 <div class="row justify-content-end align-items-center no-gutters">
-	<div class="col align-self-end">
-		<a mat-flat-button class="btn" color="accent" (click)="setTime()">Set Start Time</a>
+	<div class="col text-right">
+		<a mat-flat-button class="btn" color="primary" (click)="setTime()" 
+		[disabled]="form.get('time').invalid || form.get('date').invalid || form.get('time').untouched || form.get('date').untouched || form.disabled">Set Start Time</a>
 	</div>
 </div>

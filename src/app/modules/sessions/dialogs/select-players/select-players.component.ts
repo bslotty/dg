@@ -1,10 +1,11 @@
-import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { AccountFormService } from 'src/app/modules/account/services/account-form.service';
 import { FormGroup } from '@angular/forms';
 import { AccountBackend } from 'src/app/modules/account/services/backend.service';
 import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { flyInPanelRow, flyIn } from 'src/app/animations';
-import { Score } from 'src/app/modules/scores/services/backend.service';
+import { Score, Team } from 'src/app/modules/scores/services/backend.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 
 @Component({
@@ -23,6 +24,8 @@ export class SelectPlayersComponent implements OnInit {
     private accountForm: AccountFormService,
     private accounts: AccountBackend,
     private feed: FeedbackService,
+    private dialogRef: MatDialogRef<SelectPlayersComponent>,
+    @Inject(MAT_DIALOG_DATA) private data,
   ) { }
 
   ngOnInit() {
@@ -43,12 +46,12 @@ export class SelectPlayersComponent implements OnInit {
     //  Listen to Player List Updates
     this.accounts.searchedPlayers$.subscribe((p)=>{
       if (p != undefined) {
-        //  Verify new users arent already in
 
         this.results = p.map((v)=>{
           var s = new Score();
           s.player = v;
           s.handicap = 0;
+          s.team = {id: null, name: null, color: {name: 'unassigned'}}
           return s;
         });
       }
@@ -56,29 +59,12 @@ export class SelectPlayersComponent implements OnInit {
     });
   }
 
-  include($event) {
-    //  this.selected.emit($event.score);
-
-    this.results.forEach((v, i) => {
-      if (v.player.id == $event.score.player.id) {
-        this.results.splice(i, 1);
-      }
-    });
-
-  }
 
   trackBy(index, item) {
     return item.id;
   }
 
-
-
-  addScore($event) {
-    //  this.sessionForm.addScore($event);
+  close () {
+    this.dialogRef.close();
   }
-
-  addTeam() {
-    //  this.sessionForm.addTeam();
-  }
-
 }

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ScoreSettingsComponent } from '../../dialogs/score-settings/score-settings.component';
 import { flyInPanelRow } from 'src/app/animations';
-import { Score } from '../../services/backend.service';
+import { Score, ScoresBackend } from '../../services/backend.service';
 import { SessionBackend } from 'src/app/modules/sessions/services/backend.service';
 
 @Component({
@@ -13,35 +13,37 @@ import { SessionBackend } from 'src/app/modules/sessions/services/backend.servic
 })
 export class ScoreListItemComponent implements OnInit {
 
-  @Input() nameMode: string = "full"; // short
-  @Input() actionMode: string[]
-
   @Input() mode: string[]
-
   @Input() score: Score;
-  @Output() action: EventEmitter<Object> = new EventEmitter();
+
+  @Input() backdrop: boolean = false;
+
+  private selectorCheckbox: boolean;
 
   constructor(
     private dialog: MatDialog,
     private sessions_: SessionBackend,
+    private scores_:ScoresBackend,
   ) { }
 
-  ngOnInit() {  }
+  ngOnInit() {
+    this.selectorCheckbox = this.sessions_.getScore(this.score);
+  }
 
   remove() {
-    this.action.emit({
-      "action": "remove",
-      "score": this.score
-    });
     this.sessions_.removeScore(this.score);
   }
 
-  include() {
-    this.action.emit({
-      "action": "add",
-      "score": this.score
-    });
+  toggleScore($event, score) {
+    if ($event.checked == true) {
+      this.sessions_.addScore(score);
+    } else {
+      this.sessions_.removeScore(score)
+    }
+    
   }
+
+
 
   openSettings() {
     this.dialog.open(ScoreSettingsComponent, {

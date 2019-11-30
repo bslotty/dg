@@ -1,25 +1,66 @@
 <div cdkDropListGroup class="row justify-content-center align-items-start no-gutters">
 
 
+	<div *ngIf="_scores.roster$ | async as roster; index as ri" class="col">
 
-	<div class="col-12 teamDropPad unassigned mb-3" (cdkDropListDropped)="rosterDrop($event)" cdkDropList
-		[cdkDropListData]="getRoster(null)" id="team-unassigned">
+		<div *ngIf="roster[0].team?.name != null; else unassigned">
+			<div class="col-12 teamDropPad {{ roster[0].team?.color.name }}"
+				id="{{ 'team-' + roster[0].team?.color.name }}" (cdkDropListDropped)="rosterDrop($event)" cdkDropList
+				[cdkDropListData]="roster">
 
-		<label>{{ sessionForm.teamGame ? 'Unassigned' : 'Players' }}</label>
-		<score-list-item cdkDrag [cdkDragData]="player" [score]="player" [mode]="playerModes"
-			*ngFor="let player of getRoster(null)">
-		</score-list-item>
+				<!--	Team Header 	-->
+				<div *ngIf="i == 0" class="row justify-content-center align-items-start no-gutters">
+					<div class="col">
+						<p>{{ roster[0].team?.name | titlecase }}</p>
+					</div>
+
+					<div class="col">
+						<a mat-flat-button color="transparent-primary" (click)="teamSettings()">
+							<span class="icon-edit-2"></span>
+						</a>
+					</div>
+				</div>
+
+
+				<score-list-item cdkDrag [cdkDragData]="player" [score]="player" [mode]="playerModes"
+					*ngFor="let player of roster; index as ri">
+				</score-list-item>
+			</div>
+
+		</div>
+
+
+		<ng-template #unassigned>
+			<div class="col-12 teamDropPad unassigned" id="team-unassigned" (cdkDropListDropped)="rosterDrop($event)"
+				cdkDropList [cdkDropListData]="roster">
+
+
+				<!--	Team Header 	-->
+				<div *ngIf="i == 0" class="row justify-content-center align-items-start no-gutters">
+					<div class="col">
+						<p>Unassigned</p>
+					</div>
+
+					<div class="col">
+						<a mat-flat-button color="transparent-primary" (click)="teamSettings()">
+							<span class="icon-edit-2"></span>
+						</a>
+					</div>
+				</div>
+
+
+				<score-list-item cdkDrag [cdkDragData]="player" [score]="player" [mode]="playerModes"
+					*ngFor="let player of roster; index as ri">
+				</score-list-item>
+			</div>
+		</ng-template>
+
+
+
+
+
+
+		<div class="col-12 teamDropPad {{ roster.team.color.name }}" id="{{ 'team-' + roster.team.color.name }}"
+			cdkDropList (cdkDropListDropped)="rosterDrop($event)" [cdkDropListData]="_scores.roster$[i]">
+		</div>
 	</div>
-
-
-	<div class="col-12 teamDropPad {{ team.value.color.name }}"
-		*ngFor="let team of form.get('teams').controls; let i = index" (cdkDropListDropped)="rosterDrop($event)"
-		cdkDropList [cdkDropListData]="getRoster(team)" id="{{ 'team-' + team.value.color.name }}">
-
-
-		<label>{{ team.value.name | titlecase }}</label>
-		<score-list-item cdkDrag [cdkDragData]="player" [score]="player" [mode]="playerModes"
-			*ngFor="let player of getRoster(team)">
-		</score-list-item>
-	</div>
-</div>

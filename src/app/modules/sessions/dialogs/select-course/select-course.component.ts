@@ -22,7 +22,6 @@ export class SelectCourseComponent implements OnInit {
 
     //  Close When Course is Updates
     this.sessions_.detail$.pipe(skip(1)).subscribe((s)=>{
-      console.log ("selectCourse.detail");
       this.close();
     });
   }

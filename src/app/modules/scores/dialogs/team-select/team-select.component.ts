@@ -1,19 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { SessionFormService } from 'src/app/modules/sessions/services/form.service';
+import { ScoresBackend, Score } from '../../services/backend.service';
+import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-team-select',
+  selector: 'team-select',
   templateUrl: './team-select.component.html',
   styleUrls: ['./team-select.component.scss']
 })
 export class TeamSelectComponent implements OnInit {
 
+  private rstr = this._scores.roster$;
+
+
   constructor(
-    private sessionsF_: SessionFormService
+    private sessionsF_: SessionFormService,
+    private _scores: ScoresBackend,
   ) { }
 
   ngOnInit() {
+    this.rstr.subscribe(s => console.warn("newRoster: ", s));
+
   }
 
 
