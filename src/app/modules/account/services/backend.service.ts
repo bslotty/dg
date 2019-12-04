@@ -63,7 +63,6 @@ export class AccountBackend implements OnInit {
 
   //  Clear User;
   resetUser() {
-    console.warn("User RESET");
     this.user = new Player(null);
   }
 
@@ -180,12 +179,10 @@ export class AccountBackend implements OnInit {
   searchUsers(term: string) {
     return this.http.post(this.url, { "action": "search", "term": term }).pipe(
       map((res: ServerPayload) => {
-
-        console.log ("res: ", res);
+        
         //  Set user if successfull
         if (this.rCheck(res)) {
           var players = this.rGetData(res);
-          console.log("account.players: ", players);
           this.searchedPlayers.next(players as Player[]);
         }
 

@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 export class TeamSelectComponent implements OnInit {
 
   private rstr = this._scores.roster$;
-
+  private playerModes = ["full", "admin", "remove"];
 
   constructor(
     private sessionsF_: SessionFormService,
@@ -58,6 +58,12 @@ export class TeamSelectComponent implements OnInit {
     });
   }
 
+
+  getPlayerList(team) {
+    console.log ("get players for team: ", team, this._scores.getRoster(team));
+
+    return this._scores.getRoster(team);
+  }
 
   trackTeamBy(index, item) {
     item.value.id;

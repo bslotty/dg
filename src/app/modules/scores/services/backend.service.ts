@@ -29,6 +29,43 @@ export class ScoresBackend {
   private roster: BehaviorSubject<Array<Score[]>> = new BehaviorSubject<Array<Score[]>>(undefined);
   roster$: Observable<Array<Score[]>> = this.roster.asObservable();
 
+
+  //  Team Colors
+  teamColorList: TeamColor[] = [{
+    name: "red",
+    hex: "ad0000",
+    available: true,
+  }, {
+    name: "blue",
+    hex: "3052ff",
+    available: true,
+  }, {
+    name: "green",
+    hex: "30ff30",
+    available: true,
+  }, {
+    name: "yellow",
+    hex: "fcf22f",
+    available: true,
+  }, {
+    name: "orange",
+    hex: "fcad2e",
+    available: true,
+  }, {
+    name: "purple",
+    hex: "802efc",
+    available: true,
+  }, {
+    name: "pink",
+    hex: "fc2eea",
+    available: true,
+  }, {
+    name: "white",
+    hex: "FFFFFF",
+    available: true,
+  },];
+
+
   constructor(
     private _sessions: SessionBackend,
   ) {
@@ -36,8 +73,6 @@ export class ScoresBackend {
       console.log("scores.session.detail$: ", s);
 
       if (s != undefined) {
-
-        console.log("------- undefined");
         //  Scores 
         this.setScores(s.scores);
 
@@ -73,8 +108,6 @@ export class ScoresBackend {
   }
 
   getTeamPlayers(uniqueTeams: Team[]): void {
-
-    console.log("------- GetTeamPlayers");
     if (this.scores.value != undefined) {
       var roster = [];
 
@@ -86,10 +119,51 @@ export class ScoresBackend {
     }
   }
 
+
+  addTeam() {
+    //  Limit to 8
+    if (this.teams.value.length < 8) {
+      var color = this.teamColorList.find((t) => {
+        return t.available == true;
+      });
+
+      //  Disable Color
+      color.available = false;
+
+      var newList = this.teams.value;
+      newList.push(new Team(null, color.name, new TeamColor(color.name, color.hex, color.available)));
+
+      this.teams.next(newList);
+    } else {
+      // Too Many
+    }
+  }
+
+  removeTeam(team) {
+    this.teams.value.forEach((v, i) => {
+      if (team.name == v.name) {
+
+        //  Update Availablity Status on Color
+        this.teamColorList.find((c) => {
+          if (c.name == team.name) {
+            c.available = true;
+            return true;
+          }
+        });
+        
+        var newList = this.teams.value.filter((ta, ti)=>{ return i != ti });
+        this.teams.next(newList);
+
+      }
+    });
+
+    //  Remove Roster for Deleted Team
+    this._sessions.clearRoster(team);
+  }
+
+
   setTeams(scores): void {
-    console.log("------- setTeams");
     var teamList = this.getTeamsFromScoreList(scores);
-    console.log("------- teamList", teamList);
     this.teams.next(teamList);
     this.getTeamPlayers(teamList);
   }
@@ -100,8 +174,6 @@ export class ScoresBackend {
 
   getRoster(team: Team): Score[] {
     if (team != null) {
-      var list = this.scores.value.filter(scores => scores.team.name == team.name);
-      console.log("scores: ", list);
       return this.scores.value.filter(scores => scores.team.name == team.name);
     } else {
       return this.scores.value;

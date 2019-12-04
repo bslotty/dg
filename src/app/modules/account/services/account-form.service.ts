@@ -160,9 +160,7 @@ export class AccountFormService {
       case "search":
         form.addControl("term", this.cTerm);
         form.valueChanges.pipe(this.searchPipe).subscribe((v)=>{
-          this.account.searchUsers(v["term"]).subscribe((p)=>{
-            console.log ("P:", p);
-          });
+          this.account.searchUsers(v["term"]).subscribe((p)=>{  });
         });
 
       default:

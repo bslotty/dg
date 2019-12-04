@@ -207,6 +207,11 @@ export class SessionBackend {
     return sorted;
   }
 
+  resetDetail() {
+    console.warn("detail.reset");
+    this.detail.next(new Session());
+  }
+
 
   setSessionFromID(sessionId): void {
     console.log("setSessionFromID: ", sessionId);
@@ -266,15 +271,20 @@ export class SessionBackend {
   }
 
   removeScore(score) {
-    console.log("-RemoveScore: ", score);
     this.detail.value.scores = this.detail.value.scores.filter(s => s.player.id != score.player.id);
-
-    console.log("newList: ", this.detail.value.scores);
     this.detail.next(this.detail.value);
   }
 
   getScore(score): boolean {
     return this.detail.value.scores != undefined && this.detail.value.scores.find(s => s.id == score.id) != undefined;
+  }
+
+  clearRoster(team) {
+    this.detail.value.scores.forEach((s, i) => {
+      if (s.team == team) {
+        s.team = null;
+      }
+    });
   }
 
 }

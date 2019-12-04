@@ -79,41 +79,6 @@ export class SessionFormService {
   ]);
 
 
-  //  Team Colors
-  teamColorList: TeamColor[] = [{
-    name: "red",
-    hex: "ad0000",
-    available: true,
-  }, {
-    name: "blue",
-    hex: "3052ff",
-    available: true,
-  }, {
-    name: "green",
-    hex: "30ff30",
-    available: true,
-  }, {
-    name: "yellow",
-    hex: "fcf22f",
-    available: true,
-  }, {
-    name: "orange",
-    hex: "fcad2e",
-    available: true,
-  }, {
-    name: "purple",
-    hex: "802efc",
-    available: true,
-  }, {
-    name: "pink",
-    hex: "fc2eea",
-    available: true,
-  }, {
-    name: "white",
-    hex: "FFFFFF",
-    available: true,
-  },];
-
   constructor(
     private helper: HelperService,
     private courseService: CourseBackend,
@@ -130,7 +95,6 @@ export class SessionFormService {
         s.format = this.getFormatFromName(s.format);
       }
 
-      console.log("SessionFormUpdate: ", s);
       this.setForm(s);
     });
   }
@@ -314,62 +278,6 @@ export class SessionFormService {
     return this.form.value.get('teams') as FormArray;
   }
 
-  addTeam() {
-    /*
-    if (this.scoreList.controls.length > 0 && this.roster.length == 0) {
-      this.roster[0] = this.scoreList.value;
-    } else if (this.roster.length < this.teamList.length) {
-      this.roster.push([]);
-    }
-    */
-
-
-    //  Limit to 8
-    if (this.teamList.controls.length < 8) {
-      var color = this.teamColorList.find((t) => {
-        return t.available == true;
-      });
-
-      //  Disable Color
-      color.available = false;
-
-      this.teamList.push(new FormControl({
-        name: color.name,
-        color: color,
-      }));
-
-    } else {
-      // Too Many
-    }
-  }
-
-  removeTeam(team) {
-    this.teamList.controls.forEach((v, i) => {
-      if (team.name == v.value.name) {
-
-        //  Update Availablity Status on Color
-        this.teamColorList.find((c) => {
-          if (c.name == team.name) {
-            c.available = true;
-            return true;
-          }
-        });
-
-        //  Remove Team From List
-        this.teamList.removeAt(i);
-      }
-    });
-
-    //  Remove Roster for Deleted Team
-    this.scoreList.controls.forEach((s, i) => {
-      if (s.value.team == team) {
-        s.value.team = null;
-      }
-    });
-  }
-
-
-
   submitCreation() {
     console.log("SubmitCreation.form: ", this.form);
 
@@ -382,7 +290,6 @@ export class SessionFormService {
       if (this.helper.rCheck(res)) {
 
         var session = this.helper.rGetData(res)[0];
-        console.log("submitCreation.session: ", session);
         this.router.navigate(["/sessions", session['id']]);
       }
     });

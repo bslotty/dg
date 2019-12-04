@@ -4,7 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { AccountBackend } from 'src/app/modules/account/services/backend.service';
 import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { flyInPanelRow, flyIn } from 'src/app/animations';
-import { Score, Team } from 'src/app/modules/scores/services/backend.service';
+import { Score, Team, TeamColor } from 'src/app/modules/scores/services/backend.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 
@@ -51,7 +51,7 @@ export class SelectPlayersComponent implements OnInit {
           var s = new Score();
           s.player = v;
           s.handicap = 0;
-          s.team = {id: null, name: null, color: {name: 'unassigned'}}
+          s.team = new Team(null, "unassigned", new TeamColor(null, null, true));
           return s;
         });
       }

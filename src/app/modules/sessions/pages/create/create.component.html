@@ -105,6 +105,10 @@
       <h6 class="col sub-header ml">Players</h6>
 
       <div class="col-xs" *ngIf="form.get('scores').value.length > 0; else pickPlayers">
+        <a *ngIf="form.get('format').value.enum.indexOf('team') > -1" mat-flat-button color="transparent-accent" (click)="addTeam()">
+          <label><span class="icon-plus"></span> Team</label>
+        </a>
+        
         <a mat-flat-button color="transparent-primary" (click)="selectPlayers()">
           <span class="icon-edit-2"></span>
         </a>

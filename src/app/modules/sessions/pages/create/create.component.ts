@@ -9,6 +9,7 @@ import { SelectFormatComponent } from '../../dialogs/select-format/select-format
 import { SelectTimeComponent } from '../../dialogs/select-time/select-time.component';
 import { SelectPlayersComponent } from '../../dialogs/select-players/select-players.component';
 import { SessionBackend } from '../../services/backend.service';
+import { ScoresBackend } from 'src/app/modules/scores/services/backend.service';
 
 @Component({
   selector: 'app-create',
@@ -26,10 +27,13 @@ export class CreateComponent implements OnInit {
   constructor(
     private sessionForm: SessionFormService,
     private sessions_: SessionBackend,
+    private scores_: ScoresBackend,
     private dialog: MatDialog
   ) { }
 
   ngOnInit() {
+
+    this.sessions_.resetDetail();
 
     //  Setup Form
     this.sessionForm.Setup("create");
@@ -37,10 +41,6 @@ export class CreateComponent implements OnInit {
       this.form = f;
       console.log ("this.f", f);
     });
-
-    this.sessions_.detail$.subscribe((s) => {
-      console.log("sessions.create.detail: ", s);
-    })
   }
 
 
@@ -69,5 +69,7 @@ export class CreateComponent implements OnInit {
     });
   }
 
-
+  addTeam() {
+    this.scores_.addTeam();
+  }
 }
