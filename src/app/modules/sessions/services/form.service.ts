@@ -203,9 +203,6 @@ export class SessionFormService {
       }
 
     }
-
-
-    //  this.form.value.markAsDirty();
   }
 
 
@@ -251,6 +248,10 @@ export class SessionFormService {
     return this.form.value.get('scores') as FormArray;
   }
 
+  get teamList() {
+    return this.form.value.get('teams') as FormArray;
+  }
+
   addScore(score) {
     var dupe = false;
     this.scoreList.controls.forEach((v, i) => {
@@ -272,11 +273,6 @@ export class SessionFormService {
     });
   }
 
-
-  //  Team Functions
-  get teamList() {
-    return this.form.value.get('teams') as FormArray;
-  }
 
   submitCreation() {
     console.log("SubmitCreation.form: ", this.form);

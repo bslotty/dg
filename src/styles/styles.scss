@@ -222,12 +222,28 @@ table {
 }
 
 
+
+
+
 .teamDropPad {
   padding: .2rem !important;
   border: .3rem solid;
   margin: .2rem;
   min-height: 7rem;
   min-width: 30vw;
+
+
+  background: transparent !important;
+  border-color: $primary-light;
+  color: $primary-light;
+
+  .cdk-drag-placeholder > * {
+    border-color: $primary-light;
+
+    .colorChoice {
+      display: none;
+    }
+  }
 }
 
 .teamDropPad > label {
@@ -235,6 +251,11 @@ table {
   text-align: center;
   font-weight: 600;
 }
+
+.teamDropPad h6 {
+  color: inherit;
+}
+
 
 .teamDropPad.red {
   color: $c-red;
@@ -316,11 +337,10 @@ table {
   }
 }
 
-.teamDropPad.unassigned {
-  background: transparent !important;
-  color: $primary-light;
-}
 
+.cdk-drag-placeholder a {
+  display: none;
+}
 
 
 

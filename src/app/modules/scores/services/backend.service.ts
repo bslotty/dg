@@ -77,7 +77,7 @@ export class ScoresBackend {
         this.setScores(s.scores);
 
         //  Teams
-        if (s.format != undefined && s.format['enum'].indexOf("team") > -1) {
+        if (s.format != undefined && s.format['enum'] != undefined && s.format['enum'].toString().indexOf("team") > -1) {
           this.setTeams(s.scores);
         }
       }
@@ -140,6 +140,15 @@ export class ScoresBackend {
   }
 
   removeTeam(team) {
+    //  Remove Players From Team
+    this.scores.value.forEach((s) => {
+      if (s.team.name == team.name) {
+        s.team = new Team(null, "unassigned", new TeamColor(null, null, true));
+      }
+    });
+
+
+    //  Remove Team
     this.teams.value.forEach((v, i) => {
       if (team.name == v.name) {
 
@@ -150,8 +159,8 @@ export class ScoresBackend {
             return true;
           }
         });
-        
-        var newList = this.teams.value.filter((ta, ti)=>{ return i != ti });
+
+        var newList = this.teams.value.filter((ta, ti) => { return i != ti });
         this.teams.next(newList);
 
       }
@@ -172,20 +181,43 @@ export class ScoresBackend {
     this.scores.next(scores);
   }
 
+  removeScore(score) {
+    this._sessions.removeScore(score);
+  }
+
+
+
   getRoster(team: Team): Score[] {
-    if (team != null) {
-      return this.scores.value.filter(scores => scores.team.name == team.name);
+    if (team != undefined) {
+      return this.scores.value.filter(scores => {
+
+        if (scores.team != undefined) {
+          return scores.team.name == team.name;
+        }
+        
+      });
     } else {
       return this.scores.value;
     }
 
   }
 
+  movePlayer(event) {
+    //  Get Destination Color Name
+    var teamDestName = event.container.id.replace("team-", "");
 
-  removeScore(score) {
-    this._sessions.removeScore(score);
+    //  Get Team Object From Color Name
+    var teamDest = this.teams.value.find((t) => {
+      return t.color.name == teamDestName;
+    });
+
+    //  Update Player's Team
+    this.scores.value.forEach((s) => {
+      if (event.item.data.player.id == s.player.id) {
+        s.team = teamDest;
+      }
+    });
   }
-
 }
 
 

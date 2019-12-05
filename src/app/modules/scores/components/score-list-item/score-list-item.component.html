@@ -19,7 +19,7 @@
 
 
 	<!--	Handicap	-->
-	<div class="col-2" *ngIf="mode.indexOf('admin') != -1">
+	<div class="col-xs" *ngIf="mode.indexOf('admin') != -1">
 		<a mat-flat-button matTooltip="Set Handicap"
 			color="{{ +score.handicap != 0 ? 'transparent-accent' : 'transparent-info'}}"
 			(click)="openSettings(score.player)" class="row justify-content-center align-items-center no-gutters">
@@ -30,7 +30,7 @@
 
 
 	<!--	Scores		-->
-	<div class="col-2" *ngIf="score.score_array?.length;">
+	<div class="col-xs" *ngIf="score.score_array?.length;">
 		<span class='icon-alert-triangle color-warn'></span>
 	</div>
 

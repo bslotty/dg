@@ -91,14 +91,12 @@ export class SessionBackend {
 
   listFavorites() {
     this.getList("favorites").subscribe((courses: Session[]) => {
-      console.log("courses.favorites: ", courses);
       this.favoriteList.next(courses);
     });
   };
 
   listRecient() {
     this.getList("list").subscribe((courses: Session[]) => {
-      console.log("courses.recient: ", courses);
       this.list.next(courses);
     });
   }
@@ -208,13 +206,11 @@ export class SessionBackend {
   }
 
   resetDetail() {
-    console.warn("detail.reset");
     this.detail.next(new Session());
   }
 
 
   setSessionFromID(sessionId): void {
-    console.log("setSessionFromID: ", sessionId);
 
     //  Search List for Match
     var session = this.list.value.find((v, i) => {
@@ -235,7 +231,6 @@ export class SessionBackend {
   }
 
   setFormat(format) {
-    console.log("formatUpdate;", format);
     this.detail.value.format = format;
     this.detail.next(this.detail.value);
   }
@@ -246,11 +241,7 @@ export class SessionBackend {
   }
 
   setDate(date: Date, time: string): void {
-
     var d = new Date(date.toDateString() + " " + time);
-    console.log("date set: ", d);
-
-
     this.detail.value.starts_on = d;
     this.detail.next(this.detail.value);
   }
@@ -285,6 +276,15 @@ export class SessionBackend {
         s.team = null;
       }
     });
+  }
+
+  addTeam(team) {
+
+  }
+
+  removeTeam(team) {
+    console.error("RemoveTeam: ", team);
+    this.detail.value.scores = this.detail.value.scores.filter(s => s.team == team.name);
   }
 
 }

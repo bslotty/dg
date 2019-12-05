@@ -39,7 +39,7 @@
 				<form [formGroup]="form">
 					<mat-form-field>
 						<mat-label matPrefix>Search</mat-label>
-						<input matInput formControlName="term" placeholder="Name or Email" #search />
+						<input matInput formControlName="term" placeholder="Name or Email"/>
 						<div matSuffix *ngIf='feed.loading'>
 							<loader small='true'></loader>
 						</div>

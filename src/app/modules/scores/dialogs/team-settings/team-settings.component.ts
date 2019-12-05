@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SessionFormService } from 'src/app/modules/sessions/services/form.service';
+import { ScoresBackend } from '../../services/backend.service';
 
 @Component({
   selector: 'team-settings',
@@ -11,13 +12,13 @@ import { SessionFormService } from 'src/app/modules/sessions/services/form.servi
 export class TeamSettingsComponent implements OnInit {
 
   form: FormGroup
-  colorList = this.sessionForm.teamColorList;
+  colorList = this._scores.teamColorList;
 
   constructor(
     private dialogRef: MatDialogRef<TeamSettingsComponent>,
     @Inject(MAT_DIALOG_DATA) private data,
     private builder: FormBuilder,
-    private sessionForm: SessionFormService,
+    private _scores: ScoresBackend,
   ) { }
 
 
@@ -25,9 +26,6 @@ export class TeamSettingsComponent implements OnInit {
     this.form = this.builder.group({
       name: [this.data.name, [Validators.minLength(1)]]
     });
-
-    console.log("data: ", this.data);
-    console.log("dialog.colorList: ", this.colorList);
   }
 
   close(bool) {
@@ -55,7 +53,7 @@ export class TeamSettingsComponent implements OnInit {
       this.form.markAsDirty();
       
       //  Update Availablity
-      this.sessionForm.teamColorList.forEach((c)=>{
+      this._scores.teamColorList.forEach((c)=>{
         //  Restrict new
         if (c.name == color.name) {
           c.available = false;

@@ -3,6 +3,9 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { SessionFormService } from 'src/app/modules/sessions/services/form.service';
 import { ScoresBackend, Score } from '../../services/backend.service';
 import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material';
+import { TeamSettingsComponent } from '../team-settings/team-settings.component';
+import { SessionBackend } from 'src/app/modules/sessions/services/backend.service';
 
 @Component({
   selector: 'team-select',
@@ -15,57 +18,35 @@ export class TeamSelectComponent implements OnInit {
   private playerModes = ["full", "admin", "remove"];
 
   constructor(
-    private sessionsF_: SessionFormService,
+    private _sessions: SessionBackend,
     private _scores: ScoresBackend,
+    private dialog: MatDialog
   ) { }
 
-  ngOnInit() {
-    this.rstr.subscribe(s => console.warn("newRoster: ", s));
+  ngOnInit() {  }
 
-  }
-
-
-  getRoster(team) {
-    var roster;
-    if (team == null) {
-      roster = this.sessionsF_.scoreList.value.filter((s) => { return !s.team });
-    } else {
-      roster = this.sessionsF_.scoreList.value.filter((s) => {
-        if (s.team) {
-          return s.team == team.value;
-        }
-
-      });
-    }
-    return roster;
-  }
 
   rosterDrop(event: CdkDragDrop<string[]>) {
-
-    //  Get Destination Color Name
-    var teamDestName = event.container.id.toString().replace("team-", "");
-
-    //  Get Team Object From Color Name
-    var teamDest = this.sessionsF_.teamList.value.filter((t) => {
-      return t.color.name == teamDestName;
-    });
-
-    //  Update Player's Team
-    this.sessionsF_.scoreList.controls.forEach((s) => {
-      if (event.item.data.player.id == s.value.player.id) {
-        s.value.team = teamDest[0];
-      }
-    });
+    this._scores.movePlayer(event);
   }
 
 
   getPlayerList(team) {
-    console.log ("get players for team: ", team, this._scores.getRoster(team));
-
     return this._scores.getRoster(team);
   }
 
+  openSettings(team) {
+    this.dialog.open(TeamSettingsComponent, {
+      minWidth: "75vw",
+      data: team,
+    });
+  }
+
+  removeTeam(team) {
+    this._scores.removeTeam(team);
+  }
+
   trackTeamBy(index, item) {
-    item.value.id;
+    item.name;
   }
 }
