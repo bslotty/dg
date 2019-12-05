@@ -95,16 +95,18 @@ export class SessionFormService {
         s.format = this.getFormatFromName(s.format);
       }
 
-      this.setForm(s);
+      if (s != undefined) {
+        this.setForm(s);
+      }
+
     });
   }
 
-  get teamGame(): boolean {
-    if (this.form.value.get('format').valid && this.form.value.get('format').value.enum.indexOf("team") > -1) {
-      return true
-    } else {
-      return false;
-    }
+  teamGame(): boolean {
+    var res: boolean = this.form.value.get('format').valid && this.form.value.get('format').value.enum.indexOf("team") > -1;
+    console.log("teamGame?: ", res);
+
+    return res;
   }
 
 
@@ -149,7 +151,7 @@ export class SessionFormService {
     if (this.form.value.valid && this.form.value.dirty && !this.form.value.disabled) {
 
 
-      if (this.form.value.get('format').value.enum != 'ffa') {
+      if (this.teamGame()) {
         if (this.validateRoster()) {
           return true;
         } else {
@@ -277,7 +279,7 @@ export class SessionFormService {
   submitCreation() {
     console.log("SubmitCreation.form: ", this.form);
 
-    var session; 
+    var session;
     this.session_.detail$.subscribe(s => session = s);
 
     //  session.starts_on = this.form.value.value.date.toISOString();
@@ -296,7 +298,7 @@ export class SessionFormService {
   validateRoster(): boolean {
     var valid = true;
     this.scoreList.controls.forEach((s) => {
-      if (s.value.team == null || s.value.team == undefined) {
+      if (s.value.team == null || s.value.team == undefined    || s.value.team.name == "unassigned") {
         valid = false;
       }
     });

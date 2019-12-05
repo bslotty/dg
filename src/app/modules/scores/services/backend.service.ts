@@ -188,6 +188,8 @@ export class ScoresBackend {
 
 
   getRoster(team: Team): Score[] {
+    console.log("this.scores.value: ", this.scores);
+
     if (team != undefined) {
       return this.scores.value.filter(scores => {
 
@@ -210,6 +212,11 @@ export class ScoresBackend {
     var teamDest = this.teams.value.find((t) => {
       return t.color.name == teamDestName;
     });
+
+    //  Move back to unassigned fix;
+    if (teamDest == undefined) {
+      teamDest = new Team(null, "unassigned", new TeamColor(null, null, true));
+    }
 
     //  Update Player's Team
     this.scores.value.forEach((s) => {
