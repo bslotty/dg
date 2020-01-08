@@ -4,6 +4,7 @@ import { ScoreSettingsComponent } from '../../dialogs/score-settings/score-setti
 import { flyInPanelRow } from 'src/app/animations';
 import { Score, ScoresBackend } from '../../services/backend.service';
 import { SessionBackend } from 'src/app/modules/sessions/services/backend.service';
+import { SessionFormService } from 'src/app/modules/sessions/services/form.service';
 
 @Component({
   selector: 'score-list-item',
@@ -24,6 +25,7 @@ export class ScoreListItemComponent implements OnInit {
     private dialog: MatDialog,
     private sessions_: SessionBackend,
     private scores_:ScoresBackend,
+    private _sessionForm: SessionFormService,
   ) { }
 
   ngOnInit() {

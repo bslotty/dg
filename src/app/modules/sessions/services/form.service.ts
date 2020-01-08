@@ -3,12 +3,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 import { CourseBackend } from '../../courses/services/backend.service';
 import { Router } from '@angular/router';
-import { Session, SessionBackend, SessionFormat } from './backend.service';
+import { SessionBackend, SessionFormat } from './backend.service';
 import { HelperService } from 'src/app/shared/services/helper.service';
 import { AccountBackend } from '../../account/services/backend.service';
 import { Team } from '../../stats/services/backend.service';
-import { ScoresBackend, TeamColor } from '../../scores/services/backend.service';
-import { combineLatest } from 'rxjs';
+import { ScoresBackend } from '../../scores/services/backend.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +23,7 @@ export class SessionFormService {
   builder: FormBuilder = new FormBuilder;
 
   initialized: boolean = false;
+  public admin: boolean = true;
 
   /*
   public starts_on?: Date,
@@ -89,23 +89,12 @@ export class SessionFormService {
 
     //  Get Data & Populate
     this.session_.detail$.subscribe((s) => {
-
-      if (typeof s.format == "string") {
-        //  Format
-        s.format = this.getFormatFromName(s.format);
-      }
-
-      if (s != undefined) {
-        this.setForm(s);
-      }
-
+      this.setForm(s);
     });
   }
 
   teamGame(): boolean {
     var res: boolean = this.form.value.get('format').valid && this.form.value.get('format').value.enum.indexOf("team") > -1;
-    console.log("teamGame?: ", res);
-
     return res;
   }
 
@@ -167,12 +156,15 @@ export class SessionFormService {
   }
 
   resetForm(): void {
-    this.form.value.get("format").reset();
-    this.form.value.get("course").reset();
-    this.form.value.get("date").reset();
-    this.form.value.get("time").reset();
-    this.form.value.get("scores").reset();
-    this.form.value.get("teams").reset();
+    if (this.form.value != undefined) {
+      this.form.value.get("format").reset();
+      this.form.value.get("course").reset();
+      this.form.value.get("date").reset();
+      this.form.value.get("time").reset();
+
+      this.form.value.get("scores").reset([]);
+      this.form.value.get("teams").reset([]);
+    }
   }
 
 
@@ -207,21 +199,6 @@ export class SessionFormService {
     }
   }
 
-
-
-  getFormatFromName(str: string | SessionFormat) {
-    if (str instanceof SessionFormat) {
-      return str;
-    } else {
-      var format = this.session_.types.find((t) => {
-        if (t.enum == str) {
-          return true;
-        }
-      });
-      return format;
-    }
-  }
-
   setFormat(format) {
     this.form.value.get("format").setValue(format);
   }
@@ -240,9 +217,6 @@ export class SessionFormService {
     this.form.value.get("date").updateValueAndValidity();
     this.form.value.get("time").updateValueAndValidity();
   }
-
-
-
 
 
   //  Score Functions
@@ -298,19 +272,12 @@ export class SessionFormService {
   validateRoster(): boolean {
     var valid = true;
     this.scoreList.controls.forEach((s) => {
-      if (s.value.team == null || s.value.team == undefined    || s.value.team.name == "unassigned") {
+      if (s.value.team == null || s.value.team == undefined || s.value.team.name == "unassigned") {
         valid = false;
       }
     });
     return valid;
   }
-
-
-
-
-
-
-
 
 
 

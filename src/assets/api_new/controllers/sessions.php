@@ -86,6 +86,8 @@ switch ($payload['action']) {
 		$sessionList = $sessions->getList($payload['start'], $payload['limit'], $payload["user"]);
 		if ($sessionList['status'] == 'success') {
 			$return[] = $sessionList;
+
+			//	Map for formatting session-format
 		} else {
 			$return[] = array(
 				'status' 	=> 'error',

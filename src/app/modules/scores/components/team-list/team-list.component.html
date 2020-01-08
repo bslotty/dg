@@ -2,8 +2,8 @@
 
     <div class="row justify-content-between align-items-end no-gutters">
         <h6 class="col sub-header ml teamHeader {{ team.color.name }}">{{ team.name | titlecase }}</h6>
-        <div class="col-xs" *ngIf="form.get('date').value">
-            <a mat-flat-button color="transparent-{{ team.color.name }}" (click)="clearTime()">
+        <div class="col-xs" *ngIf="_sessionForm.admin">
+            <a mat-flat-button color="transparent-{{ team.color.name }}" (click)="teamSettings(team)">
                 <span class="icon-edit-2"></span>
             </a>
         </div>
@@ -12,7 +12,7 @@
     <div *ngIf="_scores.roster$ | async as roster" class="row justify-content-center align-items-center no-gutters"
         @flyIn>
         <div class="col-12">
-            <score-list-item *ngFor="let player of roster[i]" [score]="player" [mode]="playerModes"
+            <score-list-item *ngFor="let player of roster[i]" [score]="player" [mode]="playerModes" backdrop="true"
                 (action)="scoreAction($event)"></score-list-item>
         </div>
 

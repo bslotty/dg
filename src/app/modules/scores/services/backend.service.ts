@@ -70,15 +70,27 @@ export class ScoresBackend {
     private _sessions: SessionBackend,
   ) {
     this._sessions.detail$.subscribe((s) => {
-      console.log("scores.session.detail$: ", s);
+      
 
       if (s != undefined) {
+        console.log('scores.session.detail$:', s);
+        console.log("s.format: ", s.format);
+        
         //  Scores 
         this.setScores(s.scores);
 
+
+
         //  Teams
-        if (s.format != undefined && s.format['enum'] != undefined && s.format['enum'].toString().indexOf("team") > -1) {
-          this.setTeams(s.scores);
+        if (s.format != undefined) {
+
+          console.log("s.format.enum: ", s.format['enum']);
+          console.log("s.format.indexof: ", s.format['enum'].indexOf("team"));
+
+          if (typeof s.format['enum'] == "string" && s.format['enum'].indexOf("team") > -1) {
+            console.log('teams: ', s.scores);
+            this.setTeams(s.scores);
+          }
         }
       }
 
@@ -173,6 +185,9 @@ export class ScoresBackend {
 
   setTeams(scores): void {
     var teamList = this.getTeamsFromScoreList(scores);
+
+    console.log('teamList:', teamList);
+
     this.teams.next(teamList);
     this.getTeamPlayers(teamList);
   }
@@ -196,7 +211,7 @@ export class ScoresBackend {
         if (scores.team != undefined) {
           return scores.team.name == team.name;
         }
-        
+
       });
     } else {
       return this.scores.value;
@@ -224,6 +239,12 @@ export class ScoresBackend {
         s.team = teamDest;
       }
     });
+  }
+
+
+  //  Call when settings changes team info; need to update each team member;
+  updateRosterTeam(current, destination) {
+    console.log ("Update Team:", current, "to:", destination);
   }
 }
 

@@ -49,23 +49,26 @@ export class TeamSettingsComponent implements OnInit {
   }
 
   pickColor(color) {
-    if (color.available) {
+    if (color.available && color !== this.data.color) {
       this.form.markAsDirty();
-      
+
       //  Update Availablity
-      this._scores.teamColorList.forEach((c)=>{
+      this._scores.teamColorList.forEach((c) => {
         //  Restrict new
         if (c.name == color.name) {
           c.available = false;
-        } 
-        
+        }
+
         //  Allow Old
         if (c.name == this.data.color.name) {
           c.available = true;
         }
       });
 
-      //  Update Color
+      //  Update roster with new team Info;
+      this._scores.updateRosterTeam(this.data.color, color);
+
+      //  Update Team Color
       this.data.color = color;
     }
 

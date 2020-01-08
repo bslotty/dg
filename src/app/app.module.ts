@@ -44,7 +44,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     /*  Root Route  */
     NavigationModule,
 
-    
+
     PipesModule,
     BrowserModule
   ],
@@ -60,3 +60,4 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

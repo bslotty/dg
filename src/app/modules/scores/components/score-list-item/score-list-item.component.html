@@ -19,13 +19,23 @@
 
 
 	<!--	Handicap	-->
-	<div class="col-xs" *ngIf="mode.indexOf('admin') != -1">
-		<a mat-flat-button matTooltip="Set Handicap"
-			color="{{ +score.handicap != 0 ? 'transparent-accent' : 'transparent-info'}}"
+	<div class="col-xs" >
+		<a mat-flat-button matTooltip="Change Handicap: {{ +score.handicap }}" *ngIf="_sessionForm.admin; else handicapStatus"
+			color="{{ +score.handicap == 0 ? 'transparent-info' : +score.handicap < 0 ? 'transparent-accent' : 'transparent-warn' }}"
 			(click)="openSettings(score.player)" class="row justify-content-center align-items-center no-gutters">
-			<span class="icon-shield {{ +score.handicap != 0 ? 'color-accent' : 'color-info'}}"></span>
+			<span class="icon-shield {{ +score.handicap == 0 ? 'color-info' : +score.handicap < 0 ? 'color-accent' : 'color-warn' }}"></span>
 		</a>
 	</div>
+
+	<ng-template #handicapStatus>
+		<a mat-flat-button matTooltip="Handicap: {{ +score.handicap }}" class="row justify-content-center align-items-center no-gutters"
+			color="{{ +score.handicap != 0 ? 'transparent-accent' : 'transparent-info'}}" >
+			<span class="icon-shield {{ +score.handicap == 0 ? 'color-info' : +score.handicap < 0 ? 'color-accent' : 'color-warn' }}"></span>
+
+			
+		</a>
+	</ng-template>
+
 
 
 
@@ -43,7 +53,7 @@
 		</a>
 	</div>
 
-	
+
 
 	<!--	Selector	-->
 	<div class="col-xs" *ngIf="mode.indexOf('selector') != -1">

@@ -22,8 +22,6 @@ export class CreateComponent implements OnInit {
   form: FormGroup;
   roster = [];
 
-
-
   constructor(
     private sessionForm: SessionFormService,
     private sessions_: SessionBackend,
@@ -39,7 +37,7 @@ export class CreateComponent implements OnInit {
     this.sessionForm.Setup("create");
     this.sessionForm.form$.subscribe((f) => {
       this.form = f;
-      console.log ("this.f", f);
+      console.log("this.f", f);
     });
   }
 

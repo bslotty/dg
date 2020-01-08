@@ -65,18 +65,25 @@ export class SessionBackend {
   ) { }
 
 
+  /** Take Format String and Convert to :SessionFormat
+   * 
+   */
+  convertFormatStr(str) {
+    return this.types.find(t => t.enum == str);
+  }
+
   convertProperties(res) {
     var result: Session[] = [];
 
     this.helper.rGetData(res).forEach((session) => {
-      result.push(new Session(
+       result.push(new Session(
         session['id'],
         session['created_on'],
         session['created_by'],
         session['modified_on'],
         session['modified_by'],
         session['course'],
-        session['format'],
+        this.convertFormatStr(session['format']),
         session['starts_on'],
         session['title'],
         session['par'],
@@ -207,6 +214,7 @@ export class SessionBackend {
 
   resetDetail() {
     this.detail.next(new Session());
+    console.log("session.detail reset: ", this.detail.value);
   }
 
 
@@ -304,7 +312,7 @@ export class Session {
     public modified_on?: Date,
     public modified_by?: string, /* User? */
     public course?: Course,
-    public format?: string | SessionFormat,
+    public format?: SessionFormat,
     public starts_on?: Date,
     public title?: string,
     public par?: Array<any>,
