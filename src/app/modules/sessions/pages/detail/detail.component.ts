@@ -6,6 +6,11 @@ import { SessionFormService } from '../../services/form.service';
 import { SessionBackend, Session } from '../../services/backend.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ScoresBackend } from 'src/app/modules/scores/services/backend.service';
+import { MatDialog } from '@angular/material';
+import { SelectCourseComponent } from '../../dialogs/select-course/select-course.component';
+import { SelectFormatComponent } from '../../dialogs/select-format/select-format.component';
+import { SelectTimeComponent } from '../../dialogs/select-time/select-time.component';
+import { SelectPlayersComponent } from '../../dialogs/select-players/select-players.component';
 
 @Component({
   selector: 'app-detail',
@@ -25,6 +30,7 @@ export class DetailComponent implements OnInit {
     private _sessions: SessionBackend,
     private _scores: ScoresBackend,
     private router: ActivatedRoute,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -41,7 +47,32 @@ export class DetailComponent implements OnInit {
     
   }
 
+  //  Popups
+  selectCourse() {
+    this.dialog.open(SelectCourseComponent, {
+      minWidth: "75vw",
+    });
+  }
+
+  selectFormat() {
+    this.dialog.open(SelectFormatComponent, {
+      minWidth: "75vw",
+    });
+  }
+
+  selectTime() {
+    this.dialog.open(SelectTimeComponent, {
+
+    });
+  }
+
+  selectPlayers() {
+    this.dialog.open(SelectPlayersComponent, {
+      minWidth: "75vw",
+    });
+  }
+
   scoreAction($event) {
-    console.log("$event: ", $event);
+    console.log("scoreAction.$event: ", $event);
   }
 }

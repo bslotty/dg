@@ -104,6 +104,18 @@ export class ScoresBackend {
 
     this.teams$.subscribe((t) => {
       console.log("teams$:", t);
+
+      if (t != undefined) {
+        t.forEach((t)=>{
+          this.teamColorList.forEach((c)=>{
+            if (t.color.name == c.name) {
+              c.available = false;
+            }
+          });
+        });
+      }
+
+      console.log ("updatedTeamList: ", this.teamColorList);
     });
 
     this.roster$.subscribe((r) => {
@@ -245,6 +257,12 @@ export class ScoresBackend {
   //  Call when settings changes team info; need to update each team member;
   updateRosterTeam(current, destination) {
     console.log ("Update Team:", current, "to:", destination);
+
+    this.scores.value.forEach((s)=>{
+      if (s.team.color.name == current.name) {
+        s.team.color = destination;
+      }
+    });
   }
 }
 

@@ -42,7 +42,7 @@ export class CreateComponent implements OnInit {
   }
 
 
-  //  Popups to Set
+  //  Popups
   selectCourse() {
     this.dialog.open(SelectCourseComponent, {
       minWidth: "75vw",
