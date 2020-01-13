@@ -23,7 +23,7 @@ export class SessionFormService {
   builder: FormBuilder = new FormBuilder;
 
   initialized: boolean = false;
-  public admin: boolean = true;
+  public admin: boolean = false;
 
   /*
   public starts_on?: Date,
@@ -84,11 +84,19 @@ export class SessionFormService {
     private courseService: CourseBackend,
     private session_: SessionBackend,
     private scoresService: ScoresBackend,
-    private accountService: AccountBackend,
+    private accounts_: AccountBackend,
     private router: Router) {
 
     //  Get Data & Populate
     this.session_.detail$.subscribe((s) => {
+
+      
+
+      //  Set Admin
+      if (s.created_by == accounts_.user.id) {
+        this.admin = true;
+      }
+
       this.setForm(s);
     });
   }

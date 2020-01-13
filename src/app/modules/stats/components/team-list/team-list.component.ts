@@ -72,7 +72,7 @@ export class TeamListComponent implements OnInit {
 
       //  Status
       this.status = 'ready';
-      if (this.session.format != 'ffa' && teams.length == 0) {
+      if (this.session.format.enum != 'ffa' && teams.length == 0) {
         this.status = 'warn';
       }
 

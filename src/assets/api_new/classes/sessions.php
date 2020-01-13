@@ -40,7 +40,7 @@ class Session
 			`sn`.`par_array`
 		FROM `Sessions` AS `sn`
 		WHERE `sn`.`created_by` = :userID OR 
-			(SELECT null FROM `Scores` AS `sc` WHERE `sc`.`player_id` = :userID AND `sc`.`session_id`=`sn`.`id`)
+			EXISTS (SELECT null FROM `Scores` AS `sc` WHERE `sc`.`player_id` = :userID AND `sc`.`session_id`=`sn`.`id`)
 		GROUP BY `sn`.`id`
 		ORDER BY `sn`.`starts_on` DESC
 		LIMIT " . (int) $start . ", " . (int) $limit . ";";

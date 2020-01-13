@@ -101,13 +101,13 @@ export class PlayerListComponent implements OnInit {
 
       //  Status
       this.status = "ready";
-      if (this.session.format != 'ffa' && teams.length == 0) {
+      if (this.session.format.enum != 'ffa' && teams.length == 0) {
         this.status = 'disabled';
 
-      } else if (this.session.format != 'ffa' && teams.length > 0 && players.length == 0) {
+      } else if (this.session.format.enum != 'ffa' && teams.length > 0 && players.length == 0) {
         this.status = 'warn'
 
-      } else if (this.session.format == 'ffa' && players.length == 0) {
+      } else if (this.session.format.enum == 'ffa' && players.length == 0) {
         this.status = 'warn';
       }
 
