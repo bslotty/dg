@@ -17,7 +17,7 @@ export class ScoreListItemComponent implements OnInit {
   @Input() mode: string[]
   @Input() score: Score;
 
-  @Input() backdrop: boolean = false;
+  @Input() backdrop: boolean = true;
 
   private selectorCheckbox: boolean;
 
@@ -42,7 +42,6 @@ export class ScoreListItemComponent implements OnInit {
     } else {
       this.sessions_.removeScore(score)
     }
-    
   }
 
 

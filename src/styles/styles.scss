@@ -186,35 +186,35 @@ table {
 }
 
 .colorIcon.red {
-  background: #e66969;
+  background: $c-red;
 }
 
 .colorIcon.blue {
-  background: #6ab9e8;
+  background: $c-blue;
 }
 
 .colorIcon.green {
-  background: #60df60;
+  background: $c-green;
 }
 
 .colorIcon.yellow {
-  background: #d6d05d;
+  background: $c-yellow;
 }
 
 .colorIcon.orange {
-  background: #d8a95d;
+  background: $c-orange;
 }
 
 .colorIcon.purple {
-  background: #9461e0;
+  background: $c-purple;
 }
 
 .colorIcon.pink {
-  background: #cf58c5;
+  background: $c-pink;
 }
 
 .colorIcon.white {
-  background: #fff;
+  background: $c-white;
 }
 
 .colorIcon.light {
@@ -259,81 +259,81 @@ table {
 
 .teamDropPad.red {
   color: $c-red;
-  border-color: #e6696977;
-  background: #e6696910 !important;
+  border-color: rgba( $c-red, .6 );
+  background: rgba( $c-red, .1 ) !important; 
 
   .cdk-drag-placeholder > * {
-    border-color: #e6696977;
+    border-color: rgba( $c-red, .1 );
   }
 }
 
 .teamDropPad.blue {
-  color: #6ab9e8;
-  border-color: #6ab9e877;
-  background: #6ab9e810 !important;
+  color: $c-blue;
+  border-color: rgba( $c-blue, .6 );
+  background: rgba( $c-blue, .1 ) !important;
 
   .cdk-drag-placeholder > * {
-    border-color: #6ab9e877;
+    border-color: rgba( $c-blue, .1 );
   }
 }
 
 .teamDropPad.green {
-  color: #60df60;
-  border-color: #60df6077;
-  background: #60df6010 !important;
+  color: $c-green;
+  border-color: rgba( $c-green, .6 );
+  background: rgba( $c-green, .1 ) !important;
 
   .cdk-drag-placeholder > * {
-    border-color: #60df6077;
+    border-color: rgba( $c-green, .1 );
   }
 }
 
 .teamDropPad.yellow {
-  color: #d6d05d;
-  border-color: #d6d05d77;
-  background: #d6d05d10 !important;
+  color: $c-yellow;
+  border-color: rgba( $c-yellow, .6 );
+  background: rgba( $c-yellow, .1 ) !important;
 
   .cdk-drag-placeholder > * {
-    border-color: #d6d05d77;
+    border-color: rgba( $c-yellow, .1 );
   }
 }
 
 .teamDropPad.orange {
-  color: #d8a95d;
-  border-color: #d8a95d77;
-  background: #d8a95d10 !important;
+  color: $c-orange;
+  border-color: rgba( $c-orange, .6 );
+  background: rgba( $c-orange, .1 ) !important;
 
   .cdk-drag-placeholder > * {
-    border-color: #d8a95d77;
+    border-color: rgba( $c-orange, .1 );
   }
 }
 
 .teamDropPad.purple {
-  color: #9461e0;
-  border-color: #9461e077;
-  background: #9461e010 !important;
+  color: $c-purple;
+  border-color: rgba( $c-purple, .6 );
+  background: rgba( $c-purple, .1 ) !important;
 
   .cdk-drag-placeholder > * {
-    border-color: #9461e077;
+    border-color: rgba( $c-purple, .1 );
   }
 }
 
 .teamDropPad.pink {
-  color: #cf58c5;
-  border-color: #cf58c577;
-  background: #cf58c510 !important;
+  color: $c-pink;
+  border-color: rgba( $c-pink, .6 );
+  background: rgba( $c-pink, .1 ) !important;
 
   .cdk-drag-placeholder > * {
-    border-color: #cf58c577;
+    border-color: rgba( $c-pink, .1 );
   }
 }
 
 .teamDropPad.white {
-  color: #fff;
-  border-color: #FFFFFF77;
-  background: #FFFFFF10 !important;
+  color: $c-white;
+  border-color: rgba( $c-white, .6 );
+  background: rgba( $c-white, .1 ) !important;
 
   .cdk-drag-placeholder > * {
-    border-color: #FFFFFF77;
+    border-color: rgba( $c-white, .1 );
   }
 }
 
@@ -348,44 +348,45 @@ table {
 
 
 .teamPicker.red:not([disabled]) {
-  background: #e66969;
-  color: #FFF;
+  background: $c-red !important;
+  color: $c-white !important;
 }
 
 .teamPicker.blue:not([disabled]) {
-  background: #6ab9e8;
-  color: #FFF;
+  background: $c-blue !important;
+  color: $c-white !important;
 }
 
 .teamPicker.green:not([disabled]) {
-  background: #60df60;
-  color: #FFF;
+  background: $c-green !important;
+  color: $c-white !important;
 }
 
 .teamPicker.yellow:not([disabled]) {
-  background: #d6d05d;
-  color: #FFF;
+  background: $c-yellow !important;
+  color: $c-white !important;
 }
 
 .teamPicker.orange:not([disabled]) {
-  background: #d8a95d;
-  color: #FFF;
+  background: $c-orange !important;
+  color: $c-white !important;
 }
 
 .teamPicker.purple:not([disabled]) {
-  background: #9461e0;
-  color: #FFF;
+  background: $c-purple !important;
+  color: $c-white !important;
 }
 
 .teamPicker.pink:not([disabled]) {
-  background: #cf58c5;
-  color: #FFF;
+  background: $c-pink !important;
+  color: $c-white !important;
 }
 
 .teamPicker.white:not([disabled]) {
-  background: #fff;
-  color: $primary-light;
+  background: $c-white !important;
+  color: $primary-light !important;
 }
+
 
 
 
@@ -418,7 +419,7 @@ table {
 }
 
 .teamHeader.white:not([disabled]) {
-  color: #fff;
+  color: $c-white;
 }
 
 
@@ -458,10 +459,4 @@ table {
   router-outlet ~ * {
     min-width: 480px;
   }
-}
-
-.btn-pageAction {
-  position: absolute !important;
-  left: 0;
-  bottom: -75%;
 }

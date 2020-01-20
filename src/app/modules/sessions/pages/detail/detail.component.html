@@ -54,29 +54,27 @@
 
 
 <!--  Roster  -->
-<div *ngIf="_sessionsForm.teams$ | async">
+<div *ngIf="_scores.scores$ | async">
   <div class="row justify-content-between align-items-end no-gutters">
     <h6 class="col sub-header ml">Roster</h6>
-    <div class="col-xs">
+    <div class="col-xs" *ngIf="_sessionsForm.admin">
       <a mat-flat-button color="transparent-primary" (click)="selectPlayers()">
         <span class="icon-edit-2"></span>
       </a>
     </div>
   </div>
 
-  <div class="row justify-content-center align-items-start no-gutters" @flyIn>
-    <div class="col-12">
-      <score-list-item *ngFor="let player of _scores.scores$ | async" [score]="player" [mode]="playerModes"
-        backdrop='true'>
-      </score-list-item>
-    </div>
+  <div *ngIf="(_scores.scores$ | async) && !_sessionsForm.teamGame()">
+    <score-list></score-list>
   </div>
+
+  <div *ngIf="(_scores.teams$ | async) && _sessionsForm.teamGame()">
+    <team-list></team-list>
+  </div>
+
 </div>
 
-<div *ngIf="(_scores.teams$ | async) && _sessionsForm.teamGame()">
-  <team-list></team-list>
 
-</div>
 
 
 <div *ngIf="_sessionsForm.admin" class="row justify-content-between align-items-center no-gutters mb-5">

@@ -1,17 +1,16 @@
-<div class="panel row justify-content-between align-items-center no-gutters" >
-	<div class="colorChoice">
-		<div class="colorIcon {{ team.color.name }}"></div>
-	</div>
-	<div [style.color]="team.color.hex" class="col ml-3">
-		<label [style.color]="team.color.hex">{{ team.name | titlecase }}</label>
+<div class="panel row justify-content-between align-items-center no-gutters teamPicker {{ team.color.name }} mt-3">
+
+	<div class="col">
+		<h3 class="ml"><b>{{ team.name | titlecase }}</b></h3>
 	</div>
 
-	<div class="col-xs" *ngIf="mode == 'remove'">
-		<a mat-icon-button color="primary" (click)="openSettings()">
-			<span class="icon-settings"></span>
+
+	<div class="col-xs" *ngIf="_sessionForm.admin">
+		<a mat-flat-button color="transparent-primary" (click)="openSettings(team)">
+			<span class="icon-edit-2"></span>
 		</a>
-		<a mat-icon-button color="warn" (click)="removeTeam(team)">
-			<span class="icon-minus"></span>
+		<a mat-flat-button color="transparent-primary" (click)="removeTeam(team)">
+			<span class="icon-x"></span>
 		</a>
 	</div>
 </div>

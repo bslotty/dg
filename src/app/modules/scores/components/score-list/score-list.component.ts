@@ -11,9 +11,9 @@ export class ScoreListComponent implements OnInit {
 
   private scores$: Observable<Score[]> = this.scores_.scores$;
 
-  private modes: string[] = ["full", "remove"];
+  @Input() modes: string[] = ["full"];
 
-  @Input() backdrop: boolean = false;
+  @Input() backdrop: boolean = true;
   
   constructor(
     private scores_:ScoresBackend,

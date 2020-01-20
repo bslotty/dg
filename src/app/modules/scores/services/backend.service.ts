@@ -115,7 +115,7 @@ export class ScoresBackend {
         });
       }
 
-      console.log ("updatedTeamList: ", this.teamColorList);
+      //  console.log ("updatedTeamList: ", this.teamColorList);
     });
 
     this.roster$.subscribe((r) => {
@@ -198,8 +198,6 @@ export class ScoresBackend {
   setTeams(scores): void {
     var teamList = this.getTeamsFromScoreList(scores);
 
-    console.log('teamList:', teamList);
-
     this.teams.next(teamList);
     this.getTeamPlayers(teamList);
   }
@@ -256,7 +254,7 @@ export class ScoresBackend {
 
   //  Call when settings changes team info; need to update each team member;
   updateRosterTeam(current, destination) {
-    console.log ("Update Team:", current, "to:", destination);
+    //  console.log ("Update Team:", current, "to:", destination);
 
     this.scores.value.forEach((s)=>{
       if (s.team.color.name == current.name) {

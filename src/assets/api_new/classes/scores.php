@@ -114,4 +114,32 @@ class Score
 
 		return $this->db->Query($query, $values);
 	}
+
+
+	public function setHandicap($score)
+	{
+		$query = "SELECT 
+		`s`.`id`,
+		`s`.`handicap`,
+
+		`t`.`id` AS `teamID`,
+		`t`.`name` AS `teamName`,
+		`t`.`color` AS `teamColor`,
+
+		`p`.`id` AS `playerID`,
+		`p`.`first_name` AS `playerFirst`,
+		`p`.`last_name` AS `playerLast`,
+		`p`.`email` AS `playerEmail`
+
+	FROM `Scores` AS `s`
+	JOIN `Teams` AS `t` 	ON `s`.`team_id` 	= `t`.`id`
+	JOIN `Players` AS `p` 	ON `s`.`player_id` 	= `p`.`id`
+	WHERE `s`.`session_id` = :id;";
+
+		$values = array(
+			':id' => $session['id']
+		);
+
+		return $this->db->Query($query, $values);
+	}
 }

@@ -90,8 +90,6 @@ export class SessionFormService {
     //  Get Data & Populate
     this.session_.detail$.subscribe((s) => {
 
-      
-
       //  Set Admin
       if (s.created_by == accounts_.user.id) {
         this.admin = true;
