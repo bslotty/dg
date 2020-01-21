@@ -18,6 +18,7 @@
 					</a>
 				</div>
 			</div>
+			<team-list-item [team]="team"></team-list-item>
 
 			<score-list-item *ngFor="let score of getPlayerList(team)" cdkDrag [cdkDragData]="score" [score]="score"
 				[mode]="playerModes" backdrop="true">

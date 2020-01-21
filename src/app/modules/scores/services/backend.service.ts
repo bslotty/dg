@@ -9,17 +9,6 @@ import { SessionFormService } from '../../sessions/services/form.service';
 })
 export class ScoresBackend {
 
-  /**   !!!!!!!!!!!!
-   *  Might move score operations to here
-   * 
-   *  Could also just get it in the Session Services;
-   * 
-   *  Will also need to include Team functions
-   * 
-   *  Should this also include score operations from the play component;
-   *  
-   */
-
   private teams: BehaviorSubject<Team[] | undefined> = new BehaviorSubject<Team[]>(undefined);
   teams$: Observable<Team[]> = this.teams.asObservable();
 
@@ -78,17 +67,14 @@ export class ScoresBackend {
         
         //  Scores 
         this.setScores(s.scores);
-
-
-
+        
         //  Teams
         if (s.format != undefined) {
 
-          console.log("s.format.enum: ", s.format['enum']);
-          console.log("s.format.indexof: ", s.format['enum'].indexOf("team"));
+          //  console.log("s.format.enum: ", s.format['enum']);
+          //  console.log("s.format.indexof: ", s.format['enum'].indexOf("team"));
 
           if (typeof s.format['enum'] == "string" && s.format['enum'].indexOf("team") > -1) {
-            console.log('teams: ', s.scores);
             this.setTeams(s.scores);
           }
         }
@@ -213,7 +199,7 @@ export class ScoresBackend {
 
 
   getRoster(team: Team): Score[] {
-    console.log("this.scores.value: ", this.scores);
+    //  console.log("this.scores.value: ", this.scores);
 
     if (team != undefined) {
       return this.scores.value.filter(scores => {
