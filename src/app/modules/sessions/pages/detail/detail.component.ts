@@ -24,6 +24,8 @@ export class DetailComponent implements OnInit {
   form: FormGroup;
 
   playerModes = ["full", "admin"];
+
+  confirmDelete: boolean = false;
   
   constructor(
     private _sessionsForm: SessionFormService,
@@ -74,5 +76,9 @@ export class DetailComponent implements OnInit {
 
   scoreAction($event) {
     console.log("scoreAction.$event: ", $event);
+  }
+
+  toggleDelete() {
+    this.confirmDelete = !this.confirmDelete;
   }
 }

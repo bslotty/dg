@@ -62,7 +62,13 @@ export class SessionBackend {
     private http: HttpClient,
     private helper: HelperService,
     private account: AccountBackend,
-  ) { }
+  ) { 
+    this.detail$.subscribe((d)=>{
+      // Verify Detail Valid;
+      
+      //  Update if ID / Create If Not
+    });
+  }
 
 
   /** Take Format String and Convert to :SessionFormat
@@ -173,12 +179,11 @@ export class SessionBackend {
 
   }
 
-  updateSession(league: League, session: Session) {
-    let url = environment.apiUrl + "/sessions/update.php";
-    return this.http.post(url, {
+  updateSession(session: Session) {
+    return this.http.post(this.url, {
       "user": this.account.user,
-      "league": league,
       "session": session,
+      "action": "update",
     }).pipe(
       map((res: ServerPayload) => {
         //  Return Server Response for Error Handling
@@ -186,6 +191,8 @@ export class SessionBackend {
       })
     );
   }
+
+  
 
   delete(league: League, session: Session) {
     let url = environment.apiUrl + "/sessions/delete.php";

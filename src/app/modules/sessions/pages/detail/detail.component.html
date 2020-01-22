@@ -68,8 +68,12 @@
     <score-list></score-list>
   </div>
 
-  <div *ngIf="(_scores.teams$ | async) && _sessionsForm.teamGame()">
+  <div *ngIf="(_scores.teams$ | async) && _sessionsForm.teamGame() && !_sessionsForm.admin">
     <team-list></team-list>
+  </div>
+
+  <div *ngIf="(_scores.teams$ | async) && _sessionsForm.teamGame() && _sessionsForm.admin">
+    <team-select></team-select>
   </div>
 
 </div>
@@ -79,16 +83,20 @@
 
 <div *ngIf="_sessionsForm.admin" class="row justify-content-between align-items-center no-gutters mb-5">
   <div class="col p-3">
-    <a mat-raised-button color="warn" class="btn btn-lg btn-block" (click)="_sessionsForm.submitCreation()"
-      [disabled]="!_sessionsForm.ReadyForSubmission()">
-      <label>Delete</label>
+    <a mat-raised-button color="primary" class="btn btn-lg btn-block" (click)="toggleDelete()">
+      <label *ngIf="!confirmDelete">Delete</label>
+      <label *ngIf="confirmDelete">Cancel</label>
     </a>
   </div>
 
   <div class="col p-3">
-    <a mat-raised-button color="primary" class="btn btn-lg btn-block" (click)="_sessionsForm.submitCreation()"
+    <a *ngIf="!confirmDelete" mat-raised-button color="Accent" class="btn btn-lg btn-block" (click)="_sessionsForm.submitCreation()"
       [disabled]="!_sessionsForm.ReadyForSubmission()">
       <label>Play</label>
+    </a>
+
+    <a *ngIf="confirmDelete" mat-raised-button color="warn" class="btn btn-lg btn-block" (click)="_sessionsForm.confirmDelete()">
+      <label>Delete</label>
     </a>
   </div>
 </div>

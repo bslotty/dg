@@ -3,21 +3,6 @@
 
 		<div class="teamDropPad {{ team.color.name }}" id="{{ 'team-' + team.color.name }}" cdkDropList
 			(cdkDropListDropped)="rosterDrop($event)" [cdkDropListData]="getPlayerList(team)">
-			<div class="row justify-content-between align-items-end no-gutters">
-				<div class="col">
-					<h6>{{ team.name | titlecase }}</h6>
-				</div>
-
-				<div class="col-xs" *ngIf='team.name != "unassigned"'>
-					<a mat-flat-button color="transparent-{{ team.color.name }}" (click)="openSettings(team)">
-						<span class="icon-edit-2"></span>
-					</a>
-
-					<a mat-flat-button color="transparent-warn" (click)="removeTeam(team)">
-						<span class="icon-x"></span>
-					</a>
-				</div>
-			</div>
 			<team-list-item [team]="team"></team-list-item>
 
 			<score-list-item *ngFor="let score of getPlayerList(team)" cdkDrag [cdkDragData]="score" [score]="score"
