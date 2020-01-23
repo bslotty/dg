@@ -159,6 +159,10 @@ router-outlet ~ * {
   }
 }
 
+.rotate-90 {
+  transform: rotate(90deg);
+}
+
 
 
 

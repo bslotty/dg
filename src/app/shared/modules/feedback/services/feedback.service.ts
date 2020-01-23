@@ -28,6 +28,7 @@ export class FeedbackService implements OnInit {
     //  Reset Error Message upon Router Change
     //    Change on End, After all checks;
     this.router.events.subscribe((e) => {
+      /*
       if (e instanceof NavigationEnd) {
         this.feedbackMessage = "";
         this.loading = false;
@@ -35,10 +36,10 @@ export class FeedbackService implements OnInit {
 
       //  Test and possibly remove
       //  Automatic Loading when route loads;
-      //  Might need for pre-fetching data;
       if (e instanceof NavigationStart) {
         this.loading = true;
       }
+      */
 
     });
 

@@ -66,8 +66,4 @@ export class CreateComponent implements OnInit {
       minWidth: "75vw",
     });
   }
-
-  addTeam() {
-    this.scores_.addTeam();
-  }
 }

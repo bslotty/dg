@@ -3,7 +3,6 @@ import { ScoresBackend } from '../../services/backend.service';
 import { MatDialog } from '@angular/material';
 import { TeamSettingsComponent } from '../../dialogs/team-settings/team-settings.component';
 import { flyIn } from 'src/app/animations';
-import { SessionFormService } from 'src/app/modules/sessions/services/form.service';
 
 @Component({
   selector: 'team-list',
@@ -17,7 +16,6 @@ export class TeamListComponent implements OnInit {
 
   constructor(
     private _scores: ScoresBackend,
-    private _sessionForm: SessionFormService,
     private dialog: MatDialog,
   ) { }
 

@@ -1,4 +1,5 @@
 <div cdkDropListGroup class="row justify-content-center align-items-start no-gutters">
+	<p class="message"><i>Drag Players to Change Teams</i></p>
 	<div *ngFor="let team of _scores.teams$ | async as teamList; index as ti" class="col-12">
 
 		<div class="teamDropPad {{ team.color.name }}" id="{{ 'team-' + team.color.name }}" cdkDropList

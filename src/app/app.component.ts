@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { flyIn, flyLeft, flyRight } from 'src/app/animations';
 import { AccountBackend } from './modules/account/services/backend.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -11,12 +12,31 @@ import { AccountBackend } from './modules/account/services/backend.service';
 })
 
 export class AppComponent implements OnInit {
+
+  private crumbs: boolean = false;
+
   constructor(
     private router: Router,
+    private location: Location,
+    private route: ActivatedRoute,
     private account: AccountBackend,
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+
+    //  Show/Hide Breadcrumb Nav from URL
+    this.router.events.subscribe((r)=>{
+
+      if (this.location.path() != "/home") {
+        this.crumbs = true;
+      } else {
+        this.crumbs = false;
+      }
+      
+      //  console.warn("crumbs?", this.location.path(), this.crumbs);
+    });
+
+  }
 
   getRoute(outlet) {}
 }

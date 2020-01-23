@@ -66,7 +66,7 @@ export class RequestInterceptor implements HttpInterceptor {
 				//	Toast Feedback from server if set.
 				//	if (event.body.msg) { }
 
-				//	console.log("event: ", event);
+				console.log("interceptor.event: ", event);
 
 				//	If last server event's message -> display feedback;
 				//		Success	=  	Toast
@@ -96,7 +96,7 @@ export class RequestInterceptor implements HttpInterceptor {
 
 
 				// Loader Toggle
-				this.feedbackService.loading = false;
+				//	this.feedbackService.loading = false;
 
 			}
 			return event;

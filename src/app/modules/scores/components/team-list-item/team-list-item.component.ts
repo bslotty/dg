@@ -18,7 +18,6 @@ export class TeamListItemComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private sessions_:SessionBackend,
-    private _sessionForm: SessionFormService,
   ) { }
 
   ngOnInit() { }

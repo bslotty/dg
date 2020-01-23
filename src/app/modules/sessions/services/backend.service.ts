@@ -242,12 +242,17 @@ export class SessionBackend {
     Object.keys(this.detail.value).forEach((d)=>{
       //  console.log(`key=${d}  value=${this.detail.value[d]}`);
 
-      if (d == "course" || d == "format" || d == "starts_on" || d == "scores") {
-        if (this.detail.value[d] == undefined) {
-          //  console.warn("INVALID!", d);
+      if (d == "course" || d == "format" || d == "starts_on" ) {
+        if (this.detail.value[d] == undefined) { valid = false; }
+      } else if ( d == "scores") {
+        if (this.detail.value[d] == undefined || this.detail.value[d].length <= 0) {
           valid = false;
         }
-      } 
+      }
+
+      if (!valid) {
+        console.warn("INVALID!", d);
+      }
     });
     //  console.log ("SessionValid: " , valid);
 

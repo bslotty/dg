@@ -1,5 +1,7 @@
 <div class="row justify-content-end align-items-center no-gutters {{ backdrop ? 'panel' : '' }}">
 
+	<!--	Info	-->
+
 	<!--	Team Color Bar	-->
 	<div class="colorChoice" *ngIf='score.team.color?.name != null'>
 		<div class="colorIcon {{ score.team.color?.name }}"></div>
@@ -18,50 +20,50 @@
 
 
 
-	<!--	Handicap	-->
-	<div class="col-xs">
-		<a mat-flat-button matTooltip="Change Handicap: {{ +score.handicap }}"
-			*ngIf="sessions_.admin; else handicapStatus"
-			color="{{ +score.handicap == 0 ? 'transparent-info' : +score.handicap < 0 ? 'transparent-accent' : 'transparent-warn' }}"
-			(click)="openSettings(score.player)" class="row justify-content-center align-items-center no-gutters">
-			<span
-				class="icon-shield {{ +score.handicap == 0 ? 'color-info' : +score.handicap < 0 ? 'color-accent' : 'color-warn' }}"></span>
-		</a>
+
+	<!--	Actions	-->
+
+	<!--	Selector	-->
+	<div class="col-xs" *ngIf="mode.indexOf('selector') != -1; else actions">
+		<mat-checkbox (change)="toggleScore($event, score)" [value]="selectorCheckbox"></mat-checkbox>
 	</div>
 
-	<ng-template #handicapStatus>
-		<a mat-flat-button matTooltip="Handicap: {{ +score.handicap }}" *ngIf="+score.handicap != 0"
-			class="row justify-content-center align-items-center no-gutters"
-			color="{{ +score.handicap != 0 ? 'transparent-accent' : 'transparent-info'}}">
-			<span
-				class="icon-shield {{ +score.handicap == 0 ? 'color-info' : +score.handicap < 0 ? 'color-accent' : 'color-warn' }}"></span>
-		</a>
+	<ng-template #actions>
 
+		<!--	Handicap	-->
+		<div class="col-xs">
+			<a mat-flat-button matTooltip="Change Handicap: {{ +score.handicap }}"
+				*ngIf="sessions_.admin; else handicapStatus"
+				color="{{ +score.handicap == 0 ? 'transparent-info' : +score.handicap < 0 ? 'transparent-accent' : 'transparent-warn' }}"
+				(click)="openSettings(score.player)" class="row justify-content-center align-items-center no-gutters">
+				<span
+					class="icon-shield {{ +score.handicap == 0 ? 'color-info' : +score.handicap < 0 ? 'color-accent' : 'color-warn' }}"></span>
+			</a>
+		</div>
+
+		<ng-template #handicapStatus>
+			<a mat-flat-button matTooltip="Handicap: {{ +score.handicap }}" *ngIf="+score.handicap != 0"
+				class="row justify-content-center align-items-center no-gutters"
+				color="{{ +score.handicap != 0 ? 'transparent-accent' : 'transparent-info'}}">
+				<span
+					class="icon-shield {{ +score.handicap == 0 ? 'color-info' : +score.handicap < 0 ? 'color-accent' : 'color-warn' }}"></span>
+			</a>
+		</ng-template>
+
+		<!--	Scores		-->
+		<div class="col-xs" *ngIf="score.score_array?.length;">
+			<span class='icon-alert-triangle color-warn'></span>
+		</div>
+
+		<!--	Remove	-->
+		<div class="col-xs" *ngIf="sessions_.admin && mode.indexOf('remove')">
+			<a mat-flat-button color="transparent-primary" (click)="remove()">
+				<span class="icon-x"></span>
+			</a>
+		</div>
 
 	</ng-template>
 
 
 
-
-
-	<!--	Scores		-->
-	<div class="col-xs" *ngIf="score.score_array?.length;">
-		<span class='icon-alert-triangle color-warn'></span>
-	</div>
-
-
-
-	<!--	Remove	-->
-	<div class="col-xs" *ngIf="sessions_.admin != -1">
-		<a mat-flat-button color="transparent-primary" (click)="remove()">
-			<span class="icon-x"></span>
-		</a>
-	</div>
-
-
-
-	<!--	Selector	-->
-	<div class="col-xs" *ngIf="mode.indexOf('selector') != -1">
-		<mat-checkbox (change)="toggleScore($event, score)" [value]="selectorCheckbox"></mat-checkbox>
-	</div>
 </div>

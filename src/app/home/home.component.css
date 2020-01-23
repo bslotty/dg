@@ -5,3 +5,13 @@
 .article p {
     font-weight: 100;
 }
+
+
+
+.card-icon {
+    text-align: center;
+}
+
+.card-icon span::before {
+    font-size: 3em;
+}

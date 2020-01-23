@@ -6,7 +6,9 @@
     </div>
 
 
-    <div class="col">
+    <div class="col" *ngIf="crumbs">
+        
+
         <div class="row justify-content-between align-items-center no-gutters">
 
             <a mat-flat-button routerLink="/courses" color="transparent-primary" routerLinkActive="color-warn">Courses</a>
