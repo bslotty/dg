@@ -60,7 +60,6 @@ export class ScoresBackend {
   ) {
     this._sessions.detail$.subscribe((s) => {
       
-
       if (s != undefined) {
         console.log('scores.session.detail$:', s);
         console.log("s.format: ", s.format);

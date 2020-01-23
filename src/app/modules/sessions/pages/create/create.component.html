@@ -105,10 +105,11 @@
       <h6 class="col sub-header ml">Players</h6>
 
       <div class="col-xs" *ngIf="form.get('scores').value.length > 0; else pickPlayers">
-        <a *ngIf="form.get('format').value.enum.indexOf('team') > -1" mat-flat-button color="transparent-accent" (click)="addTeam()">
+        <a *ngIf="sessions_.teamGame()" mat-flat-button color="transparent-accent"
+          (click)="addTeam()">
           <label><span class="icon-plus"></span> Team</label>
         </a>
-        
+
         <a mat-flat-button color="transparent-primary" (click)="selectPlayers()">
           <span class="icon-edit-2"></span>
         </a>
@@ -123,16 +124,13 @@
       </div>
     </ng-template>
 
-    <div *ngIf="form.get('format').valid; else scoreList">
-      <div *ngIf="form.get('format').value.enum.indexOf('team') > -1; else scoreList">
-        <team-select></team-select>
-      </div>
+    <div *ngIf="sessions_.teamGame(); else scoreList">
+      <team-select></team-select>
     </div>
-
-
     <ng-template #scoreList>
-      <score-list backdrop="true"></score-list>
+      <score-list></score-list>
     </ng-template>
+    
   </div>
 
 
@@ -142,8 +140,8 @@
 <div class="row no-gutters justify-content-stretch align-items-center mt-3 mb-5">
 
   <div class="col">
-    <a mat-raised-button color="primary" class="btn btn-lg btn-block" (click)="sessionForm.submitCreation()"
-      [disabled]="!sessionForm.ReadyForSubmission()">
+    <a mat-raised-button color="primary" class="btn btn-lg btn-block" (click)="sessions_.submitCreation()"
+      [disabled]="!sessions_.ReadyForSubmission()">
       <label>Create</label>
     </a>
   </div>

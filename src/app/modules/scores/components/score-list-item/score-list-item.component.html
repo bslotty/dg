@@ -21,7 +21,7 @@
 	<!--	Handicap	-->
 	<div class="col-xs">
 		<a mat-flat-button matTooltip="Change Handicap: {{ +score.handicap }}"
-			*ngIf="_sessionForm.admin; else handicapStatus"
+			*ngIf="sessions_.admin; else handicapStatus"
 			color="{{ +score.handicap == 0 ? 'transparent-info' : +score.handicap < 0 ? 'transparent-accent' : 'transparent-warn' }}"
 			(click)="openSettings(score.player)" class="row justify-content-center align-items-center no-gutters">
 			<span
@@ -52,7 +52,7 @@
 
 
 	<!--	Remove	-->
-	<div class="col-xs" *ngIf="mode.indexOf('remove') != -1">
+	<div class="col-xs" *ngIf="sessions_.admin != -1">
 		<a mat-flat-button color="transparent-primary" (click)="remove()">
 			<span class="icon-x"></span>
 		</a>

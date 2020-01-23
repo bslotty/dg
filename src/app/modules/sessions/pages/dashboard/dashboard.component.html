@@ -1,4 +1,4 @@
-<div @flyIn *ngIf="(upcoming && recient) | async; else create">
+<div *ngIf="(upcoming && recient) | async; else create">
     <h6 class="sub-header">Upcoming</h6>
     <div *ngIf="upcoming | async as sessionList; else loader">
         <div *ngIf='sessionList.length; else none' @flyIn>

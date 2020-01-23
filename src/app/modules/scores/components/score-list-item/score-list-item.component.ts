@@ -14,7 +14,7 @@ import { SessionFormService } from 'src/app/modules/sessions/services/form.servi
 })
 export class ScoreListItemComponent implements OnInit {
 
-  @Input() mode: string[]
+  @Input() mode: string[] = ["full"];
   @Input() score: Score;
 
   @Input() backdrop: boolean = true;
@@ -24,8 +24,6 @@ export class ScoreListItemComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private sessions_: SessionBackend,
-    private scores_:ScoresBackend,
-    private _sessionForm: SessionFormService,
   ) { }
 
   ngOnInit() {

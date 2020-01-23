@@ -17,13 +17,14 @@ export class SessionFormService {
   private form: BehaviorSubject<FormGroup | undefined> = new BehaviorSubject(undefined);
   form$: Observable<FormGroup> = this.form.asObservable();
 
+  /*
   private teams: BehaviorSubject<Team[] | undefined> = new BehaviorSubject(undefined);
   teams$: Observable<Team[]> = this.teams.asObservable();
+  */
 
   builder: FormBuilder = new FormBuilder;
 
   initialized: boolean = false;
-  public admin: boolean = false;
 
   /*
   public starts_on?: Date,
@@ -89,12 +90,6 @@ export class SessionFormService {
 
     //  Get Data & Populate
     this.session_.detail$.subscribe((s) => {
-
-      //  Set Admin
-      if (s.created_by == accounts_.user.id) {
-        this.admin = true;
-      }
-
       this.setForm(s);
     });
   }

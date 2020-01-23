@@ -60,7 +60,7 @@ export const flyIn = trigger('flyIn', [
         position: 'relative',
         display: "block",
       }),
-      { optional: true }),
+      { optional: true }), animateChild(),
 
     query(':leave',
       style({

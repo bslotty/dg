@@ -1,4 +1,4 @@
-<div *ngFor="let team of _scores.teams$ | async; let i = index" @flyIn>
+<div *ngFor="let team of _scores.teams$ | async; let i = index" @flyIn class="mb-3">
 
     <team-list-item [team]="team" [mode]="playerModes" @flyIn></team-list-item>
 

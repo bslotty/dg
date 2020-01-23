@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ScoresBackend, Score } from '../../services/backend.service';
 import { Observable } from 'rxjs';
+import { SessionBackend } from 'src/app/modules/sessions/services/backend.service';
 
 @Component({
   selector: 'score-list',
@@ -11,15 +12,11 @@ export class ScoreListComponent implements OnInit {
 
   private scores$: Observable<Score[]> = this.scores_.scores$;
 
-  @Input() modes: string[] = ["full"];
-
   @Input() backdrop: boolean = true;
   
   constructor(
     private scores_:ScoresBackend,
   ) { }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() { }
 }
