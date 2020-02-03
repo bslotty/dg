@@ -56,6 +56,7 @@ export class SessionBackend {
     }
   ];
 
+  public admin: boolean = false;
 
 
   constructor(
@@ -67,9 +68,16 @@ export class SessionBackend {
       // Verify Detail Valid;
       
       //  Update if ID / Create If Not
+      if (d.created_by == this.account.user.id) {
+        this.admin = true;
+      }
     });
   }
 
+
+  ReadyForSubmission() {
+    return true;
+  }
 
   /** Take Format String and Convert to :SessionFormat
    * 
@@ -261,6 +269,10 @@ export class SessionBackend {
     this.detail.next(this.detail.value);
   }
 
+
+
+
+
   addScore(score) {
     if (this.detail.value.scores == undefined) {
       this.detail.value.scores = [score];
@@ -285,6 +297,9 @@ export class SessionBackend {
     return this.detail.value.scores != undefined && this.detail.value.scores.find(s => s.id == score.id) != undefined;
   }
 
+
+
+
   clearRoster(team) {
     this.detail.value.scores.forEach((s, i) => {
       if (s.team == team) {
@@ -300,6 +315,11 @@ export class SessionBackend {
   removeTeam(team) {
     console.error("RemoveTeam: ", team);
     this.detail.value.scores = this.detail.value.scores.filter(s => s.team == team.name);
+  }
+
+  teamGame(): boolean {
+    var res: boolean = typeof this.detail.value.format != undefined && this.detail.value.format.enum != 'ffa';
+    return res;
   }
 
 }

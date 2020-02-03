@@ -1,9 +1,57 @@
-<div *ngIf="list$ | async as courseList; else loader">
+<div class="row justify-content-between align-items-start no-gutters">
+  <div class="col-4">
+    <mat-form-field>
+      <mat-label></mat-label>
+      <mat-select [(value)]="selectedList" (selectionChange)="selectChange($event)">
+        <mat-option *ngFor="let list of lists" [value]="list"
+          [disabled]='(list.name == "favorites" || list.name == "recient") && !_account.user'>
+          {{ list.name | titlecase }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="search" class="col-7">
+    <form [formGroup]="form">
+      <mat-form-field>
+        <div matPrefix>
+          <a mat-flat-button color="transparent-primary">
+            <span class="icon-search"></span>
+          </a>
+        </div>
+        <input matInput formControlName="search" placeholder="Park or Address" />
+        <mat-error *ngIf="form.get('search').invalid && form.get('search').touched">
+          Invalid Search Criteria
+        </mat-error>
+        <div matSuffix class="row justify-content-end align-items-center no-gutters">
+          <div *ngIf='feed.loading'>
+            <loader small='true'></loader>
+          </div>
+          <div>
+            <a mat-flat-button color="transparent-primary" (click)="toggleSearch()"><span class="icon-x"></span></a>
+          </div>
+        </div>
+      </mat-form-field>
+    </form>
+  </div>
+
+
+  <div class="col-xs mt-2" *ngIf="!search">
+    <a mat-flat-button color="transparent-primary" (click)="toggleSearch()">
+      <span class="icon-search"></span>
+    </a>
+  </div>
+</div>
+
+
+<div *ngIf="selectedList.obs | async as courseList; else loader;">
   <div *ngIf="courseList.length; else none" @flyIn>
-    <course-list-item *ngFor="let course of courseList" [course]="course" [mode]="mode">
+    <course-list-item *ngFor="let course of courseList; trackBy: trackCourse" [course]="course" mode="list" backdrop="true">
     </course-list-item>
   </div>
 </div>
+
+
 
 
 <ng-template #loader>

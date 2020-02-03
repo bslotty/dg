@@ -11,11 +11,11 @@
             <div *ngFor="let path of paths; index as i" class="col">
                 <div *ngIf="path != 'home'" class="row justify-content-start align-items-center no-gutters">
                     <a *ngIf="i == 0" routerLink="{{ '/' + path }}" mat-flat-button color="transparent-primary">{{ path | titlecase }}</a>
-                    <a *ngIf="i != 0" mat-flat-button color="transparent-primary">{{ path | titlecase }}</a>
+                    <a *ngIf="i != 0 && path.length < 35" mat-flat-button color="transparent-primary">{{ path | titlecase }}</a>
 
                     <div *ngIf="i == 0">
                         <!--    Other Main Routes    -->
-                        <a mat-flat-button color="transparent-primary" [matMenuTriggerFor]="navMenu"><span
+                        <a mat-flat-button color="transparent-primary" [matMenuTriggerFor]="navMenu" yPosition="below" xPosition="before"><span
                                 class="icon-chevron-down"></span></a>
                         <mat-menu #navMenu="matMenu">
                             <a routerLink="/courses" *ngIf="path != 'courses'" mat-flat-button color="transparent-primary">Courses</a>

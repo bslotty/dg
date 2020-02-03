@@ -7,6 +7,7 @@ import { flyIn } from 'src/app/animations';
 import { CourseFormService } from '../../services/course-form.service';
 import { FormGroup } from '@angular/forms';
 
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -15,26 +16,8 @@ import { FormGroup } from '@angular/forms';
 })
 export class DashboardComponent implements OnInit {
 
-  topCourses: Observable<Course[]>;
-  recientCourses: Observable<Course[]>;
-  favoriteCourses: Observable<Course[]>;
-  searchCourses: Observable<Course[]>;
-  
-  lists: Array<listCategories> = [
-    {
-      name: "top",
-      list: this.topCourses
-    }, {
-      name: "recient",
-      list: this.recientCourses,
-    }, {
-      name: "favorite",
-      list: this.favoriteCourses
-    }, {
-      name: "search",
-      list: this.searchCourses,
-    }
-  ];
+  lists: Array<listCategories>;
+  selectedList: listCategories;
 
   search: boolean = false;
   form: FormGroup;
@@ -51,37 +34,69 @@ export class DashboardComponent implements OnInit {
     //  Populate Lists
     this.courses.listTop();
 
-    //  Subscribe to lists
-    this.topCourses = this.courses.list$;
-
     //  Account Required Lists
     if (this.account.user) {
-
-      //  Subscribe to Account Linked Lists
-      this.favoriteCourses  = this.courses.favoriteList$;
-      this.recientCourses   = this.courses.recientList$;
-
-      //  Populate Account Linked Lists
-      if (this.favoriteCourses == undefined) {
-        this.courses.listFavorites();
-      }
-
-      if (this.recientCourses == undefined) {
-        this.courses.listRecient();
-      }
+      this.courses.listFavorites();
+      this.courses.listRecient();
     }
 
+    //  List Selection
+    this.lists = [
+      {
+        name: "top",
+        obs: this.courses.list$,
+      }, {
+        name: "recient",
+        obs: this.courses.recientList$,
+      }, {
+        name: "favorites",
+        obs: this.courses.favoriteList$,
+      }, {
+        name: "search",
+        obs: this.courses.search$,
+      }
+    ];
 
-    
+    //  Default Option
+    this.selectedList = this.lists[0];
+
+
     //  Setup Form
     this.coursesForm.Setup('search');
-    this.coursesForm.form$.subscribe((f)=>{
+    this.coursesForm.form$.subscribe((f) => {
       this.form = f;
+      this.feed.loading = false;
     });
   }
 
-  toggleSearch(){
+  toggleSearch() {
     this.search = !this.search;
+
+    if (this.search) {
+      //  Set Dropdown to Search
+      this.selectedList = this.lists.find((l) => {
+        return l.name == "search";
+      });
+
+
+      //  Clear Field
+      this.coursesForm.resetSearch();
+    } else {
+
+      //  Reset;
+      this.feed.loading = false;
+      this.selectedList = this.lists[0];
+    }
+  }
+
+  selectChange($event) {
+    this.selectedList = this.lists.find((l) => {
+      return l.name == $event.value.name;
+    });
+
+    if ($event.value.name != 'search' && this.search) {
+      this.toggleSearch();
+    }
   }
 
 }
@@ -89,5 +104,5 @@ export class DashboardComponent implements OnInit {
 
 export interface listCategories {
   name: string;
-  list: Observable<Object[]>;
+  obs: Observable<Object[]>;
 }

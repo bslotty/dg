@@ -62,7 +62,7 @@ export class CourseFormService {
     private courseService: CourseBackend,
     private router: Router,
     private feed: FeedbackService,
-    ) { }
+  ) { }
 
   Setup(type) {
 
@@ -90,13 +90,17 @@ export class CourseFormService {
       case "search":
         form.addControl('search', this.cTerm);
 
-        form.get("search").valueChanges.pipe(this.courseService.serverPipe).subscribe((s)=>{
+        //  Listen to Input changes to trigger loading and search
+        form.get("search").valueChanges.pipe(this.courseService.serverPipe).subscribe((s) => {
           if (form.valid) {
-            console.log ("CourseSearch.valid: ", s);
-
             this.feed.loading = true;
             this.courseService.getSearch(s as string);
           }
+        });
+
+        //  Turn off Loader when Results populate
+        this.courseService.search$.subscribe((s) => {
+          this.feed.loading = false;
         });
 
         break;
@@ -134,7 +138,10 @@ export class CourseFormService {
     this.form.value.get("lat").setValue(values.lat);
     this.form.value.get("lng").setValue(values.lng);
     this.form.value.markAsDirty();
+  }
 
+  resetSearch() {
+    this.form.value.get("search").reset();
   }
 
   SubmitCreation() {

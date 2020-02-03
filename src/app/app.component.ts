@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
       
       this.paths = this.location.path().substr(1, this.location.path().length).split("/");
 
-       console.warn("crumbs?", this.paths, this.crumbs);
+      // console.warn("crumbs?", this.paths, this.crumbs);
     });
 
   }
