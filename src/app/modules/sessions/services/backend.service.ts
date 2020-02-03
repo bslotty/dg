@@ -23,8 +23,6 @@ export class SessionBackend {
     distinctUntilChanged(),
   );
 
-  public admin: boolean = false;
-
   //  Generic
   private list: BehaviorSubject<Session[]> = new BehaviorSubject([]);
   list$: Observable<Session[]> = this.list.asObservable();
@@ -64,21 +62,18 @@ export class SessionBackend {
     private http: HttpClient,
     private helper: HelperService,
     private account: AccountBackend,
-  ) {
-    this.detail$.subscribe((d) => {
+  ) { 
+    this.detail$.subscribe((d)=>{
+      // Verify Detail Valid;
+      
       //  Update if ID / Create If Not
-
-      //  Admin
-      if (d.created_by == account.user.id) {
-        this.admin = true;
-      }
     });
   }
 
 
-  /****************
-   *  Format Data
-   ****************/
+  /** Take Format String and Convert to :SessionFormat
+   * 
+   */
   convertFormatStr(str) {
     return this.types.find(t => t.enum == str);
   }
@@ -87,7 +82,7 @@ export class SessionBackend {
     var result: Session[] = [];
 
     this.helper.rGetData(res).forEach((session) => {
-      result.push(new Session(
+       result.push(new Session(
         session['id'],
         session['created_on'],
         session['created_by'],
@@ -105,9 +100,8 @@ export class SessionBackend {
     return result;
   }
 
-  /**********************
-   *  List Operations
-   **********************/
+
+
   listFavorites() {
     this.getList("favorites").subscribe((courses: Session[]) => {
       this.favoriteList.next(courses);
@@ -119,6 +113,7 @@ export class SessionBackend {
       this.list.next(courses);
     });
   }
+
 
   getList(list: string, start: number = 0, limit: number = 100) {
     return this.http.post(this.url, {
@@ -142,6 +137,8 @@ export class SessionBackend {
     );
   }
 
+
+
   getDetail(session: Session): void {
 
     //  Just Grab All info from the server for the specific details; Other information may not be available; fix;
@@ -162,20 +159,8 @@ export class SessionBackend {
     });
   }
 
-  sortSession(list) {
-    //  Sort
-    var sorted = list.sort((a, b) => {
-      return b["start"] - a["start"];
-    });
-
-    return sorted;
-  }
 
 
-
-  /**********************
-   *  Create
-   **********************/
   create(session: Session) {
     return this.http.post(this.url, {
       "user": this.account.user,
@@ -190,13 +175,10 @@ export class SessionBackend {
         return res;
       })
     );
+
+
   }
 
-
-
-  /**********************
-   *  Update
-   **********************/
   updateSession(session: Session) {
     return this.http.post(this.url, {
       "user": this.account.user,
@@ -210,11 +192,8 @@ export class SessionBackend {
     );
   }
 
+  
 
-
-  /**********************
-   *  Delete
-   **********************/
   delete(league: League, session: Session) {
     let url = environment.apiUrl + "/sessions/delete.php";
     return this.http.post(url, {
@@ -231,66 +210,14 @@ export class SessionBackend {
   }
 
 
-  /*******************
-   * Validate
-   ******************/
-  ReadyForSubmission(): boolean {
-
-    var valid: boolean = true;
-
-    //  Check each property and if not undefined -> go
-    Object.keys(this.detail.value).forEach((d)=>{
-      //  console.log(`key=${d}  value=${this.detail.value[d]}`);
-
-      if (d == "course" || d == "format" || d == "starts_on" ) {
-        if (this.detail.value[d] == undefined) { valid = false; }
-      } else if ( d == "scores") {
-        if (this.detail.value[d] == undefined || this.detail.value[d].length <= 0) {
-          valid = false;
-        }
-      }
-
-      if (!valid) {
-        console.warn("INVALID!", d);
-      }
+  sortSession(list) {
+    //  Sort
+    var sorted = list.sort((a, b) => {
+      return b["start"] - a["start"];
     });
-    //  console.log ("SessionValid: " , valid);
 
-
-    //  Team game needs Teams to exist on each score
-    if (this.teamGame() && !this.validateRoster()){
-      valid = false;
-    }
-    //  console.log ("TeamsValid: " , valid);
-
-
-    //  Return Results
-    return valid;
+    return sorted;
   }
-
-  validateRoster(): boolean {
-    var valid = true;
-    this.detail.value.scores.forEach((s) => {
-      if ( s.team == undefined || s.team.name == "unassigned") {
-        valid = false;
-      }
-    });
-    return valid;
-  }
-
-
-
-  /**********************
-   *  Misc
-   **********************/
-
-  teamGame(): boolean {
-    var res: boolean = this.detail.value.format != undefined && this.detail.value.format.enum.indexOf("team") > -1;
-    return res;
-  }
-
-
-
 
   resetDetail() {
     this.detail.next(new Session());
@@ -334,21 +261,12 @@ export class SessionBackend {
     this.detail.next(this.detail.value);
   }
 
-
-
-
-
-
-  /*********************************
-   * Score & Team Functions
-   *    Move to Scores.Backend
-   ********************************/
   addScore(score) {
     if (this.detail.value.scores == undefined) {
       this.detail.value.scores = [score];
     } else {
 
-      var dupe = this.detail.value.scores.find(e => e.player.id == score.player.id);
+      var dupe = this.detail.value.scores.find(e => e.player.id == score.player.id );
 
       if (dupe == undefined) {
         this.detail.value.scores.push(score);
@@ -383,8 +301,6 @@ export class SessionBackend {
     console.error("RemoveTeam: ", team);
     this.detail.value.scores = this.detail.value.scores.filter(s => s.team == team.name);
   }
-
-
 
 }
 

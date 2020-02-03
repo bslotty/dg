@@ -14,6 +14,7 @@ import { Location } from '@angular/common';
 export class AppComponent implements OnInit {
 
   private crumbs: boolean = false;
+  private paths: Array<string> = [];
 
   constructor(
     private router: Router,
@@ -33,7 +34,9 @@ export class AppComponent implements OnInit {
         this.crumbs = false;
       }
       
-      //  console.warn("crumbs?", this.location.path(), this.crumbs);
+      this.paths = this.location.path().substr(1, this.location.path().length).split("/");
+
+       console.warn("crumbs?", this.paths, this.crumbs);
     });
 
   }

@@ -1,12 +1,15 @@
 <form [formGroup]="form">
   <mat-form-field>
     <mat-label matPrefix>Search</mat-label>
-    <input matInput formControlName="search" placeholder="Park Name, City, or State" />
+    <input matInput formControlName="search" placeholder="Park or Address" />
     <mat-error *ngIf="form.get('search').invalid && form.get('search').touched">
       Invalid Search Criteria
     </mat-error>
     <div matSuffix *ngIf='feed.loading'>
       <loader small='true'></loader>
+    </div>
+    <div matSuffix>
+      <a mat-flat-button (click)="toggleSearch != toggleSearch"><span class="icon-x"></span></a>
     </div>
   </mat-form-field>
 </form>
