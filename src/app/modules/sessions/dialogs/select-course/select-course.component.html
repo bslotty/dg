@@ -11,32 +11,5 @@
 </div>
 
 <div>
-    <mat-tab-group dynamicHeight="true">
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <span class="icon-heart" matTooltip='Favorites'></span>
-            </ng-template>
-
-            <h3>Favorites</h3>
-            <app-course-list type='favorites' mode='selector'></app-course-list>
-        </mat-tab>
-
-
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <span class="icon-clock" matTooltip="Recient"></span>
-            </ng-template>
-
-            <h3>Recient</h3>
-            <app-course-list type='recient' mode='selector'></app-course-list>
-        </mat-tab>
-
-
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <span class="icon-search" matTooltip="Search"></span>
-            </ng-template>
-            <course-search></course-search>
-        </mat-tab>
-    </mat-tab-group>
+   <app-course-list></app-course-list>
 </div>

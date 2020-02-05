@@ -13,16 +13,16 @@
 
   <div *ngIf="search" class="col-7">
     <form [formGroup]="form">
-      <mat-form-field>
+      <mat-form-field floatLabel="never">
+
         <div matPrefix>
           <a mat-flat-button color="transparent-primary">
             <span class="icon-search"></span>
           </a>
         </div>
+
         <input matInput formControlName="search" placeholder="Park or Address" />
-        <mat-error *ngIf="form.get('search').invalid && form.get('search').touched">
-          Invalid Search Criteria
-        </mat-error>
+
         <div matSuffix class="row justify-content-end align-items-center no-gutters">
           <div *ngIf='feed.loading'>
             <loader small='true'></loader>

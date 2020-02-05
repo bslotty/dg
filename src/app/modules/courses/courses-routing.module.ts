@@ -6,7 +6,6 @@ import { ShellComponent } from './pages/shell/shell.component';
 import { DetailComponent } from './pages/detail/detail.component';
 import { CreateComponent } from './pages/create/create.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { SearchComponent } from './pages/search/search.component';
 
 import { AuthGuard } from 'src/app/guards/auth.service';
 
@@ -21,9 +20,6 @@ const courseRoutes: Routes = [{
     {
       path: '',
       component: DashboardComponent,
-    },{
-      path: "search",
-      component: SearchComponent,
     },{
       path: 'create',
       component: CreateComponent,

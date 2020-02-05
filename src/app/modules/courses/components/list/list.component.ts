@@ -17,7 +17,7 @@ import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedba
 export class ListComponent implements OnInit {
 
   @Input() type: string = "top"; // recient | favorites | ...
-  @Input() mode: string = "link";
+  @Input() mode: string[] = ["link"];
 
   list$: Observable<Course[]>;
 

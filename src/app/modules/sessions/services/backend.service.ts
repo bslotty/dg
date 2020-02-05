@@ -68,7 +68,7 @@ export class SessionBackend {
       // Verify Detail Valid;
       
       //  Update if ID / Create If Not
-      if (d.created_by == this.account.user.id) {
+      if (this.account.user && d.created_by == this.account.user.id) {
         this.admin = true;
       }
     });
