@@ -204,7 +204,9 @@ export class ScoresBackend {
       return this.scores.value.filter(scores => {
 
         if (scores.team != undefined) {
-          return scores.team.name == team.name;
+          var scoreStr  = scores.team.id + scores.team.name + scores.team.color.hex;
+          var teamStr   = team.id + team.name + team.color.hex;
+          return scoreStr == teamStr;
         }
 
       });
@@ -212,7 +214,7 @@ export class ScoresBackend {
       return this.scores.value;
     }
 
-    
+
 
   }
 
