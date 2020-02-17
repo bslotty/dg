@@ -6,13 +6,13 @@
   </div>
 
 
-  <div class="col-xs" *ngIf="mode == 'selector'">
+  <div class="col-xs" *ngIf="mode.indexOf('selector') > -1">
     <a mat-flat-button color="transparent-primary" (click)="selectCourse(course)">
       <span class="icon-circle"></span>
     </a>
   </div>
 
-  <div class="col-xs" *ngIf="mode == 'list'">
+  <div class="col-xs" *ngIf="mode.indexOf('list') > -1">
     <a *ngIf='account_?.user' mat-flat-button color="accent" (click)="favorite(course)" class="ml-1">
       <span class="icon-heart"></span>
     </a>

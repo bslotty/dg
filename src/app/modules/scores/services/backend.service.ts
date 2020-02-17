@@ -212,6 +212,8 @@ export class ScoresBackend {
       return this.scores.value;
     }
 
+    
+
   }
 
   movePlayer(event) {
