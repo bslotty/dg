@@ -63,10 +63,10 @@ export class SessionBackend {
     private http: HttpClient,
     private helper: HelperService,
     private account: AccountBackend,
-  ) { 
-    this.detail$.subscribe((d)=>{
+  ) {
+    this.detail$.subscribe((d) => {
       // Verify Detail Valid;
-      
+
       //  Update if ID / Create If Not
       if (this.account.user && d.created_by == this.account.user.id) {
         this.admin = true;
@@ -90,7 +90,7 @@ export class SessionBackend {
     var result: Session[] = [];
 
     this.helper.rGetData(res).forEach((session) => {
-       result.push(new Session(
+      result.push(new Session(
         session['id'],
         session['created_on'],
         session['created_by'],
@@ -200,7 +200,7 @@ export class SessionBackend {
     );
   }
 
-  
+
 
   delete(league: League, session: Session) {
     let url = environment.apiUrl + "/sessions/delete.php";
@@ -278,7 +278,7 @@ export class SessionBackend {
       this.detail.value.scores = [score];
     } else {
 
-      var dupe = this.detail.value.scores.find(e => e.player.id == score.player.id );
+      var dupe = this.detail.value.scores.find(e => e.player.id == score.player.id);
 
       if (dupe == undefined) {
         this.detail.value.scores.push(score);
@@ -294,7 +294,7 @@ export class SessionBackend {
   }
 
   getScore(score): boolean {
-    return this.detail.value.scores != undefined && this.detail.value.scores.find(s => s.id == score.id) != undefined;
+    return this.detail.value.scores != undefined && this.detail.value.scores.find(s => s.player.id == score.player.id) != undefined;
   }
 
 
@@ -318,8 +318,12 @@ export class SessionBackend {
   }
 
   teamGame(): boolean {
-    var res: boolean = typeof this.detail.value.format != undefined && this.detail.value.format.enum != 'ffa';
-    return res;
+    if (this.detail.value.format != undefined) {
+      var res: boolean = typeof this.detail.value.format != undefined && this.detail.value.format.enum != 'ffa';
+      return res;
+    } else {
+      return false;
+    }
   }
 
 }

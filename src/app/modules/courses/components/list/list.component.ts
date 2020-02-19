@@ -19,9 +19,6 @@ export class ListComponent implements OnInit {
   @Input() type: string = "top"; // recient | favorites | ...
   @Input() mode: string[] = ["selector"];
 
-  list$: Observable<Course[]>;
-
-
   lists: Array<listCategories>;
   selectedList: listCategories;
 

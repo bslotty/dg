@@ -352,4 +352,8 @@ export class AccountFormService {
     }
   }
 
+  resetSearch() {
+    this.form.value.get("search").reset();
+  }
+
 }

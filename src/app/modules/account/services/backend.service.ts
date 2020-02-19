@@ -15,11 +15,14 @@ export class AccountBackend implements OnInit {
   user: Player;
   redirectUrl: string;
 
-  private searchedPlayers: BehaviorSubject<Player[] | undefined> = new BehaviorSubject(undefined);
-  searchedPlayers$: Observable<Player[]> = this.searchedPlayers.asObservable();
+  private searched: BehaviorSubject<Player[] | undefined> = new BehaviorSubject(undefined);
+  searched$: Observable<Player[]> = this.searched.asObservable();
 
-  recientPlayers: Player[];
-  friends: Player[];
+  private recient: BehaviorSubject<Player[] | undefined> = new BehaviorSubject(undefined);
+  recient$: Observable<Player[]> = this.recient.asObservable();
+
+  private friends: BehaviorSubject<Player[] | undefined> = new BehaviorSubject(undefined);
+  friends$: Observable<Player[]> = this.friends.asObservable();
 
   url: string = environment.apiUrl + '/controllers/players.php';
 
@@ -183,7 +186,7 @@ export class AccountBackend implements OnInit {
         //  Set user if successfull
         if (this.rCheck(res)) {
           var players = this.rGetData(res);
-          this.searchedPlayers.next(players as Player[]);
+          this.searched.next(players as Player[]);
         }
 
         //  Return Payload for Feedback

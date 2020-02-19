@@ -48,7 +48,7 @@
 			</div>
 
 			<div *ngIf="results.length > 0 && this.form.dirty; else none" @flyIn>
-				<score-list-item *ngFor="let score of results; trackBy: trackBy" [score]='score' [mode]='playerMode' [backdrop]="false"
+				<score-list-item *ngFor="let score of results; trackBy: trackBy" [score]='score' [mode]='playerMode'
 					(action)="include($event)"></score-list-item>
 			</div>
 		</mat-tab>

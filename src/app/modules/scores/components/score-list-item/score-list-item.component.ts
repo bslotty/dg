@@ -17,8 +17,6 @@ export class ScoreListItemComponent implements OnInit {
   @Input() mode: string[] = ["full"];
   @Input() score: Score;
 
-  @Input() backdrop: boolean = true;
-
   private selectorCheckbox: boolean;
 
   constructor(
@@ -38,7 +36,7 @@ export class ScoreListItemComponent implements OnInit {
     if ($event.checked == true) {
       this.sessions_.addScore(score);
     } else {
-      this.sessions_.removeScore(score)
+      this.sessions_.removeScore(score);
     }
   }
 

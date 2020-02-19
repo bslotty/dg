@@ -1,4 +1,4 @@
-<div class="row justify-content-end align-items-center no-gutters {{ backdrop ? 'panel' : '' }}">
+<div class="panel row justify-content-end align-items-center no-gutters">
 
 	<!--	Info	-->
 
@@ -25,7 +25,7 @@
 
 	<!--	Selector	-->
 	<div class="col-xs" *ngIf="mode.indexOf('selector') != -1; else actions">
-		<mat-checkbox (change)="toggleScore($event, score)" [value]="selectorCheckbox"></mat-checkbox>
+		<mat-checkbox (change)="toggleScore($event, score)" [checked]="selectorCheckbox"></mat-checkbox>
 	</div>
 
 	<ng-template #actions>

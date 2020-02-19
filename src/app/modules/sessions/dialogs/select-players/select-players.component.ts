@@ -44,7 +44,7 @@ export class SelectPlayersComponent implements OnInit {
     });
 
     //  Listen to Player List Updates
-    this.accounts.searchedPlayers$.subscribe((p)=>{
+    this.accounts.searched$.subscribe((p)=>{
       if (p != undefined) {
 
         this.results = p.map((v)=>{

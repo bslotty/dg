@@ -11,8 +11,6 @@ import { SessionBackend } from 'src/app/modules/sessions/services/backend.servic
 export class ScoreListComponent implements OnInit {
 
   private scores$: Observable<Score[]> = this.scores_.scores$;
-
-  @Input() backdrop: boolean = true;
   
   constructor(
     private scores_:ScoresBackend,
