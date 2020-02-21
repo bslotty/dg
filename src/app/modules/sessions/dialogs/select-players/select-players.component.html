@@ -1,64 +1,67 @@
-<div class="row justify-content-between align-items-center no-gutters">
-	<div class="col">
-		<h4>Select Players</h4>
+<div class="row justify-content-between align-items-start no-gutters">
+	<div class="col-4">
+		<mat-form-field>
+			<mat-label></mat-label>
+			<mat-select [(value)]="selectedList" (selectionChange)="selectChange($event)">
+				<mat-option *ngFor="let list of lists" [value]="list"
+					[disabled]='(list.name == "favorites" || list.name == "recient") && !_account.user'>
+					{{ list.name | titlecase }}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
 	</div>
 
-	<div class="col-xs">
-		<a mat-flat-button color="transparent-primary" (click)="close(false)">
-			<span class="icon-x"></span>
+	<div *ngIf="search" class="col-7">
+		<form [formGroup]="form">
+			<mat-form-field floatLabel="never">
+
+				<div matPrefix>
+					<a mat-flat-button color="transparent-primary">
+						<span class="icon-search"></span>
+					</a>
+				</div>
+
+				<input matInput formControlName="search" placeholder="Park or Address" />
+
+				<div matSuffix class="row justify-content-end align-items-center no-gutters">
+					<div *ngIf='feed.loading'>
+						<loader small='true'></loader>
+					</div>
+					<div>
+						<a mat-flat-button color="transparent-primary" (click)="toggleSearch()"><span
+								class="icon-x"></span></a>
+					</div>
+				</div>
+			</mat-form-field>
+		</form>
+	</div>
+
+
+	<div class="col-xs mt-2" *ngIf="!search">
+		<a mat-flat-button color="transparent-primary" (click)="toggleSearch()">
+			<span class="icon-search"></span>
 		</a>
 	</div>
 </div>
 
 
-<div>
-	<mat-tab-group dynamicHeight="true">
-		<mat-tab>
-			<ng-template mat-tab-label>
-				<span class="icon-heart"></span>
-			</ng-template>
-
-			<p>Favorites</p>
-
-		</mat-tab>
-
-		<mat-tab>
-			<ng-template mat-tab-label>
-				<span class="icon-clock"></span>
-			</ng-template>
-
-			<p>Recient</p>
-		</mat-tab>
-
-		<mat-tab>
-			<ng-template mat-tab-label>
-				<span class="icon-search"></span>
-			</ng-template>
-			<div>
-				<form [formGroup]="form">
-					<mat-form-field>
-						<mat-label matPrefix>Search</mat-label>
-						<input matInput formControlName="term" placeholder="Name or Email"/>
-						<div matSuffix *ngIf='feed.loading'>
-							<loader small='true'></loader>
-						</div>
-					</mat-form-field>
-
-				</form>
-			</div>
-
-			<div *ngIf="results.length > 0 && this.form.dirty; else none" @flyIn>
-				<score-list-item *ngFor="let score of results; trackBy: trackBy" [score]='score' [mode]='playerMode'
-					(action)="include($event)"></score-list-item>
-			</div>
-		</mat-tab>
-	</mat-tab-group>
-
+<div *ngIf="selectedList.obs | async as scoreList; else loader;">
+	<div *ngIf="scoreList.length; else none" @flyIn>
+		<score-list-item *ngFor="let score of scoreList; trackBy: trackBy" [score]='score' [mode]='playerMode'
+			(action)="include($event)"></score-list-item>
+	</div>
 </div>
 
 
+
+
+<ng-template #loader>
+	<loader></loader>
+</ng-template>
+
+
 <ng-template #none>
-	<div *ngIf="form.get('term').valid && form.get('term').dirty" class="row justify-content-center align-items-center">
-		<p class="col message"><i>Empty List</i></p>
+	<div class="message">
+		<p><i>No items returned</i></p>
 	</div>
 </ng-template>

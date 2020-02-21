@@ -18,6 +18,8 @@ export class ScoresBackend {
   private roster: BehaviorSubject<Array<Score[]>> = new BehaviorSubject<Array<Score[]>>(undefined);
   roster$: Observable<Array<Score[]>> = this.roster.asObservable();
 
+  private 
+
 
   //  Team Colors
   teamColorList: TeamColor[] = [{

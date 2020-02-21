@@ -1,11 +1,11 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { AccountFormService } from 'src/app/modules/account/services/account-form.service';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { AccountBackend } from 'src/app/modules/account/services/backend.service';
 import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { flyInPanelRow, flyIn } from 'src/app/animations';
-import { Score, Team, TeamColor } from 'src/app/modules/scores/services/backend.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { listCategories } from 'src/app/modules/courses/components/list/list.component';
+import { SessionBackend } from '../../services/backend.service';
+import { SessionFormService } from '../../services/form.service';
 
 
 @Component({
@@ -16,55 +16,84 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 })
 export class SelectPlayersComponent implements OnInit {
 
+  @Input() mode: string[] = ["full", "email", "selector"];
+
+  lists: Array<listCategories>;
+  selectedList: listCategories;
+
+  search: boolean = false;
   form: FormGroup;
-  results: Score[] = [];
-  playerMode: string[] = ["full","email","selector"];
 
   constructor(
-    private accountForm: AccountFormService,
-    private accounts: AccountBackend,
+    private _sessionForm: SessionFormService,
+    private _session: SessionBackend,
     private feed: FeedbackService,
     private dialogRef: MatDialogRef<SelectPlayersComponent>,
     @Inject(MAT_DIALOG_DATA) private data,
   ) { }
-
   ngOnInit() {
-    //  Setup Form
-    this.accountForm.Setup("search");
-    this.accountForm.form$.subscribe((f)=>{
-      this.form = f;
-    });
+    this._session.listRecient();
 
-    //  Load Upon Type
-    this.form.valueChanges.subscribe((v)=>{
-      if (this.form.valid) {
-        this.feed.loading = true;
-      } 
-     
-    });
-
-    //  Listen to Player List Updates
-    this.accounts.searched$.subscribe((p)=>{
-      if (p != undefined) {
-
-        this.results = p.map((v)=>{
-          var s = new Score();
-          s.player = v;
-          s.handicap = 0;
-          s.team = new Team(null, "unassigned", new TeamColor(null, null, true));
-          return s;
-        });
+    //  List Selection
+    this.lists = [
+      {
+        name: "recient",
+        obs: this._session.recientPlayers$,
+      }, {
+        name: "search",
+        obs: this._session.searchedPlayers$,
       }
+    ];
+
+    //  Default Option
+    this.selectedList = this.lists[0];
+
+
+    //  Setup Form
+    this._sessionForm.Setup('searchPlayers');
+    this._sessionForm.form$.subscribe((f) => {
+      this.form = f;
       this.feed.loading = false;
     });
   }
+
+  toggleSearch() {
+    this.search = !this.search;
+
+    if (this.search) {
+      //  Set Dropdown to Search
+      this.selectedList = this.lists.find((l) => {
+        return l.name == "search";
+      });
+
+
+      //  Clear Field
+      this._sessionForm.resetPlayerSearch();
+    } else {
+
+      //  Reset;
+      this.feed.loading = false;
+      this.selectedList = this.lists[0];
+    }
+  }
+
+  selectChange($event) {
+    this.selectedList = this.lists.find((l) => {
+      return l.name == $event.value.name;
+    });
+
+    if ($event.value.name != 'search' && this.search) {
+      this.toggleSearch();
+    }
+  }
+
 
 
   trackBy(index, item) {
     return item.id;
   }
 
-  close () {
+  close() {
     this.dialogRef.close();
   }
 }
