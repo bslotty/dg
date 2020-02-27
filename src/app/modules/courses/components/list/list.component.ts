@@ -16,8 +16,17 @@ import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedba
 })
 export class ListComponent implements OnInit {
 
-  @Input() type: string = "top"; // recient | favorites | ...
-  @Input() mode: string[] = ["selector"];
+  @Input() options: Object = {
+    list: ["search"],
+    row: ["link"]
+  }
+
+  /*  All Available Options
+      @Input() options: Object = {
+        list: ["create", "edit", "delete", "search"],
+        row: ["link", "favorite", "selector"]
+      }
+  */
 
   lists: Array<listCategories>;
   selectedList: listCategories;
@@ -31,31 +40,10 @@ export class ListComponent implements OnInit {
     private _courseForm: CourseFormService,
     private _account: AccountBackend,
     private feed: FeedbackService,
-  ) { }
+  ) { 
+    console.log ("List.options:", this.options);
 
-  /*
-  ngOnInit() {
-    switch (this.type.toLowerCase()) {
-      case 'top':
-        this._course.listTop();
-        this.list$ = this._course.list$;
-        break;
-
-      case 'recient':
-        this._course.listRecient();
-        this.list$ = this._course.recientList$;
-        break;
-
-      case 'favorites':
-        this._course.listFavorites();
-        this.list$ = this._course.favoriteList$;
-        break;
-
-      default:
-        console.warn("Invalid Course List Type: ", this.type);
-        break;
-    }
-    */
+  }
 
   ngOnInit() {
     //  Populate Lists
@@ -148,7 +136,7 @@ export class ListComponent implements OnInit {
 
 
 
-  trackCourse(index, item) {
+  trackBy(index, item) {
     return item.id;
   }
 

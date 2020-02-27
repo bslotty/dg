@@ -21,7 +21,7 @@
           </a>
         </div>
 
-        <input matInput formControlName="search" placeholder="Park or Address" />
+        <input matInput formControlName="search" placeholder="Park or Address"/>
 
         <div matSuffix class="row justify-content-end align-items-center no-gutters">
           <div *ngIf='feed.loading'>
@@ -36,27 +36,24 @@
   </div>
 
 
-  <div class="col-xs mt-2" *ngIf="!search">
-    <a mat-flat-button color="transparent-primary" (click)="toggleSearch()">
+  <div class="col-xs mt-2" *ngIf="!search && options.list.length > 0">
+    <a *ngIf="options.list.indexOf('search') > -1" mat-flat-button color="transparent-primary" (click)="toggleSearch()">
       <span class="icon-search"></span>
+    </a>
+
+    <a *ngIf="options.list.indexOf('create') > -1" mat-flat-button color="transparent-primary" routerLink="/courses/create">
+      <span class="icon-plus-circle"></span>
     </a>
   </div>
 </div>
 
 
-<div *ngIf="selectedList.obs | async as courseList; else loader;">
+<div *ngIf="selectedList.obs | async as courseList;">
   <div *ngIf="courseList.length; else none" @flyIn>
-    <course-list-item *ngFor="let course of courseList; trackBy: trackCourse" [course]="course" [mode]="mode" backdrop="true">
+    <course-list-item *ngFor="let course of courseList; trackBy: trackBy" [course]="course" [mode]="options.row">
     </course-list-item>
   </div>
 </div>
-
-
-
-
-<ng-template #loader>
-  <loader></loader>
-</ng-template>
 
 
 <ng-template #none>

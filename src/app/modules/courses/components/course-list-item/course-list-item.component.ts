@@ -12,7 +12,7 @@ import { SessionBackend } from 'src/app/modules/sessions/services/backend.servic
 })
 export class CourseListItemComponent implements OnInit {
   @Input() course: Course;
-  @Input() mode: string; // List(Fav&&Link), Selector(emit), 
+  @Input() mode: string[]; // List(Fav&&Link), Selector(emit), 
 
   @Input() backdrop: boolean = false;
 

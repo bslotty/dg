@@ -7,6 +7,7 @@
     </a>
   </div>
 </div>
+
 <div class="row justify-content-between align-items-center no-gutters panel" @flyIn>
   <div class="col ml">
     <p>{{ form.get('format').value.name }}</p>
@@ -32,7 +33,7 @@
 </div>
 
 <div @flyIn *ngIf="form.get('course').value">
-  <course-list-item [course]='form.get("course").value' mode='list' backdrop='true'></course-list-item>
+  <course-list-item [course]='form.get("course").value' mode='list'></course-list-item>
 </div>
 
 

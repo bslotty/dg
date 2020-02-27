@@ -16,7 +16,10 @@ import { SessionFormService } from '../../services/form.service';
 })
 export class SelectPlayersComponent implements OnInit {
 
-  @Input() mode: string[] = ["full", "email", "selector"];
+  @Input() options: Object = {
+    list: [],
+    row: ["full", "email", "selector"],
+  };
 
   lists: Array<listCategories>;
   selectedList: listCategories;
@@ -31,6 +34,8 @@ export class SelectPlayersComponent implements OnInit {
     private dialogRef: MatDialogRef<SelectPlayersComponent>,
     @Inject(MAT_DIALOG_DATA) private data,
   ) { }
+
+
   ngOnInit() {
     this._session.listRecient();
 
@@ -61,20 +66,38 @@ export class SelectPlayersComponent implements OnInit {
     this.search = !this.search;
 
     if (this.search) {
-      //  Set Dropdown to Search
-      this.selectedList = this.lists.find((l) => {
-        return l.name == "search";
-      });
-
-
-      //  Clear Field
-      this._sessionForm.resetPlayerSearch();
+      this.showSearch();
     } else {
-
-      //  Reset;
-      this.feed.loading = false;
-      this.selectedList = this.lists[0];
+      this.hideSearch();
     }
+  }
+
+  showSearch() {
+
+    //  Update Flag
+    this.search = true;
+
+    //  Set Dropdown to Search
+    this.selectedList = this.lists.find((l) => {
+      return l.name == "search";
+    });
+
+    //  Clear Field
+    this._sessionForm.resetPlayerSearch();
+
+    //  Turn Off Loader
+    this.feed.loading = false;
+  }
+
+  hideSearch() {
+    //  Update Flag
+    this.search = false;
+
+    //  Set list to Default
+    this.selectedList = this.lists[0];
+
+    //  Turn Off Loader
+    this.feed.loading = false;
   }
 
   selectChange($event) {
@@ -82,11 +105,12 @@ export class SelectPlayersComponent implements OnInit {
       return l.name == $event.value.name;
     });
 
-    if ($event.value.name != 'search' && this.search) {
-      this.toggleSearch();
+    if ($event.value.name == 'search') {
+      this.showSearch();
+    } else {
+      this.hideSearch();
     }
   }
-
 
 
   trackBy(index, item) {

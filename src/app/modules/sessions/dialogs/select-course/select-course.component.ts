@@ -12,6 +12,11 @@ import { skip } from 'rxjs/operators';
 })
 export class SelectCourseComponent implements OnInit {
 
+  private options = {
+    list: ["search"],
+    row: ["selector"]
+  }
+
   constructor(
     private dialogRef: MatDialogRef<SelectCourseComponent>,
     @Inject(MAT_DIALOG_DATA) private data,

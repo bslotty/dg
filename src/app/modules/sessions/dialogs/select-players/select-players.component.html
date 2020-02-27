@@ -3,8 +3,7 @@
 		<mat-form-field>
 			<mat-label></mat-label>
 			<mat-select [(value)]="selectedList" (selectionChange)="selectChange($event)">
-				<mat-option *ngFor="let list of lists" [value]="list"
-					[disabled]='(list.name == "favorites" || list.name == "recient") && !_account.user'>
+				<mat-option *ngFor="let list of lists" [value]="list">
 					{{ list.name | titlecase }}
 				</mat-option>
 			</mat-select>
@@ -37,8 +36,8 @@
 	</div>
 
 
-	<div class="col-xs mt-2" *ngIf="!search">
-		<a mat-flat-button color="transparent-primary" (click)="toggleSearch()">
+	<div class="col-xs mt-2" *ngIf="!search && options.list.length > 0">
+		<a *ngIf="options.list.indexOf('search')" mat-flat-button color="transparent-primary" (click)="toggleSearch()">
 			<span class="icon-search"></span>
 		</a>
 	</div>
@@ -47,7 +46,7 @@
 
 <div *ngIf="selectedList.obs | async as scoreList; else loader;">
 	<div *ngIf="scoreList.length; else none" @flyIn>
-		<score-list-item *ngFor="let score of scoreList; trackBy: trackBy" [score]='score' [mode]='playerMode'
+		<score-list-item *ngFor="let score of scoreList; trackBy: trackBy" [score]='score' [mode]='options.row'
 			(action)="include($event)"></score-list-item>
 	</div>
 </div>
