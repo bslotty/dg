@@ -100,20 +100,38 @@ export class ListComponent implements OnInit {
     this.search = !this.search;
 
     if (this.search) {
-      //  Set Dropdown to Search
-      this.selectedList = this.lists.find((l) => {
-        return l.name == "search";
-      });
-
-
-      //  Clear Field
-      this._courseForm.resetSearch();
+      this.showSearch();
     } else {
-
-      //  Reset;
-      this.feed.loading = false;
-      this.selectedList = this.lists[0];
+      this.hideSearch();
     }
+  }
+
+  showSearch() {
+
+    //  Update Flag
+    this.search = true;
+
+    //  Set Dropdown to Search
+    this.selectedList = this.lists.find((l) => {
+      return l.name == "search";
+    });
+
+    //  Clear Field
+    this._courseForm.resetSearch();
+
+    //  Turn Off Loader
+    this.feed.loading = false;
+  }
+
+  hideSearch() {
+    //  Update Flag
+    this.search = false;
+
+    //  Set list to Default
+    this.selectedList = this.lists[0];
+
+    //  Turn Off Loader
+    this.feed.loading = false;
   }
 
   selectChange($event) {
@@ -121,8 +139,10 @@ export class ListComponent implements OnInit {
       return l.name == $event.value.name;
     });
 
-    if ($event.value.name != 'search' && this.search) {
-      this.toggleSearch();
+    if ($event.value.name == 'search') {
+      this.showSearch();
+    } else {
+      this.hideSearch();
     }
   }
 

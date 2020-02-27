@@ -281,6 +281,8 @@ export class SessionFormService {
   }
 
 
-
+  resetPlayerSearch(){
+    this.form.value.get("PlayerSearch").reset();
+  }
 
 }

@@ -35,6 +35,17 @@ export class SessionBackend {
   private detail: BehaviorSubject<Session> = new BehaviorSubject(new Session());
   detail$: Observable<Session> = this.detail.asObservable();
 
+
+  
+  //  Recient Players
+  private recientPlayers: BehaviorSubject<Player[]> = new BehaviorSubject([])
+  recientPlayers$: Observable<Player[]> = this.recientPlayers.asObservable();
+
+  //  Searched Players
+  private searchedPlayers: BehaviorSubject<Player[]> = new BehaviorSubject([])
+  searchedPlayers$: Observable<Player[]> = this.searchedPlayers.asObservable();
+
+
   //  Session Modes
   public types: SessionFormat[] = [
     {
