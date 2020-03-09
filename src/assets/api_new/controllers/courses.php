@@ -22,7 +22,7 @@ $database = new DB;
 require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/classes/courses.php');
 $courses = new Course($database);
 
-//  Course
+//  Player
 require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/classes/players.php');
 $player = new Player($database);
 

@@ -142,4 +142,42 @@ class Score
 
 		return $this->db->Query($query, $values);
 	}
+
+
+	public function RecientlyPlayedWith($user)
+	{
+		$query = "SELECT
+			`sc`.`id`, 
+			`sc`.`created_by`, 
+			`sc`.`created_on`, 
+			`sc`.`modified_by`, 
+			`sc`.`modified_on`, 
+
+			`p`.`id` AS 'player:id', 
+			`p`.`created_by` AS 'player:created_by', 
+			`p`.`created_on` AS 'player:created_on', 
+			`p`.`modified_by` AS 'player:modified_by', 
+			`p`.`modified_on` AS 'player:modified_on', 
+			`p`.`first_name` AS 'player:first_name',
+			`p`.`last_name` AS 'player:last_name',
+			`p`.`email` AS 'player:email',
+
+			`sc`.`score_array`, 
+			`sc`.`handicap`
+		FROM `Scores` AS `sc`
+		JOIN `Sessions` AS `sn`
+		JOIN `Players` AS `p`
+		
+		WHERE 
+			`sn`.`id` = `sc`.`session_id` AND
+			`sc`.`player_id` = :userId
+		GROUP BY	`p`.`id`
+		ORDER BY `sn`.`created_on` DESC;";
+
+		$values = array(
+			':userId' => $user["id"]
+		);
+
+		return $this->db->Query($query, $values);
+	}
 }

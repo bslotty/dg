@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { SessionBackend, SessionFormat } from './backend.service';
 import { HelperService } from 'src/app/shared/services/helper.service';
 import { AccountBackend } from '../../account/services/backend.service';
-import { Team } from '../../stats/services/backend.service';
 import { ScoresBackend } from '../../scores/services/backend.service';
 
 @Injectable({
@@ -126,6 +125,7 @@ export class SessionFormService {
       case "search":
         form.addControl("", this.cTerm);
         break;
+
     }
 
 
@@ -281,7 +281,7 @@ export class SessionFormService {
   }
 
 
-  resetPlayerSearch(){
+  _resetPlayerSearch() {
     this.form.value.get("PlayerSearch").reset();
   }
 

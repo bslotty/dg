@@ -5,12 +5,11 @@ import { CreateComponent } from './pages/create/create.component';
 import { ShellComponent } from './pages/shell/shell.component';
 
 
-import { PlayerScoreListComponent } from '../stats/components/player-score-list/player-score-list.component';
-
 
 import { AuthGuard } from 'src/app/guards/auth.service';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { DetailComponent } from './pages/detail/detail.component';
+import { PlayComponent } from './pages/play/play.component';
 
 
 const sessionRoutes: Routes = [
@@ -29,7 +28,7 @@ const sessionRoutes: Routes = [
         canActivate: [],
       },{
         path: ":session/play",
-        component: PlayerScoreListComponent,
+        component: PlayComponent,
         canActivate: [],
       },{
         path: "",

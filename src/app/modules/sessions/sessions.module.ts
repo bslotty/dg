@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { CoursesModule } from '../courses/courses.module'
 import { ScoresModule } from '../scores/scores.module';
 // MFD
-import { StatsModule } from '../stats/stats.module';
 
 
 import { SessionsRoutingModule } from './sessions-routing.module';
@@ -21,13 +20,13 @@ import { SelectPlayersComponent } from './dialogs/select-players/select-players.
 import { ListItemComponent as SessionListItemComponent } from './components/list-item/list-item.component';
 import { SelectTimeComponent } from './dialogs/select-time/select-time.component';
 import { SelectCourseComponent } from './dialogs/select-course/select-course.component';
+import { PlayComponent } from './pages/play/play.component';
 
 
 @NgModule({
   imports: [
     CommonModule,
     MaterialModule,
-    StatsModule,
     ScoresModule,
     CoursesModule,
     SessionsRoutingModule,
@@ -43,6 +42,7 @@ import { SelectCourseComponent } from './dialogs/select-course/select-course.com
     SessionListItemComponent,
     SelectTimeComponent,
     SelectCourseComponent,
+    PlayComponent,
   ],
   exports: [],
   entryComponents: [

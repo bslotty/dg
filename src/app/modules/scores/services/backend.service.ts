@@ -1,25 +1,41 @@
 import { Injectable, ComponentFactoryResolver } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, pipe } from 'rxjs';
 import { Player } from '../../account/services/backend.service';
 import { SessionBackend, SessionFormat } from '../../sessions/services/backend.service';
 import { SessionFormService } from '../../sessions/services/form.service';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { ServerPayload } from 'src/app/app.component';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ScoresBackend {
 
-  private teams: BehaviorSubject<Team[] | undefined> = new BehaviorSubject<Team[]>(undefined);
+  url: string = environment.apiUrl + '/controllers/scores.php';
+
+  serverPipe = pipe(
+    debounceTime(500),
+    distinctUntilChanged(),
+  );
+
+  
+  private teams: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);
   teams$: Observable<Team[]> = this.teams.asObservable();
 
-  private scores: BehaviorSubject<Score[] | undefined> = new BehaviorSubject<Score[]>(undefined);
+  private scores: BehaviorSubject<Score[]> = new BehaviorSubject<Score[]>([]);
   scores$: Observable<Score[]> = this.scores.asObservable();
 
-  private roster: BehaviorSubject<Array<Score[]>> = new BehaviorSubject<Array<Score[]>>(undefined);
+  private roster: BehaviorSubject<Array<Score[]>> = new BehaviorSubject<Array<Score[]>>([]);
   roster$: Observable<Array<Score[]>> = this.roster.asObservable();
 
-  private 
 
+  private searchedPlayers: BehaviorSubject<Score[]> = new BehaviorSubject<Score[]>([])
+  searchedPlayers$: Observable<Score[]> = this.searchedPlayers.asObservable();
+
+  private recientPlayers: BehaviorSubject<Score[]> = new BehaviorSubject<Score[]>([])
+  recientPlayers$: Observable<Score[]> = this.recientPlayers.asObservable();
 
   //  Team Colors
   teamColorList: TeamColor[] = [{
@@ -59,6 +75,7 @@ export class ScoresBackend {
 
   constructor(
     private _sessions: SessionBackend,
+    private http: HttpClient,
   ) {
     this._sessions.detail$.subscribe((s) => {
       
@@ -109,6 +126,55 @@ export class ScoresBackend {
       console.log("roster$:", r);
     });
   }
+
+
+  
+  /**
+   * @param ServerPayload res Subscription Response
+   * @returns boolean true if the latest query ran by the server was successfull;
+   * -- else false
+   */
+  rCheck(res): boolean {
+    var latest = res.length - 1;
+    if (res[latest]["status"] == "success") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * @param ServerPayload res Subscription Response
+   * @returns data results of request;
+   */
+  rGetData(res): Array<any> {
+    var latest = res.length - 1;
+    if (latest > -1) {
+      return res[latest]["results"];
+    } else {
+      return [];
+    }
+    
+  }
+
+  convertProperties(res){
+    var result: Score[] = [];
+
+    this.rGetData(res).forEach((scores) => {
+      var s = new Score();
+      s.id = scores['id'];
+      s.player = scores['player'];
+      s.scores = scores['scores'];
+      s.team = scores['team'];
+      s.handicap = scores['handicap'];
+
+      result.push(s);
+    });
+
+    return result;
+  }
+
+
 
   getTeamsFromScoreList(scores): Team[] {
     if (scores != undefined) {
@@ -250,6 +316,16 @@ export class ScoresBackend {
     this.scores.value.forEach((s)=>{
       if (s.team.color.name == current.name) {
         s.team.color = destination;
+      }
+    });
+  }
+
+  getSearch(term) {
+    this.http.post(this.url, { action: "search", term: term }).pipe(this.serverPipe).subscribe((res: ServerPayload) => {
+      if (this.rCheck(res)) {
+        this.searchedPlayers.next(this.convertProperties(res));
+      } else {
+        this.searchedPlayers.next([]);
       }
     });
   }

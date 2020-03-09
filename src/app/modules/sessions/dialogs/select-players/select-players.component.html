@@ -20,7 +20,7 @@
 					</a>
 				</div>
 
-				<input matInput formControlName="search" placeholder="Park or Address" />
+				<input matInput formControlName="search" placeholder="Name or Email" />
 
 				<div matSuffix class="row justify-content-end align-items-center no-gutters">
 					<div *ngIf='feed.loading'>
@@ -37,7 +37,7 @@
 
 
 	<div class="col-xs mt-2" *ngIf="!search && options.list.length > 0">
-		<a *ngIf="options.list.indexOf('search')" mat-flat-button color="transparent-primary" (click)="toggleSearch()">
+		<a *ngIf="options.list.indexOf('search') > -1" mat-flat-button color="transparent-primary" (click)="toggleSearch()">
 			<span class="icon-search"></span>
 		</a>
 	</div>

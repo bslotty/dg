@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { Stats, Team } from '../../../../modules/stats/services/backend.service';
+import { Team, Score } from 'src/app/modules/scores/services/backend.service';
 
 @Component({
   selector: 'app-line-settings',
@@ -50,8 +50,8 @@ export class LineSettingsComponent implements OnInit {
   }
 
   getColor(ent) {
-    if (ent instanceof Stats) {
-      return ent.color;
+    if (ent instanceof Score) {
+      return ent.team.hex;
     } else if (ent instanceof Team) {
       return ent.hex;
     }

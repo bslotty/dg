@@ -6,6 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { listCategories } from 'src/app/modules/courses/components/list/list.component';
 import { SessionBackend } from '../../services/backend.service';
 import { SessionFormService } from '../../services/form.service';
+import { ScoresFormService } from 'src/app/modules/scores/services/scores-form.service';
 
 
 @Component({
@@ -17,7 +18,7 @@ import { SessionFormService } from '../../services/form.service';
 export class SelectPlayersComponent implements OnInit {
 
   @Input() options: Object = {
-    list: [],
+    list: ["search"],
     row: ["full", "email", "selector"],
   };
 
@@ -28,8 +29,8 @@ export class SelectPlayersComponent implements OnInit {
   form: FormGroup;
 
   constructor(
-    private _sessionForm: SessionFormService,
-    private _session: SessionBackend,
+    private _scoresForm: ScoresFormService,
+    private _scores: SessionBackend,
     private feed: FeedbackService,
     private dialogRef: MatDialogRef<SelectPlayersComponent>,
     @Inject(MAT_DIALOG_DATA) private data,
@@ -37,16 +38,16 @@ export class SelectPlayersComponent implements OnInit {
 
 
   ngOnInit() {
-    this._session.listRecient();
+    this._scores.listRecient();
 
     //  List Selection
     this.lists = [
       {
         name: "recient",
-        obs: this._session.recientPlayers$,
+        obs: this._scores.recientPlayers$,
       }, {
         name: "search",
-        obs: this._session.searchedPlayers$,
+        obs: this._scores.searchedPlayers$,
       }
     ];
 
@@ -55,11 +56,15 @@ export class SelectPlayersComponent implements OnInit {
 
 
     //  Setup Form
-    this._sessionForm.Setup('searchPlayers');
-    this._sessionForm.form$.subscribe((f) => {
+    this._scoresForm.Setup('search');
+    this._scoresForm.form$.subscribe((f) => {
       this.form = f;
       this.feed.loading = false;
+
+      console.log ("this.form: ", this.form);
     });
+
+    
   }
 
   toggleSearch() {
@@ -83,7 +88,7 @@ export class SelectPlayersComponent implements OnInit {
     });
 
     //  Clear Field
-    this._sessionForm.resetPlayerSearch();
+    this._scoresForm.resetPlayerSearch();
 
     //  Turn Off Loader
     this.feed.loading = false;
