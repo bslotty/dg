@@ -1,12 +1,13 @@
-import { Injectable, ComponentFactoryResolver } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, pipe } from 'rxjs';
-import { Player } from '../../account/services/backend.service';
-import { SessionBackend, SessionFormat } from '../../sessions/services/backend.service';
-import { SessionFormService } from '../../sessions/services/form.service';
+import { AccountBackend } from '../../account/services/backend.service';
+import { SessionBackend } from '../../sessions/services/backend.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ServerPayload } from 'src/app/app.component';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { HelperService } from 'src/app/shared/services/helper.service';
+import { Team, Score, TeamColor, Player } from 'src/app/shared/types';
 
 @Injectable({
   providedIn: 'root'
@@ -76,6 +77,9 @@ export class ScoresBackend {
   constructor(
     private _sessions: SessionBackend,
     private http: HttpClient,
+    private account: AccountBackend,
+
+    private helper: HelperService,
   ) {
     this._sessions.detail$.subscribe((s) => {
       
@@ -83,6 +87,8 @@ export class ScoresBackend {
         console.log('scores.session.detail$:', s);
         console.log("s.format: ", s.format);
         
+        //  Convert:: TODO
+
         //  Scores 
         this.setScores(s.scores);
         
@@ -162,14 +168,16 @@ export class ScoresBackend {
 
     this.rGetData(res).forEach((scores) => {
       var s = new Score();
-      s.id = scores['id'];
-      s.player = scores['player'];
-      s.scores = scores['scores'];
-      s.team = scores['team'];
-      s.handicap = scores['handicap'];
-
+      s.id = scores['scores.id'];
+      s.player = new Player(scores['player.id'], scores['player.first_name'], scores['player.last_name'], scores['player.email']),
+      s.scores = scores['scores.scores'];
+      s.team = new Team(scores['team.id'], scores['team.name'], scores["team.color"], scores["team.hex"]);
+      s.handicap = scores['scores.handicap'];
       result.push(s);
     });
+
+
+    console.log("results: ", result);
 
     return result;
   }
@@ -180,6 +188,10 @@ export class ScoresBackend {
     if (scores != undefined) {
       var teamList = scores.map((s) => s.team);
       var unique = teamList.filter((e, i) => teamList.findIndex(a => a.name === e.name) === i);
+
+      unique.map((t)=>{
+
+      });
       return unique;
     }
   }
@@ -256,7 +268,7 @@ export class ScoresBackend {
   }
 
   setScores(scores): void {
-    this.scores.next(scores);
+    this.scores.next(this.helper.convertSessionScores(scores));
   }
 
   removeScore(score) {
@@ -266,7 +278,7 @@ export class ScoresBackend {
 
 
   getRoster(team: Team): Score[] {
-    //  console.log("this.scores.value: ", this.scores);
+    console.log("this.scores.value: ", this.scores);
 
     if (team != undefined) {
       return this.scores.value.filter(scores => {
@@ -320,6 +332,16 @@ export class ScoresBackend {
     });
   }
 
+  listRecient() {
+    this.http.post(this.url, { action: "recient", user: this.account.user }).pipe(this.serverPipe).subscribe((res: ServerPayload) => {
+      if (this.rCheck(res)) {
+        this.recientPlayers.next(this.convertProperties(res));
+      } else {
+        this.recientPlayers.next([]);
+      }
+    });
+  }
+
   getSearch(term) {
     this.http.post(this.url, { action: "search", term: term }).pipe(this.serverPipe).subscribe((res: ServerPayload) => {
       if (this.rCheck(res)) {
@@ -329,34 +351,4 @@ export class ScoresBackend {
       }
     });
   }
-}
-
-
-
-
-export class Score {
-  public id: string;
-  public player: Player;
-  public scores: Array<number>;
-  public team: Team | null
-  public handicap: number;
-
-  constructor() { }
-}
-
-export class Team {
-  constructor(
-    public id: string,
-    public name?: string,
-    public color?: TeamColor,
-    public hex?: string,
-  ) { }
-}
-
-export class TeamColor {
-  constructor(
-    public name?: string,
-    public hex?: string,
-    public available?: boolean
-  ) { }
 }

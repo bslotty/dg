@@ -1,14 +1,12 @@
-import { League } from './../../leagues/services/backend.service';
-import { AccountBackend, Player } from 'src/app/modules/account/services/backend.service';
+import { AccountBackend } from 'src/app/modules/account/services/backend.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServerPayload } from 'src/app/app.component';
 import { environment } from 'src/environments/environment';
-import { Course } from '../../courses/services/backend.service';
-import { map, debounceTime, distinctUntilChanged, catchError, takeWhile } from 'rxjs/operators';
-import { pipe, BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { map, debounceTime, distinctUntilChanged, catchError } from 'rxjs/operators';
+import { pipe, BehaviorSubject, Observable, of } from 'rxjs';
 import { HelperService } from 'src/app/shared/services/helper.service';
-import { Score } from '../../scores/services/backend.service';
+import { Session, Player, SessionFormat } from 'src/app/shared/types';
 
 
 @Injectable({
@@ -47,25 +45,7 @@ export class SessionBackend {
 
 
   //  Session Modes
-  public types: SessionFormat[] = [
-    {
-      name: 'Free For All',
-      enum: 'ffa',
-      desc: `Every person for themselves! This is standard play.`,
-    }, {
-      name: 'Teams: Sum',
-      enum: 'team-sum',
-      desc: `This format will combine the scores of each player on each team. Rankings will be sorted by the Team's Total Score.`,
-    }, {
-      name: 'Teams: Average',
-      enum: 'team-average',
-      desc: `This format will average the throw totals of each player against par. Rankings will be sorted by the Team's Average Score.`,
-    }, {
-      name: 'Teams: Best Only',
-      enum: 'team-best',
-      desc: `This format will only count the best score of each hole. Scores are set from the best scores of each hole.`,
-    }
-  ];
+  public types: SessionFormat[] = this.helper.types;
 
   public admin: boolean = false;
 
@@ -213,19 +193,14 @@ export class SessionBackend {
 
 
 
-  delete(league: League, session: Session) {
-    let url = environment.apiUrl + "/sessions/delete.php";
-    return this.http.post(url, {
-      "user": this.account.user,
-      "league": league,
-      "session": session,
-    }).pipe(
-      map((res: ServerPayload) => {
-
-        //  Return Server Response for Error Handling
-        return res;
-      })
-    );
+  delete(session: Session) {
+      this.http.post(this.url, {
+        "action": "delete",
+        "session": session,
+        "user": this.account.user
+      }).subscribe((res) => {
+        console.log("Delete.res: ", res);
+      });
   }
 
 
@@ -338,31 +313,3 @@ export class SessionBackend {
   }
 
 }
-
-export class SessionFormat {
-  name: string;
-  enum: string;
-  desc: string;
-}
-
-
-export class Session {
-  constructor(
-    public id?: string,
-    public created_on?: Date,
-    public created_by?: string, /* User? */
-    public modified_on?: Date,
-    public modified_by?: string, /* User? */
-    public course?: Course,
-    public format?: SessionFormat,
-    public starts_on?: Date,
-    public title?: string,
-    public par?: Array<any>,
-    public scores?: Score[],
-  ) { }
-}
-
-
-
-
-

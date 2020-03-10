@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { CourseBackend, Course } from './backend.service';
+import { CourseBackend } from './backend.service';
 import { Router } from '@angular/router';
 import { FeedbackService } from '../../../shared/modules/feedback/services/feedback.service';
+import { Course } from 'src/app/shared/types';
 
 @Injectable({
   providedIn: 'root'

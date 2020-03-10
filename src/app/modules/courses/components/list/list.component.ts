@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
 import { Observable } from 'rxjs';
 import { flyIn } from 'src/app/animations';
-import { Course, CourseBackend } from '../../services/backend.service';
+import { CourseBackend } from '../../services/backend.service';
 import { AccountBackend } from 'src/app/modules/account/services/backend.service';
 import { FormGroup } from '@angular/forms';
 import { CourseFormService } from '../../services/course-form.service';

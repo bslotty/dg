@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CourseBackend, Course } from '../../services/backend.service';
 import { CourseFormService } from '../../services/course-form.service';
 import { FormGroup } from '@angular/forms';
+import { Course } from 'src/app/shared/types';
 
 @Component({
   selector: 'app-create',

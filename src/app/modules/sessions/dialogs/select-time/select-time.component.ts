@@ -14,6 +14,7 @@ import { combineLatest } from 'rxjs';
 export class SelectTimeComponent implements OnInit {
 
   private form: FormGroup;
+  private dataUpdated: boolean = false;
 
   constructor(
     private dialogRef: MatDialogRef<SelectTimeComponent>,
@@ -34,12 +35,13 @@ export class SelectTimeComponent implements OnInit {
   setTime() {
     if (this.form.get('date').valid && this.form.get('time').valid) {
       this.sessions_.setDate(this.form.get('date').value, this.form.get('time').value);
+      this.dataUpdated = true;
     }
   }
 
 
-  close(bool = false) {
-    this.dialogRef.close(bool);
+  close() {
+    this.dialogRef.close(this.dataUpdated);
   }
 
 }

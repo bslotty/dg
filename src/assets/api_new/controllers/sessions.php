@@ -244,23 +244,25 @@ switch ($payload['action']) {
 					$formattedScores = array();
 					foreach ($r_scoreList['results'] as $pK => $p) {
 						$formattedScores[] = array(
-							'id' 			=> $p["id"],
-							'created_on' 	=> $p["created_on"],
-							'created_by' 	=> $p["created_by"],
-							'modified_on' 	=> $p["modified_on"],
-							'modified_by' 	=> $p["modified_by"],
-							'score_array' 	=> json_decode($p["score_array"]),
-							'handicap'	 	=> $p["handicap"],
+							'id' 			=> $p["scores.id"],
+							'created_on' 	=> $p["scores.created_on"],
+							'created_by' 	=> $p["scores.created_by"],
+							'modified_on' 	=> $p["scores.modified_on"],
+							'modified_by' 	=> $p["scores.modified_by"],
+							'score_array' 	=> json_decode($p["scores.score_array"]),
+							'handicap'	 	=> $p["scores.handicap"],
+
 							'team'			=> array(
-								"id"		=> $p['teamID'],
-								"name"		=> $p['teamName'],
-								"color"		=> json_decode($p['teamColor'])
+								"id"		=> $p['team.id'],
+								"name"		=> $p['team.name'],
+								"color"		=> json_decode($p['team.color'])
 							),
+							
 							'player'		=> array(
-								"id"			=> $p['playerID'],
-								"first_name"	=> $p['playerFirst'],
-								"last_name"		=> $p['playerLast'],
-								"email"			=> $p['playerEmail']
+								"id"			=> $p['player.id'],
+								"first_name"	=> $p['player.first_name'],
+								"last_name"		=> $p['player.last_name'],
+								"email"			=> $p['player.email']
 							)
 						);
 					}

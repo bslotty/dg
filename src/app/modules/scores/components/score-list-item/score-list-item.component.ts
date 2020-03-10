@@ -1,10 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ScoreSettingsComponent } from '../../dialogs/score-settings/score-settings.component';
 import { flyInPanelRow } from 'src/app/animations';
-import { Score, ScoresBackend } from '../../services/backend.service';
 import { SessionBackend } from 'src/app/modules/sessions/services/backend.service';
-import { SessionFormService } from 'src/app/modules/sessions/services/form.service';
+import { Score } from 'src/app/shared/types';
 
 @Component({
   selector: 'score-list-item',

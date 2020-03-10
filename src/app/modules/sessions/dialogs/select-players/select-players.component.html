@@ -1,3 +1,15 @@
+<div class="row justify-content-between align-items-center no-gutters">
+	<div class="col">
+	  <h4>Select Players</h4>
+	</div>
+  
+	<div class="col-xs">
+	  <a mat-flat-button color="transparent-primary" (click)="close(false)">
+		<span class="icon-x"></span>
+	  </a>
+	</div>
+  </div>
+
 <div class="row justify-content-between align-items-start no-gutters">
 	<div class="col-4">
 		<mat-form-field>
@@ -26,10 +38,10 @@
 					<div *ngIf='feed.loading'>
 						<loader small='true'></loader>
 					</div>
-					<div>
+					<!-- div>
 						<a mat-flat-button color="transparent-primary" (click)="toggleSearch()"><span
 								class="icon-x"></span></a>
-					</div>
+					</div  -->
 				</div>
 			</mat-form-field>
 		</form>

@@ -2,8 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { TeamSettingsComponent } from '../../dialogs/team-settings/team-settings.component';
 import { SessionBackend } from 'src/app/modules/sessions/services/backend.service';
-import { SessionFormService } from 'src/app/modules/sessions/services/form.service';
-import { Team } from '../../services/backend.service';
+import { Team } from 'src/app/shared/types';
 
 @Component({
   selector: 'team-list-item',

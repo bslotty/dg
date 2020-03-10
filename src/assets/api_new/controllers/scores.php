@@ -19,8 +19,12 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/shared/sql.php');
 $database = new DB;
 
 //  Scores
-require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/classes/Scores.php');
-$scores = new Course($database);
+require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/classes/scores.php');
+$scores = new Score($database);
+
+//  Players
+require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/classes/players.php');
+$player = new Player($database);
 
 
 switch ($payload['action']) {
@@ -33,10 +37,11 @@ switch ($payload['action']) {
 		$return[] = $scores->RecientlyPlayedWith($payload['user']);
 		break;
 
-
+	case "search":
+		$return[] = $player->searchPlayers($payload['term']);
+		break;
 }
 
 
 
 printf(json_encode($return));
-

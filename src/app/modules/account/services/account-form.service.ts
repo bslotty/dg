@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { BehaviorSubject, Observable, pipe } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { AccountBackend, Player, Password } from './backend.service';
+import { AccountBackend } from './backend.service';
 import { Router } from '@angular/router';
 import { ServerPayload } from 'src/app/app.component';
+import { Player, Password } from 'src/app/shared/types';
 
 @Injectable({
   providedIn: 'root'

@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { map, debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { pipe, BehaviorSubject, Observable } from 'rxjs';
 import { ServerPayload } from 'src/app/app.component';
+import { Player, Password } from 'src/app/shared/types';
 
 
 @Injectable({
@@ -213,64 +214,4 @@ export class AccountBackend implements OnInit {
 
 
 
-}
-
-
-
-/**
- *  Classes used within this service 
- */
-export class User {
-
-  //  Flag for League Moderation
-  public access = {};
-  public token;
-
-  constructor(
-    public id,
-    public first?,
-    public last?,
-    public email?,
-    public pass?,
-  ) { }
-}
-
-export class Password {
-  public old;
-  public confirm;
-  public current;
-
-  constructor() { }
-}
-
-
-
-
-/**
- *  Player
- */
-export class Player {
-  created_by;
-  created_on;
-  modified_by;
-  modified_on;
-  token;
-  token_expires_on;
-  last_logon;
-
-  access = {}
-
-
-  //  For Sessions
-  team = null
-  scores = null;
-  handicap = null
-
-  constructor(
-    public id,
-    public first_name?,
-    public last_name?,
-    public email?,
-    public password?,
-  ) { }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Session } from '../../services/backend.service';
+import { Session } from 'src/app/shared/types';
 
 @Component({
   selector: 'session-list-item',

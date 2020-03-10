@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { flyIn } from 'src/app/animations';
 import { FormGroup } from '@angular/forms';
 import { SessionFormService } from '../../services/form.service';
-import { SessionBackend, Session } from '../../services/backend.service';
+import { SessionBackend } from '../../services/backend.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ScoresBackend } from 'src/app/modules/scores/services/backend.service';
 import { MatDialog } from '@angular/material';
@@ -11,6 +11,7 @@ import { SelectCourseComponent } from '../../dialogs/select-course/select-course
 import { SelectFormatComponent } from '../../dialogs/select-format/select-format.component';
 import { SelectTimeComponent } from '../../dialogs/select-time/select-time.component';
 import { SelectPlayersComponent } from '../../dialogs/select-players/select-players.component';
+import { Session } from 'src/app/shared/types';
 
 @Component({
   selector: 'app-detail',
@@ -26,7 +27,7 @@ export class DetailComponent implements OnInit {
   playerModes = ["full", "admin"];
 
   confirmDelete: boolean = false;
-  
+
   constructor(
     private _sessionsForm: SessionFormService,
     private _sessions: SessionBackend,
@@ -36,41 +37,61 @@ export class DetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    
+
     //  Setup Form
     this._sessionsForm.Setup("edit");
-    this._sessionsForm.form$.subscribe((f)=>{
+    this._sessionsForm.form$.subscribe((f) => {
       this.form = f;
     });
 
     //  Populate Data for form
     this.session.id = this.router.snapshot.paramMap.get("session");
     this._sessions.getDetail(this.session);
-    
+
+
+    //  Save if close response is true (data changed);
+    this.dialog
   }
 
   //  Popups
   selectCourse() {
-    this.dialog.open(SelectCourseComponent, {
+    var dialogRef = this.dialog.open(SelectCourseComponent, {
       minWidth: "75vw",
+    });
+
+
+    dialogRef.afterClosed().subscribe((d) => {
+      console.log("dialog.closed: ", d);
     });
   }
 
   selectFormat() {
-    this.dialog.open(SelectFormatComponent, {
+    var dialogRef = this.dialog.open(SelectFormatComponent, {
       minWidth: "75vw",
+    });
+
+    dialogRef.afterClosed().subscribe((d) => {
+      console.log("dialog.closed: ", d);
     });
   }
 
   selectTime() {
-    this.dialog.open(SelectTimeComponent, {
+    var dialogRef = this.dialog.open(SelectTimeComponent, {
 
+    });
+
+    dialogRef.afterClosed().subscribe((d) => {
+      console.log("dialog.closed: ", d);
     });
   }
 
   selectPlayers() {
-    this.dialog.open(SelectPlayersComponent, {
+    var dialogRef = this.dialog.open(SelectPlayersComponent, {
       minWidth: "75vw",
+    });
+
+    dialogRef.afterClosed().subscribe((d) => {
+      console.log("dialog.closed: ", d);
     });
   }
 

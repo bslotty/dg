@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 import { CourseBackend } from '../../courses/services/backend.service';
 import { Router } from '@angular/router';
-import { SessionBackend, SessionFormat } from './backend.service';
+import { SessionBackend } from './backend.service';
 import { HelperService } from 'src/app/shared/services/helper.service';
 import { AccountBackend } from '../../account/services/backend.service';
 import { ScoresBackend } from '../../scores/services/backend.service';

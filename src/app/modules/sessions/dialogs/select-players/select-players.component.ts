@@ -4,9 +4,8 @@ import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedba
 import { flyInPanelRow, flyIn } from 'src/app/animations';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { listCategories } from 'src/app/modules/courses/components/list/list.component';
-import { SessionBackend } from '../../services/backend.service';
-import { SessionFormService } from '../../services/form.service';
 import { ScoresFormService } from 'src/app/modules/scores/services/scores-form.service';
+import { ScoresBackend } from 'src/app/modules/scores/services/backend.service';
 
 
 @Component({
@@ -30,7 +29,7 @@ export class SelectPlayersComponent implements OnInit {
 
   constructor(
     private _scoresForm: ScoresFormService,
-    private _scores: SessionBackend,
+    private _scores: ScoresBackend,
     private feed: FeedbackService,
     private dialogRef: MatDialogRef<SelectPlayersComponent>,
     @Inject(MAT_DIALOG_DATA) private data,

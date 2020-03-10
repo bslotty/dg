@@ -5,6 +5,7 @@ import { map, catchError, distinctUntilChanged, debounceTime } from 'rxjs/operat
 import { of, pipe, BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AccountBackend } from '../../account/services/backend.service';
+import { Course } from 'src/app/shared/types';
 
 @Injectable({
   providedIn: 'root'
@@ -171,21 +172,4 @@ export class CourseBackend {
     return result;
   }
 
-}
-
-
-export class Course {
-  constructor(
-    public id?: string,
-    public created_on?: string,
-    public created_by?: string, /* User? */
-    public modified_on?: string,
-    public modified_by?: string, /* User? */
-    public park_name?: string,
-    public city?: string,
-    public state?: string,
-    public zip?: string,
-    public latitude?: number,
-    public longitude?: number,
-  ) { }
 }

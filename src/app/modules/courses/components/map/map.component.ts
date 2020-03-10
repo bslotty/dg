@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, NgZone, Input, Output, EventEmitter } from '@angular/core';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
-import { Course } from '../../services/backend.service';
+import { Course } from 'src/app/shared/types';
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',

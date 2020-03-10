@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ScoresBackend, Score } from '../../services/backend.service';
+import { ScoresBackend } from '../../services/backend.service';
 import { Observable } from 'rxjs';
-import { SessionBackend } from 'src/app/modules/sessions/services/backend.service';
 import { listCategories } from 'src/app/modules/courses/components/list/list.component';
+import { Score } from 'src/app/shared/types';
 
 @Component({
   selector: 'score-list',

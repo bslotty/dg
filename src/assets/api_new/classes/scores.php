@@ -58,18 +58,18 @@ class Score
 	public function getScores($session)
 	{
 		$query = "SELECT 
-			`s`.`id`,
-			`s`.`created_by`, 
-			`s`.`created_on`, 
-			`s`.`modified_by`, 
-			`s`.`modified_on`, 
-			`s`.`score_array`, 
-			`s`.`handicap`,
+			`s`.`id` AS `scores.id`,
+			`s`.`created_by` AS `scores.created_by`, 
+			`s`.`created_on` AS `scores.created_on`, 
+			`s`.`modified_by` AS `scores.modified_by`, 
+			`s`.`modified_on` AS `scores.modified_on`, 
+			`s`.`score_array` AS `scores.score_array`, 
+			`s`.`handicap` AS `scores.handicap`,
 
-			`p`.`id` AS `playerID`,
-			`p`.`first_name` AS `playerFirst`,
-			`p`.`last_name` AS `playerLast`,
-			`p`.`email` AS `playerEmail`
+			`p`.`id` AS `player.id`,
+			`p`.`first_name` AS `player.first_name`,
+			`p`.`last_name` AS `player.last_name`,
+			`p`.`email` AS `player.email`
 
 		FROM `Scores` AS `s`
 		JOIN `Players` AS `p`
@@ -86,22 +86,22 @@ class Score
 	public function getScoresWithTeams($session)
 	{
 		$query = "SELECT 
-			`s`.`id`,
-			`s`.`created_by`, 
-			`s`.`created_on`, 
-			`s`.`modified_by`, 
-			`s`.`modified_on`, 
-			`s`.`score_array`, 
-			`s`.`handicap`,
+			`s`.`id` AS `scores.id`,
+			`s`.`created_by` AS `scores.created_by`, 
+			`s`.`created_on` AS `scores.created_on`, 
+			`s`.`modified_by` AS `scores.modified_by`, 
+			`s`.`modified_on` AS `scores.modified_on`, 
+			`s`.`score_array` AS `scores.score_array`, 
+			`s`.`handicap` AS `scores.handicap`,
 
-			`t`.`id` AS `teamID`,
-			`t`.`name` AS `teamName`,
-			`t`.`color` AS `teamColor`,
+			`t`.`id` AS `team.id`,
+			`t`.`name` AS `team.name`,
+			`t`.`color` AS `team.color`,
 
-			`p`.`id` AS `playerID`,
-			`p`.`first_name` AS `playerFirst`,
-			`p`.`last_name` AS `playerLast`,
-			`p`.`email` AS `playerEmail`
+			`p`.`id` AS `player.id`,
+			`p`.`first_name` AS `player.first_name`,
+			`p`.`last_name` AS `player.last_name`,
+			`p`.`email` AS `player.email`
 
 		FROM `Scores` AS `s`
 		JOIN `Teams` AS `t` 	ON `s`.`team_id` 	= `t`.`id`
@@ -119,17 +119,17 @@ class Score
 	public function setHandicap($score)
 	{
 		$query = "SELECT 
-		`s`.`id`,
-		`s`.`handicap`,
+		`s`.`id` AS `scores.id`, 
+		`s`.`handicap` AS `scores.handicap`, 
 
-		`t`.`id` AS `teamID`,
-		`t`.`name` AS `teamName`,
-		`t`.`color` AS `teamColor`,
+		`t`.`id` AS `team.id`,
+		`t`.`name` AS `team.name`,
+		`t`.`color` AS `team.color`,
 
-		`p`.`id` AS `playerID`,
-		`p`.`first_name` AS `playerFirst`,
-		`p`.`last_name` AS `playerLast`,
-		`p`.`email` AS `playerEmail`
+		`p`.`id` AS `player.id`,
+		`p`.`first_name` AS `player.first_name`,
+		`p`.`last_name` AS `player.last_name`,
+		`p`.`email` AS `player.email`
 
 	FROM `Scores` AS `s`
 	JOIN `Teams` AS `t` 	ON `s`.`team_id` 	= `t`.`id`
@@ -147,23 +147,23 @@ class Score
 	public function RecientlyPlayedWith($user)
 	{
 		$query = "SELECT
-			`sc`.`id`, 
-			`sc`.`created_by`, 
-			`sc`.`created_on`, 
-			`sc`.`modified_by`, 
-			`sc`.`modified_on`, 
+			`sc`.`id` AS `scores.id`, 
+			`sc`.`created_by` AS `scores.created_by`, 
+			`sc`.`created_on` AS `scores.created_on`, 
+			`sc`.`modified_by` AS `scores.modified_by`, 
+			`sc`.`modified_on` AS `scores.modified_on`, 
 
-			`p`.`id` AS 'player:id', 
-			`p`.`created_by` AS 'player:created_by', 
-			`p`.`created_on` AS 'player:created_on', 
-			`p`.`modified_by` AS 'player:modified_by', 
-			`p`.`modified_on` AS 'player:modified_on', 
-			`p`.`first_name` AS 'player:first_name',
-			`p`.`last_name` AS 'player:last_name',
-			`p`.`email` AS 'player:email',
+			`p`.`id` AS 'player.id', 
+			`p`.`created_by` AS 'player.created_by', 
+			`p`.`created_on` AS 'player.created_on', 
+			`p`.`modified_by` AS 'player.modified_by', 
+			`p`.`modified_on` AS 'player.modified_on', 
+			`p`.`first_name` AS 'player.first_name',
+			`p`.`last_name` AS 'player.last_name',
+			`p`.`email` AS 'player.email',
 
-			`sc`.`score_array`, 
-			`sc`.`handicap`
+			`sc`.`score_array` AS `scores.score_array`, 
+			`sc`.`handicap` AS `scores.handicap`
 		FROM `Scores` AS `sc`
 		JOIN `Sessions` AS `sn`
 		JOIN `Players` AS `p`

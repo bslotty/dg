@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Course, CourseBackend } from '../../services/backend.service';
+import { CourseBackend } from '../../services/backend.service';
 import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { AccountBackend } from 'src/app/modules/account/services/backend.service';
 import { Observable } from 'rxjs';

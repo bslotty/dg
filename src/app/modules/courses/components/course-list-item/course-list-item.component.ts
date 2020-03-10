@@ -1,8 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { SessionFormService } from 'src/app/modules/sessions/services/form.service';
-import { Course } from '../../services/backend.service';
+import { Component, OnInit, Input } from '@angular/core';
 import { FavoritesService } from 'src/app/shared/modules/favorites/services/favorites.service';
 import { SessionBackend } from 'src/app/modules/sessions/services/backend.service';
+import { Course } from 'src/app/shared/types';
 
 @Component({
   selector: 'course-list-item',

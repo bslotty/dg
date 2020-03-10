@@ -161,10 +161,10 @@ class Player
 	public function searchPlayers($term)
 	{
 		$query = "SELECT
-			`id`,
-        	`first_name`,
-        	`last_name`,
-        	`email`
+			`id` AS `player.id`,
+        	`first_name` AS `player.first_name`,
+        	`last_name` AS `player.last_name`,
+        	`email` AS `player.email`
 		FROM `Players`
 		WHERE POSITION(:term IN CONCAT(
 			`first_name`,

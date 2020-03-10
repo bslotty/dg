@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
 import { flyIn } from 'src/app/animations';
-import { SessionFormat, SessionBackend } from '../../services/backend.service';
+import { SessionBackend } from '../../services/backend.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { skip } from 'rxjs/operators';
 
@@ -26,6 +26,7 @@ export class SelectFormatComponent implements OnInit {
 
   setFormat(format) {
     this.sessions_.setFormat(format);
+    this.close(true);
   }
 
 

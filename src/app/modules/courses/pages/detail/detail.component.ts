@@ -1,9 +1,10 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
-import { CourseBackend, Course } from '../../services/backend.service';
+import { CourseBackend } from '../../services/backend.service';
 import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { loading } from 'src/app/animations';
+import { Course } from 'src/app/shared/types';
 
 @Component({
   selector: 'app-detail',
