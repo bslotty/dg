@@ -2,7 +2,6 @@ import { Router, CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot } from
 
 
 import { Injectable } from '@angular/core';
-import { LeagueBackend } from './../modules/leagues/services/backend.service';
 import { AccountBackend } from './../modules/account/services/backend.service';
 
 @Injectable({
@@ -12,7 +11,6 @@ export class PermGuard {
 
   constructor(
     private account: AccountBackend,
-    private leagues: LeagueBackend,
     private router: Router,
     
   ) { }

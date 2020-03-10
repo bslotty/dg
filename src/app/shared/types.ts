@@ -1,3 +1,5 @@
+import { Observable } from "rxjs/internal/Observable";
+
 export class SessionFormat {
 	name: string;
 	enum: string;
@@ -137,3 +139,21 @@ export class Course {
 		public longitude?: number,
 	) { }
 }
+
+
+
+
+
+export interface listCategories {
+	name: string;
+	obs: Observable<Object[]>;
+}
+
+
+
+
+export class ServerPayload {
+	public status: string;
+	public msg: string;
+	public data: Array<any>;
+} 

@@ -110,32 +110,36 @@ export class HelperService {
     var result: Score[] = [];
 
     console.log ("scores:", scores);
-    scores.forEach((s) => {
-      var score = new Score();
-      score.id = s['scores.id'];
-      score.created_on = s['scores.created_on'];
-      score.created_by = s['scores.created_by'];
-      score.modified_on = s['scores.modified_on'];
-      score.modified_by = s['scores.modified_by'];
-      score.handicap = s['scores.handicap'];
-      //score.scores = s['scores.score_array'];
 
-      score.player = new Player(
-        s["scores.player.id"],
-        s["scores.player.first_name"],
-        s["scores.player.last_name"],
-        s["scores.player.email"]
-      );
-
-      score.team = new Team(
-        s["scores.team.id"],
-        s["scores.team.name"],
-        s["scores.team.color"],
-        s["scores.team.hex"],
-      );
-
-      result.push(score);
-    });
+    if (scores != undefined) {
+      scores.forEach((s) => {
+        var score = new Score();
+        score.id = s['scores.id'];
+        score.created_on = s['scores.created_on'];
+        score.created_by = s['scores.created_by'];
+        score.modified_on = s['scores.modified_on'];
+        score.modified_by = s['scores.modified_by'];
+        score.handicap = s['scores.handicap'];
+        score.scores = s['scores.score_array'];
+  
+        score.player = new Player(
+          s["scores.player.id"],
+          s["scores.player.first_name"],
+          s["scores.player.last_name"],
+          s["scores.player.email"]
+        );
+  
+        score.team = new Team(
+          s["scores.team.id"],
+          s["scores.team.name"],
+          s["scores.team.color"],
+          s["scores.team.hex"],
+        );
+  
+        result.push(score);
+      });
+    }
+   
 
 
     return result;
