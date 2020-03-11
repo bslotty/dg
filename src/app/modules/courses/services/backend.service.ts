@@ -115,7 +115,7 @@ export class CourseBackend {
     let url = environment.apiUrl + "/courses/detail.php";
     return this.http.post(url, { course: course }).pipe(map((res: ServerPayload) => {
       if (this.rCheck(res)) {
-        this.list.next(this.convertProperties(res));
+        this.list.next(this.helper.covertCourse(res));
       } else {
         this.list.next([]);
       }
@@ -125,7 +125,7 @@ export class CourseBackend {
   getSearch(term: string) {
     this.http.post(this.url, { action: "search", term: term }).pipe(this.serverPipe).subscribe((res: ServerPayload) => {
       if (this.rCheck(res)) {
-        this.search.next(this.convertProperties(res));
+        this.search.next(this.helper.covertCourse(res));
       } else {
         this.search.next([]);
       }
@@ -149,27 +149,4 @@ export class CourseBackend {
   resetList() {
     this.list.next([]);
   }
-
-  convertProperties(res){
-    var result: Course[] = [];
-
-    this.rGetData(res).forEach((course) => {
-      result.push(new Course(
-        course['id'],
-        course['created_on'],
-        course['created_by'],
-        course['modified_on'],
-        course['modified_by'],
-        course['park_name'],
-        course['city'],
-        course['state'],
-        course['zip'],
-        +course['latitude'],
-        +course['longitude'],
-      ));
-    });
-
-    return result;
-  }
-
 }

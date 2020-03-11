@@ -3,10 +3,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServerPayload } from 'src/app/app.component';
 import { environment } from 'src/environments/environment';
-import { map, debounceTime, distinctUntilChanged, catchError } from 'rxjs/operators';
-import { pipe, BehaviorSubject, Observable, of } from 'rxjs';
+import { pipe, BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { HelperService } from 'src/app/shared/services/helper.service';
 import { Session, Player, SessionFormat } from 'src/app/shared/types';
+import { map } from 'rxjs/internal/operators/map';
+import { catchError } from 'rxjs/internal/operators/catchError';
 
 
 @Injectable({
@@ -16,13 +17,8 @@ export class SessionBackend {
 
   url: string = environment.apiUrl + '/controllers/sessions.php';
 
-  serverPipe = pipe(
-    debounceTime(500),
-    distinctUntilChanged(),
-  );
-
   //  Generic
-  private list: BehaviorSubject<Session[]> = new BehaviorSubject([]);
+  private list: Subject<Session[]> = new Subject();
   list$: Observable<Session[]> = this.list.asObservable();
 
   //  Favorites
@@ -65,19 +61,19 @@ export class SessionBackend {
     });
   }
 
-
+  //  Take a form, and verify that it is valid;
   ReadyForSubmission() {
     return true;
   }
 
-  /** Take Format String and Convert to :SessionFormat
-   * 
-   */
+  //  Take Format String and Convert to :SessionFormat
   convertFormatStr(str) {
     return this.types.find(t => t.enum == str);
   }
 
-  convertProperties(res) {
+
+
+  convertSession(res) {
     var result: Session[] = [];
 
     this.helper.rGetData(res).forEach((session) => {
@@ -102,14 +98,14 @@ export class SessionBackend {
 
 
   listFavorites() {
-    this.getList("favorites").subscribe((courses: Session[]) => {
-      this.favoriteList.next(courses);
+    this.getList("favorites").subscribe((session: Session[]) => {
+      this.favoriteList.next(session);
     });
   };
 
   listRecient() {
-    this.getList("list").subscribe((courses: Session[]) => {
-      this.list.next(courses);
+    this.getList("list").subscribe((session: Session[]) => {
+      this.list.next(session);
     });
   }
 
@@ -120,15 +116,10 @@ export class SessionBackend {
       "start": start,
       "limit": limit,
       "user": this.account.user
-    }).pipe(this.serverPipe,
+    }).pipe(this.helper.pipe,
       map((res) => {
-        console.log("res: ", res);
-
-        if (this.helper.rCheck(res)) {
-          return this.convertProperties(res);
-        } else {
-          return [];
-        }
+        var result = this.helper.convertSession(res);
+        return result;
       }),
       catchError(
         (error) => of(`Bad Request ${error}`)
@@ -148,7 +139,7 @@ export class SessionBackend {
     }).pipe().subscribe((res) => {
       if (this.helper.rCheck(res)) {
 
-        var session = this.convertProperties(res)[0];
+        var session = this.helper.convertSession(res)[0];
         console.log("session.getDetail: ", session);
 
         this.detail.next(session);

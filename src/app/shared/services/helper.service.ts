@@ -1,12 +1,21 @@
 import { Injectable } from '@angular/core';
-import { SessionFormat, Session, Score, Player, Team } from '../types';
+import { SessionFormat, Session, Score, Player, Team, Course, ServerPayload } from '../types';
+
+import { pipe } from 'rxjs/internal/util/pipe';
+import { debounceTime } from 'rxjs/internal/operators/debounceTime';
+import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HelperService {
 
-  public types:SessionFormat[] = [
+  public pipe = pipe(
+    debounceTime(500),
+    distinctUntilChanged(),
+  );
+
+  public types: SessionFormat[] = [
     {
       name: 'Free For All',
       enum: 'ffa',
@@ -33,11 +42,11 @@ export class HelperService {
   //  This Service should house all common service functions.
 
   /**
- * @param ServerPayload res Subscription Response
+ * @param res:ServerPayload[]
  * @returns boolean true if the latest query ran by the server was successfull;
  * -- else false
  */
-  rCheck(res): boolean {
+  rCheck(res: ServerPayload[]): boolean {
     if (res != null) {
       var latest = res.length - 1;
       if (res[latest]["status"] == "success") {
@@ -51,7 +60,12 @@ export class HelperService {
 
   }
 
-  rGetData(res): Array<any> {
+  /**
+ * @param ServerPayload[]
+ * @returns Data Array
+ * -- else []
+ */
+  rGetData(res: ServerPayload[]): Array<any> {
     var latest = res.length - 1;
     if (latest > -1) {
       return res[latest]["results"];
@@ -67,29 +81,32 @@ export class HelperService {
  * 
  */
 
-  convertFormatStr(str) {
+  convertFormatStr(str): SessionFormat {
     return this.types.find(t => t.enum == str);
   }
 
-  convertProperties(res) {
+  convertSession(res) {
     var result = [];
 
-    this.rGetData(res).forEach((session) => {
-      result.push(new Session(
-        session['id'],
-        session['created_on'],
-        session['created_by'],
-        session['modified_on'],
-        session['modified_by'],
-        session['course'],
-        this.convertFormatStr(session['format']),
-        session['starts_on'],
-        session['title'],
-        session['par'],
-        session['scores'],
-      ));
-    });
+    if (this.rCheck(res)) {
+      this.rGetData(res).forEach((session) => {
+        result.push(new Session(
+          session['id'],
+          session['created_on'],
+          session['created_by'],
+          session['modified_on'],
+          session['modified_by'],
+          session['course'],
+          this.convertFormatStr(session['format']),
+          session['starts_on'],
+          session['title'],
+          session['par'],
+          session['scores'],
+        ));
+      });
+    }
 
+    console.log ("ConvertSession: ", result);
     return result;
   }
 
@@ -106,13 +123,11 @@ export class HelperService {
 }
 */
 
-  convertSessionScores(scores: Score[]) {
+  convertScores(res: ServerPayload[]): Score[] {
     var result: Score[] = [];
 
-    console.log ("scores:", scores);
-
-    if (scores != undefined) {
-      scores.forEach((s) => {
+    if (this.rCheck(res)) {
+      this.rGetData(res).forEach((s) => {
         var score = new Score();
         score.id = s['scores.id'];
         score.created_on = s['scores.created_on'];
@@ -121,26 +136,50 @@ export class HelperService {
         score.modified_by = s['scores.modified_by'];
         score.handicap = s['scores.handicap'];
         score.scores = s['scores.score_array'];
-  
+
         score.player = new Player(
           s["scores.player.id"],
           s["scores.player.first_name"],
           s["scores.player.last_name"],
           s["scores.player.email"]
         );
-  
+
         score.team = new Team(
           s["scores.team.id"],
           s["scores.team.name"],
           s["scores.team.color"],
           s["scores.team.hex"],
         );
-  
+
         result.push(score);
       });
     }
-   
 
+
+
+    return result;
+  }
+
+
+
+  convertCourse(res) {
+    var result: Course[] = [];
+
+    this.rGetData(res).forEach((course) => {
+      result.push(new Course(
+        course['id'],
+        course['created_on'],
+        course['created_by'],
+        course['modified_on'],
+        course['modified_by'],
+        course['park_name'],
+        course['city'],
+        course['state'],
+        course['zip'],
+        +course['latitude'],
+        +course['longitude'],
+      ));
+    });
 
     return result;
   }

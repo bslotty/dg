@@ -279,10 +279,4 @@ export class SessionFormService {
     });
     return valid;
   }
-
-
-  _resetPlayerSearch() {
-    this.form.value.get("PlayerSearch").reset();
-  }
-
 }

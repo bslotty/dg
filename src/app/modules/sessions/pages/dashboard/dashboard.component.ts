@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { SessionBackend, Session } from '../../services/backend.service';
-import { MatExpansionPanelDefaultOptions } from '@angular/material';
+import { SessionBackend } from '../../services/backend.service';
 import { take, filter, map } from 'rxjs/operators';
 import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { flyIn } from 'src/app/animations';
 import { Observable } from 'rxjs';
+import { Session } from 'src/app/shared/types';
 
 @Component({
   selector: 'app-dashboard',

@@ -155,5 +155,8 @@ export interface listCategories {
 export class ServerPayload {
 	public status: string;
 	public msg: string;
+	public debug: string;
+	public affectedRows: number;
+	public results: Array<any>;
 	public data: Array<any>;
 } 
