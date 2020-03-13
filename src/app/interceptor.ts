@@ -35,6 +35,8 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class RequestInterceptor implements HttpInterceptor {
 
+	previousUrl: string = '';
+
 	constructor(
 		private accountService: AccountBackend,
 		private feedbackService: FeedbackService,
@@ -57,7 +59,6 @@ export class RequestInterceptor implements HttpInterceptor {
 
 		//	Loader Init
 		this.feedbackService.loading = true;
-		this.feedbackService.feedbackMessage = null;
 
 		return next.handle(request).pipe(map((event: HttpEvent<any>) => {
 			if (event instanceof HttpResponse) {
@@ -71,9 +72,13 @@ export class RequestInterceptor implements HttpInterceptor {
 				//	If last server event's message -> display feedback;
 				//		Success	=  	Toast
 				//		Error 	=	Message
-				if (event.body != null) {
+				if (/* event.body != null */ event.status != 200) {
 					var lastEvent = event.body[event.body.length - 1];
 					if (lastEvent.msg && lastEvent.status == "success") {
+
+
+						//	Map Types here
+
 						this.feedbackService.toast({
 							status: lastEvent.status,
 							msg: lastEvent.msg,
@@ -89,7 +94,7 @@ export class RequestInterceptor implements HttpInterceptor {
 				} else {
 					this.feedbackService.setMessage({
 						status: "error",
-						msg: "No response from the",
+						msg: event.status + ": " + event.statusText,
 						data: []
 					});
 				}

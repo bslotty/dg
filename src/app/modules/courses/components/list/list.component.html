@@ -48,16 +48,26 @@
 </div>
 
 
-<div *ngIf="selectedList.obs | async as courseList;">
-  <div *ngIf="courseList.length; else none" @flyIn>
+<div *ngIf="selectedList.obs | async as courseList; else loader">
+  <div *ngIf="courseList.length; else error" @flyIn>
     <course-list-item *ngFor="let course of courseList; trackBy: trackBy" [course]="course" [mode]="options.row">
     </course-list-item>
   </div>
+
+
 </div>
 
+<ng-template #loader>
+  <loader></loader>
+</ng-template>
+
+<ng-template #error>
+    <feedback *ngIf="feed.error"></feedback>
+</ng-template>
 
 <ng-template #none>
   <div class="message">
     <p><i>No items returned</i></p>
   </div>
 </ng-template>
+

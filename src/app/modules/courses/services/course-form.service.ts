@@ -5,6 +5,7 @@ import { CourseBackend } from './backend.service';
 import { Router } from '@angular/router';
 import { FeedbackService } from '../../../shared/modules/feedback/services/feedback.service';
 import { Course } from 'src/app/shared/types';
+import { HelperService } from 'src/app/shared/services/helper.service';
 
 @Injectable({
   providedIn: 'root'
@@ -63,6 +64,7 @@ export class CourseFormService {
     private courseService: CourseBackend,
     private router: Router,
     private feed: FeedbackService,
+    private helper: HelperService,
   ) { }
 
   Setup(type) {
@@ -92,7 +94,7 @@ export class CourseFormService {
         form.addControl('search', this.cTerm);
 
         //  Listen to Input changes to trigger loading and search
-        form.get("search").valueChanges.pipe(this.courseService.serverPipe).subscribe((s) => {
+        form.get("search").valueChanges.pipe(this.helper.pipe).subscribe((s) => {
           if (form.valid) {
             this.feed.loading = true;
             this.courseService.getSearch(s as string);

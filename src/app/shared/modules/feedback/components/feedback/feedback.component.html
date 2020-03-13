@@ -1,5 +1,29 @@
-<div class="feedbackMessage" *ngIf="feed.feedbackMessage">
-  <p class="alert alert-warning message">
-    {{ feed.feedbackMessage }}
+<div class="warn row justify-content-start align-items-center no-gutters" *ngIf="feed.error; else loader">
+
+  <div class="col-1 mat-title message">
+    <span class="icon-alert-triangle"></span>
+  </div>
+
+  <p class="col-8 mat-headline">
+    {{ feed.errorHandler.status }} {{ feed.errorHandler.statusText }}
   </p>
+
+  <a mat-stroked-button color="transparent-warn" class="col-3" (click)="feed.retry()"
+    *ngIf="feed.attempts < 5; else later">
+    <label>Retry</label>
+    <span class="icon-rotate-ccw ml-3"></span>
+  </a>
+
+
 </div>
+
+
+<ng-template #loader>
+  <loader></loader>
+</ng-template>
+
+<ng-template #later>
+  <p class="mat-headline message mb-0">
+    Somthing is wrong, try again later.
+  </p>
+</ng-template>

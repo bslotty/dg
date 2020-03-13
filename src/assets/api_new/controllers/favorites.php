@@ -16,7 +16,7 @@ $devMode = true;
 
 //  DB
 require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/shared/sql.php');
-$database = new DB;
+$database = new DB();
 
 //  Course
 require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/classes/Favorites.php');

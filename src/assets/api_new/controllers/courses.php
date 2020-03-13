@@ -16,7 +16,7 @@ $devMode = true;
 
 //  DB
 require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/shared/sql.php');
-$database = new DB;
+$database = new DB("course");
 
 //  Course
 require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/classes/courses.php');
@@ -30,7 +30,7 @@ $player = new Player($database);
 switch ($payload['action']) {
 	case "list":
 		$return[] = $courses->getList($payload['start'], $payload['limit']);
-
+		http_response_code(402);
 		break;
 
 	case "recient":

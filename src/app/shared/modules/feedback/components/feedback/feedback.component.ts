@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'feedback',
   templateUrl: './feedback.component.html',
-  styleUrls: ['./feedback.component.css'],
+  styleUrls: ['./feedback.component.scss'],
   animations: [],
 })
 export class FeedbackComponent implements OnInit {

@@ -15,10 +15,13 @@ class DB
     public $pdo;
     public $data;
 
+    public $dataType;
+
 
     //  Init
-    public function __construct()
+    public function __construct($dataType = "")
     {
+        $this->dataType = $dataType;
         $this->getConnection();
     }
 
@@ -81,7 +84,7 @@ class DB
                 "status"    => "error",
                 "code"      => $this->stmt->errorCode(),
                 "phase"     => "execute",
-                "msg"   => $this->stmt->errorInfo(),
+                "msg"       => $this->stmt->errorInfo(),
                 "debug"     => array(
                     "q"     => $q,
                     "v"     => $v
@@ -91,8 +94,9 @@ class DB
 
             $payload = array(
                 "status"        => "success",
-                "affectedRows"  =>  $this->stmt->rowCount(),
-                "results"       =>  $this->stmt->fetchAll(PDO::FETCH_ASSOC),
+                "mapTo"         => $this->dataType,
+                "affectedRows"  => $this->stmt->rowCount(),
+                "results"       => $this->stmt->fetchAll(PDO::FETCH_ASSOC),
                 "debug"     => array(
                     "q"     => $q,
                     "v"     => $v

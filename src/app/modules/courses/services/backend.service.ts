@@ -6,6 +6,7 @@ import { of, pipe, BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AccountBackend } from '../../account/services/backend.service';
 import { Course } from 'src/app/shared/types';
+import { HelperService } from 'src/app/shared/services/helper.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,15 +15,10 @@ export class CourseBackend {
 
   url: string = environment.apiUrl + '/controllers/courses.php';
 
-  serverPipe = pipe(
-    debounceTime(500),
-    distinctUntilChanged(),
-  );
-
   //  Generic
   private list: BehaviorSubject<Course[]> = new BehaviorSubject([]);
   list$: Observable<Course[]> = this.list.asObservable();
-  
+
   //  Favorites
   private favoriteList: BehaviorSubject<Course[]> = new BehaviorSubject([]);
   favoriteList$: Observable<Course[]> = this.favoriteList.asObservable();
@@ -38,106 +34,62 @@ export class CourseBackend {
   constructor(
     private http: HttpClient,
     private account: AccountBackend,
+    private helper: HelperService,
   ) { }
 
-  /**
-   * @param ServerPayload res Subscription Response
-   * @returns boolean true if the latest query ran by the server was successfull;
-   * -- else false
-   */
-  rCheck(res): boolean {
-    var latest = res.length - 1;
-    if (res[latest]["status"] == "success") {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
-  /**
-   * @param ServerPayload res Subscription Response
-   * @returns data results of request;
-   */
-  rGetData(res): Array<any> {
-    var latest = res.length - 1;
-    if (latest > -1) {
-      return res[latest]["results"];
-    } else {
-      return [];
-    }
-    
-  }
-
-  listFavorites(){
-    this.getList("favorites").subscribe((courses:Course[])=>{
+  listFavorites() {
+    this.getList("favorites").subscribe((courses: Course[]) => {
       this.favoriteList.next(courses);
     });
   };
 
-  listRecient(){
-    this.getList("recient").subscribe((courses:Course[])=>{
+  listRecient() {
+    this.getList("recient").subscribe((courses: Course[]) => {
       this.recientList.next(courses);
     });
   }
 
   listTop() {
-    this.getList("list").subscribe((courses:Course[]) => {
+    this.getList("list").subscribe((courses: Course[]) => {
       this.list.next(courses);
+    }, (e) => {
+      console.log("error: ", e);
     });
   }
 
-  //  SearchList?
-
 
   getList(list: string, start: number = 0, limit: number = 20) {
-    return this.http.post(this.url, { 
-      "action": list,
-      "start": start,
-      "limit": limit,
-      "user" : this.account.user
-    }).pipe(this.serverPipe,
-      map((res) => {
-        if (this.rCheck(res)) {
-          return this.convertProperties(res);
-        } else {
-          return [];
-        }
-      }),
-      catchError(
-        (error) => of(`Bad Request ${error}`)
-      )
-    );
+    return this.http
+      .post(this.url, {
+        "action": list,
+        "start": start,
+        "limit": limit,
+        "user": this.account.user
+      }).pipe(this.helper.pipe, this.helper.errorPipe);
   }
 
-  
+
 
   getDetail(course: Course) {
     let url = environment.apiUrl + "/courses/detail.php";
     return this.http.post(url, { course: course }).pipe(map((res: ServerPayload) => {
-      if (this.rCheck(res)) {
-        this.list.next(this.helper.covertCourse(res));
-      } else {
-        this.list.next([]);
-      }
+      this.list.next(this.helper.convertCourse(res));
     }));
   }
 
   getSearch(term: string) {
-    this.http.post(this.url, { action: "search", term: term }).pipe(this.serverPipe).subscribe((res: ServerPayload) => {
-      if (this.rCheck(res)) {
-        this.search.next(this.helper.covertCourse(res));
-      } else {
-        this.search.next([]);
-      }
+    this.http.post(this.url, { action: "search", term: term }).pipe(this.helper.pipe).subscribe((res: ServerPayload) => {
+      this.search.next(this.helper.convertCourse(res));
     });
   }
 
   create(course) {
-    console.log ("User: ", this.account.user);
-    return this.http.post(this.url, { 
+    console.log("User: ", this.account.user);
+    return this.http.post(this.url, {
       action: 'create',
-      course: course, 
-      user: this.account.user 
+      course: course,
+      user: this.account.user
     });
   }
 

@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material';
 import { ServerPayload } from 'src/app/app.component';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,13 @@ export class FeedbackService implements OnInit {
 
   loading: boolean = true;
 
-  list: BehaviorSubject<Array<string>> = new BehaviorSubject([]);
-  list$: Observable<Array<string>> = this.list.asObservable();
+  error: boolean = false;
+  errorHandler: HttpErrorResponse;
+  retryObs: Observable<any>;
+  attempts: number = 0;
+
+  list: BehaviorSubject<string[]> = new BehaviorSubject([]);
+  list$: Observable<string[]> = this.list.asObservable();
 
   pColor: string = "primary";
   pMode: string = "determinate"
@@ -28,9 +34,7 @@ export class FeedbackService implements OnInit {
     //  Reset Error Message upon Router Change
     //    Change on End, After all checks;
     this.router.events.subscribe((e) => {
-      /*
       if (e instanceof NavigationEnd) {
-        this.feedbackMessage = "";
         this.loading = false;
       }
 
@@ -38,8 +42,9 @@ export class FeedbackService implements OnInit {
       //  Automatic Loading when route loads;
       if (e instanceof NavigationStart) {
         this.loading = true;
+        this.reset();
       }
-      */
+
 
     });
 
@@ -48,6 +53,21 @@ export class FeedbackService implements OnInit {
 
   ngOnInit() {
     this.feedbackMessage = "";
+
+
+    
+  }
+
+  reset() {
+    this.error = false;
+    this.attempts = 0;
+  }
+
+  retry() {
+    this.error = false;
+    this.retryObs.subscribe((retry)=>{
+      console.log("retry: ", retry);
+    });
   }
 
 

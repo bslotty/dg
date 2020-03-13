@@ -1,9 +1,17 @@
 import { Injectable } from '@angular/core';
 import { SessionFormat, Session, Score, Player, Team, Course, ServerPayload } from '../types';
 
+
+import { of } from 'rxjs/internal/observable/of';
+
 import { pipe } from 'rxjs/internal/util/pipe';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
+import { catchError } from 'rxjs/internal/operators/catchError';
+import { FeedbackService } from '../modules/feedback/services/feedback.service';
+import { retryWhen } from 'rxjs/internal/operators/retryWhen';
+import { delay } from 'rxjs/internal/operators/delay';
+import { take } from 'rxjs/internal/operators/take';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +22,34 @@ export class HelperService {
     debounceTime(500),
     distinctUntilChanged(),
   );
+
+  public errorPipe = pipe(
+    /*
+    retryWhen((errors) => {
+      console.log ("retryWhen: ", errors);
+
+      return errors.pipe(delay(1000), take(3))
+    }),
+    */
+    catchError((error, caught) => {
+      console.log ("catchError: ", error);
+      console.log ("caught: ", caught);
+
+      //  TODO: create method for setting error.
+      //  TODO: retry only if attempts > 5
+      //  TODO: delay retry exponentially from attempts
+      this.feed.error = true;
+      this.feed.attempts++;
+
+      console.log("attempts: ", this.feed.attempts);
+      
+      this.feed.errorHandler = error;
+      this.feed.retryObs = caught;
+
+      return of({ error: "Error" });
+    })
+  );
+
 
   public types: SessionFormat[] = [
     {
@@ -35,7 +71,9 @@ export class HelperService {
     }
   ];
 
-  constructor() { }
+  constructor(
+    private feed: FeedbackService,
+  ) { }
 
 
   //  Migrate all calls from other services to here
@@ -106,22 +144,11 @@ export class HelperService {
       });
     }
 
-    console.log ("ConvertSession: ", result);
+    console.log("ConvertSession: ", result);
     return result;
   }
 
 
-  /*
-  export class Score {
-  public id: string;
-  public player: Player;
-  public scores: Array<number>;
-  public team: Team | null
-  public handicap: number;
-
-  constructor() { }
-}
-*/
 
   convertScores(res: ServerPayload[]): Score[] {
     var result: Score[] = [];
