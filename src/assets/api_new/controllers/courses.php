@@ -30,7 +30,17 @@ $player = new Player($database);
 switch ($payload['action']) {
 	case "list":
 		$return[] = $courses->getList($payload['start'], $payload['limit']);
-		http_response_code(402);
+
+		
+		//	Error Testing
+		//	http_response_code(402);
+		/*
+		$return[] = array(
+			"status" => "error",
+			"msg" => "Unknown Action",
+		);
+		
+		*/
 		break;
 
 	case "recient":

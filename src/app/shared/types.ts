@@ -160,3 +160,12 @@ export class ServerPayload {
 	public results: Array<any>;
 	public data: Array<any>;
 } 
+
+
+export class FeedbackErrorHandler {
+	public msg: string;
+	public code: number;
+	public visible: boolean;
+	public element: string;
+
+}

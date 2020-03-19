@@ -1,8 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ScoresBackend } from '../../services/backend.service';
 import { Observable } from 'rxjs';
-import { listCategories } from 'src/app/modules/courses/components/list/list.component';
-import { Score } from 'src/app/shared/types';
+import { Score, listCategories } from 'src/app/shared/types';
 
 @Component({
   selector: 'score-list',

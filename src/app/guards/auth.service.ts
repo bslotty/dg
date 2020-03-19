@@ -11,7 +11,6 @@ export class AuthGuard implements CanActivate {
   constructor(
     private account: AccountBackend,
     private router: Router,
-    
   ) { }
 
   /**
@@ -23,12 +22,16 @@ export class AuthGuard implements CanActivate {
 
     //  If user is set; Allow
     console.log ("guard.account.user: ", this.account.user);
-    if (this.account.user && this.account.user.email /* && this.account.user.token */) { return true } else {
+    if (this.account.user && this.account.user.email ) { 
+      return true 
+    } /* else if (this.account.user && this.account.user.token){
+      console.log ("token found:", this.account.user.token);
+    } */ else {
       let url: string = state.url;
 
       //  Store Url for redirect
-      console.log ("auth.guard.url: ", url);
       this.account.redirectUrl = url;
+      //  console.log ("auth.guard.url: ", this.account.redirectUrl);
     
       // Navigate to the login page
       this.router.navigate(['/account/login']);

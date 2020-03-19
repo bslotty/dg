@@ -12,6 +12,7 @@ import { FeedbackService } from '../modules/feedback/services/feedback.service';
 import { retryWhen } from 'rxjs/internal/operators/retryWhen';
 import { delay } from 'rxjs/internal/operators/delay';
 import { take } from 'rxjs/internal/operators/take';
+import { timeout } from 'rxjs/internal/operators/timeout';
 
 @Injectable({
   providedIn: 'root'
@@ -21,33 +22,6 @@ export class HelperService {
   public pipe = pipe(
     debounceTime(500),
     distinctUntilChanged(),
-  );
-
-  public errorPipe = pipe(
-    /*
-    retryWhen((errors) => {
-      console.log ("retryWhen: ", errors);
-
-      return errors.pipe(delay(1000), take(3))
-    }),
-    */
-    catchError((error, caught) => {
-      console.log ("catchError: ", error);
-      console.log ("caught: ", caught);
-
-      //  TODO: create method for setting error.
-      //  TODO: retry only if attempts > 5
-      //  TODO: delay retry exponentially from attempts
-      this.feed.error = true;
-      this.feed.attempts++;
-
-      console.log("attempts: ", this.feed.attempts);
-      
-      this.feed.errorHandler = error;
-      this.feed.retryObs = caught;
-
-      return of({ error: "Error" });
-    })
   );
 
 
@@ -84,15 +58,19 @@ export class HelperService {
  * @returns boolean true if the latest query ran by the server was successfull;
  * -- else false
  */
-  rCheck(res: ServerPayload[]): boolean {
+  rCheck(res /*: ServerPayload[]*/): boolean {
     if (res != null) {
       var latest = res.length - 1;
       if (res[latest]["status"] == "success") {
         return true;
       } else {
+
+        console.warn("server.error: ", res[latest]["status"]["message"] );
         return false;
       }
     } else {
+
+      console.warn("server.error.nothing: ", res[latest]["status"]["message"] );
       return false;
     }
 
@@ -103,10 +81,12 @@ export class HelperService {
  * @returns Data Array
  * -- else []
  */
-  rGetData(res: ServerPayload[]): Array<any> {
+  rGetData(res/*: ServerPayload[]*/): Array<any> {
+
+    console.log ("rGetData: ", res);
     var latest = res.length - 1;
     if (latest > -1) {
-      return res[latest]["results"];
+      return res[latest]["formattedResults"];
     } else {
       return [];
     }
@@ -145,6 +125,8 @@ export class HelperService {
     }
 
     console.log("ConvertSession: ", result);
+
+    this.feed.loading = false;
     return result;
   }
 
@@ -189,10 +171,10 @@ export class HelperService {
 
 
 
-  convertCourse(res) {
+  convertCourse(courses): Course[] {
     var result: Course[] = [];
 
-    this.rGetData(res).forEach((course) => {
+    courses.forEach((course) => {
       result.push(new Course(
         course['id'],
         course['created_on'],

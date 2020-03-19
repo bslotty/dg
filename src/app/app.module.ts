@@ -1,6 +1,7 @@
 import { PipesModule } from './pipes/pipes.module';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
@@ -18,8 +19,10 @@ import { HomeComponent } from './home/home.component';
 
 /*  Dependancies  */
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { RequestInterceptor } from './interceptor';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ErrorHandlerInterceptor } from './interceptors/errorHandler.interceptor';
+import { FormatterInterceptor } from './interceptors/formatter.interceptor';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+
 
 
 
@@ -51,11 +54,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   exports: [
   ],
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: RequestInterceptor,
-      multi: true
-    }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true } ,
+    { provide: HTTP_INTERCEPTORS, useClass: FormatterInterceptor, multi: true } ,
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorHandlerInterceptor, multi: true } ,
   ],
   bootstrap: [AppComponent]
 })

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { SessionFormService } from 'src/app/modules/sessions/services/form.service';
-import { ScoresBackend, Score } from '../../services/backend.service';
+import { ScoresBackend } from '../../services/backend.service';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { TeamSettingsComponent } from '../team-settings/team-settings.component';

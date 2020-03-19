@@ -6,6 +6,7 @@ import { AccountBackend } from 'src/app/modules/account/services/backend.service
 import { FormGroup } from '@angular/forms';
 import { CourseFormService } from '../../services/course-form.service';
 import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
+import { listCategories } from 'src/app/shared/types';
 
 
 @Component({
@@ -40,10 +41,8 @@ export class ListComponent implements OnInit {
     private _courseForm: CourseFormService,
     private _account: AccountBackend,
     private feed: FeedbackService,
-  ) { 
-    console.log ("List.options:", this.options);
-
-  }
+  ) { }
+  
 
   ngOnInit() {
     //  Populate Lists
@@ -75,12 +74,10 @@ export class ListComponent implements OnInit {
     //  Default Option
     this.selectedList = this.lists[0];
 
-
     //  Setup Form
     this._courseForm.Setup('search');
     this._courseForm.form$.subscribe((f) => {
       this.form = f;
-      this.feed.loading = false;
     });
   }
 
@@ -134,18 +131,12 @@ export class ListComponent implements OnInit {
     }
   }
 
-
-
   trackBy(index, item) {
     return item.id;
   }
 
 }
 
-export interface listCategories {
-  name: string;
-  obs: Observable<Object[]>;
-}
 
 
 

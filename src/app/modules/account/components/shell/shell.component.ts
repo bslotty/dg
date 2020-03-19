@@ -35,7 +35,6 @@ export class ShellComponent implements OnInit {
     payload.status = "success";
     payload.msg = "You are now logged out";
 
-    this.feed.finializeLoading(payload, true);
     this.account.logout();
   }
 }

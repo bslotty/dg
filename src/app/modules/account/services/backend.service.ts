@@ -16,9 +16,11 @@ export class AccountBackend implements OnInit {
   user: Player;
   redirectUrl: string;
 
+  /*  MOD
   private searched: BehaviorSubject<Player[] | undefined> = new BehaviorSubject(undefined);
   searched$: Observable<Player[]> = this.searched.asObservable();
-
+  */
+ 
   private recient: BehaviorSubject<Player[] | undefined> = new BehaviorSubject(undefined);
   recient$: Observable<Player[]> = this.recient.asObservable();
 
@@ -184,6 +186,7 @@ export class AccountBackend implements OnInit {
 
 
 
+  /*  MOD
   searchUsers(term: string) {
     return this.http.post(this.url, { "action": "search", "term": term }).pipe(
       map((res: ServerPayload) => {
@@ -198,6 +201,7 @@ export class AccountBackend implements OnInit {
         return res;
       }));
   }
+  */
 
 
 

@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { CourseBackend } from './backend.service';
 import { Router } from '@angular/router';
 import { FeedbackService } from '../../../shared/modules/feedback/services/feedback.service';
-import { Course } from 'src/app/shared/types';
+import { Course, ServerPayload } from 'src/app/shared/types';
 import { HelperService } from 'src/app/shared/services/helper.service';
 
 @Injectable({
@@ -158,16 +158,16 @@ export class CourseFormService {
     course.latitude = this.form.value.value.lat;
     course.longitude = this.form.value.value.lng;
 
-    this.courseService.create(course).subscribe((res) => {
+    this.courseService.create(course).subscribe((res: ServerPayload[]) => {
       console.log("course.form.create.res: ", res);
-      if (this.courseService.rCheck(res)) {
-        var createdCourse = this.courseService.rGetData(res);
+      if (this.helper.rCheck(res)) {
+        var createdCourse = this.helper.rGetData(res);
         this.router.navigate(["courses", createdCourse[0]['id']]);
       } else {
         console.log("Nearby?");
 
         //  Fix
-        this.courseService.setCourseList(this.courseService.rGetData(res) as Course[]);
+        this.courseService.setCourseList(this.helper.rGetData(res) as Course[]);
 
         this.router.navigate(["courses/nearby"]);
       }

@@ -268,7 +268,7 @@ export class ScoresBackend {
   }
 
   setScores(scores): void {
-    this.scores.next(this.helper.convertSessionScores(scores));
+    this.scores.next(this.helper.convertScores(scores));
   }
 
   removeScore(score) {

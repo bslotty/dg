@@ -104,8 +104,8 @@ export class SessionBackend {
   };
 
   listRecient() {
-    this.getList("list").subscribe((session: Session[]) => {
-      this.list.next(session);
+    this.getList("list").subscribe((list: Session[]) => {
+      this.list.next(list);
     });
   }
 
@@ -136,7 +136,7 @@ export class SessionBackend {
       "action": "detail",
       "session": session,
       "user": this.account.user
-    }).pipe().subscribe((res) => {
+    }).pipe().subscribe((res: ServerPayload[]) => {
       if (this.helper.rCheck(res)) {
 
         var session = this.helper.convertSession(res)[0];
@@ -157,10 +157,10 @@ export class SessionBackend {
       "session": session,
       "action": "create"
     }).pipe(
-      map((res: ServerPayload) => {
+      map((res) => {
         if (this.helper.rCheck(res)) {
           console.log("create.res: ", res);
-          this.detail.next(this.convertProperties(res)[0]);
+          this.detail.next(this.convertSession(res)[0]);
         }
         return res;
       })
@@ -210,6 +210,7 @@ export class SessionBackend {
   }
 
 
+  /*
   setSessionFromID(sessionId): void {
 
     //  Search List for Match
@@ -229,6 +230,7 @@ export class SessionBackend {
       this.getDetail(sessionId);
     }
   }
+  */
 
   setFormat(format) {
     this.detail.value.format = format;

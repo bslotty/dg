@@ -158,11 +158,13 @@ export class AccountFormService {
         form.addControl("email", this.cEmail);
         break;
 
+        /*
       case "search":
         form.addControl("term", this.cTerm);
         form.valueChanges.pipe(this.searchPipe).subscribe((v)=>{
           this.account.searchUsers(v["term"]).subscribe((p)=>{  });
         });
+        */
 
       default:
         form.setErrors({ invalid: true });

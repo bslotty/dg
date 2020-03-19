@@ -1,4 +1,233 @@
-@import "./theme_new.scss";
+@import "~@angular/material/theming";
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+@import "./theme.scss";
+
+$fontConfig: (
+  display-4: mat-typography-level(64px, 72px, 200, $theme-font-header, -0.0781em),
+  display-3: mat-typography-level(56px, 56px, 200, $theme-font-header, -0.0089em),
+  display-2: mat-typography-level(45px, 48px, 200, $theme-font-header, 0em),
+  display-1: mat-typography-level(34px, 40px, 200, $theme-font-header, 0.0074em),
+  headline: mat-typography-level(28px, 32px, 400, $theme-font-header, 0em),
+  title: mat-typography-level(20px, 32px, 500, $theme-font-header, 0.0075em),
+  subheading-2: mat-typography-level(16px, 28px, 400, $theme-font-utility, 0.0094em),
+  subheading-1: mat-typography-level(15px, 24px, 500, $theme-font-utility, 0.0067em),
+  body-2: mat-typography-level(20px, 28px, 400, $theme-font-body, 0.0179em),
+  body-1: mat-typography-level(14px, 20px, 400, $theme-font-body, 0.0179em),
+  button: mat-typography-level(14px, 22px, 600, $theme-font-utility, 0.25em),
+  caption: mat-typography-level(18px, 20px, 400, $theme-font-utility, 0.5em),
+  input: mat-typography-level(inherit, 1.125, 600, $theme-font-utility, 1.5px)
+);
+
+// Foreground Elements
+
+// Light Theme Text
+$dark-text: $theme-text-dark;
+$dark-primary-text: rgba($dark-text, 0.9);
+$dark-accent-text: rgba($dark-primary-text, 0.6);
+$dark-disabled-text: rgba($dark-primary-text, 0.4);
+$dark-dividers: rgba($dark-primary-text, 0.4);
+$dark-focused: rgba($dark-primary-text, 0.4);
+
+$mat-light-theme-foreground: (
+  base: black,
+  divider: $dark-dividers,
+  dividers: $dark-dividers,
+  disabled: $dark-disabled-text,
+  disabled-button: rgba($dark-text, 0.26),
+  disabled-text: $dark-disabled-text,
+  elevation: black,
+  secondary-text: $dark-accent-text,
+  hint-text: $dark-disabled-text,
+  accent-text: $dark-accent-text,
+  icon: $dark-accent-text,
+  icons: $dark-accent-text,
+  text: $dark-primary-text,
+  slider-min: $dark-primary-text,
+  slider-off: rgba($dark-text, 0.26),
+  slider-off-active: $dark-disabled-text
+);
+
+// Dark Theme text
+$light-text: $theme-text-light;
+$light-primary-text: $light-text;
+$light-accent-text: rgba($light-primary-text, 0.7);
+$light-disabled-text: rgba($light-primary-text, 0.5);
+$light-dividers: rgba($light-primary-text, 0.12);
+$light-focused: rgba($light-primary-text, 0.12);
+
+$mat-dark-theme-foreground: (
+  base: $light-text,
+  divider: $light-dividers,
+  dividers: $light-dividers,
+  disabled: $light-disabled-text,
+  disabled-button: rgba($light-text, 0.3),
+  disabled-text: $light-disabled-text,
+  elevation: black,
+  hint-text: $light-disabled-text,
+  secondary-text: $light-accent-text,
+  accent-text: $light-accent-text,
+  icon: $light-text,
+  icons: $light-text,
+  text: $light-text,
+  slider-min: $light-text,
+  slider-off: rgba($light-text, 0.3),
+  slider-off-active: rgba($light-text, 0.3)
+);
+
+// Background config
+// Light bg
+$light-background: $theme-bg-light;
+$light-bg-darker-5: darken($light-background, 5%);
+$light-bg-darker-10: darken($light-background, 10%);
+$light-bg-darker-20: darken($light-background, 20%);
+$light-bg-darker-30: darken($light-background, 30%);
+$light-bg-lighter-5: lighten($light-background, 5%);
+$dark-bg-alpha-4: rgba(#222222, 0.04);
+$dark-bg-alpha-12: rgba(#222222, 0.12);
+
+$mat-light-theme-background: (
+  background: $light-background,
+  status-bar: $light-bg-darker-20,
+  app-bar: $light-bg-darker-5,
+  hover: $dark-bg-alpha-4,
+  card: $light-bg-lighter-5,
+  dialog: $light-bg-lighter-5,
+  disabled-button: $dark-bg-alpha-12,
+  raised-button: $light-bg-lighter-5,
+  focused-button: $dark-focused,
+  selected-button: $light-bg-darker-20,
+  selected-disabled-button: $light-bg-darker-30,
+  disabled-button-toggle: $light-bg-darker-10,
+  unselected-chip: $light-bg-darker-10,
+  disabled-list-option: $light-bg-darker-10
+);
+
+// Dark bg
+$dark-background: $theme-bg-dark;
+$dark-bg-lighter-5: lighten($dark-background, 5%);
+$dark-bg-lighter-10: lighten($dark-background, 10%);
+$dark-bg-lighter-20: lighten($dark-background, 20%);
+$dark-bg-lighter-30: lighten($dark-background, 30%);
+$light-bg-alpha-4: rgba(#fefefe, 0.04);
+$light-bg-alpha-12: rgba(#fefefe, 0.12);
+
+// Background palette for dark themes.
+$mat-dark-theme-background: (
+  background: $dark-background,
+  status-bar: $dark-bg-lighter-20,
+  app-bar: $dark-bg-lighter-5,
+  hover: $light-bg-alpha-4,
+  card: $dark-bg-lighter-5,
+  dialog: $dark-bg-lighter-5,
+  disabled-button: $light-bg-alpha-12,
+  raised-button: $dark-bg-lighter-5,
+  focused-button: $light-focused,
+  selected-button: $dark-bg-lighter-20,
+  selected-disabled-button: $dark-bg-lighter-30,
+  disabled-button-toggle: $dark-bg-lighter-10,
+  unselected-chip: $dark-bg-lighter-20,
+  disabled-list-option: $dark-bg-lighter-10
+);
+
+// Compute font config
+@include mat-core($fontConfig);
+
+// Theme Config
+
+//  Primary
+body {
+  --primary-color: $theme-primary;
+  --primary-lighter-color: lighten(desaturate($theme-primary, 50%), 25%);
+  --primary-darker-color: darken($theme-primary, 20%);
+  --text-primary-color: #{$light-primary-text};
+  --text-primary-lighter-color: #{$dark-primary-text};
+  --text-primary-darker-color: #{$light-primary-text};
+}
+
+$mat-primary: (
+  main: $theme-primary,
+  lighter: lighten(desaturate($theme-primary, 50%), 25%),
+  darker: darken($theme-primary, 20%),
+  200: $theme-primary,
+  // For slide toggle,
+  contrast: (
+    main: $light-primary-text,
+    lighter: $dark-primary-text,
+    darker: $light-primary-text
+  )
+);
+$theme-primary: mat-palette($mat-primary, main, lighter, darker);
+
+// Accent
+body {
+  --accent-color: $theme-accent;
+  --accent-lighter-color: lighten(desaturate($theme-accent, 50%), 25%);
+  --accent-darker-color: darken($theme-accent, 20%);
+  --text-accent-color: #{$light-primary-text};
+  --text-accent-lighter-color: #{$dark-primary-text};
+  --text-accent-darker-color: #{$light-primary-text};
+}
+
+$mat-accent: (
+  main: $theme-accent,
+  lighter: lighten(desaturate($theme-accent, 50%), 25%),
+  darker: darken($theme-accent, 20%),
+  200: $theme-accent,
+  // For slide toggle,
+  contrast: (
+    main: $light-primary-text,
+    lighter: $dark-primary-text,
+    darker: $light-primary-text
+  )
+);
+$theme-accent: mat-palette($mat-accent, main, lighter, darker);
+
+// Warn
+body {
+  --warn-color: $theme-warn;
+  --warn-lighter-color: lighten(desaturate($theme-warn, 50%), 25%);
+  --warn-darker-color: darken($theme-warn, 20%);
+  --text-warn-color: #{$light-primary-text};
+  --text-warn-lighter-color: #{$dark-primary-text};
+  --text-warn-darker-color: #{$light-primary-text};
+}
+
+$mat-warn: (
+  main: $theme-warn,
+  lighter: lighten(desaturate($theme-warn, 50%), 25%),
+  darker: darken($theme-warn, 20%),
+  200: $theme-warn,
+  // For slide toggle,
+  contrast: (
+    main: $light-primary-text,
+    lighter: $dark-primary-text,
+    darker: $light-primary-text
+  )
+);
+$theme-warn: mat-palette($mat-warn, main, lighter, darker);
+
+$theme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
+$altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
+
+// Theme Init
+@include angular-material-theme($altTheme);
+
+.theme-alternate {
+  @include angular-material-theme($theme);
+}
+
+
+::ng-deep :host {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 
 /*  CSS styling agm-map is required!
     It is really important that you define a height component `agm-map`. 
@@ -9,8 +238,28 @@ agm-map {
 }
 
 * {
+  text-overflow: ellipsis;
   box-sizing: border-box;
 }
+
+body {
+  margin: 0 auto;
+}
+
+.mat-caption,
+.mat-button-base {
+  text-transform: uppercase;
+}
+
+.mat-raised-button.mat-primary:not(.disabled),
+.mat-mini-fab.mat-primary:not(.disabled) {
+  color: $theme-bg-dark-surface !important;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
 
 :host {
   display: block;
@@ -61,12 +310,13 @@ a,
 a * {
   cursor: pointer !important;
   text-decoration: none !important;
-  transition: color .2s ease-out;
+  transition: color 0.2s ease-out;
 }
 
 #container {
   margin-top: 3rem;
 }
+
 
 
 .sub-header {
@@ -75,11 +325,13 @@ a * {
 }
 
 .sub-text {
-	font-size: .8rem;
+  font-size: 0.8rem;
   color: $text-light-fade;
   font-weight: 100;
-	line-height: 1.2rem;
+  line-height: 1.2rem;
 }
+
+
 
 .color-accent {
   color: $accent;
@@ -93,8 +345,6 @@ a * {
   margin-left: $ml;
 }
 
-
-
 //  Replace w/ BootStrap
 .message {
   text-align: center;
@@ -103,20 +353,18 @@ a * {
 
 .warn .message {
   color: $warn;
-  
 }
 
 .panel {
   position: relative;
-  background: #506450;
-  color: #fafaf0;
-  
+  background: $theme-bg-dark-surface;
+  color: $theme-text-light;
+
   margin-bottom: 5px;
-  box-shadow: 0 3px 3px -2px rgba(0, 0, 0, .2), 0 3px 4px 0 rgba(0, 0, 0, .14), 0 1px 8px 0 rgba(0, 0, 0, .12);
+  box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12);
 
   //  padding: 0.2rem 0;    //  Min height negates this.
   min-height: 3rem;
-
 }
 
 .panel.warn {
@@ -129,26 +377,18 @@ a * {
   box-shadow: none;
 }
 
-
-
-
 //  BootStrap Fixes
 .row {
   width: 100%;
 }
 
 .btn-lg {
-  padding: .5rem 1rem !important;
+  padding: 0.5rem 1rem !important;
 }
 
 a:hover {
   color: $accent;
 }
-
-
-
-
-
 
 router-outlet ~ * {
   width: 1050px;
@@ -168,30 +408,17 @@ router-outlet ~ * {
   }
 }
 
-.rotate-90 {
-  transform: rotate(90deg);
-}
+/*     
 
-
-
-
-
-table {
-  width: 100%;
-}
-
-.rotate-90 {
-  transform: rotate(90deg);
-  display: inline-block;
-}
-
-/*      Team Color Classes      */
+  Team Color Classes 
+*/
 .colorChoice .colorIcon {
   width: 0.5em;
   display: inline-block;
 }
 
-.colorChoice, .colorIcon {
+.colorChoice,
+.colorIcon {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -234,18 +461,13 @@ table {
   background: $text-light;
 }
 
-
-
-
-
 .teamDropPad {
-  padding: .2rem;
+  padding: 0.2rem;
   padding-bottom: 1rem;
-  border: .3rem solid;
-  margin: .2rem;
+  border: 0.3rem solid;
+  margin: 0.2rem;
   min-height: 5rem;
   min-width: 30vw;
-
 
   background: transparent !important;
   border-color: $primary-light;
@@ -270,96 +492,89 @@ table {
   color: inherit;
 }
 
-
 .teamDropPad.red {
   color: $c-red;
-  border-color: rgba( $c-red, .6 );
-  background: rgba( $c-red, .1 ) !important; 
+  border-color: rgba($c-red, 0.6);
+  background: rgba($c-red, 0.1) !important;
 
   .cdk-drag-placeholder > * {
-    border-color: rgba( $c-red, .1 );
+    border-color: rgba($c-red, 0.1);
   }
 }
 
 .teamDropPad.blue {
   color: $c-blue;
-  border-color: rgba( $c-blue, .6 );
-  background: rgba( $c-blue, .1 ) !important;
+  border-color: rgba($c-blue, 0.6);
+  background: rgba($c-blue, 0.1) !important;
 
   .cdk-drag-placeholder > * {
-    border-color: rgba( $c-blue, .1 );
+    border-color: rgba($c-blue, 0.1);
   }
 }
 
 .teamDropPad.green {
   color: $c-green;
-  border-color: rgba( $c-green, .6 );
-  background: rgba( $c-green, .1 ) !important;
+  border-color: rgba($c-green, 0.6);
+  background: rgba($c-green, 0.1) !important;
 
   .cdk-drag-placeholder > * {
-    border-color: rgba( $c-green, .1 );
+    border-color: rgba($c-green, 0.1);
   }
 }
 
 .teamDropPad.yellow {
   color: $c-yellow;
-  border-color: rgba( $c-yellow, .6 );
-  background: rgba( $c-yellow, .1 ) !important;
+  border-color: rgba($c-yellow, 0.6);
+  background: rgba($c-yellow, 0.1) !important;
 
   .cdk-drag-placeholder > * {
-    border-color: rgba( $c-yellow, .1 );
+    border-color: rgba($c-yellow, 0.1);
   }
 }
 
 .teamDropPad.orange {
   color: $c-orange;
-  border-color: rgba( $c-orange, .6 );
-  background: rgba( $c-orange, .1 ) !important;
+  border-color: rgba($c-orange, 0.6);
+  background: rgba($c-orange, 0.1) !important;
 
   .cdk-drag-placeholder > * {
-    border-color: rgba( $c-orange, .1 );
+    border-color: rgba($c-orange, 0.1);
   }
 }
 
 .teamDropPad.purple {
   color: $c-purple;
-  border-color: rgba( $c-purple, .6 );
-  background: rgba( $c-purple, .1 ) !important;
+  border-color: rgba($c-purple, 0.6);
+  background: rgba($c-purple, 0.1) !important;
 
   .cdk-drag-placeholder > * {
-    border-color: rgba( $c-purple, .1 );
+    border-color: rgba($c-purple, 0.1);
   }
 }
 
 .teamDropPad.pink {
   color: $c-pink;
-  border-color: rgba( $c-pink, .6 );
-  background: rgba( $c-pink, .1 ) !important;
+  border-color: rgba($c-pink, 0.6);
+  background: rgba($c-pink, 0.1) !important;
 
   .cdk-drag-placeholder > * {
-    border-color: rgba( $c-pink, .1 );
+    border-color: rgba($c-pink, 0.1);
   }
 }
 
 .teamDropPad.white {
   color: $c-white;
-  border-color: rgba( $c-white, .6 );
-  background: rgba( $c-white, .1 ) !important;
+  border-color: rgba($c-white, 0.6);
+  background: rgba($c-white, 0.1) !important;
 
   .cdk-drag-placeholder > * {
-    border-color: rgba( $c-white, .1 );
+    border-color: rgba($c-white, 0.1);
   }
 }
-
 
 .cdk-drag-placeholder a {
   display: none;
 }
-
-
-
-
-
 
 .teamPicker.red:not([disabled]) {
   background: $c-red !important;
@@ -401,9 +616,6 @@ table {
   color: $primary-light !important;
 }
 
-
-
-
 .teamHeader.red:not([disabled]) {
   color: $c-red;
 }
@@ -441,6 +653,7 @@ table {
 
 
 
+
 .scores {
   display: flex;
   flex-direction: row;
@@ -462,7 +675,6 @@ table {
   color: $warn;
 }
 
-
 @media only screen and (max-width: 1100px) {
   router-outlet ~ * {
     width: 95%;
@@ -473,4 +685,293 @@ table {
   router-outlet ~ * {
     min-width: 480px;
   }
+}
+
+/*******************
+  Old Styles
+*/
+/*
+
+  Extra Colors
+*/
+.mat-light {
+  background: $text-light;
+  color: $primary-light;
+}
+
+.mat-transparent-primary:not(:disabled) {
+  background: transparent;
+  color: $text-light;
+}
+
+.mat-transparent-accent:not(:disabled) {
+  background: transparent;
+  color: $accent;
+}
+
+.mat-transparent-warn:not(:disabled) {
+  background: transparent;
+  color: $warn;
+}
+
+.mat-transparent-red:not(:disabled) {
+  background: transparent;
+  color: $c-red;
+}
+
+.mat-transparent-blue:not(:disabled) {
+  background: transparent;
+  color: $c-blue;
+}
+
+.mat-transparent-green:not(:disabled) {
+  background: transparent;
+  color: $c-green;
+}
+
+.mat-transparent-yellow:not(:disabled) {
+  background: transparent;
+  color: $c-yellow;
+}
+
+.mat-transparent-orange:not(:disabled) {
+  background: transparent;
+  color: $c-orange;
+}
+
+.mat-transparent-purple:not(:disabled) {
+  background: transparent;
+  color: $c-purple;
+}
+
+.mat-transparent-pink:not(:disabled) {
+  background: transparent;
+  color: $c-pink;
+}
+
+.mat-transparent-info:not(:disabled) {
+  background: transparent;
+  color: $text-light;
+
+  span {
+    background: transparent;
+    color: $text-light !important;
+  }
+}
+
+/*
+
+  CDK Drag-Drop
+*/
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+.cdk-drag-placeholder > * {
+  border: 0.3rem dotted;
+  background: transparent !important;
+  color: transparent !important;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.drag-item:last-child {
+  border: none;
+}
+
+.drag-list.cdk-drop-list-dragging .drag-item:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/*
+
+  TimePicker
+*/
+.timepicker {
+  width: 60vw !important;
+}
+
+.timepicker__header {
+  background: $primary-light !important;
+}
+
+.timepicker-dial__container {
+  justify-content: center !important;
+}
+
+.timepicker__body {
+  background: $primary-light !important;
+}
+
+.timepicker__actions {
+  background: $primary-light !important;
+  justify-content: space-between !important;
+}
+
+.timepicker-button {
+  font-size: 1rem !important;
+  line-height: 2rem !important;
+  color: $text-light !important;
+  height: initial !important;
+}
+
+.timepicker-button span {
+  font-size: inherit !important;
+}
+
+.clock-face {
+  width: 50vw !important;
+  height: 50vw !important;
+}
+
+.clock-face__number--outer {
+  height: calc(50vw / 2 - 20px) !important;
+}
+
+.clock-face__number > span {
+  font-size: 1.2rem !important;
+}
+
+.clock-face__clock-hand {
+  height: 20vw !important;
+  width: 3px !important;
+  top: calc(50% - 20vw) !important;
+}
+
+.clock-face__number {
+  width: 8vw !important;
+}
+
+.clock-face__number > span {
+  width: 8vw !important;
+  height: 8vw !important;
+}
+.clock-face__number--outer[_ngcontent-whs-c31] > span[_ngcontent-whs-c31] {
+  color: $primary-light;
+}
+
+.clock-face {
+  background: $text-light !important;
+}
+
+.timepicker-period {
+  flex-direction: row !important;
+  margin-left: 1em !important;
+}
+
+.timepicker-period__btn {
+  font-size: 1.5rem !important;
+}
+
+.timepicker-overlay {
+  z-index: 1002 !important;
+}
+
+.timepicker-backdrop-overlay {
+  z-index: 1001 !important;
+}
+
+/*
+
+New Input Styles
+*/
+.mat-form-field.mat-focused .mat-form-field-prefix {
+  color: $accent;
+}
+
+.mat-form-field-invalid .mat-form-field-prefix {
+  color: $warn;
+}
+
+.mat-form-field-prefix {
+  font-style: italic;
+  color: $text-light-fade;
+  text-align: right;
+
+  > *:not(.sm) {
+    min-width: 20%;
+  }
+
+  > *.sm {
+    min-width: 0;
+  }
+}
+
+*:disabled {
+  background-color: transparent;
+}
+
+.mat-flat-button[disabled] {
+  background-color: transparent;
+}
+
+.mat-select-panel .mat-optgroup-label,
+.mat-select-panel .mat-option {
+  font-size: inherit;
+  line-height: 2em;
+  height: 2em;
+}
+
+
+.mat-button,
+.mat-fab,
+.mat-flat-button,
+.mat-icon-button,
+.mat-mini-fab,
+.mat-raised-button,
+.mat-stroked-button {
+  min-width: 0 !important;
+  border-radius: 0 !important;
+  font-size: 1em !important;
+
+  line-height: 2em !important;
+  height: initial !important;
+}
+
+/*
+.mat-form-field-infix {
+  border-top: none;
+}
+*/
+
+/*
+  Google Places
+*/
+.pac-container {
+  background: $primary-light;
+  color: $text-light-fade;
+}
+
+.pac-item {
+  font-size: 0.8rem;
+  color: $text-light-fade;
+  line-height: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0.5em;
+}
+
+.pac-item-query {
+  font-size: 1.2rem;
+  line-height: 1.3em;
+  color: $text-light;
+}
+
+.pac-icon {
+  display: none;
+}
+
+.pac-matched {
+}
+
+/*
+  BootStrap Fixes
+*/
+.btn-link {
+  color: $accent;
 }

@@ -1,22 +1,22 @@
 <div *ngIf="(upcoming && recient) | async; else create">
-    <div *ngIf="upcoming | async as sessionList; else loader">
+    <div *ngIf="upcoming | async as sessionList">
         <div *ngIf='sessionList.length' @flyIn>
-            <h6 class="sub-header">Upcoming</h6>
+            <h6 class="mat-caption">Upcoming</h6>
             <session-list-item *ngFor="let session of sessionList" [session]="session"></session-list-item>
         </div>
     </div>
 
     <div *ngIf="recient | async as sessionList; else loader">
         <div *ngIf="sessionList.length" @flyIn>
-            <h6 class="sub-header">Recient</h6>
+            <h6 class="mat-caption">Recient</h6>
             <session-list-item *ngFor="let session of sessionList" [session]="session"></session-list-item>
         </div>
     </div>
 
-    <div class="row ">
+    <div class="row no-gutters">
         <div class="message">
             <p>
-                <a mat-flat-button color="transparent-accent" routerLink="/sessions/create">
+                <a mat-stroked-button color="transparent-accent" routerLink="/sessions/create">
                     Create
                 </a>
             </p>

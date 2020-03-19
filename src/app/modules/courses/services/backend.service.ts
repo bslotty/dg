@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ServerPayload } from 'src/app/app.component';
 import { map, catchError, distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { of, pipe, BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AccountBackend } from '../../account/services/backend.service';
-import { Course } from 'src/app/shared/types';
+import { Course, ServerPayload } from 'src/app/shared/types';
 import { HelperService } from 'src/app/shared/services/helper.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -37,12 +37,13 @@ export class CourseBackend {
     private helper: HelperService,
   ) { }
 
-
-  listFavorites() {
-    this.getList("favorites").subscribe((courses: Course[]) => {
-      this.favoriteList.next(courses);
+  listTop() {
+    this.getList("list").subscribe((res: ServerPayload[]) => {
+      this.list.next(this.helper.rGetData(res));
+    }, (e) => {
+      console.warn("sub.error: ", e);
     });
-  };
+  }
 
   listRecient() {
     this.getList("recient").subscribe((courses: Course[]) => {
@@ -50,13 +51,15 @@ export class CourseBackend {
     });
   }
 
-  listTop() {
-    this.getList("list").subscribe((courses: Course[]) => {
-      this.list.next(courses);
-    }, (e) => {
-      console.log("error: ", e);
+
+  listFavorites() {
+    this.getList("favorites").subscribe((courses: Course[]) => {
+      this.favoriteList.next(courses);
     });
-  }
+  };
+
+
+
 
 
   getList(list: string, start: number = 0, limit: number = 20) {
@@ -66,7 +69,7 @@ export class CourseBackend {
         "start": start,
         "limit": limit,
         "user": this.account.user
-      }).pipe(this.helper.pipe, this.helper.errorPipe);
+      }).pipe(this.helper.pipe);
   }
 
 

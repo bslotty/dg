@@ -3,9 +3,9 @@ import { FormGroup } from '@angular/forms';
 import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 import { flyInPanelRow, flyIn } from 'src/app/animations';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { listCategories } from 'src/app/modules/courses/components/list/list.component';
 import { ScoresFormService } from 'src/app/modules/scores/services/scores-form.service';
 import { ScoresBackend } from 'src/app/modules/scores/services/backend.service';
+import { listCategories } from 'src/app/shared/types';
 
 
 @Component({

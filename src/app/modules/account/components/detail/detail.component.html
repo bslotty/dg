@@ -1,44 +1,60 @@
 <app-section-header title="account" [buttons]="headerButtons" (actionClick)="actionClick($event)">
 </app-section-header>
 
-<div>
-  <h6 class="mt-4"> Update Information </h6>
-  <p>Need to update your account? Update your account information here.</p>
-  <div class="row no-gutters justify-content-end align-items-center">
-    <a mat-button routerLink="/account/update">
+<div class="mb-3">
+  <div class="row no-gutters justify-content-between align-items-center">
+    <h6 class="col mt-4 mat-headline"> Update Information </h6>
+    <a mat-stroked-button routerLink="/account/update" class="col-3">
       <label>Update</label>
     </a>
   </div>
+
+
+  <div class="row no-gutters justify-content-start align-items-start">
+    <p class="mat-body-2">Need to update your account? Update your account information here.</p>
+  </div>
 </div>
 
-<div>
-  <h6 class="mt-4"> Reset Password </h6>
-  <p>Need to update your password? Change it here.</p>
-  <div class="row no-gutters justify-content-end align-items-center">
-    <a mat-button routerLink="/account/reset">
+<div class="mb-3">
+  <div class="row no-gutters justify-content-between align-items-center">
+    <h6 class="col mt-4 mat-headline"> Reset Password </h6>
+    <a mat-stroked-button routerLink="/account/reset" class="col-3">
       <label>Reset</label>
     </a>
   </div>
 
+
+  <div class="row no-gutters justify-content-start align-items-start">
+    <p class="mat-body-2">Need to update your password? Change it here.</p>
+  </div>
+
 </div>
 
 
-<div>
-  <h6 class="mt-4"> Rankings </h6>
-  <p>Want to see where you place among your friends? Check your rankings here.</p>
-  <div class="row no-gutters justify-content-end align-items-center">
-    <a mat-button routerLink="/account/rankings">
+<div class="mb-3">
+  <div class="row no-gutters justify-content-between align-items-center">
+    <h6 class="col mt-4 mat-headline"> Rankings </h6>
+    <a mat-stroked-button routerLink="/account/rankings" class="col-3">
       <label>Rank</label>
     </a>
   </div>
+
+
+  <div class="row no-gutters justify-content-start align-items-start">
+    <p class="mat-body-2">Want to see where you place among your friends? Check your rankings here.</p>
+  </div>
 </div>
 
-<div>
-  <h6 class="mt-4"> Stats </h6>
-  <p>Want to see how well you perform? Check out your stats here.</p>
-  <div class="row no-gutters justify-content-end align-items-center">
-    <a mat-button routerLink="/account/stats">
+<div class="mb-3">
+  <div class="row no-gutters justify-content-between align-items-center">
+    <h6 class="col mt-4 mat-headline"> Stats </h6>
+    <a mat-stroked-button routerLink="/account/stats" class="col-3">
       <label>Stats</label>
     </a>
+  </div>
+  
+  
+  <div class="row no-gutters justify-content-start align-items-start">
+    <p class="mat-body-2">Want to see how well you perform? Check out your stats here.</p>
   </div>
 </div>

@@ -25,22 +25,19 @@ export class DetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.feed.initiateLoading();
-
     this.getDetail();
-    
+
   }
 
 
   getDetail() {
-    this.courses.getDetail(this.course).subscribe((v)=>{
-      console.log ("course.detail.res:  ", v);
+    this.courses.getDetail(this.course).subscribe((v) => {
+      console.log("course.detail.res:  ", v);
 
-      this.feed.finializeLoading();
     });
   }
 
-  back(){
+  back() {
     this.location.back();
   }
 

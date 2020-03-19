@@ -1,9 +1,12 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable, OnInit, ErrorHandler } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ServerPayload } from 'src/app/app.component';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { delay } from 'rxjs/internal/operators/delay';
+import { timeout } from 'rxjs/internal/operators/timeout';
+import { FeedbackErrorHandler } from 'src/app/shared/types';
 
 @Injectable({
   providedIn: 'root'
@@ -13,24 +16,17 @@ export class FeedbackService implements OnInit {
   loading: boolean = true;
 
   error: boolean = false;
-  errorHandler: HttpErrorResponse;
+  errorMsg: string = "";
   retryObs: Observable<any>;
   attempts: number = 0;
 
   list: BehaviorSubject<string[]> = new BehaviorSubject([]);
   list$: Observable<string[]> = this.list.asObservable();
 
-  pColor: string = "primary";
-  pMode: string = "determinate"
-  pValue: string = "100";
-
-  feedbackMessage: string;
-
   constructor(
     private snackBar: MatSnackBar,
     private router: Router
   ) {
-
     //  Reset Error Message upon Router Change
     //    Change on End, After all checks;
     this.router.events.subscribe((e) => {
@@ -41,40 +37,34 @@ export class FeedbackService implements OnInit {
       //  Test and possibly remove
       //  Automatic Loading when route loads;
       if (e instanceof NavigationStart) {
-        this.loading = true;
-        this.reset();
+        this.clearErrors();
       }
 
 
     });
-
-    //  Load Upon Router Start? //  End?
   }
 
-  ngOnInit() {
-    this.feedbackMessage = "";
+  ngOnInit() { }
 
-
-    
-  }
-
-  reset() {
+  clearErrors() {
     this.error = false;
     this.attempts = 0;
   }
 
-  retry() {
-    this.error = false;
-    this.retryObs.subscribe((retry)=>{
-      console.log("retry: ", retry);
-    });
+
+  setErrorMsg(error: string) {
+    this.error = true;
+    this.attempts++;
+    this.errorMsg = error;
   }
 
 
+
+
   //  New Functions for section specific loading; Observable Edition
-  stop(str: string): void {
+  stopElementTracking(str: string): void {
     //  Current List
-    var list = this.list.value;
+    let list = this.list.value;
 
     //  If Exists; Pop
     let i = list.indexOf(str);
@@ -86,18 +76,21 @@ export class FeedbackService implements OnInit {
     this.list.next(list);
   }
 
-  start(str: string): void {
+  startElementTracking(str: string): void {
     //  Current List
-    var list = this.list.value;
+    let list = this.list.value;
 
     //  If Not In; Push
-    if (list.indexOf(str) == -1){
+    if (list.indexOf(str) == -1) {
       list.push(str);
     }
 
     //  Emit Updates
     this.list.next(list);
   }
+
+
+
 
 
   /**
@@ -118,41 +111,6 @@ export class FeedbackService implements OnInit {
     });
   }
 
-  /**
-   * @event REST Callback with result of error
-   * To tie in with message component for form
-   * feedback
-   */
-  setMessage(payload: ServerPayload) {
-    this.feedbackMessage = payload.msg;
-  }
-
-  /**
-   * @deprecated
-   */
-  initiateLoading() {
-    this.loading = true;
-
-    this.pColor = "primary";
-    this.pMode = "indeterminate";
-    this.pValue = "0";
-  }
-
-
-  /**
-   * @deprecated
-   */
-  finializeLoading(payload = null, toast: boolean = false) {
-    if (payload) {
-      if (toast == true) {
-        this.setMessage(payload);
-      }
-      this.pColor = payload.status == "success" ? "primary" : "warn";
-    }
-
-    this.pValue = "100";
-    this.pMode = "determinate";
-    this.loading = false;
-  }
+  1111
 
 }
