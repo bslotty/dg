@@ -8,6 +8,8 @@ import { HelperService } from 'src/app/shared/services/helper.service';
 import { Session, Player, SessionFormat } from 'src/app/shared/types';
 import { map } from 'rxjs/internal/operators/map';
 import { catchError } from 'rxjs/internal/operators/catchError';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { switchMap, find } from 'rxjs/operators';
 
 
 @Injectable({
@@ -18,30 +20,30 @@ export class SessionBackend {
   url: string = environment.apiUrl + '/controllers/sessions.php';
 
   //  Generic
-  private list: Subject<Session[]> = new Subject();
-  list$: Observable<Session[]> = this.list.asObservable();
+  private recient: BehaviorSubject<Session[]> = new BehaviorSubject([]);
+  recient$: Observable<Session[]> = this.recient.asObservable();
+
+  //  Generic
+  private upcoming: BehaviorSubject<Session[]> = new BehaviorSubject([]);
+  upcoming$: Observable<Session[]> = this.upcoming.asObservable();
 
   //  Favorites
-  private favoriteList: BehaviorSubject<Session[]> = new BehaviorSubject([]);
-  favoriteList$: Observable<Session[]> = this.list.asObservable();
+  private favoriteList: Subject<Session[]> = new Subject();
+  favoriteList$: Observable<Session[]> = this.upcoming.asObservable();
 
   //  Single View
   private detail: BehaviorSubject<Session> = new BehaviorSubject(new Session());
   detail$: Observable<Session> = this.detail.asObservable();
 
 
-  
+
   //  Recient Players
-  private recientPlayers: BehaviorSubject<Player[]> = new BehaviorSubject([])
+  private recientPlayers: Subject<Player[]> = new Subject()
   recientPlayers$: Observable<Player[]> = this.recientPlayers.asObservable();
 
   //  Searched Players
-  private searchedPlayers: BehaviorSubject<Player[]> = new BehaviorSubject([])
+  private searchedPlayers: Subject<Player[]> = new Subject()
   searchedPlayers$: Observable<Player[]> = this.searchedPlayers.asObservable();
-
-
-  //  Session Modes
-  public types: SessionFormat[] = this.helper.types;
 
   public admin: boolean = false;
 
@@ -50,15 +52,18 @@ export class SessionBackend {
     private http: HttpClient,
     private helper: HelperService,
     private account: AccountBackend,
+    private route: ActivatedRoute,
   ) {
     this.detail$.subscribe((d) => {
       // Verify Detail Valid;
+      console.log("session.create.detail: ", d);
 
       //  Update if ID / Create If Not
       if (this.account.user && d.created_by == this.account.user.id) {
         this.admin = true;
       }
     });
+
   }
 
   //  Take a form, and verify that it is valid;
@@ -66,46 +71,31 @@ export class SessionBackend {
     return true;
   }
 
-  //  Take Format String and Convert to :SessionFormat
-  convertFormatStr(str) {
-    return this.types.find(t => t.enum == str);
-  }
-
-
-
-  convertSession(res) {
-    var result: Session[] = [];
-
-    this.helper.rGetData(res).forEach((session) => {
-      result.push(new Session(
-        session['id'],
-        session['created_on'],
-        session['created_by'],
-        session['modified_on'],
-        session['modified_by'],
-        session['course'],
-        this.convertFormatStr(session['format']),
-        session['starts_on'],
-        session['title'],
-        session['par'],
-        session['scores'],
-      ));
-    });
-
-    return result;
-  }
-
-
 
   listFavorites() {
-    this.getList("favorites").subscribe((session: Session[]) => {
-      this.favoriteList.next(session);
+    this.getList("favorites").subscribe((res: ServerPayload[]) => {
+
+      this.favoriteList.next(this.helper.rGetData(res));
     });
   };
 
-  listRecient() {
-    this.getList("list").subscribe((list: Session[]) => {
-      this.list.next(list);
+
+  listCurrentSessions() {
+    this.getList("list").subscribe((res: ServerPayload[]) => {
+      //  this.list.next(this.helper.rGetData(res));
+
+      let sessions = this.helper.rGetData(res);
+
+      console.log("sessions: ", sessions);
+
+      var d = new Date().getTime();
+      let recient = sessions.filter((s: Session) => d > s.starts_on.getTime());
+      this.recient.next(recient);
+
+      //  Get Upcoming; Sort by soonest; Limit 5
+      let upcoming = sessions.filter((s: Session) => d < s.starts_on.getTime());
+      this.upcoming.next(upcoming);
+
     });
   }
 
@@ -116,37 +106,102 @@ export class SessionBackend {
       "start": start,
       "limit": limit,
       "user": this.account.user
-    }).pipe(this.helper.pipe,
-      map((res) => {
-        var result = this.helper.convertSession(res);
-        return result;
-      }),
-      catchError(
-        (error) => of(`Bad Request ${error}`)
-      )
-    );
+    });
   }
 
+  findDetails(session_id) {
+    console.log ("Searching For: ", session_id);
+
+    let session:Session = new Session();
+    session.id = session_id;
+    
+
+    //  Find Session in Upcoming & Recient Lists;
+    //  If Found; Set details$ to matching session
+    //  if !Found; getDetail to get from server
+    //  if ServerRes Ok; Set details$
 
 
-  getDetail(session: Session): void {
+    //  Search List for Match
+    let found = false;
+    let upcoming = this.upcoming.value.find((v, i) => {
+      return v.id = session.id;
+    });
+    if (upcoming != undefined) {
+      session = upcoming;
+      found = true;
+    }
 
-    //  Just Grab All info from the server for the specific details; Other information may not be available; fix;
-    this.http.post(this.url, {
+    let recient = this.recient.value.find((v, i) => {
+      return v.id = session.id;
+    });
+    if (upcoming != undefined) {
+      session = recient;
+      found = true;
+    }
+
+
+    console.log("upcoming: ", upcoming);
+    console.log("recient: ", recient);
+
+
+    if (found) {
+      console.log("session found from lists!");
+      this.detail.next(session);
+
+    } else {
+      this.getDetail(session).subscribe((res: ServerPayload[]) =>{
+        let session = this.helper.rGetData(res)[0];
+        if (session != undefined) {
+          console.log("session retrieved from server!");
+          this.detail.next(session);
+        } else {
+          console.warn("Unable to find session.", session);
+        }
+        
+      });
+    }
+  }
+
+  getDetail(session: Session) {
+    return this.http.post(this.url, {
       "action": "detail",
       "session": session,
       "user": this.account.user
-    }).pipe().subscribe((res: ServerPayload[]) => {
-      if (this.helper.rCheck(res)) {
+    }).pipe();
+  }
 
-        var session = this.helper.convertSession(res)[0];
-        console.log("session.getDetail: ", session);
+  //  MOD
+  setupNewSession() {
+    let session: Session;
 
-        this.detail.next(session);
-      } else {
-        console.log("Error with server Response: ", res);
-      }
-    });
+    //  Get URL Path
+    let guid = this.route.snapshot.paramMap.get("session");
+    console.log("guid", guid);
+
+    //  If Null -> Create Default Session
+    //  If !Null -> Get From List
+    //  If !Found -> Get From Server
+
+    if (guid == null) {
+      session = new Session(
+        "create",
+        new Date(),
+        this.account.user.id,
+        null,
+        null,
+        null,
+        this.helper.types[0],
+        null,
+        null, 
+        [],
+        []
+      )
+    } else {
+
+    }
+
+    return session;
   }
 
 
@@ -156,15 +211,7 @@ export class SessionBackend {
       "user": this.account.user,
       "session": session,
       "action": "create"
-    }).pipe(
-      map((res) => {
-        if (this.helper.rCheck(res)) {
-          console.log("create.res: ", res);
-          this.detail.next(this.convertSession(res)[0]);
-        }
-        return res;
-      })
-    );
+    }).pipe();
 
 
   }
@@ -174,24 +221,19 @@ export class SessionBackend {
       "user": this.account.user,
       "session": session,
       "action": "update",
-    }).pipe(
-      map((res: ServerPayload) => {
-        //  Return Server Response for Error Handling
-        return res;
-      })
-    );
+    }).pipe();
   }
 
 
 
   delete(session: Session) {
-      this.http.post(this.url, {
-        "action": "delete",
-        "session": session,
-        "user": this.account.user
-      }).subscribe((res) => {
-        console.log("Delete.res: ", res);
-      });
+    this.http.post(this.url, {
+      "action": "delete",
+      "session": session,
+      "user": this.account.user
+    }).subscribe((res) => {
+      console.log("Delete.res: ", res);
+    });
   }
 
 
@@ -206,32 +248,14 @@ export class SessionBackend {
 
   resetDetail() {
     this.detail.next(new Session());
-    console.log("session.detail reset: ", this.detail.value);
   }
 
 
-  /*
-  setSessionFromID(sessionId): void {
 
-    //  Search List for Match
-    var session = this.list.value.find((v, i) => {
-      return v.id = sessionId;
-    });
 
-    if (session != undefined) {
-
-      //  Emit new session detail 
-      this.detail.next(session);
-    } else {
-
-      //  Get Data From server if not found;
-      var session = new Session();
-      session.id = sessionId;
-      this.getDetail(sessionId);
-    }
-  }
-  */
-
+/**
+ *    Add Save Feature Here
+ */
   setFormat(format) {
     this.detail.value.format = format;
     this.detail.next(this.detail.value);
@@ -247,6 +271,7 @@ export class SessionBackend {
     this.detail.value.starts_on = d;
     this.detail.next(this.detail.value);
   }
+
 
 
 

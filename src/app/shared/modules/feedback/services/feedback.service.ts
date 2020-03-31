@@ -15,7 +15,7 @@ export class FeedbackService implements OnInit {
 
   loading: boolean = true;
 
-  error: boolean = false;
+  private error: boolean = false;
   errorMsg: string = "";
   retryObs: Observable<any>;
   attempts: number = 0;
@@ -32,6 +32,7 @@ export class FeedbackService implements OnInit {
     this.router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         this.loading = false;
+        this.clearErrors();
       }
 
       //  Test and possibly remove
@@ -45,6 +46,10 @@ export class FeedbackService implements OnInit {
   }
 
   ngOnInit() { }
+
+  hasError() {
+    return this.error;
+  }
 
   clearErrors() {
     this.error = false;

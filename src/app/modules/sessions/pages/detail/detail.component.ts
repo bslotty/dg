@@ -4,7 +4,7 @@ import { flyIn } from 'src/app/animations';
 import { FormGroup } from '@angular/forms';
 import { SessionFormService } from '../../services/form.service';
 import { SessionBackend } from '../../services/backend.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { ScoresBackend } from 'src/app/modules/scores/services/backend.service';
 import { MatDialog } from '@angular/material';
 import { SelectCourseComponent } from '../../dialogs/select-course/select-course.component';
@@ -12,6 +12,8 @@ import { SelectFormatComponent } from '../../dialogs/select-format/select-format
 import { SelectTimeComponent } from '../../dialogs/select-time/select-time.component';
 import { SelectPlayersComponent } from '../../dialogs/select-players/select-players.component';
 import { Session } from 'src/app/shared/types';
+import { Observable } from 'rxjs/internal/Observable';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-detail',
@@ -21,7 +23,8 @@ import { Session } from 'src/app/shared/types';
 })
 export class DetailComponent implements OnInit {
 
-  session: Session = new Session();
+  session: Observable<Session> = this._sessions.detail$;
+
   form: FormGroup;
 
   playerModes = ["full", "admin"];
@@ -32,7 +35,7 @@ export class DetailComponent implements OnInit {
     private _sessionsForm: SessionFormService,
     private _sessions: SessionBackend,
     private _scores: ScoresBackend,
-    private router: ActivatedRoute,
+    private route: ActivatedRoute,
     private dialog: MatDialog,
   ) { }
 
@@ -45,8 +48,17 @@ export class DetailComponent implements OnInit {
     });
 
     //  Populate Data for form
-    this.session.id = this.router.snapshot.paramMap.get("session");
+    /*
+    this.session.id = this.route.snapshot.paramMap.get("session");
+    console.log("sessionid:", this.session.id);
     this._sessions.getDetail(this.session);
+    */
+   let fetch = this.route.paramMap.pipe(switchMap((params: ParamMap) => {
+    console.log("session.id", params.get("session"));
+
+    this._sessions.findDetails(params.get("session"))
+    return this._sessions.detail$;
+  })).subscribe();
 
 
     //  Save if close response is true (data changed);

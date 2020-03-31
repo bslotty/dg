@@ -16,7 +16,7 @@ $devMode = true;
 
 //  DB
 require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/shared/sql.php');
-$database = new DB;
+$database = new DB("scores");
 
 //  Scores
 require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/classes/scores.php');
@@ -29,7 +29,7 @@ $player = new Player($database);
 
 switch ($payload['action']) {
 	case "list":
-		$return[] = $scores->getList($payload['start'], $payload['limit']);
+		$return[] = $scores->getScores($payload['start'], $payload['limit']);
 
 		break;
 

@@ -6,23 +6,24 @@
 @import "./theme.scss";
 
 $fontConfig: (
-  display-4: mat-typography-level(64px, 72px, 200, $theme-font-header, -0.0781em),
-  display-3: mat-typography-level(56px, 56px, 200, $theme-font-header, -0.0089em),
+  display-4: mat-typography-level(64px, 72px, 200, $theme-font-header, -0.07em),
+  display-3: mat-typography-level(56px, 56px, 200, $theme-font-header, -0.09em),
   display-2: mat-typography-level(45px, 48px, 200, $theme-font-header, 0em),
-  display-1: mat-typography-level(34px, 40px, 200, $theme-font-header, 0.0074em),
+  display-1: mat-typography-level(34px, 40px, 200, $theme-font-header, 0.07em),
   headline: mat-typography-level(28px, 32px, 400, $theme-font-header, 0em),
   title: mat-typography-level(20px, 32px, 500, $theme-font-header, 0.0075em),
   subheading-2: mat-typography-level(16px, 28px, 400, $theme-font-utility, 0.0094em),
   subheading-1: mat-typography-level(15px, 24px, 500, $theme-font-utility, 0.0067em),
-  body-2: mat-typography-level(20px, 28px, 400, $theme-font-body, 0.0179em),
-  body-1: mat-typography-level(14px, 20px, 400, $theme-font-body, 0.0179em),
-  button: mat-typography-level(14px, 22px, 600, $theme-font-utility, 0.25em),
+  body-2: mat-typography-level(20px, 28px, 300, $theme-font-body, 0.0179em),
+  body-1: mat-typography-level(14px, 20px, 300, $theme-font-body, 0.0179em),
+  button: mat-typography-level(14px, 1.125, 600, $theme-font-utility, 0em),
   caption: mat-typography-level(18px, 20px, 400, $theme-font-utility, 0.5em),
-  input: mat-typography-level(inherit, 1.125, 600, $theme-font-utility, 1.5px)
+  input: mat-typography-level(inherit, 1.125, 400, $theme-font-utility, 0em)
 );
 
 // Foreground Elements
 
+/*
 // Light Theme Text
 $dark-text: $theme-text-dark;
 $dark-primary-text: rgba($dark-text, 0.9);
@@ -79,7 +80,7 @@ $mat-dark-theme-foreground: (
 
 // Background config
 // Light bg
-$light-background: $theme-bg-light;
+$light-background: $theme-bg-light-surface;
 $light-bg-darker-5: darken($light-background, 5%);
 $light-bg-darker-10: darken($light-background, 10%);
 $light-bg-darker-20: darken($light-background, 20%);
@@ -90,12 +91,12 @@ $dark-bg-alpha-12: rgba(#222222, 0.12);
 
 $mat-light-theme-background: (
   background: $light-background,
-  status-bar: $light-bg-darker-20,
-  app-bar: $light-bg-darker-5,
-  hover: $dark-bg-alpha-4,
-  card: $light-bg-lighter-5,
-  dialog: $light-bg-lighter-5,
-  disabled-button: $dark-bg-alpha-12,
+  status-bar: $light-background,
+  app-bar: $light-background,
+  hover: $light-background,
+  card: $light-background,
+  dialog: $light-background,
+  disabled-button: $light-background,
   raised-button: $light-bg-lighter-5,
   focused-button: $dark-focused,
   selected-button: $light-bg-darker-20,
@@ -132,6 +133,8 @@ $mat-dark-theme-background: (
   disabled-list-option: $dark-bg-lighter-10
 );
 
+*/
+
 // Compute font config
 @include mat-core($fontConfig);
 
@@ -142,9 +145,9 @@ body {
   --primary-color: $theme-primary;
   --primary-lighter-color: lighten(desaturate($theme-primary, 50%), 25%);
   --primary-darker-color: darken($theme-primary, 20%);
-  --text-primary-color: #{$light-primary-text};
-  --text-primary-lighter-color: #{$dark-primary-text};
-  --text-primary-darker-color: #{$light-primary-text};
+  --text-primary-color: #{$text-light};
+  --text-primary-lighter-color: #{$text-light};
+  --text-primary-darker-color: #{$text-light};
 }
 
 $mat-primary: (
@@ -251,15 +254,21 @@ body {
   text-transform: uppercase;
 }
 
-.mat-raised-button.mat-primary:not(.disabled),
-.mat-mini-fab.mat-primary:not(.disabled) {
+//  Button Colors
+.mat-raised-button.mat-primary:not([disabled]),
+.mat-mini-fab.mat-primary:not([disabled]) {
   color: $theme-bg-dark-surface !important;
+}
+
+.mat-button[disabled],
+.mat-raised-button[disabled] {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .mat-form-field {
   width: 100%;
 }
-
 
 :host {
   display: block;
@@ -289,10 +298,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: $font-header;
   margin: 0;
   margin-left: $ml;
-  width: 100%;
 }
 
 p {
@@ -375,6 +382,10 @@ a * {
 .mat-dialog-container .panel {
   background: transparent;
   box-shadow: none;
+
+  .ml {
+    margin-left: 0;
+  }
 }
 
 //  BootStrap Fixes

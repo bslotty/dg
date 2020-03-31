@@ -39,13 +39,11 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
 
 				if (this._feed.attempts > 3) {
 
-					if (!this._feed.error) {
+					if (!this._feed.hasError()) {
 						this._feed.setErrorMsg("Something is wrong, the server is not responding.");
 					}
 					
 					this._feed.loading = false;
-
-					console.warn("!!!! ERROR !!!!");
 
 					return of([]);
 				} else {
@@ -68,7 +66,7 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
 
 				if (event instanceof HttpResponse) {
 
-					console.log("errorHandler.interceptor.event: ", event);
+					//	console.log("errorHandler.interceptor.event: ", event);
 
 
 					//	Needs to be replaced with getting the message of the last status; 
@@ -83,26 +81,27 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
 						//	Get latest server event;
 						var lastEvent = event.body[event.body.length - 1];
 
-						if (lastEvent.msg && lastEvent.status == "success") {
-							console.log("server response ok");
+						if (lastEvent.status == "success") {
+							//	Good
+							//	console.log("server response ok");
 							this._feed.clearErrors();
 
-						} else if (lastEvent.msg && lastEvent.status == "error") {
+						} else if (lastEvent.status == "error") {
 							//	Server response bad;
-							console.log("server.error:", lastEvent);
-
-							//	Set error message
-							this._feed.setErrorMsg(lastEvent.msg);
-
-							this._feed.loading = false;
+							//	console.log("server.error:", lastEvent);
+							let msg = lastEvent.msg ? lastEvent.msg : "Unknown error";
+							this._feed.setErrorMsg(msg);
 						}
 					} else {
 
-						//	HTTP Response not good;
-						//	TODO: Seperate 4xx, 5xx, xxx messages 
-						console.log("http.error:", event);
-						this._feed.setErrorMsg(lastEvent.status + ": " + lastEvent.statusText);
+						//	HTTP response bad;
+						//	TODO: Seperate 4xx, 5xx, xxx messages, maybe different template 
+						//	console.log("http.error:", event);
+						let msg = lastEvent.status + ": " + lastEvent.statusText;
+						this._feed.setErrorMsg(msg);
 					}
+
+					this._feed.loading = false;
 				}
 
 				return event;

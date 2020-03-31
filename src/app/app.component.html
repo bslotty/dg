@@ -1,26 +1,24 @@
 <div class="head row justify-content-between align-items-center no-gutters mb-4" @flyIn>
 
     <!--    Home & Logo    -->
-    <a class="col-3 text-left pl-3" mat-button color="primary" routerLink="/">
+    <a class="col text-left pl-3" mat-button color="primary" routerLink="/">
         <h1 class='ml-0 logo'>DGC</h1>
     </a>
- 
 
 
-    <div class="col">
-        <!--    BreadCrumbs     -->
-        <!--    Current Route   -->
-        <div *ngFor="let path of paths; index as i">
-            <div *ngIf="path != 'home'" class="row justify-content-start align-items-center no-gutters">
-                <a *ngIf="i == 0" routerLink="{{ '/' + path }}" mat-flat-button
-                    color="transparent-primary">{{ path | titlecase }}</a>
-                <a *ngIf="i != 0 && path.length < 35" mat-flat-button
-                    color="transparent-primary">{{ path | titlecase }}</a>
+    <!--    BreadCrumbs     
+    <div class="col ">
+        <div class="row justify-content-start align-items-center no-gutters">
+            <div *ngFor="let path of paths; index as i">
+                <div *ngIf="path != 'home'">
+                    <a *ngIf="i == 0" routerLink="{{ '/' + path }}" mat-flat-button
+                        color="transparent-primary">{{ path | titlecase }}</a>
+                    <a *ngIf="i != 0 && path.length < 35" mat-flat-button
+                        color="transparent-primary">{{ path | titlecase }}</a>
 
-                <div *ngIf="i == 0">
-                    <!--    Other Main Routes    -->
-                    <a mat-flat-button color="transparent-primary" [matMenuTriggerFor]="navMenu" yPosition="below"
-                        xPosition="before"><span class="icon-chevron-down"></span>
+                   
+                    <a *ngIf="i == 0" mat-flat-button color="transparent-primary" [matMenuTriggerFor]="navMenu"
+                        yPosition="below" xPosition="before"><span class="icon-chevron-down"></span>
                         <mat-menu #navMenu="matMenu">
                             <a routerLink="/courses" *ngIf="path != 'courses'" mat-flat-button
                                 color="transparent-primary">Courses</a>
@@ -30,13 +28,15 @@
                                 color="transparent-primary">Account</a>
                         </mat-menu>
                     </a>
-
                 </div>
+
+
             </div>
 
-
         </div>
-    </div>
+
+    </div-->
+    
 
     <div class="col-1">
         <!--    Account     -->

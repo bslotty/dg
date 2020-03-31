@@ -14,57 +14,21 @@ import { Session } from 'src/app/shared/types';
 })
 export class DashboardComponent implements OnInit {
 
-
-  //  recient: Session[];
-  list: Session[];
-
-  upcoming: Observable<Session[]>;
-  recient: Observable<Session[]>;
-
-  //  favorites: Session[]; 
+  upcoming: Observable<Session[]>   = this._sessions.upcoming$;
+  recient: Observable<Session[]>    = this._sessions.recient$;
 
   constructor(
-    private sessionBackend: SessionBackend,
-    private feed: FeedbackService,
+    private _sessions: SessionBackend,
+    private _feed: FeedbackService,
   ) { }
 
   ngOnInit() {
-    this.feed.startElementTracking("session-upcoming");
-    this.feed.startElementTracking("session-recient");
+    this._feed.startElementTracking("session-upcoming");
+    this._feed.startElementTracking("session-recient");
 
     //  Get List
-    this.sessionBackend.listRecient();
+    this._sessions.listCurrentSessions();
 
-
-    /*
-    this.sessionBackend.getDetail(this.session);
-    this.sessionBackend.detail$.subscribe((s) => {
-      console.log("foundSession: ", s);
-      this.session = s;
-      this.sessionForm.setForm(s);
-
-      if (this.session.created_by == this.accountBackend.user.id) {
-        this.mode = "edit";
-      } else {
-        this.mode = "view";
-      }
-      
-    });
-    */
-
-    var d = new Date().getTime();
-    this.recient = this.sessionBackend.list$.pipe(
-      map((a, i) => {
-        return a.filter((s: Session) => d > new Date(s.starts_on).getTime());
-      })
-    );
-
-    //  Get Upcoming; Sort by soonest; Limit 5
-    this.upcoming = this.sessionBackend.list$.pipe(
-      map((a, i) => {
-        return a.filter((s: Session) => d < new Date(s.starts_on).getTime());
-      })
-    );
   }
 
 }

@@ -61,16 +61,18 @@ export class HelperService {
   rCheck(res /*: ServerPayload[]*/): boolean {
     if (res != null) {
       var latest = res.length - 1;
+
+      console.log("res[latest]", res[latest]);
       if (res[latest]["status"] == "success") {
         return true;
       } else {
 
-        console.warn("server.error: ", res[latest]["status"]["message"] );
+        console.warn("server.error: ", res[latest]["status"]["message"]);
         return false;
       }
     } else {
 
-      console.warn("server.error.nothing: ", res[latest]["status"]["message"] );
+      console.warn("server.error.nothing: ", res[latest]["status"]["message"]);
       return false;
     }
 
@@ -83,7 +85,6 @@ export class HelperService {
  */
   rGetData(res/*: ServerPayload[]*/): Array<any> {
 
-    console.log ("rGetData: ", res);
     var latest = res.length - 1;
     if (latest > -1) {
       return res[latest]["formattedResults"];
@@ -100,51 +101,49 @@ export class HelperService {
  */
 
   convertFormatStr(str): SessionFormat {
-    return this.types.find(t => t.enum == str);
+    let format: SessionFormat = this.types.find(t => t.enum == str);
+    return format;
   }
 
-  convertSession(res) {
-    var result = [];
+  convertSession(sessions): Session[] {
+    var result: Session[] = [];
 
-    if (this.rCheck(res)) {
-      this.rGetData(res).forEach((session) => {
-        result.push(new Session(
-          session['id'],
-          session['created_on'],
-          session['created_by'],
-          session['modified_on'],
-          session['modified_by'],
-          session['course'],
-          this.convertFormatStr(session['format']),
-          session['starts_on'],
-          session['title'],
-          session['par'],
-          session['scores'],
-        ));
-      });
-    }
-
+    sessions.forEach((session) => {
+      result.push(new Session(
+        session['id'],
+        new Date(session['created_on']),
+        session['created_by'],
+        new Date(session['modified_on']),
+        session['modified_by'],
+        session['course'],
+        this.convertFormatStr(session['format']),
+        new Date(session['starts_on']),
+        session['title'],
+        session['par'],
+        session['scores'],
+      ));
+    });
     console.log("ConvertSession: ", result);
 
-    this.feed.loading = false;
     return result;
   }
 
 
 
-  convertScores(res: ServerPayload[]): Score[] {
+
+  convertScores(scores): Score[] {
     var result: Score[] = [];
 
-    if (this.rCheck(res)) {
-      this.rGetData(res).forEach((s) => {
+    if (scores != undefined && scores.length < 0) {
+      scores.forEach((s) => {
         var score = new Score();
-        score.id = s['scores.id'];
-        score.created_on = s['scores.created_on'];
-        score.created_by = s['scores.created_by'];
-        score.modified_on = s['scores.modified_on'];
-        score.modified_by = s['scores.modified_by'];
-        score.handicap = s['scores.handicap'];
-        score.scores = s['scores.score_array'];
+          score.id              = s['scores.id'];
+          score.created_on      = s['scores.created_on'];
+          score.created_by      = s['scores.created_by'];
+          score.modified_on     = s['scores.modified_on'];
+          score.modified_by     = s['scores.modified_by'];
+          score.handicap        = s['scores.handicap'];
+          score.scores          = s['scores.score_array'];
 
         score.player = new Player(
           s["scores.player.id"],
@@ -163,7 +162,6 @@ export class HelperService {
         result.push(score);
       });
     }
-
 
 
     return result;

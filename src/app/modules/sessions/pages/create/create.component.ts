@@ -33,12 +33,14 @@ export class CreateComponent implements OnInit {
 
     this.sessions_.resetDetail();
 
+ 
     //  Setup Form
     this.sessionForm.Setup("create");
     this.sessionForm.form$.subscribe((f) => {
       this.form = f;
       console.log("this.f", f);
     });
+ 
   }
 
 

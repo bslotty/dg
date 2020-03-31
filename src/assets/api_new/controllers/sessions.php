@@ -46,7 +46,7 @@ $devMode = true;
 
 //  DB
 require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/shared/sql.php');
-$database = new DB;
+$database = new DB("session");
 
 //  Session
 require_once($_SERVER['DOCUMENT_ROOT'] . '/sites/disc/api/classes/sessions.php');

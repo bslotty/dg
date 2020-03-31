@@ -40,21 +40,19 @@ export class CourseBackend {
   listTop() {
     this.getList("list").subscribe((res: ServerPayload[]) => {
       this.list.next(this.helper.rGetData(res));
-    }, (e) => {
-      console.warn("sub.error: ", e);
     });
   }
 
   listRecient() {
-    this.getList("recient").subscribe((courses: Course[]) => {
-      this.recientList.next(courses);
+    this.getList("recient").subscribe((res: ServerPayload[]) => {
+      this.recientList.next(this.helper.rGetData(res));
     });
   }
 
 
   listFavorites() {
-    this.getList("favorites").subscribe((courses: Course[]) => {
-      this.favoriteList.next(courses);
+    this.getList("favorites").subscribe((res: ServerPayload[]) => {
+      this.favoriteList.next(this.helper.rGetData(res));
     });
   };
 
@@ -69,7 +67,7 @@ export class CourseBackend {
         "start": start,
         "limit": limit,
         "user": this.account.user
-      }).pipe(this.helper.pipe);
+      }).pipe();
   }
 
 
@@ -77,13 +75,13 @@ export class CourseBackend {
   getDetail(course: Course) {
     let url = environment.apiUrl + "/courses/detail.php";
     return this.http.post(url, { course: course }).pipe(map((res: ServerPayload) => {
-      this.list.next(this.helper.convertCourse(res));
+      this.list.next(this.helper.rGetData(res));
     }));
   }
 
   getSearch(term: string) {
     this.http.post(this.url, { action: "search", term: term }).pipe(this.helper.pipe).subscribe((res: ServerPayload) => {
-      this.search.next(this.helper.convertCourse(res));
+      this.search.next(this.helper.rGetData(res));
     });
   }
 

@@ -49,24 +49,32 @@ export class FormatterInterceptor implements HttpInterceptor {
 		//	console.log("request: ", request, next);
 
 		return next.handle(request).pipe(
-			
+
 			map((event: HttpEvent<any>) => {
 				if (event instanceof HttpResponse) {
 
-					let list;
+					let list = event.body;
+					let latest = list.length - 1;
 
-					switch(event.body[0].mapTo){
+					switch (list[latest].mapTo) {
 						case "course":
-							event.body[0].formattedResults = this._helper.convertCourse(event.body[0].results);
+							list[latest].formattedResults = this._helper.convertCourse(list[latest].results);
 							break;
-		
+ 
+						case "session":
+							list[latest].formattedResults = this._helper.convertSession(list[latest].results);
+							break;
+
+						case "scores":
+							list[latest].formattedResults = this._helper.convertScores(list[latest].results);
+							break;
 					}
 
-					console.log ("formattedServerResponse: ", event);
+					//	console.log("formattedServerResponse: ", event);
 					return event;
-					
+
 				}
-				return event;	
+				return event;
 			}));
 
 

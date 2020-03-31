@@ -16,20 +16,25 @@ export class ScoresBackend {
 
   url: string = environment.apiUrl + '/controllers/scores.php';
 
-  serverPipe = pipe(
-    debounceTime(500),
-    distinctUntilChanged(),
-  );
-
-  
-  private teams: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);
-  teams$: Observable<Team[]> = this.teams.asObservable();
-
   private scores: BehaviorSubject<Score[]> = new BehaviorSubject<Score[]>([]);
   scores$: Observable<Score[]> = this.scores.asObservable();
 
+
+  /*
+   this._sessions.detail$.pipe(map(session => {
+      let teams = session.scores.map((s) => s.team);
+      let unique = teams.filter((e, i) => teams.findIndex(a => a.name === e.name) === i);
+      return unique
+    }))
+    */
+
+
+  private teams: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);
+  teams$: Observable<Team[]> = this.teams.asObservable();
+
   private roster: BehaviorSubject<Array<Score[]>> = new BehaviorSubject<Array<Score[]>>([]);
   roster$: Observable<Array<Score[]>> = this.roster.asObservable();
+
 
 
   private searchedPlayers: BehaviorSubject<Score[]> = new BehaviorSubject<Score[]>([])
@@ -81,17 +86,16 @@ export class ScoresBackend {
 
     private helper: HelperService,
   ) {
+   
+
     this._sessions.detail$.subscribe((s) => {
-      
+      console.log("scores.details: ",s);
+
       if (s != undefined) {
-        console.log('scores.session.detail$:', s);
-        console.log("s.format: ", s.format);
-        
-        //  Convert:: TODO
 
         //  Scores 
-        this.setScores(s.scores);
-        
+        this.scores.next(s.scores);
+
         //  Teams
         if (s.format != undefined) {
 
@@ -116,8 +120,8 @@ export class ScoresBackend {
       console.log("teams$:", t);
 
       if (t != undefined) {
-        t.forEach((t)=>{
-          this.teamColorList.forEach((c)=>{
+        t.forEach((t) => {
+          this.teamColorList.forEach((c) => {
             if (t.color.name == c.name) {
               c.available = false;
             }
@@ -134,64 +138,11 @@ export class ScoresBackend {
   }
 
 
-  
-  /**
-   * @param ServerPayload res Subscription Response
-   * @returns boolean true if the latest query ran by the server was successfull;
-   * -- else false
-   */
-  rCheck(res): boolean {
-    var latest = res.length - 1;
-    if (res[latest]["status"] == "success") {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /**
-   * @param ServerPayload res Subscription Response
-   * @returns data results of request;
-   */
-  rGetData(res): Array<any> {
-    var latest = res.length - 1;
-    if (latest > -1) {
-      return res[latest]["results"];
-    } else {
-      return [];
-    }
-    
-  }
-
-  convertProperties(res){
-    var result: Score[] = [];
-
-    this.rGetData(res).forEach((scores) => {
-      var s = new Score();
-      s.id = scores['scores.id'];
-      s.player = new Player(scores['player.id'], scores['player.first_name'], scores['player.last_name'], scores['player.email']),
-      s.scores = scores['scores.scores'];
-      s.team = new Team(scores['team.id'], scores['team.name'], scores["team.color"], scores["team.hex"]);
-      s.handicap = scores['scores.handicap'];
-      result.push(s);
-    });
-
-
-    console.log("results: ", result);
-
-    return result;
-  }
-
-
 
   getTeamsFromScoreList(scores): Team[] {
     if (scores != undefined) {
-      var teamList = scores.map((s) => s.team);
-      var unique = teamList.filter((e, i) => teamList.findIndex(a => a.name === e.name) === i);
-
-      unique.map((t)=>{
-
-      });
+      let teamList = scores.map((s) => s.team);
+      let unique = teamList.filter((e, i) => teamList.findIndex(a => a.name === e.name) === i);
       return unique;
     }
   }
@@ -267,10 +218,6 @@ export class ScoresBackend {
     this.getTeamPlayers(teamList);
   }
 
-  setScores(scores): void {
-    this.scores.next(this.helper.convertScores(scores));
-  }
-
   removeScore(score) {
     this._sessions.removeScore(score);
   }
@@ -278,14 +225,14 @@ export class ScoresBackend {
 
 
   getRoster(team: Team): Score[] {
-    console.log("this.scores.value: ", this.scores);
+    //  console.log("this.scores.value: ", this.scores);
 
     if (team != undefined) {
       return this.scores.value.filter(scores => {
 
         if (scores.team != undefined) {
-          var scoreStr  = scores.team.id + scores.team.name + scores.team.color.hex;
-          var teamStr   = team.id + team.name + team.color.hex;
+          var scoreStr = scores.team.id + scores.team.name + scores.team.color.hex;
+          var teamStr = team.id + team.name + team.color.hex;
           return scoreStr == teamStr;
         }
 
@@ -325,7 +272,7 @@ export class ScoresBackend {
   updateRosterTeam(current, destination) {
     //  console.log ("Update Team:", current, "to:", destination);
 
-    this.scores.value.forEach((s)=>{
+    this.scores.value.forEach((s) => {
       if (s.team.color.name == current.name) {
         s.team.color = destination;
       }
@@ -333,22 +280,14 @@ export class ScoresBackend {
   }
 
   listRecient() {
-    this.http.post(this.url, { action: "recient", user: this.account.user }).pipe(this.serverPipe).subscribe((res: ServerPayload) => {
-      if (this.rCheck(res)) {
-        this.recientPlayers.next(this.convertProperties(res));
-      } else {
-        this.recientPlayers.next([]);
-      }
+    this.http.post(this.url, { action: "recient", user: this.account.user }).pipe(this.helper.pipe).subscribe((res: ServerPayload) => {
+      this.recientPlayers.next(this.helper.convertScores(res));
     });
   }
 
   getSearch(term) {
-    this.http.post(this.url, { action: "search", term: term }).pipe(this.serverPipe).subscribe((res: ServerPayload) => {
-      if (this.rCheck(res)) {
-        this.searchedPlayers.next(this.convertProperties(res));
-      } else {
-        this.searchedPlayers.next([]);
-      }
+    this.http.post(this.url, { action: "search", term: term }).pipe(this.helper.pipe).subscribe((res: ServerPayload) => {
+      this.searchedPlayers.next(this.helper.convertScores(res));
     });
   }
 }

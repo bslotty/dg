@@ -1,26 +1,26 @@
-<div *ngIf="(upcoming && recient) | async; else create">
-    <div *ngIf="upcoming | async as sessionList">
-        <div *ngIf='sessionList.length' @flyIn>
-            <h6 class="mat-caption">Upcoming</h6>
-            <session-list-item *ngFor="let session of sessionList" [session]="session"></session-list-item>
-        </div>
-    </div>
+<app-section-header title="Sessions"  ></app-section-header>
+<div *ngIf="upcoming | async as sessionList; else loader" class="mb-5">
 
-    <div *ngIf="recient | async as sessionList; else loader">
-        <div *ngIf="sessionList.length" @flyIn>
-            <h6 class="mat-caption">Recient</h6>
-            <session-list-item *ngFor="let session of sessionList" [session]="session"></session-list-item>
-        </div>
+    <h6 class="mat-caption">Upcoming</h6>
+    <div *ngIf='sessionList.length > 0; else none' @flyIn>
+        <session-list-item *ngFor="let session of sessionList" [session]="session"></session-list-item>
     </div>
+</div>
 
-    <div class="row no-gutters">
-        <div class="message">
-            <p>
-                <a mat-stroked-button color="transparent-accent" routerLink="/sessions/create">
-                    Create
-                </a>
-            </p>
-        </div>
+<div *ngIf="recient | async as sessionList; else loader">
+    <div *ngIf="sessionList.length > 0" @flyIn>
+        <h6 class="mat-caption">Recient</h6>
+        <session-list-item *ngFor="let session of sessionList" [session]="session"></session-list-item>
+    </div>
+</div>
+
+<div class="row no-gutters">
+    <div class="message">
+        <p>
+            <a mat-stroked-button color="transparent-accent" routerLink="/sessions/create">
+                Create
+            </a>
+        </p>
     </div>
 </div>
 
@@ -30,21 +30,19 @@
 
 
 
-
-<ng-template #create>
-    <div class="row">
-        <p class="message">No sessions created yet.
-            <a mat-flat-button color="transparent-accent" routerLink="/sessions/create">Create</a> one now!
-        </p>
-    </div>
-</ng-template>
-
 <ng-template #loader>
     <loader></loader>
 </ng-template>
 
 <ng-template #none>
     <div class="message">
-        <p><i>No items returned</i></p>
+        <p><i>Track your next session. <a routerLink="/sessions/create" mat-stroked-button color="accent">Create</a> it!</i></p>
     </div>
+</ng-template>
+
+
+
+<ng-template #error>
+    <p>Obs Error</p>
+
 </ng-template>

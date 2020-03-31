@@ -3,6 +3,7 @@ import { flyIn } from 'src/app/animations';
 import { SessionBackend } from '../../services/backend.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { skip } from 'rxjs/operators';
+import { HelperService } from 'src/app/shared/services/helper.service';
 
 @Component({
   selector: 'app-select-format',
@@ -15,17 +16,18 @@ export class SelectFormatComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<SelectFormatComponent>,
     @Inject(MAT_DIALOG_DATA) private data,
-    private sessions_: SessionBackend,
+    private _sessions: SessionBackend,
+    private _helper: HelperService,
   ) { }
 
   ngOnInit() {
-    this.sessions_.detail$.pipe(skip(1)).subscribe((s)=>{
+    this._sessions.detail$.pipe(skip(1)).subscribe((s)=>{
       this.close();
     });
   }
 
   setFormat(format) {
-    this.sessions_.setFormat(format);
+    this._sessions.setFormat(format);
     this.close(true);
   }
 

@@ -137,7 +137,7 @@ class Score
 	WHERE `s`.`session_id` = :id;";
 
 		$values = array(
-			':id' => $session['id']
+			':id' => $score['id']
 		);
 
 		return $this->db->Query($query, $values);
