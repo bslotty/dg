@@ -4,7 +4,7 @@ import { SessionFormService } from 'src/app/modules/sessions/services/form.servi
 import { ScoresBackend } from '../../services/backend.service';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material';
-import { TeamSettingsComponent } from '../team-settings/team-settings.component';
+import { TeamSettingsComponent } from '../../dialogs/team-settings/team-settings.component';
 import { SessionBackend } from 'src/app/modules/sessions/services/backend.service';
 
 @Component({

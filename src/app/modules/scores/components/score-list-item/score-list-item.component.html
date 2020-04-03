@@ -8,7 +8,7 @@
 	</div>
 
 	<!--	Name	-->
-	<div class="col ml" *ngIf="mode.indexOf('full') != -1">
+	<div class="col ml mat-h2" *ngIf="mode.indexOf('full') != -1">
 		<div>{{ score.player.first_name | titlecase}} {{ score.player.last_name | titlecase}}</div>
 		<div class="sub-text" *ngIf="mode.indexOf('email') != -1">{{ score.player.email }}</div>
 	</div>

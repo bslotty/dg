@@ -2343,9 +2343,7 @@ mat-footer-row, mat-header-row, mat-row, td.mat-cell, td.mat-footer-cell, th.mat
     caret-color: currentColor
 }
 
-.mat-tooltip {
-    background: rgba(97, 97, 97, .9)
-}
+
 
 .mat-tree {
     background: rgb(80, 100, 80);

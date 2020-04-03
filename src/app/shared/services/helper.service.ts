@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SessionFormat, Session, Score, Player, Team, Course, ServerPayload } from '../types';
+import { SessionFormat, Session, Score, Player, Team, Course, ServerPayload, TeamColor } from '../types';
 
 
 import { of } from 'rxjs/internal/observable/of';
@@ -123,7 +123,7 @@ export class HelperService {
         session['scores'],
       ));
     });
-    console.log("ConvertSession: ", result);
+    // console.log("ConvertSession: ", result);
 
     return result;
   }
@@ -134,7 +134,9 @@ export class HelperService {
   convertScores(scores): Score[] {
     var result: Score[] = [];
 
-    if (scores != undefined && scores.length < 0) {
+    console.log("raw scores: ", scores);
+
+    if (scores != undefined) {
       scores.forEach((s) => {
         var score = new Score();
           score.id              = s['scores.id'];
@@ -152,17 +154,33 @@ export class HelperService {
           s["scores.player.email"]
         );
 
-        score.team = new Team(
-          s["scores.team.id"],
-          s["scores.team.name"],
-          s["scores.team.color"],
-          s["scores.team.hex"],
-        );
+        if (s["scores.team.id"] != undefined) {
+          score.team = new Team(
+            s["scores.team.id"],
+            s["scores.team.name"],
+            new TeamColor(
+              s["scores.team.name"],
+              s["scores.team.hex"],
+              s["scores.team.available"],
+            )
+          );
+        } else {
+          score.team = new Team(
+            null,
+            "Unassigned",
+            new TeamColor(
+              null,
+              null,
+              null
+            )
+          );
+        }
+        
 
+        console.log("score:", score);
         result.push(score);
       });
     }
-
 
     return result;
   }

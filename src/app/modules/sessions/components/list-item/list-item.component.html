@@ -1,7 +1,5 @@
 <div class="panel row justify-content-between align-items-center no-gutters">
-    <div class="col ml">
-        <p>{{ session.starts_on | date:"EEE MMM d"  }} at {{ session.starts_on | date:"h:mm a"  }}</p>
-    </div>
+    <div class="col ml mat-h2">{{ session.starts_on | date:"EEE MMM d"  }} at {{ session.starts_on | date:"h:mm a"  }}</div>
     <div class="col-xs">
         <a mat-flat-button color="transparent-primary" routerLink="/sessions/{{ session.id }}">
             <span class="icon-chevron-right"></span>

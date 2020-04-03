@@ -86,10 +86,10 @@ export class ScoresBackend {
 
     private helper: HelperService,
   ) {
-   
+
 
     this._sessions.detail$.subscribe((s) => {
-      console.log("scores.details: ",s);
+      console.log("scores.session.details: ", s);
 
       if (s != undefined) {
 
@@ -98,9 +98,6 @@ export class ScoresBackend {
 
         //  Teams
         if (s.format != undefined) {
-
-          //  console.log("s.format.enum: ", s.format['enum']);
-          //  console.log("s.format.indexof: ", s.format['enum'].indexOf("team"));
 
           if (typeof s.format['enum'] == "string" && s.format['enum'].indexOf("team") > -1) {
             this.setTeams(s.scores);
@@ -134,6 +131,25 @@ export class ScoresBackend {
 
     this.roster$.subscribe((r) => {
       console.log("roster$:", r);
+    });
+  }
+
+
+
+
+
+
+  listRecient() {
+    this.http.post(this.url, { action: "recent", user: this.account.user }).pipe(this.helper.pipe).subscribe((res: ServerPayload) => {
+
+      this.recientPlayers.next(this.helper.rGetData(res));
+    });
+  }
+
+  getSearch(term) {
+    this.http.post(this.url, { action: "search", term: term }).pipe(this.helper.pipe).subscribe((res: ServerPayload) => {
+
+      this.searchedPlayers.next(this.helper.rGetData(res));
     });
   }
 
@@ -189,6 +205,7 @@ export class ScoresBackend {
 
 
     //  Remove Team
+    let newList;
     this.teams.value.forEach((v, i) => {
       if (team.name == v.name) {
 
@@ -200,14 +217,15 @@ export class ScoresBackend {
           }
         });
 
-        var newList = this.teams.value.filter((ta, ti) => { return i != ti });
-        this.teams.next(newList);
-
+        newList = this.teams.value.filter((ta, ti) => { return i != ti });
       }
     });
 
     //  Remove Roster for Deleted Team
     this._sessions.clearRoster(team);
+
+    //  Emit Updates
+    this.teams.next(newList);
   }
 
 
@@ -279,15 +297,5 @@ export class ScoresBackend {
     });
   }
 
-  listRecient() {
-    this.http.post(this.url, { action: "recient", user: this.account.user }).pipe(this.helper.pipe).subscribe((res: ServerPayload) => {
-      this.recientPlayers.next(this.helper.convertScores(res));
-    });
-  }
 
-  getSearch(term) {
-    this.http.post(this.url, { action: "search", term: term }).pipe(this.helper.pipe).subscribe((res: ServerPayload) => {
-      this.searchedPlayers.next(this.helper.convertScores(res));
-    });
-  }
 }

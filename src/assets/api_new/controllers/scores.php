@@ -33,8 +33,8 @@ switch ($payload['action']) {
 
 		break;
 
-	case "recient":
-		$return[] = $scores->RecientlyPlayedWith($payload['user']);
+	case "recent":
+		$return[] = $scores->RecentlyPlayedWith($payload['user']);
 		break;
 
 	case "search":

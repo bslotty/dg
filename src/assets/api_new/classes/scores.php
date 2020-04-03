@@ -66,10 +66,10 @@ class Score
 			`s`.`score_array` AS `scores.score_array`, 
 			`s`.`handicap` AS `scores.handicap`,
 
-			`p`.`id` AS `player.id`,
-			`p`.`first_name` AS `player.first_name`,
-			`p`.`last_name` AS `player.last_name`,
-			`p`.`email` AS `player.email`
+			`p`.`id` AS `scores.player.id`,
+			`p`.`first_name` AS `scores.player.first_name`,
+			`p`.`last_name` AS `scores.player.last_name`,
+			`p`.`email` AS `scores.player.email`
 
 		FROM `Scores` AS `s`
 		JOIN `Players` AS `p`
@@ -94,14 +94,14 @@ class Score
 			`s`.`score_array` AS `scores.score_array`, 
 			`s`.`handicap` AS `scores.handicap`,
 
-			`t`.`id` AS `team.id`,
-			`t`.`name` AS `team.name`,
-			`t`.`color` AS `team.color`,
+			`t`.`id` AS `scores.team.id`,
+			`t`.`name` AS `scores.team.name`,
+			`t`.`color` AS `scores.team.color`,
 
-			`p`.`id` AS `player.id`,
-			`p`.`first_name` AS `player.first_name`,
-			`p`.`last_name` AS `player.last_name`,
-			`p`.`email` AS `player.email`
+			`p`.`id` AS `scores.player.id`,
+			`p`.`first_name` AS `scores.player.first_name`,
+			`p`.`last_name` AS `scores.player.last_name`,
+			`p`.`email` AS `scores.player.email`
 
 		FROM `Scores` AS `s`
 		JOIN `Teams` AS `t` 	ON `s`.`team_id` 	= `t`.`id`
@@ -144,7 +144,7 @@ class Score
 	}
 
 
-	public function RecientlyPlayedWith($user)
+	public function RecentlyPlayedWith($user)
 	{
 		$query = "SELECT
 			`sc`.`id` AS `scores.id`, 
@@ -153,14 +153,14 @@ class Score
 			`sc`.`modified_by` AS `scores.modified_by`, 
 			`sc`.`modified_on` AS `scores.modified_on`, 
 
-			`p`.`id` AS 'player.id', 
-			`p`.`created_by` AS 'player.created_by', 
-			`p`.`created_on` AS 'player.created_on', 
-			`p`.`modified_by` AS 'player.modified_by', 
-			`p`.`modified_on` AS 'player.modified_on', 
-			`p`.`first_name` AS 'player.first_name',
-			`p`.`last_name` AS 'player.last_name',
-			`p`.`email` AS 'player.email',
+			`p`.`id` AS 'scores.player.id', 
+			`p`.`created_by` AS 'scores.player.created_by', 
+			`p`.`created_on` AS 'scores.player.created_on', 
+			`p`.`modified_by` AS 'scores.player.modified_by', 
+			`p`.`modified_on` AS 'scores.player.modified_on', 
+			`p`.`first_name` AS 'scores.player.first_name',
+			`p`.`last_name` AS 'scores.player.last_name',
+			`p`.`email` AS 'scores.player.email',
 
 			`sc`.`score_array` AS `scores.score_array`, 
 			`sc`.`handicap` AS `scores.handicap`

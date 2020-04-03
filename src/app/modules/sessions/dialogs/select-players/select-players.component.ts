@@ -42,7 +42,7 @@ export class SelectPlayersComponent implements OnInit {
     //  List Selection
     this.lists = [
       {
-        name: "recient",
+        name: "recent",
         obs: this._scores.recientPlayers$,
       }, {
         name: "search",

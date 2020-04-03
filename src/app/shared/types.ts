@@ -44,17 +44,16 @@ export class Score {
 export class Team {
 	constructor(
 		public id: string,
-		public name?: string,
-		public color?: TeamColor,
-		public hex?: string,
+		public name: string,
+		public color: TeamColor,
 	) { }
 }
 
 export class TeamColor {
 	constructor(
-		public name?: string,
-		public hex?: string,
-		public available?: boolean
+		public name: string,
+		public hex: string,
+		public available: boolean,
 	) { }
 }
 

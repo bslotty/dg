@@ -23,7 +23,7 @@ import { switchMap } from 'rxjs/operators';
 })
 export class DetailComponent implements OnInit {
 
-  session: Observable<Session> = this._sessions.detail$;
+  session$: Observable<Session> = this._sessions.detail$;
 
   form: FormGroup;
 

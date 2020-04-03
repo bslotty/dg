@@ -36,15 +36,6 @@ export class SessionBackend {
   detail$: Observable<Session> = this.detail.asObservable();
 
 
-
-  //  Recient Players
-  private recientPlayers: Subject<Player[]> = new Subject()
-  recientPlayers$: Observable<Player[]> = this.recientPlayers.asObservable();
-
-  //  Searched Players
-  private searchedPlayers: Subject<Player[]> = new Subject()
-  searchedPlayers$: Observable<Player[]> = this.searchedPlayers.asObservable();
-
   public admin: boolean = false;
 
 
@@ -56,7 +47,7 @@ export class SessionBackend {
   ) {
     this.detail$.subscribe((d) => {
       // Verify Detail Valid;
-      console.log("session.create.detail: ", d);
+      console.log("session.detail: ", d);
 
       //  Update if ID / Create If Not
       if (this.account.user && d.created_by == this.account.user.id) {
@@ -82,11 +73,10 @@ export class SessionBackend {
 
   listCurrentSessions() {
     this.getList("list").subscribe((res: ServerPayload[]) => {
-      //  this.list.next(this.helper.rGetData(res));
 
       let sessions = this.helper.rGetData(res);
 
-      console.log("sessions: ", sessions);
+      //  console.log("sessions: ", sessions);
 
       var d = new Date().getTime();
       let recient = sessions.filter((s: Session) => d > s.starts_on.getTime());
@@ -171,6 +161,25 @@ export class SessionBackend {
     }).pipe();
   }
 
+  
+  resetDetails() {
+    let session = new Session(
+      "create",
+      new Date(),
+      this.account.user.id,
+      null,
+      null,
+      null,
+      this.helper.types[0],
+      null,
+      null, 
+      [],
+      []
+    );
+
+    this.detail.next(session);
+  }
+
   //  MOD
   setupNewSession() {
     let session: Session;
@@ -246,9 +255,6 @@ export class SessionBackend {
     return sorted;
   }
 
-  resetDetail() {
-    this.detail.next(new Session());
-  }
 
 
 
@@ -302,6 +308,17 @@ export class SessionBackend {
   }
 
 
+  /*
+  validateRoster(): boolean {
+    var valid = true;
+    this.scoreList.controls.forEach((s) => {
+      if (s.value.team == null || s.value.team == undefined || s.value.team.name == "unassigned") {
+        valid = false;
+      }
+    });
+    return valid;
+  }
+  */
 
 
   clearRoster(team) {

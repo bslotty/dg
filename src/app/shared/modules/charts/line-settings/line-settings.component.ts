@@ -51,9 +51,9 @@ export class LineSettingsComponent implements OnInit {
 
   getColor(ent) {
     if (ent instanceof Score) {
-      return ent.team.hex;
+      return ent.team.color.hex;
     } else if (ent instanceof Team) {
-      return ent.hex;
+      return ent.color.hex;
     }
   }
 

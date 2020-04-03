@@ -6,19 +6,22 @@
 @import "./theme.scss";
 
 $fontConfig: (
-  display-4: mat-typography-level(64px, 72px, 200, $theme-font-header, -0.07em),
-  display-3: mat-typography-level(56px, 56px, 200, $theme-font-header, -0.09em),
-  display-2: mat-typography-level(45px, 48px, 200, $theme-font-header, 0em),
-  display-1: mat-typography-level(34px, 40px, 200, $theme-font-header, 0.07em),
-  headline: mat-typography-level(28px, 32px, 400, $theme-font-header, 0em),
-  title: mat-typography-level(20px, 32px, 500, $theme-font-header, 0.0075em),
+  display-4:    mat-typography-level(64px, 72px, 200, $theme-font-header, -0.07em),
+  display-3:    mat-typography-level(56px, 56px, 200, $theme-font-header, -0.09em),
+  display-2:    mat-typography-level(45px, 48px, 200, $theme-font-header, 0em),
+  display-1:    mat-typography-level(34px, 40px, 200, $theme-font-header, 0.07em),
+
+  headline:     mat-typography-level(28px, 32px, 400, $theme-font-header, 0em),
+  title:        mat-typography-level(20px, 32px, 500, $theme-font-header, 0.0075em),
+  caption:      mat-typography-level(24px, 28px, 400, $theme-font-utility, 0.3em),
   subheading-2: mat-typography-level(16px, 28px, 400, $theme-font-utility, 0.0094em),
   subheading-1: mat-typography-level(15px, 24px, 500, $theme-font-utility, 0.0067em),
-  body-2: mat-typography-level(20px, 28px, 300, $theme-font-body, 0.0179em),
-  body-1: mat-typography-level(14px, 20px, 300, $theme-font-body, 0.0179em),
-  button: mat-typography-level(14px, 1.125, 600, $theme-font-utility, 0em),
-  caption: mat-typography-level(18px, 20px, 400, $theme-font-utility, 0.5em),
-  input: mat-typography-level(inherit, 1.125, 400, $theme-font-utility, 0em)
+
+  body-2:       mat-typography-level(20px, 28px, 300, $theme-font-body, 0.0179em),
+  body-1:       mat-typography-level(14px, 20px, 300, $theme-font-body, 0.0179em),
+
+  button:       mat-typography-level(14px, 1.125, 600, $theme-font-utility, 0em),
+  input:        mat-typography-level(inherit, 1.125, 400, $theme-font-utility, 0em),
 );
 
 // Foreground Elements
@@ -156,11 +159,12 @@ $mat-primary: (
   darker: darken($theme-primary, 20%),
   200: $theme-primary,
   // For slide toggle,
-  contrast: (
-    main: $light-primary-text,
-    lighter: $dark-primary-text,
-    darker: $light-primary-text
-  )
+    contrast:
+    (
+      main: $light-primary-text,
+      lighter: $dark-primary-text,
+      darker: $light-primary-text,
+    ),
 );
 $theme-primary: mat-palette($mat-primary, main, lighter, darker);
 
@@ -180,11 +184,12 @@ $mat-accent: (
   darker: darken($theme-accent, 20%),
   200: $theme-accent,
   // For slide toggle,
-  contrast: (
-    main: $light-primary-text,
-    lighter: $dark-primary-text,
-    darker: $light-primary-text
-  )
+    contrast:
+    (
+      main: $light-primary-text,
+      lighter: $dark-primary-text,
+      darker: $light-primary-text,
+    ),
 );
 $theme-accent: mat-palette($mat-accent, main, lighter, darker);
 
@@ -204,11 +209,12 @@ $mat-warn: (
   darker: darken($theme-warn, 20%),
   200: $theme-warn,
   // For slide toggle,
-  contrast: (
-    main: $light-primary-text,
-    lighter: $dark-primary-text,
-    darker: $light-primary-text
-  )
+    contrast:
+    (
+      main: $light-primary-text,
+      lighter: $dark-primary-text,
+      darker: $light-primary-text,
+    ),
 );
 $theme-warn: mat-palette($mat-warn, main, lighter, darker);
 
@@ -222,7 +228,6 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   @include angular-material-theme($theme);
 }
 
-
 ::ng-deep :host {
   position: relative;
   display: flex;
@@ -230,7 +235,6 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   justify-content: flex-start;
   align-items: center;
 }
-
 
 /*  CSS styling agm-map is required!
     It is really important that you define a height component `agm-map`. 
@@ -260,15 +264,59 @@ body {
   color: $theme-bg-dark-surface !important;
 }
 
-.mat-button[disabled],
-.mat-raised-button[disabled] {
-  background-color: rgba(0, 0, 0, 0.2);
+.mat-button[disabled][disabled],
+.mat-stroked-button[disabled][disabled],
+.mat-flat-button[disabled][disabled],
+.mat-raised-button[disabled][disabled] {
+  background-color: transparent;
   color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.mat-dialog-container,
+.mat-datepicker-content {
+  background-color: $theme-bg-dark-surface;
 }
 
 .mat-form-field {
   width: 100%;
 }
+
+
+// Checkbox Fixes
+.mat-checkbox-frame,
+.mat-checkbox-background {
+  border-radius: 0 !important;
+}
+
+.mat-pseudo-checkbox {
+  width: 32px !important;
+  height: 32px !important;
+}
+
+.mat-pseudo-checkbox-checked::after {
+  top: 4px !important;
+  left: 2px !important;
+  width: 18px !important;
+  height: 9px !important;
+}
+
+.mat-checkbox-inner-container {
+  width: 1.3rem !important;
+  height: 1.3rem !important;
+}
+
+
+// Tooltips
+.mat-tooltip {
+  font-size: 0.8rem !important;
+  color: $primary-light !important;
+  background: $text-light !important;
+  padding: 0.5rem !important;
+  font-weight: 600;
+}
+
+
 
 :host {
   display: block;
@@ -292,21 +340,21 @@ body {
   width: 100%;
 }
 
-h1,
-h2,
-h3,
-h4,
+h1, .mat-h1,
+h2, .mat-h2,
+h3, .mat-h3,
+h4, .mat-h4,
 h5,
 h6 {
   margin: 0;
-  margin-left: $ml;
 }
-
+/*
 p {
   font-family: $font-text;
   font-weight: 300;
   margin: 0;
 }
+*/
 
 label {
   display: inline-block;
@@ -320,11 +368,6 @@ a * {
   transition: color 0.2s ease-out;
 }
 
-#container {
-  margin-top: 3rem;
-}
-
-
 
 .sub-header {
   margin-top: 1.5em;
@@ -337,8 +380,6 @@ a * {
   font-weight: 100;
   line-height: 1.2rem;
 }
-
-
 
 .color-accent {
   color: $accent;
@@ -659,12 +700,6 @@ router-outlet ~ * {
   color: $c-white;
 }
 
-
-
-
-
-
-
 .scores {
   display: flex;
   flex-direction: row;
@@ -925,7 +960,6 @@ New Input Styles
   line-height: 2em;
   height: 2em;
 }
-
 
 .mat-button,
 .mat-fab,

@@ -7,7 +7,7 @@ import { ScoreSettingsComponent } from './dialogs/score-settings/score-settings.
 import { TeamSettingsComponent } from './dialogs/team-settings/team-settings.component';
 import { ScoreListItemComponent } from './components/score-list-item/score-list-item.component';
 import { TeamListItemComponent } from './components/team-list-item/team-list-item.component';
-import { TeamSelectComponent } from './dialogs/team-select/team-select.component';
+import { TeamSelectComponent } from './components/team-select/team-select.component';
 import { TeamListComponent } from './components/team-list/team-list.component';
 import { ScoreListComponent } from './components/score-list/score-list.component';
 

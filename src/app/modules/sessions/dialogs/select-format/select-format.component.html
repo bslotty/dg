@@ -1,6 +1,6 @@
 <div class="row justify-content-between align-items-center no-gutters">
   <div class="col">
-    <h4>Select a Format</h4>
+    <h4 class="mat-caption">Select a Format</h4>
   </div>
 
   <div class="col-xs">
@@ -13,9 +13,7 @@
 
 <div *ngFor="let format of _helper.types" class="row justify-content-between align-items-center no-gutters" @flyIn>
 
-  <div class="col ml ">
-    <p>{{ format.name }}</p>
-  </div>
+  <div class="col ml mat-h2">{{ format.name }}</div>
 
   <div class="col-xs">
     <a mat-flat-button disabled color="" matTooltip="{{ format.desc }}">

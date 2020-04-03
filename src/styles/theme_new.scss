@@ -86,11 +86,6 @@ p b {
   text-transform: uppercase;
 }
 
-.mat-checkbox-frame,
-.mat-checkbox-background {
-  border-radius: 0 !important;
-}
-
 .mat-simple-snackbar-container {
   margin-top: 2em;
 }
@@ -126,17 +121,7 @@ p b {
   border-radius: 100% !important;
 }
 
-.mat-pseudo-checkbox {
-  width: 32px !important;
-  height: 32px !important;
-}
 
-.mat-pseudo-checkbox-checked::after {
-  top: 4px !important;
-  left: 2px !important;
-  width: 18px !important;
-  height: 9px !important;
-}
 
 .mat-tab-label {
   height: 2em !important;
@@ -247,13 +232,6 @@ p b {
   border-left-color: transparent;
 }
 
-.mat-tooltip {
-  font-size: 0.8rem !important;
-  color: $primary-light !important;
-  background: $text-light !important;
-  padding: 0.5rem !important;
-  font-weight: 600;
-}
 
 .mat-flat-button[disabled][disabled] {
   background: none;
@@ -283,8 +261,5 @@ p b {
   font-size: 1rem !important;
 }
 
-.mat-checkbox-inner-container {
-  width: 1.3rem !important;
-  height: 1.3rem !important;
-}
+
 

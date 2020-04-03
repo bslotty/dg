@@ -10,6 +10,8 @@ import { SelectTimeComponent } from '../../dialogs/select-time/select-time.compo
 import { SelectPlayersComponent } from '../../dialogs/select-players/select-players.component';
 import { SessionBackend } from '../../services/backend.service';
 import { ScoresBackend } from 'src/app/modules/scores/services/backend.service';
+import { Session } from 'src/app/shared/types';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
   selector: 'app-create',
@@ -20,25 +22,24 @@ import { ScoresBackend } from 'src/app/modules/scores/services/backend.service';
 export class CreateComponent implements OnInit {
 
   form: FormGroup;
-  roster = [];
+  session$: Observable<Session> = this._sessions.detail$;
 
   constructor(
     private sessionForm: SessionFormService,
-    private sessions_: SessionBackend,
-    private scores_: ScoresBackend,
+    private _sessions: SessionBackend,
+    private _scores: ScoresBackend,
     private dialog: MatDialog
   ) { }
 
   ngOnInit() {
 
-    this.sessions_.resetDetail();
+    this._sessions.resetDetails();
 
- 
+    
     //  Setup Form
     this.sessionForm.Setup("create");
     this.sessionForm.form$.subscribe((f) => {
       this.form = f;
-      console.log("this.f", f);
     });
  
   }

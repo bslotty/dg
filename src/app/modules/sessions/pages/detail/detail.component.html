@@ -1,113 +1,115 @@
-<!--  Format  -->
-<div class="row justify-content-between align-items-end no-gutters">
-  <h6 class="col sub-header ml">Format</h6>
-  <div class="col-xs" *ngIf="_sessions.admin && form.get('format').value">
-    <a mat-flat-button color="transparent-primary" (click)="selectFormat()">
-      <span class="icon-edit-2"></span>
-    </a>
-  </div>
-</div>
-
-<div class="row justify-content-between align-items-center no-gutters panel" @flyIn>
-  <div class="col ml">
-    <p>{{ form.get('format').value.name }}</p>
-  </div>
-
-  <div class="col-xs">
-    <a mat-flat-button disabled color="" matTooltip="{{ form.get('format').value.desc }}">
-      <span class="icon-help-circle"></span>
-    </a>
-  </div>
-</div>
+<div *ngIf="session$ | async as session">
 
 
-
-<!--  Course  -->
-<div class="row justify-content-between align-items-end no-gutters">
-  <h6 class="col sub-header ml">Course</h6>
-  <div class="col-xs" *ngIf="_sessions.admin && form.get('course').value">
-    <a mat-flat-button color="transparent-primary" (click)="selectCourse()">
-      <span class="icon-edit-2"></span>
-    </a>
-  </div>
-</div>
-
-<div @flyIn *ngIf="form.get('course').value">
-  <course-list-item [course]='form.get("course").value' mode='list'></course-list-item>
-</div>
-
-
-
-<!--  Date  -->
-<div class="row justify-content-between align-items-end no-gutters">
-  <h6 class="col sub-header ml">Time</h6>
-  <div class="col-xs" *ngIf="_sessions.admin && form.get('date').value">
-    <a mat-flat-button color="transparent-primary" (click)="selectTime()">
-      <span class="icon-edit-2"></span>
-    </a>
-  </div>
-</div>
-<div class="row justify-content-between align-items-center no-gutters panel">
-  <div class="col ml">
-    <p>{{ form.get('date').value | date:"EEE MMM d"  }} at {{ form.get('time').value }}</p>
-  </div>
-</div>
-
-
-<!--  Roster  -->
-<div *ngIf="_scores.scores$ | async">
-  <div class="row justify-content-between align-items-end no-gutters">
-    <h6 class="col sub-header ml">Roster</h6>
-    <div class="col-xs" *ngIf="_sessions.admin">
-      <a *ngIf="_sessions.teamGame()" mat-flat-button color="transparent-accent" (click)="this._scores.addTeam()">
-        <label><span class="icon-plus"></span> Team</label>
-      </a>
-
-      <a mat-flat-button color="transparent-primary" (click)="selectPlayers()">
+  <!--  Format  -->
+  <div class="row justify-content-between align-items-center no-gutters">
+    <h6 class="col mat-caption ml">Format</h6>
+    <div class="col-xs" *ngIf="_sessions.admin && session.format">
+      <a mat-flat-button color="transparent-primary" (click)="selectFormat()">
         <span class="icon-edit-2"></span>
       </a>
     </div>
   </div>
 
-  <div *ngIf="(_scores.scores$ | async) && !_sessions.teamGame()">
-    <score-list></score-list>
+  <div class="row justify-content-between align-items-center no-gutters panel" @flyIn>
+    <div class="col ml mat-h2">{{ session.format.name }}</div>
+
+    <div class="col-xs">
+      <a mat-flat-button disabled color="" matTooltip="{{ session.format.desc }}">
+        <span class="icon-help-circle"></span>
+      </a>
+    </div>
   </div>
 
-  <div *ngIf="(_scores.teams$ | async) && _sessions.teamGame() && !_sessions.admin">
-    <team-list></team-list>
+
+
+  <!--  Course  -->
+  <div class="row justify-content-between align-items-center no-gutters">
+    <h6 class="col mat-caption ml">Course</h6>
+    <div class="col-xs" *ngIf="_sessions.admin && session.course">
+      <a mat-flat-button color="transparent-primary" (click)="selectCourse()">
+        <span class="icon-edit-2"></span>
+      </a>
+    </div>
   </div>
 
-  <div *ngIf="(_scores.teams$ | async) && _sessions.teamGame() && _sessions.admin">
-    <team-select></team-select>
+  <div @flyIn *ngIf="session.course">
+    <course-list-item [course]='session.course' mode='list'></course-list-item>
   </div>
 
+
+
+  <!--  Date  -->
+  <div class="row justify-content-between align-items-center no-gutters">
+    <h6 class="col mat-caption ml">Time</h6>
+    <div class="col-xs" *ngIf="_sessions.admin && session.starts_on">
+      <a mat-flat-button color="transparent-primary" (click)="selectTime()">
+        <span class="icon-edit-2"></span>
+      </a>
+    </div>
+  </div>
+  <div class="row justify-content-between align-items-center no-gutters panel">
+    <div class="col ml mat-h2">{{ session.starts_on | date:"EEE MMM d"  }} at {{ session.starts_on | date:"h:mm a"}}</div>
+  </div>
+
+
+  <!--  Roster  -->
+  <div *ngIf="_scores.scores$ | async">
+    <div class="row justify-content-between align-items-center no-gutters">
+      <h6 class="col mat-caption ml">Roster</h6>
+      <div class="col-xs" *ngIf="_sessions.admin">
+        <a *ngIf="_sessions.teamGame()" mat-flat-button color="transparent-accent" (click)="this._scores.addTeam()">
+          <label><span class="icon-plus"></span> Team</label>
+        </a>
+
+        <a mat-flat-button color="transparent-primary" (click)="selectPlayers()">
+          <span class="icon-edit-2"></span>
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="(_scores.scores$ | async) && !_sessions.teamGame()">
+      <score-list></score-list>
+    </div>
+
+    <div *ngIf="(_scores.teams$ | async) && _sessions.teamGame() && !_sessions.admin">
+      <team-list></team-list>
+    </div>
+
+    <div *ngIf="(_scores.teams$ | async) && _sessions.teamGame() && _sessions.admin">
+      <team-select></team-select>
+    </div>
+
+  </div>
+
+
+
+
+  <div *ngIf="_sessions.admin" class="row justify-content-between align-items-center no-gutters mb-5">
+    <div class="col-5 p-3">
+      <a mat-raised-button color="primary" class="btn btn-lg btn-block" (click)="toggleDelete()">
+        <label *ngIf="!confirmDelete">Delete</label>
+        <label *ngIf="confirmDelete">Cancel</label>
+      </a>
+    </div>
+
+    <div class="col-7 p-3">
+      <a *ngIf="!confirmDelete" mat-raised-button color="accent" class="btn btn-lg btn-block"
+        (click)="_sessions.submitCreation()" [disabled]="!_sessions.ReadyForSubmission()">
+        <label>Play</label>
+      </a>
+
+      <a *ngIf="confirmDelete" mat-raised-button color="warn" class="btn btn-lg btn-block"
+        (click)="_sessions.confirmDelete()">
+        <label>Delete</label>
+      </a>
+    </div>
+
+    <p *ngIf="toggleConfirm" class="warn">Are you sure you want to delete this session? This action is irreversible</p>
+  </div>
 </div>
 
 
-
-
-<div *ngIf="_sessions.admin" class="row justify-content-between align-items-center no-gutters mb-5">
-  <div class="col-5 p-3">
-    <a mat-raised-button color="primary" class="btn btn-lg btn-block" (click)="toggleDelete()">
-      <label *ngIf="!confirmDelete">Delete</label>
-      <label *ngIf="confirmDelete">Cancel</label>
-    </a>
-  </div>
-
-  <div class="col-7 p-3">
-    <a *ngIf="!confirmDelete" mat-raised-button color="accent" class="btn btn-lg btn-block"
-      (click)="_sessions.submitCreation()" [disabled]="!_sessions.ReadyForSubmission()">
-      <label>Play</label>
-    </a>
-
-    <a *ngIf="confirmDelete" mat-raised-button color="warn" class="btn btn-lg btn-block"
-      (click)="_sessions.confirmDelete()">
-      <label>Delete</label>
-    </a>
-  </div>
-
-  <p *ngIf="toggleConfirm" class="warn">Are you sure you want to delete this session? This action is irreversible</p>
-</div>
 
 
 
