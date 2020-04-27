@@ -23,8 +23,8 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this._feed.startElementTracking("session-upcoming");
-    this._feed.startElementTracking("session-recient");
+    this._feed.startLoading("session-upcoming");
+    this._feed.startLoading("session-recient");
 
     //  Get List
     this._sessions.listCurrentSessions();

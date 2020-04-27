@@ -30,7 +30,7 @@ export class ResetComponent implements OnInit {
     this.accountForm.Setup("reset");
     this.accountForm.form$.subscribe((t)=>{
       this.form = t;
-      this.feed.loading  = false;
+      this.feed.stopLoading("reset");
     });
 
   }

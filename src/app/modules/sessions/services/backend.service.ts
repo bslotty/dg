@@ -5,11 +5,12 @@ import { ServerPayload } from 'src/app/app.component';
 import { environment } from 'src/environments/environment';
 import { pipe, BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { HelperService } from 'src/app/shared/services/helper.service';
-import { Session, Player, SessionFormat } from 'src/app/shared/types';
+import { Session, Player, SessionFormat, Score } from 'src/app/shared/types';
 import { map } from 'rxjs/internal/operators/map';
 import { catchError } from 'rxjs/internal/operators/catchError';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { switchMap, find } from 'rxjs/operators';
+import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 
 
 @Injectable({
@@ -36,36 +37,151 @@ export class SessionBackend {
   detail$: Observable<Session> = this.detail.asObservable();
 
 
-  public admin: boolean = false;
-
-
   constructor(
     private http: HttpClient,
     private helper: HelperService,
     private account: AccountBackend,
     private route: ActivatedRoute,
-  ) {
-    this.detail$.subscribe((d) => {
-      // Verify Detail Valid;
-      console.log("session.detail: ", d);
+    private router: Router,
+    private feed: FeedbackService,
+  ) { }
 
-      //  Update if ID / Create If Not
-      if (this.account.user && d.created_by == this.account.user.id) {
-        this.admin = true;
-      }
+  /*
+
+    HTTP
+  */
+  // List
+  getList(list: string, start: number = 0, limit: number = 100) {
+    return this.http.post(this.url, {
+      "action": list,
+      "start": start,
+      "limit": limit,
+      "user": this.account.user
     });
+  }
+
+  //  Single
+  getDetail(session: Session) {
+    return this.http.post(this.url, {
+      "action": "detail",
+      "session": session,
+      "user": this.account.user
+    });
+  }
+
+  //  Create
+  create(session: Session) {
+    return this.http.post(this.url, {
+      "user": this.account.user,
+      "session": session,
+      "action": "create"
+    });
+
 
   }
 
-  //  Take a form, and verify that it is valid;
-  ReadyForSubmission() {
-    return true;
+  //  Update
+  updateSession() {
+    return this.http.post(this.url, {
+      "action": "update",
+      "user": this.account.user,
+      "session": this.detail.value,
+    });
+  }
+
+  //  Delete
+  deleteSession() {
+    return this.http.post(this.url, {
+      "action": "delete",
+      "user": this.account.user,
+      "session": this.detail.value
+    });
+  }
+
+
+
+
+
+
+  //  Verification
+  validateSubmission() {
+    const session = this.detail.value;
+    let valid = true;
+
+    //  Course?
+    if (session.course == undefined) {
+      valid = false;
+      this.feed.setError("session-course", "Select a Course");
+    }
+
+    //  Time?
+    if (session.starts_on == undefined) {
+      valid = false;
+      this.feed.setError("session-start", "Invalid Start Date");
+    }
+
+    //  Format?
+    if (session.format == undefined) {
+      valid = false;
+      this.feed.setError("session-format", "This should never fire.");
+    }
+
+    //  Players?
+    if (session.scores.length == 0) {
+      valid = false;
+      this.feed.setError("session-scores", "Add Players to the Match");
+    } else {
+
+      //  Teams?
+      if (session.format != undefined && session.format.enum != "ffa") {
+
+        //  Verify no one on Unassigned
+        let unassignedTeam = session.scores.filter((score) => {
+          return score.team.name == "Unassigned";
+        });
+
+        if (unassignedTeam.length > 0) {
+          valid = false;
+          this.feed.setError("session-teams", "All Players need to be assigned to a team");
+        }
+      }
+
+    }
+
+    return valid;
+  }
+
+  submitCreation() {
+    if (this.validateSubmission()) {
+      console.log("session.create: ", this.detail.value);
+
+      this.create(this.detail.value).subscribe((res) => {
+        //  console.log("session.create.res:", this.helper.rGetData(res), res);
+
+        //  Toast
+
+        let session = this.helper.rGetData(res)[0];
+        this.router.navigate(["/sessions", session['id']]);
+      });
+    }
+  }
+
+  confirmDelete() {
+    this.deleteSession().subscribe((res: ServerPayload[]) => {
+      console.warn("session.deleted: ", res);
+
+      if (res[res.length - 1]['status'] == 'success') {
+        this.router.navigate(["/sessions"]);
+      } else {
+        //  Error FeedBack
+
+      }
+    });
   }
 
 
   listFavorites() {
     this.getList("favorites").subscribe((res: ServerPayload[]) => {
-
       this.favoriteList.next(this.helper.rGetData(res));
     });
   };
@@ -90,21 +206,16 @@ export class SessionBackend {
   }
 
 
-  getList(list: string, start: number = 0, limit: number = 100) {
-    return this.http.post(this.url, {
-      "action": list,
-      "start": start,
-      "limit": limit,
-      "user": this.account.user
-    });
-  }
+
+
+
 
   findDetails(session_id) {
-    console.log ("Searching For: ", session_id);
+    console.log("Searching For: ", session_id);
 
-    let session:Session = new Session();
+    let session: Session = new Session();
     session.id = session_id;
-    
+
 
     //  Find Session in Upcoming & Recient Lists;
     //  If Found; Set details$ to matching session
@@ -125,7 +236,7 @@ export class SessionBackend {
     let recient = this.recient.value.find((v, i) => {
       return v.id = session.id;
     });
-    if (upcoming != undefined) {
+    if (recient != undefined) {
       session = recient;
       found = true;
     }
@@ -133,14 +244,19 @@ export class SessionBackend {
 
     console.log("upcoming: ", upcoming);
     console.log("recient: ", recient);
+    console.log("found: ", found);
 
+
+    //  *************
+    //  Force Retrieval from server.. Course/Scores/Teams Unavailable from lists. Would need to retrieve anyway.
+    found = false;
 
     if (found) {
       console.log("session found from lists!");
       this.detail.next(session);
 
     } else {
-      this.getDetail(session).subscribe((res: ServerPayload[]) =>{
+      this.getDetail(session).subscribe((res: ServerPayload[]) => {
         let session = this.helper.rGetData(res)[0];
         if (session != undefined) {
           console.log("session retrieved from server!");
@@ -148,20 +264,13 @@ export class SessionBackend {
         } else {
           console.warn("Unable to find session.", session);
         }
-        
+
       });
     }
   }
 
-  getDetail(session: Session) {
-    return this.http.post(this.url, {
-      "action": "detail",
-      "session": session,
-      "user": this.account.user
-    }).pipe();
-  }
 
-  
+
   resetDetails() {
     let session = new Session(
       "create",
@@ -172,7 +281,7 @@ export class SessionBackend {
       null,
       this.helper.types[0],
       null,
-      null, 
+      null,
       [],
       []
     );
@@ -202,7 +311,7 @@ export class SessionBackend {
         null,
         this.helper.types[0],
         null,
-        null, 
+        null,
         [],
         []
       )
@@ -215,35 +324,7 @@ export class SessionBackend {
 
 
 
-  create(session: Session) {
-    return this.http.post(this.url, {
-      "user": this.account.user,
-      "session": session,
-      "action": "create"
-    }).pipe();
 
-
-  }
-
-  updateSession(session: Session) {
-    return this.http.post(this.url, {
-      "user": this.account.user,
-      "session": session,
-      "action": "update",
-    }).pipe();
-  }
-
-
-
-  delete(session: Session) {
-    this.http.post(this.url, {
-      "action": "delete",
-      "session": session,
-      "user": this.account.user
-    }).subscribe((res) => {
-      console.log("Delete.res: ", res);
-    });
-  }
 
 
   sortSession(list) {
@@ -258,10 +339,9 @@ export class SessionBackend {
 
 
 
-
-/**
- *    Add Save Feature Here
- */
+  /**
+   *    Add Save Feature Here
+   */
   setFormat(format) {
     this.detail.value.format = format;
     this.detail.next(this.detail.value);
@@ -278,73 +358,63 @@ export class SessionBackend {
     this.detail.next(this.detail.value);
   }
 
+  setScores(scores: Score[]) {
+    this.detail.value.scores = scores;
+    this.detail.next(this.detail.value);
+  }
+
+  //  Get Each
+
+  
 
 
 
-
-
-  addScore(score) {
-    if (this.detail.value.scores == undefined) {
-      this.detail.value.scores = [score];
+  //  Status Functions
+  admin(): boolean {
+    let admin = this.account.user && this.detail.value.created_by == this.account.user.id;
+    if (admin) {
+      return true;
     } else {
-
-      var dupe = this.detail.value.scores.find(e => e.player.id == score.player.id);
-
-      if (dupe == undefined) {
-        this.detail.value.scores.push(score);
-      }
+      return false;
     }
-
-    this.detail.next(this.detail.value);
   }
 
-  removeScore(score) {
-    this.detail.value.scores = this.detail.value.scores.filter(s => s.player.id != score.player.id);
-    this.detail.next(this.detail.value);
-  }
-
-  getScore(score): boolean {
-    return this.detail.value.scores != undefined && this.detail.value.scores.find(s => s.player.id == score.player.id) != undefined;
-  }
-
-
-  /*
-  validateRoster(): boolean {
-    var valid = true;
-    this.scoreList.controls.forEach((s) => {
-      if (s.value.team == null || s.value.team == undefined || s.value.team.name == "unassigned") {
-        valid = false;
-      }
-    });
-    return valid;
-  }
-  */
-
-
-  clearRoster(team) {
-    this.detail.value.scores.forEach((s, i) => {
-      if (s.team == team) {
-        s.team = null;
-      }
-    });
-  }
-
-  addTeam(team) {
-
-  }
-
-  removeTeam(team) {
-    console.error("RemoveTeam: ", team);
-    this.detail.value.scores = this.detail.value.scores.filter(s => s.team == team.name);
-  }
 
   teamGame(): boolean {
     if (this.detail.value.format != undefined) {
-      var res: boolean = typeof this.detail.value.format != undefined && this.detail.value.format.enum != 'ffa';
+      var res: boolean = this.detail.value.format.enum != 'ffa';
       return res;
     } else {
       return false;
     }
   }
+
+  hasId(): boolean {
+    return this.detail.value.id != "create";
+  }
+
+  hasStarted(): boolean {
+    //  If scores are entered, session is considered started.
+    let started = false;
+
+    //  check each player
+    this.detail.value.scores.forEach((s) => {
+
+      //  check each attempt; return non 0s
+      if (s.throws != null) {
+        let changed = s.throws.filter(t => t != 0);
+
+        //  update flags
+        if (changed.length > 0 && s.throws.length > 0) {
+          started = true;
+        }
+      }
+
+
+    });
+
+    return started;
+  }
+
 
 }

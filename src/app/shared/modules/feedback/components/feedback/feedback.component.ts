@@ -1,5 +1,6 @@
 import { FeedbackService } from '../../services/feedback.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { FeedbackErrorHandler } from 'src/app/shared/types';
 
 @Component({
   selector: 'feedback',
@@ -9,11 +10,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FeedbackComponent implements OnInit {
 
+  @Input() handler: FeedbackErrorHandler;
+
   constructor(
     public feed: FeedbackService,
   ) { }
 
   ngOnInit() {
+    console.log ("Feedback.Handler: ", this.handler);
   }
 
 

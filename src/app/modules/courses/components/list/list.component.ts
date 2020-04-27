@@ -105,7 +105,7 @@ export class ListComponent implements OnInit {
     this._courseForm.resetSearch();
 
     //  Turn Off Loader
-    this.feed.loading = false;
+    this.feed.stopLoading("courseSearch");
   }
 
   hideSearch() {
@@ -116,7 +116,7 @@ export class ListComponent implements OnInit {
     this.selectedList = this.lists[0];
 
     //  Turn Off Loader
-    this.feed.loading = false;
+    this.feed.stopLoading("courseSearch");
   }
 
   selectChange($event) {

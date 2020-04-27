@@ -96,14 +96,14 @@ export class CourseFormService {
         //  Listen to Input changes to trigger loading and search
         form.get("search").valueChanges.pipe(this.helper.pipe).subscribe((s) => {
           if (form.valid) {
-            this.feed.loading = true;
+            this.feed.stopLoading("courseSearch");
             this.courseService.getSearch(s as string);
           }
         });
 
         //  Turn off Loader when Results populate
         this.courseService.search$.subscribe((s) => {
-          this.feed.loading = false;
+          this.feed.stopLoading("register");
         });
 
         break;

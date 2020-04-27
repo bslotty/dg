@@ -12,54 +12,84 @@ import { Observable, of, throwError, timer } from 'rxjs';
 import { AccountBackend } from '../modules/account/services/backend.service';
 import { FeedbackService } from '../shared/modules/feedback/services/feedback.service';
 import { map, catchError, throttleTime, shareReplay, retryWhen, delayWhen, tap, delay } from 'rxjs/operators';
+import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 
 @Injectable()
 export class ErrorHandlerInterceptor implements HttpInterceptor {
 
 	previousUrl: string = '';
 
+	//  Move to ErrorHandler
+	error: boolean = false;
+	errorMsg: string = "";
+	retryObs: Observable<any>;
+	attempts: number = 0;
+
 	constructor(
 		private _account: AccountBackend,
 		private _feed: FeedbackService,
-	) { }
+		private router: Router
+	) {
+		this.router.events.subscribe((e) => {
+			if (e instanceof NavigationStart) {
+				console.warn("RESET HTTP");
+				this.clearErrors();
+			}
+		});
+	}
+
+
+
+	//  Impliment into ErrorInterceptor
+	clearErrors() {
+		this.error = false;
+		this.attempts = 0;
+	}
+
+	setErrorMsg(error: string) {
+		this.error = true;
+		this.attempts++;
+		this.errorMsg = error;
+	}
+
+
 
 	intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-		//	console.log("request: ", request, next);
+		console.log("request: ", request, next);
 
 		return next.handle(request).pipe(
-			tap(()=>{this._feed.loading = true}),
+			tap(() => {
+				this._feed.startLoading(request.body.action);
+			}),
 			catchError((error, caught) => {
 
 				//	HTTP Errors here
-
 				console.log("catchError: ", error);
 
-				this._feed.setErrorMsg(error.status + ": " + error.statusText);
-				this._feed.retryObs = caught;
+				this.setErrorMsg(error.status + ": " + error.statusText);
+				this.retryObs = caught;
 
-				if (this._feed.attempts > 3) {
+				if (this.attempts > 3) {
 
-					if (!this._feed.hasError()) {
-						this._feed.setErrorMsg("Something is wrong, the server is not responding.");
+					if (!this.error) {
+						this.setErrorMsg("Something is wrong, the server is not responding.");
 					}
-					
-					this._feed.loading = false;
+
+					this._feed.stopLoading(request.body.action);
 
 					return of([]);
 				} else {
-					return throwError(error).pipe(
-						
-					);
+					return throwError(error);
 				}
-				
+
 			}),
 			shareReplay(),
 			retryWhen(errors => {
 				return errors
 					.pipe(
 						/*delayWhen(() => timer(3000 + ())),*/
-						tap(() => { console.log('retrying ', this._feed.attempts, 'of 3 in ', (this._feed.attempts * 2000) ,'...') }),	
-						delay(this._feed.attempts * 2000)			
+						tap(() => { console.log('retrying ', this.attempts, 'of 3 in ', (this.attempts * 2000), '...') }),
+						delay(this.attempts * 2000)
 					);
 			}),
 			map((event: HttpEvent<any>) => {
@@ -84,13 +114,13 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
 						if (lastEvent.status == "success") {
 							//	Good
 							//	console.log("server response ok");
-							this._feed.clearErrors();
+							this.clearErrors();
 
 						} else if (lastEvent.status == "error") {
 							//	Server response bad;
 							//	console.log("server.error:", lastEvent);
 							let msg = lastEvent.msg ? lastEvent.msg : "Unknown error";
-							this._feed.setErrorMsg(msg);
+							this.setErrorMsg(msg);
 						}
 					} else {
 
@@ -98,10 +128,10 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
 						//	TODO: Seperate 4xx, 5xx, xxx messages, maybe different template 
 						//	console.log("http.error:", event);
 						let msg = lastEvent.status + ": " + lastEvent.statusText;
-						this._feed.setErrorMsg(msg);
+						this.setErrorMsg(msg);
 					}
 
-					this._feed.loading = false;
+					this._feed.stopLoading(request.body.action);
 				}
 
 				return event;

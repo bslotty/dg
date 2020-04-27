@@ -20,16 +20,10 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() { 
-    /*
-    if (this.account.user) {
-      this.router.navigate(["leagues"]);
-    }
-    */
-
     this.accountForm.Setup("login");
     this.accountForm.form$.subscribe((f)=>{
       this.form = f;
-      this.feed.loading = false;
+      this.feed.stopLoading("login");
     });
   }
 

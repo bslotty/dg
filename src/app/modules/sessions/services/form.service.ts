@@ -101,6 +101,11 @@ export class SessionFormService {
     this.form.value.get("time").setValue(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).replace(":00 ", " "));
   }
 
+
+  /*
+
+    TODO: FormControl Validators
+  */
   validateDate(): void {
     this.form.value.get("date").updateValueAndValidity();
     this.form.value.get("time").updateValueAndValidity();
@@ -108,22 +113,6 @@ export class SessionFormService {
 
 
 
-  submitCreation() {
-    console.log("SubmitCreation.form: ", this.form);
 
-    var session;
-    this.session_.detail$.subscribe(s => session = s);
-
-    //  session.starts_on = this.form.value.value.date.toISOString();
-
-    this.session_.create(session).subscribe((res) => {
-      if (this.helper.rCheck(res)) {
-
-        var session = this.helper.rGetData(res)[0];
-        this.router.navigate(["/sessions", session['id']]);
-      }
-    });
-
-  }
 
 }

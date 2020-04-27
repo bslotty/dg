@@ -16,9 +16,4 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  toggleLoader() {
-    this.feed.loading = !this.feed.loading;
-  }
-
 }

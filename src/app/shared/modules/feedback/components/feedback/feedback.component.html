@@ -1,22 +1,20 @@
-<div class="warn row justify-content-start align-items-center no-gutters" *ngIf="!feed.loading; else loader">
-
-
-  <div *ngIf="feed.error">
+<div class="warn row justify-content-start align-items-center no-gutters">
+  <!-- div *ngIf="feed.error">
     <div *ngIf="feed.attempts < 4; else later" class="col message text-center">
       <span class="mat-display-3 icon-alert-triangle"></span>
       <p class="mat-headline">
         {{ feed.errorMsg }}
       </p>
     </div>
+  </div -->
+
+  <div class="col message text-center" *ngIf="handler?.msg">
+    <span class="mat-display-3 icon-alert-triangle"></span>
+    <p class="mat-headline">
+      {{ handler?.msg }}
+    </p>
   </div>
-  
-
 </div>
-
-
-<ng-template #loader>
-  <loader></loader>
-</ng-template>
 
 <ng-template #later>
   <p class="mat-headline message mb-0">

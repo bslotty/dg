@@ -12,7 +12,7 @@ class Score
 	public $session_id;
 	public $team_id;
 	public $player_id;
-	public $score_array;
+	public $throws;
 	public $handicap;
 
 
@@ -32,11 +32,11 @@ class Score
 	{
 
 		$query = "INSERT INTO `Scores` 
-		(`id`, `created_by`, `created_on`, `modified_by`, `modified_on`, `session_id`, `team_id`, `player_id`, `score_array`, `handicap`  ) VALUES 
-		(:id, :created_by, :created_on, :modified_by, :modified_on, :session_id, :team_id, :player_id, :score_array, :handicap );";
+		(`id`, `created_by`, `created_on`, `modified_by`, `modified_on`, `session_id`, `team_id`, `player_id`, `throws`, `handicap`  ) VALUES 
+		(:id, :created_by, :created_on, :modified_by, :modified_on, :session_id, :team_id, :player_id, :throws, :handicap );";
 
 		$values = array(
-			':id' 			=> $this->db->generateGUID(),
+			':id' 			=> $score['id'],
 			':created_by' 	=> $user['id'],
 			':created_on' 	=> date('c'),
 			':modified_by' 	=> null,
@@ -45,7 +45,7 @@ class Score
 			':session_id' 	=> $session['id'],
 			':team_id' 		=> $score["team"]['id'],
 			':player_id' 	=> $score['player']['id'],
-			':score_array' 	=> json_encode($score['score_array']),
+			':throws' 	=> json_encode($score['throws']),
 			':handicap' 	=> $score['handicap']
 		);
 
@@ -63,7 +63,7 @@ class Score
 			`s`.`created_on` AS `scores.created_on`, 
 			`s`.`modified_by` AS `scores.modified_by`, 
 			`s`.`modified_on` AS `scores.modified_on`, 
-			`s`.`score_array` AS `scores.score_array`, 
+			`s`.`throws` AS `scores.throws`, 
 			`s`.`handicap` AS `scores.handicap`,
 
 			`p`.`id` AS `scores.player.id`,
@@ -91,7 +91,7 @@ class Score
 			`s`.`created_on` AS `scores.created_on`, 
 			`s`.`modified_by` AS `scores.modified_by`, 
 			`s`.`modified_on` AS `scores.modified_on`, 
-			`s`.`score_array` AS `scores.score_array`, 
+			`s`.`throws` AS `scores.throws`, 
 			`s`.`handicap` AS `scores.handicap`,
 
 			`t`.`id` AS `scores.team.id`,
@@ -162,7 +162,7 @@ class Score
 			`p`.`last_name` AS 'scores.player.last_name',
 			`p`.`email` AS 'scores.player.email',
 
-			`sc`.`score_array` AS `scores.score_array`, 
+			`sc`.`throws` AS `scores.throws`, 
 			`sc`.`handicap` AS `scores.handicap`
 		FROM `Scores` AS `sc`
 		JOIN `Sessions` AS `sn`

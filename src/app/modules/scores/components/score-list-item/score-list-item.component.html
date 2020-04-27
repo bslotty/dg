@@ -8,12 +8,12 @@
 	</div>
 
 	<!--	Name	-->
-	<div class="col ml mat-h2" *ngIf="mode.indexOf('full') != -1">
+	<div class="col ml mat-h3" *ngIf="mode.indexOf('full') != -1">
 		<div>{{ score.player.first_name | titlecase}} {{ score.player.last_name | titlecase}}</div>
-		<div class="sub-text" *ngIf="mode.indexOf('email') != -1">{{ score.player.email }}</div>
+		<div class="sub-text mat-h4" *ngIf="mode.indexOf('email') != -1">{{ score.player.email }}</div>
 	</div>
 
-	<div class="col ml" *ngIf="mode.indexOf('short') != -1">
+	<div class="col ml mat-h3" *ngIf="mode.indexOf('short') != -1">
 		{{ ((score.player.first_name | titlecase) | slice:0:1)+'.' }}
 		{{ (score.player.last_name.length > 8 ) ? ((score.player.last_name | titlecase) | slice:0:8)+'..' : (score.player.last_name | titlecase) }}
 	</div>
@@ -32,12 +32,12 @@
 
 		<!--	Handicap	-->
 		<div class="col-xs">
-			<a mat-flat-button matTooltip="Change Handicap: {{ +score.handicap }}"
-				*ngIf="sessions_.admin; else handicapStatus"
-				color="{{ +score.handicap == 0 ? 'transparent-info' : +score.handicap < 0 ? 'transparent-accent' : 'transparent-warn' }}"
+			<a mat-flat-button matTooltip="Handicap: {{ +score.handicap }}"
+				*ngIf="_sessions.admin; else handicapStatus"
+				color="{{ score.handicap == 0 ? 'transparent-info' : +score.handicap < 0 ? 'transparent-accent' : 'transparent-warn' }}"
 				(click)="openSettings(score.player)" class="row justify-content-center align-items-center no-gutters">
 				<span
-					class="icon-shield {{ +score.handicap == 0 ? 'color-info' : +score.handicap < 0 ? 'color-accent' : 'color-warn' }}"></span>
+					class="icon-shield {{ score.handicap == 0 ? 'color-info' : +score.handicap < 0 ? 'color-accent' : 'color-warn' }}"></span>
 			</a>
 		</div>
 
@@ -56,7 +56,7 @@
 		</div>
 
 		<!--	Remove	-->
-		<div class="col-xs" *ngIf="sessions_.admin && mode.indexOf('remove')">
+		<div class="col-xs" *ngIf="_sessions.admin && mode.indexOf('remove')">
 			<a mat-flat-button color="transparent-primary" (click)="remove()">
 				<span class="icon-x"></span>
 			</a>

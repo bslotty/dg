@@ -39,14 +39,14 @@ export class ScoresFormService {
         //  Listen to Input changes to trigger loading and search
         form.get("search").valueChanges.pipe(this.helper.pipe).subscribe((s) => {
           if (form.valid) {
-            this.feed.loading = true;
+            this.feed.stopLoading("scoreSearch");
             this._scores.getSearch(s as string);
           }
         });
 
         //  Turn off Loader when Results populate
         this._scores.searchedPlayers$.subscribe((s) => {
-          this.feed.loading = false;
+          this.feed.stopLoading("scoreSearch");
         });
         break;
     }

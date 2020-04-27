@@ -1,6 +1,6 @@
 <app-section-header title="login"></app-section-header>
 
-<div *ngIf="!feed.loading; else loader">
+<div *ngIf="!feed.isLoading('login'); else loader">
 
   <form [formGroup]="form">
     <div class="row no-gutters justify-content-stretch align-items-center">

@@ -24,7 +24,7 @@ export class EditComponent implements OnInit {
     this.accountForm.Setup("update");
     this.accountForm.form$.subscribe((f)=>{
       this.form = f;
-      this.feed.loading = false;
+      this.feed.stopLoading("update");
     });
 
   }

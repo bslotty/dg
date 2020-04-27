@@ -23,7 +23,7 @@ export class ForgotComponent implements OnInit {
     this.accountForm.form$.subscribe((t) => {
       this.form = t;
 
-      this.feed.loading = false;
+      this.feed.stopLoading("forgot");
     });
   }
 

@@ -41,34 +41,31 @@ export class DetailComponent implements OnInit {
 
   ngOnInit() {
 
-    //  Setup Form
-    this._sessionsForm.Setup("edit");
-    this._sessionsForm.form$.subscribe((f) => {
-      this.form = f;
+    //  Upon Router Change; Update Details if neccessary;
+    this.route.paramMap.subscribe((res)=>{
+      let session_id = res.get("session");
+
+      if (session_id != 'create') {
+        this._sessionsForm.Setup("edit");
+        this._sessions.findDetails(session_id);
+      } else {
+        this._sessionsForm.Setup("create");
+        this._sessions.resetDetails();
+      }
+
+      this._sessions.admin();
     });
 
-    //  Populate Data for form
-    /*
-    this.session.id = this.route.snapshot.paramMap.get("session");
-    console.log("sessionid:", this.session.id);
-    this._sessions.getDetail(this.session);
-    */
-   let fetch = this.route.paramMap.pipe(switchMap((params: ParamMap) => {
-    console.log("session.id", params.get("session"));
 
-    this._sessions.findDetails(params.get("session"))
-    return this._sessions.detail$;
-  })).subscribe();
-
-
-    //  Save if close response is true (data changed);
-    this.dialog
   }
+
+
+
 
   //  Popups
   selectCourse() {
     var dialogRef = this.dialog.open(SelectCourseComponent, {
-      minWidth: "75vw",
+      minWidth: "400px",
     });
 
 
@@ -79,7 +76,7 @@ export class DetailComponent implements OnInit {
 
   selectFormat() {
     var dialogRef = this.dialog.open(SelectFormatComponent, {
-      minWidth: "75vw",
+      minWidth: "400px",
     });
 
     dialogRef.afterClosed().subscribe((d) => {
@@ -99,13 +96,15 @@ export class DetailComponent implements OnInit {
 
   selectPlayers() {
     var dialogRef = this.dialog.open(SelectPlayersComponent, {
-      minWidth: "75vw",
+      minWidth: "400px",
     });
 
     dialogRef.afterClosed().subscribe((d) => {
       console.log("dialog.closed: ", d);
     });
   }
+
+
 
   scoreAction($event) {
     console.log("scoreAction.$event: ", $event);
@@ -114,4 +113,7 @@ export class DetailComponent implements OnInit {
   toggleDelete() {
     this.confirmDelete = !this.confirmDelete;
   }
+
+
+  
 }

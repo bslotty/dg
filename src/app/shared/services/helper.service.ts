@@ -100,6 +100,28 @@ export class HelperService {
  * 
  */
 
+  convertCourse(courses): Course[] {
+    var result: Course[] = [];
+
+    courses.forEach((course) => {
+      result.push(new Course(
+        course['id'],
+        course['created_on'],
+        course['created_by'],
+        course['modified_on'],
+        course['modified_by'],
+        course['park_name'],
+        course['city'],
+        course['state'],
+        course['zip'],
+        +course['latitude'],
+        +course['longitude'],
+      ));
+    });
+
+    return result;
+  }
+
   convertFormatStr(str): SessionFormat {
     let format: SessionFormat = this.types.find(t => t.enum == str);
     return format;
@@ -139,13 +161,13 @@ export class HelperService {
     if (scores != undefined) {
       scores.forEach((s) => {
         var score = new Score();
-          score.id              = s['scores.id'];
-          score.created_on      = s['scores.created_on'];
-          score.created_by      = s['scores.created_by'];
-          score.modified_on     = s['scores.modified_on'];
-          score.modified_by     = s['scores.modified_by'];
-          score.handicap        = s['scores.handicap'];
-          score.scores          = s['scores.score_array'];
+        score.id = s['scores.id'];
+        score.created_on = new Date(s['scores.created_on']);
+        score.created_by = s['scores.created_by'];
+        score.modified_on = new Date(s['scores.modified_on']);
+        score.modified_by = s['scores.modified_by'];
+        score.handicap = +s['scores.handicap'] != NaN ? s['scores.handicap'] : 0;
+        score.throws = s['scores.throws'];
 
         score.player = new Player(
           s["scores.player.id"],
@@ -169,13 +191,13 @@ export class HelperService {
             null,
             "Unassigned",
             new TeamColor(
-              null,
+              "Unassigned",
               null,
               null
             )
           );
         }
-        
+
 
         console.log("score:", score);
         result.push(score);
@@ -186,27 +208,39 @@ export class HelperService {
   }
 
 
+  convertPlayerToScore(player: Player, user): Score {
+    var score = new Score();
+    score.id = "create";
+    score.created_on = new Date();
+    score.created_by = user.id;
+    score.modified_on = new Date();
+    score.modified_by = null;
+    score.handicap = 0;
+    score.throws = [];
 
-  convertCourse(courses): Course[] {
-    var result: Course[] = [];
+    score.player = new Player(
+      player["id"],
+      player["first_name"],
+      player["last_name"],
+      player["email"]
+    );
 
-    courses.forEach((course) => {
-      result.push(new Course(
-        course['id'],
-        course['created_on'],
-        course['created_by'],
-        course['modified_on'],
-        course['modified_by'],
-        course['park_name'],
-        course['city'],
-        course['state'],
-        course['zip'],
-        +course['latitude'],
-        +course['longitude'],
-      ));
-    });
+    score.team = new Team(
+      null,
+      "Unassigned",
+      new TeamColor(
+        "Unassigned",
+        null,
+        null
+      )
+    );
 
-    return result;
+    console.log("Player'sScore: ", score);
+  
+    return score;
   }
+
+
+
 
 }

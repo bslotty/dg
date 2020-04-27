@@ -83,25 +83,19 @@ export class ScoresBackend {
     private _sessions: SessionBackend,
     private http: HttpClient,
     private account: AccountBackend,
-
     private helper: HelperService,
   ) {
 
 
     this._sessions.detail$.subscribe((s) => {
       console.log("scores.session.details: ", s);
-
       if (s != undefined) {
 
         //  Scores 
         this.scores.next(s.scores);
 
-        //  Teams
-        if (s.format != undefined) {
-
-          if (typeof s.format['enum'] == "string" && s.format['enum'].indexOf("team") > -1) {
-            this.setTeams(s.scores);
-          }
+        if (this._sessions.teamGame()) {
+          this.setTeams(s.scores);
         }
       }
 
@@ -155,6 +149,44 @@ export class ScoresBackend {
 
 
 
+  /*
+
+    Scores
+  */
+  // Read
+  getScore(score) {
+    return this.scores.value.find(s => s.player.id == score.player.id) != undefined;
+  }
+
+  //  Create
+  addScore(score) {
+    console.log("AddPlayer:", score);
+
+    let list = this.scores.value;
+    let dupe = this.scores.value.find(e => e.player.id == score.player.id);
+
+    if (dupe == undefined) {
+      list.push(this.helper.convertPlayerToScore(score.player, this.account.user));
+    }
+
+    //  only update update from session Details
+    this._sessions.setScores(list);
+
+  }
+
+  //  Delete
+  removeScore(score) {
+    let updatedList = this.scores.value.filter(s => s.player.id != score.player.id);
+    this._sessions.setScores(updatedList);
+  }
+
+
+
+
+  /*
+
+    Teams
+  */
   getTeamsFromScoreList(scores): Team[] {
     if (scores != undefined) {
       let teamList = scores.map((s) => s.team);
@@ -222,7 +254,7 @@ export class ScoresBackend {
     });
 
     //  Remove Roster for Deleted Team
-    this._sessions.clearRoster(team);
+    this.clearRoster(team);
 
     //  Emit Updates
     this.teams.next(newList);
@@ -236,14 +268,12 @@ export class ScoresBackend {
     this.getTeamPlayers(teamList);
   }
 
-  removeScore(score) {
-    this._sessions.removeScore(score);
-  }
+
 
 
 
   getRoster(team: Team): Score[] {
-    //  console.log("this.scores.value: ", this.scores);
+    //console.log("this.scores.value: ", this.scores, team);
 
     if (team != undefined) {
       return this.scores.value.filter(scores => {
@@ -263,6 +293,8 @@ export class ScoresBackend {
 
   }
 
+
+
   movePlayer(event) {
     //  Get Destination Color Name
     var teamDestName = event.container.id.replace("team-", "");
@@ -274,7 +306,7 @@ export class ScoresBackend {
 
     //  Move back to unassigned fix;
     if (teamDest == undefined) {
-      teamDest = new Team(null, "unassigned", new TeamColor(null, null, true));
+      teamDest = new Team(null, "Unassigned", new TeamColor("Unassigned", null, true));
     }
 
     //  Update Player's Team
@@ -297,5 +329,12 @@ export class ScoresBackend {
     });
   }
 
+  clearRoster(team) {
+    this.scores.value.forEach((s, i) => {
+      if (s.team == team) {
+        s.team = new Team(null, "Unassigned", new TeamColor("Unassigned", null, true));
+      }
+    });
+  }
 
 }

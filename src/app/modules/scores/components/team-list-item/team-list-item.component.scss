@@ -1,0 +1,10 @@
+@import 'src/styles/theme.scss';
+
+.panel {
+    background: $theme-primary;
+    color: $theme-text-dark;
+}
+
+#team-Unassigned .mat-transparent-primary:not(:disabled) {
+    color: $theme-text-dark;
+}

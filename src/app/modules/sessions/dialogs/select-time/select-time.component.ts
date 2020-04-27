@@ -5,6 +5,9 @@ import { skip } from 'rxjs/operators';
 import { FormGroup } from '@angular/forms';
 import { SessionFormService } from '../../services/form.service';
 import { combineLatest } from 'rxjs';
+import { NgxMaterialTimepickerTheme } from 'ngx-material-timepicker';
+import { NgxMaterialTimepickerContainerComponent } from 'ngx-material-timepicker/src/app/material-timepicker/components/ngx-material-timepicker-container/ngx-material-timepicker-container.component';
+
 
 @Component({
   selector: 'app-select-time',
@@ -15,6 +18,58 @@ export class SelectTimeComponent implements OnInit {
 
   private form: FormGroup;
   private dataUpdated: boolean = false;
+
+
+  /*
+    $theme-font-header: 'Montserrat', serif;
+    $theme-font-body: 'Roboto';
+    $theme-font-utility: 'Montserrat';
+
+
+    //  Colors
+    $theme-primary: #fafaf0;
+    $theme-accent: #4FD3FF;
+    $theme-warn: #ffd133;
+
+    $theme-secondary: #506450;
+    $theme-error: #ffd133;
+
+    //  Backgrounds
+    $theme-bg-dark: #222422;
+    $theme-bg-dark-surface: #506450;
+
+    $theme-bg-light: #222422;
+    $theme-bg-light-surface: #506450;
+
+
+    // Text
+    $theme-text-light: #fafaf0;
+    $theme-text-dark: #1e2616;
+  */
+
+  //  Clock Theme
+  private timeTheme: NgxMaterialTimepickerTheme = {
+    container: {
+      primaryFontFamily: "--primary-font-family: 'Montserrat'",
+      bodyBackgroundColor: "",
+      buttonColor: "",
+    },
+    clockFace: {
+      clockFaceBackgroundColor: "",
+      clockFaceInnerTimeInactiveColor: "",
+      clockFaceTimeActiveColor: "",
+      clockFaceTimeDisabledColor: "",
+      clockFaceTimeInactiveColor: "",
+      clockHandColor: "",
+    },
+    dial: {
+      dialActiveColor: "",
+      dialBackgroundColor: "",
+      dialEditableActiveColor: "",
+      dialEditableBackgroundColor: "",
+      dialInactiveColor: "",
+    }
+  }
 
   constructor(
     private dialogRef: MatDialogRef<SelectTimeComponent>,

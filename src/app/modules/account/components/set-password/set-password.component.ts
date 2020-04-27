@@ -28,7 +28,7 @@ export class SetPasswordComponent implements OnInit {
     this.accountForm.VerifyForgotToken(token);
     this.accountForm.form$.subscribe((t)=>{
       this.form = t;
-      this.feed.loading = false;
+      this.feed.stopLoading("verify");
     });
   }
 

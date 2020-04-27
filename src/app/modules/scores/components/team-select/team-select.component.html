@@ -1,14 +1,18 @@
 <div cdkDropListGroup class="row justify-content-center align-items-start no-gutters">
-	<p class="message"><i>Drag Players to Change Teams</i></p>
 	<div *ngFor="let team of _scores.teams$ | async as teamList; index as ti" class="col-12">
 
-		<div class="teamDropPad {{ team.color.name }}" id="{{ 'team-' + team.color.name }}" cdkDropList
-			(cdkDropListDropped)="rosterDrop($event)" [cdkDropListData]="getPlayerList(team)">
+		<div cdkDropList [cdkDropListData]="getPlayerList(team)" class="teamDropPad {{ team.color.name }}" id="{{ 'team-' + team.color.name }}" 
+		(cdkDropListDropped)="rosterDrop($event)">
 			<team-list-item [team]="team"></team-list-item>
 
 			<score-list-item *ngFor="let score of getPlayerList(team)" cdkDrag [cdkDragData]="score" [score]="score"
 				[mode]="playerModes" backdrop="true">
 			</score-list-item>
+
+
+			<div class="drag-helper">
+				<label class="message mat-body-1">Drag player here to add</label>
+			</div>
 		</div>
 	</div>
 </div>

@@ -18,11 +18,11 @@ const sessionRoutes: Routes = [
     component: ShellComponent,
     canActivate: [AuthGuard],
     children: [
-      {
+      /* {
         path: "create",
         component: CreateComponent,
         canActivate: [],
-      },{
+      }, */{
         path: ":session",
         component: DetailComponent,
         canActivate: [],

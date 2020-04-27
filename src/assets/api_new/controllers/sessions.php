@@ -119,7 +119,7 @@ switch ($payload['action']) {
 
 				//	Scores
 				$r_createScores = array();
-				$teamList = GetUniqueTeams($payload["session"]["scores"]);
+				$teamList = GetUniqueTeams($createdSession["scores"]);
 				
 
 				//	Create Teams if Exist
@@ -147,6 +147,7 @@ switch ($payload['action']) {
 						$return[] = array(
 							'status' 	=> 'success',
 							'msg'		=> 'Teams Created',
+							'mapTo'		=> 'session',
 							'debug'		=> $r_createTeams,
 							'teamList'	=> $teamList
 						);
@@ -165,17 +166,23 @@ switch ($payload['action']) {
 
 
 				//	Scores
-				foreach ($payload["session"]["scores"] as $key => $array) {
+				foreach ($createdSession["scores"] as $key => $array) {
+
+
 					//	Update Team Ids
 					if (count($teamList) > 0) {
-						foreach ($teamList as $key => $ta) {
+						foreach ($teamList as $tk => $ta) {
 							if ($array["team"]["name"] == $ta["name"]) {
-								$array["team"]["id"] = $ta["id"];
+								$createdSession["scores"][$key]['team']['id'] = $ta["id"];
 							}
 						}
 					}
 
-					$r_createScores[] = $scores->create($createdSession, $array, $payload["user"]);
+					//	Create GUID For Score
+					$scoreID = $database->generateGUID();
+					$createdSession["scores"][$key]['id'] = $scoreID;
+
+					$r_createScores[] = $scores->create($createdSession, $createdSession["scores"][$key], $payload["user"]);
 				}
 
 				//	Verify All Scores Were Created
@@ -191,6 +198,7 @@ switch ($payload['action']) {
 					$return[] = array(
 						'status' 	=> 'success',
 						'msg'		=> 'Scores Created',
+						'mapTo'		=> 'session',
 						'scores'	=> $r_createScores,
 						'results'	=> array($createdSession)
 					);
@@ -198,9 +206,12 @@ switch ($payload['action']) {
 					$return[] = array(
 						'status' 	=> 'error',
 						'msg'		=> 'Unable to Create Scores',
-						'scores'	=> $r_createScores
+						'scores'	=> $r_createScores,
+						'results'	=> array($createdSession)
 					);
 				}
+
+				// Get Session from Server
 			} else {
 				$return[] = array(
 					'status' 	=> 'error',
@@ -249,20 +260,20 @@ switch ($payload['action']) {
 							'created_by' 	=> $p["scores.created_by"],
 							'modified_on' 	=> $p["scores.modified_on"],
 							'modified_by' 	=> $p["scores.modified_by"],
-							'score_array' 	=> json_decode($p["scores.score_array"]),
+							'throws' 		=> json_decode($p["scores.throws"]),
 							'handicap'	 	=> $p["scores.handicap"],
 
 							'team'			=> array(
-								"id"		=> $p['team.id'],
-								"name"		=> $p['team.name'],
-								"color"		=> json_decode($p['team.color'])
+								"id"		=> $p['scores.team.id'],
+								"name"		=> $p['scores.team.name'],
+								"color"		=> json_decode($p['scores.team.color'])
 							),
 							
 							'player'		=> array(
-								"id"			=> $p['player.id'],
-								"first_name"	=> $p['player.first_name'],
-								"last_name"		=> $p['player.last_name'],
-								"email"			=> $p['player.email']
+								"id"			=> $p['scores.player.id'],
+								"first_name"	=> $p['scores.player.first_name'],
+								"last_name"		=> $p['scores.player.last_name'],
+								"email"			=> $p['scores.player.email']
 							)
 						);
 					}
@@ -300,6 +311,37 @@ switch ($payload['action']) {
 		break;
 
 	case "delete":
+		//	Verify They Are Creator
+		//	Get Details
+
+		//	Delete If So
+		$sessionDetails = $sessions->getDetails($payload["session"], $payload["user"]);
+		if ($sessionDetails['status'] == 'success' && $sessionDetails['affectedRows'] == 1) {
+			$session = $sessionDetails["results"][0];
+
+			if ($session['created_by'] == $payload['user']['id']) {
+				$r_deleteSession = $sessions->delete($session);
+				$return[] = $r_deleteSession;
+				if ($r_deleteSession['status'] == 'success' && $r_deleteSession['affectedRows'] > 1) {
+					$return[] = array(
+						"status" 	=> "success",
+						"msg"		=> "Session was deleted",
+					);
+				} else {
+					$return[] = array(
+						"status" 	=> "error",
+						"msg"		=> "Nothing was deleted"
+					);
+				}
+			} else {
+				$return[] = array(
+					"status" 	=> "error",
+					"msg"		=> "Insufficent permissions"
+				);
+			}
+
+		}
+
 		break;
 
 	default:

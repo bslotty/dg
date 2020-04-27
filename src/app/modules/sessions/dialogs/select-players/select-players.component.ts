@@ -58,7 +58,7 @@ export class SelectPlayersComponent implements OnInit {
     this._scoresForm.Setup('search');
     this._scoresForm.form$.subscribe((f) => {
       this.form = f;
-      this.feed.loading = false;
+      this.feed.stopLoading("scoreSearch");
 
       console.log ("this.form: ", this.form);
     });
@@ -90,7 +90,7 @@ export class SelectPlayersComponent implements OnInit {
     this._scoresForm.resetPlayerSearch();
 
     //  Turn Off Loader
-    this.feed.loading = false;
+    this.feed.stopLoading("scoreSearch");
   }
 
   hideSearch() {
@@ -101,7 +101,7 @@ export class SelectPlayersComponent implements OnInit {
     this.selectedList = this.lists[0];
 
     //  Turn Off Loader
-    this.feed.loading = false;
+    this.feed.stopLoading("scoreSearch");
   }
 
   selectChange($event) {

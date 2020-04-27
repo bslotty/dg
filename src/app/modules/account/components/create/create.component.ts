@@ -24,7 +24,7 @@ export class CreateComponent implements OnInit {
       console.log("accountForm.registerForm", f);
 
       this.form = f;
-      this.feed.loading = false;
+      this.feed.stopLoading("register");
     });
 
   }

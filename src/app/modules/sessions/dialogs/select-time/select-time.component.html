@@ -47,7 +47,7 @@
 					</a>
 				</div>
 
-				<ngx-material-timepicker #timePicker minutesGap=5 disableAnimation="true">
+				<ngx-material-timepicker #timePicker minutesGap=5 disableAnimation="true" [theme]="timeTheme" >
 				</ngx-material-timepicker>
 
 				<mat-error *ngIf="form.get('time').touched && form.get('time').invalid">
@@ -61,7 +61,7 @@
 
 <div class="row justify-content-end align-items-center no-gutters">
 	<div class="col text-right">
-		<a mat-raised-button class="btn" color="primary" (click)="setTime()" 
+		<a mat-raised-button class="btn btn-lg" color="primary" (click)="setTime()" 
 		[disabled]="form.get('time').invalid || form.get('date').invalid || form.get('time').untouched || form.get('date').untouched || form.disabled">Set Start Time</a>
 	</div>
 </div>

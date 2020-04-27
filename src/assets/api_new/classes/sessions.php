@@ -67,11 +67,10 @@ class Session
 			`sn`.`course_id`
 			FROM `Sessions` AS `sn`
 			LEFT JOIN `Scores` AS `sc` ON `sn`.`id`=`sc`.`session_id`
-			WHERE `sn`.`id` = :sessionID AND `sc`.`player_id` = :userID
+			WHERE `sn`.`id` = :sessionID
 			LIMIT 1;";
 
 		$values = array(
-			"userID" 		=> $user['id'],
 			"sessionID"		=> $session['id']
 		);
 
@@ -163,7 +162,10 @@ class Session
 
 	public function delete($session)
 	{
-		$query = "DELETE FROM `Sessions` WHERE `id`=:id LIMIT 1";
+		$query = "DELETE FROM `Scores` WHERE `session_id`=:id;
+		DELETE FROM `Teams` WHERE `session_id`=:id;
+		DELETE FROM `Sessions` WHERE `id`=:id LIMIT 1;";
+		
 
 		$values = array(
 			':id' => $session["id"]

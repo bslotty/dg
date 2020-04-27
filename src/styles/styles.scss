@@ -7,18 +7,19 @@
 
 $fontConfig: (
   display-4:    mat-typography-level(64px, 72px, 200, $theme-font-header, -0.07em),
-  display-3:    mat-typography-level(56px, 56px, 200, $theme-font-header, -0.09em),
+  display-3:    mat-typography-level(56px, 56px, 200, $theme-font-header, -0.1em),
   display-2:    mat-typography-level(45px, 48px, 200, $theme-font-header, 0em),
   display-1:    mat-typography-level(34px, 40px, 200, $theme-font-header, 0.07em),
 
-  headline:     mat-typography-level(28px, 32px, 400, $theme-font-header, 0em),
-  title:        mat-typography-level(20px, 32px, 500, $theme-font-header, 0.0075em),
-  caption:      mat-typography-level(24px, 28px, 400, $theme-font-utility, 0.3em),
-  subheading-2: mat-typography-level(16px, 28px, 400, $theme-font-utility, 0.0094em),
-  subheading-1: mat-typography-level(15px, 24px, 500, $theme-font-utility, 0.0067em),
+  headline:     mat-typography-level(36px, 44px, 400, $theme-font-header, 0.01em),
+  title:        mat-typography-level(32px, 40px, 500, $theme-font-header, 0.01em),
+  subheading-2: mat-typography-level(28px, 36px, 400, $theme-font-utility, 0.01em),
+  subheading-1: mat-typography-level(24px, 32px, 500, $theme-font-utility, 0.01em),
 
-  body-2:       mat-typography-level(20px, 28px, 300, $theme-font-body, 0.0179em),
-  body-1:       mat-typography-level(14px, 20px, 300, $theme-font-body, 0.0179em),
+  caption:      mat-typography-level(24px, 28px, 400, $theme-font-utility, 0.3em),
+
+  body-2:       mat-typography-level(20px, 28px, 300, $theme-font-body, 0.02em),
+  body-1:       mat-typography-level(22px, 28px, 300, $theme-font-body, 0.02em),
 
   button:       mat-typography-level(14px, 1.125, 600, $theme-font-utility, 0em),
   input:        mat-typography-level(inherit, 1.125, 400, $theme-font-utility, 0em),
@@ -245,12 +246,13 @@ agm-map {
 }
 
 * {
-  text-overflow: ellipsis;
+  //  text-overflow: ellipsis;
   box-sizing: border-box;
 }
 
 body {
   margin: 0 auto;
+  
 }
 
 .mat-caption,
@@ -368,17 +370,8 @@ a * {
   transition: color 0.2s ease-out;
 }
 
-
-.sub-header {
-  margin-top: 1.5em;
-  margin-bottom: 0.3em;
-}
-
 .sub-text {
-  font-size: 0.8rem;
   color: $text-light-fade;
-  font-weight: 100;
-  line-height: 1.2rem;
 }
 
 .color-accent {
@@ -399,7 +392,7 @@ a * {
   width: 100%;
 }
 
-.warn .message {
+p.warn {
   color: $warn;
 }
 
@@ -515,9 +508,8 @@ router-outlet ~ * {
 
 .teamDropPad {
   padding: 0.2rem;
-  padding-bottom: 1rem;
   border: 0.3rem solid;
-  margin: 0.2rem;
+  margin: 0.2rem 0;
   min-height: 5rem;
   min-width: 30vw;
 
@@ -527,6 +519,7 @@ router-outlet ~ * {
 
   .cdk-drag-placeholder > * {
     border-color: $primary-light;
+    box-shadow: none;
 
     .colorChoice {
       display: none;
@@ -700,6 +693,8 @@ router-outlet ~ * {
   color: $c-white;
 }
 
+
+
 .scores {
   display: flex;
   flex-direction: row;
@@ -838,6 +833,7 @@ router-outlet ~ * {
 */
 .timepicker {
   width: 60vw !important;
+  font-family: $theme-font-utility;
 }
 
 .timepicker__header {
@@ -869,12 +865,12 @@ router-outlet ~ * {
 }
 
 .clock-face {
-  width: 50vw !important;
-  height: 50vw !important;
+  width: 15rem !important;
+  height: 15rem !important;
 }
 
 .clock-face__number--outer {
-  height: calc(50vw / 2 - 20px) !important;
+  height: calc(15rem / 2 - 20px) !important;
 }
 
 .clock-face__number > span {
@@ -882,18 +878,18 @@ router-outlet ~ * {
 }
 
 .clock-face__clock-hand {
-  height: 20vw !important;
+  height: 5.5rem !important;
   width: 3px !important;
-  top: calc(50% - 20vw) !important;
+  top: calc(50% - 5.5rem) !important;
 }
 
 .clock-face__number {
-  width: 8vw !important;
+  width: 2rem !important;
 }
 
 .clock-face__number > span {
-  width: 8vw !important;
-  height: 8vw !important;
+  width: 2rem !important;
+  height: 2rem !important;
 }
 .clock-face__number--outer[_ngcontent-whs-c31] > span[_ngcontent-whs-c31] {
   color: $primary-light;
@@ -919,6 +915,24 @@ router-outlet ~ * {
 .timepicker-backdrop-overlay {
   z-index: 1001 !important;
 }
+
+
+/*
+
+  Calendar Fixes
+*/
+.mat-calendar-table,
+.mat-calendar-body,
+.mat-calendar-body-label,
+.mat-calendar-period-button,
+.mat-calendar-table-header th {
+  font-size: 24px;
+}
+
+.mat-calendar-body-selected {
+  color: $theme-text-dark;
+}
+
 
 /*
 

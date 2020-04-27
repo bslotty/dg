@@ -17,23 +17,25 @@ export class CourseListItemComponent implements OnInit {
 
 
   constructor(
-    private favorites_: FavoritesService,
-    private sessions_: SessionBackend
+    private _favorites: FavoritesService,
+    private _sessions: SessionBackend
   ) { }
 
   ngOnInit() {  }
 
   setFavorite(course){
-    this.favorites_.addFavorite("course", course);
+    this._favorites.addFavorite("course", course);
   }
 
   removeFavorite(course) {
-    this.favorites_.removeFavorite("course", course);
+    this._favorites.removeFavorite("course", course);
   }
 
   
   selectCourse(course){
-    this.sessions_.setCourse(course);
+    this._sessions.setCourse(course);
   }
+
+  
 
 }

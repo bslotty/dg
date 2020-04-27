@@ -4,6 +4,7 @@ import { ScoreSettingsComponent } from '../../dialogs/score-settings/score-setti
 import { flyInPanelRow } from 'src/app/animations';
 import { SessionBackend } from 'src/app/modules/sessions/services/backend.service';
 import { Score } from 'src/app/shared/types';
+import { ScoresBackend } from '../../services/backend.service';
 
 @Component({
   selector: 'score-list-item',
@@ -20,22 +21,23 @@ export class ScoreListItemComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private sessions_: SessionBackend,
+    private _sessions: SessionBackend,
+    private _scores: ScoresBackend,
   ) { }
 
   ngOnInit() {
-    this.selectorCheckbox = this.sessions_.getScore(this.score);
+    this.selectorCheckbox = this._scores.getScore(this.score);
   }
 
   remove() {
-    this.sessions_.removeScore(this.score);
+    this._scores.removeScore(this.score);
   }
 
   toggleScore($event, score) {
     if ($event.checked == true) {
-      this.sessions_.addScore(score);
+      this._scores.addScore(score);
     } else {
-      this.sessions_.removeScore(score);
+      this._scores.removeScore(score);
     }
   }
 

@@ -12,6 +12,7 @@ import { SessionBackend } from '../../services/backend.service';
 import { ScoresBackend } from 'src/app/modules/scores/services/backend.service';
 import { Session } from 'src/app/shared/types';
 import { Observable } from 'rxjs/internal/Observable';
+import { FeedbackService } from 'src/app/shared/modules/feedback/services/feedback.service';
 
 @Component({
   selector: 'app-create',
@@ -28,7 +29,8 @@ export class CreateComponent implements OnInit {
     private sessionForm: SessionFormService,
     private _sessions: SessionBackend,
     private _scores: ScoresBackend,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private feed: FeedbackService,
   ) { }
 
   ngOnInit() {

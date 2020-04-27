@@ -13,86 +13,128 @@ import { FeedbackErrorHandler } from 'src/app/shared/types';
 })
 export class FeedbackService implements OnInit {
 
-  loading: boolean = true;
 
-  private error: boolean = false;
-  errorMsg: string = "";
-  retryObs: Observable<any>;
-  attempts: number = 0;
+  //  loading: boolean = true;
 
-  list: BehaviorSubject<string[]> = new BehaviorSubject([]);
-  list$: Observable<string[]> = this.list.asObservable();
+
+  //  Bank of elements that have errors
+  private list: BehaviorSubject<FeedbackErrorHandler[]> = new BehaviorSubject([]);
+  list$: Observable<FeedbackErrorHandler[]> = this.list.asObservable();
+
+  private loading: BehaviorSubject<string[]> = new BehaviorSubject([]);
+  loading$: Observable<string[]> = this.loading.asObservable();
+
 
   constructor(
-    private snackBar: MatSnackBar,
-    private router: Router
-  ) {
-    //  Reset Error Message upon Router Change
-    //    Change on End, After all checks;
-    this.router.events.subscribe((e) => {
-      if (e instanceof NavigationEnd) {
-        this.loading = false;
-        this.clearErrors();
-      }
-
-      //  Test and possibly remove
-      //  Automatic Loading when route loads;
-      if (e instanceof NavigationStart) {
-        this.clearErrors();
-      }
-
-
-    });
-  }
+    private snackBar: MatSnackBar
+  ) { }
 
   ngOnInit() { }
 
-  hasError() {
-    return this.error;
-  }
-
-  clearErrors() {
-    this.error = false;
-    this.attempts = 0;
-  }
 
 
-  setErrorMsg(error: string) {
-    this.error = true;
-    this.attempts++;
-    this.errorMsg = error;
-  }
-
-
-
-
-  //  New Functions for section specific loading; Observable Edition
-  stopElementTracking(str: string): void {
-    //  Current List
-    let list = this.list.value;
-
-    //  If Exists; Pop
-    let i = list.indexOf(str);
-    if (i > -1) {
-      list.splice(i, 1);
+  /*
+  
+      Error Message Functions
+  */
+  hasError(elementName: string): boolean | FeedbackErrorHandler {
+    let tracked = this.list.value.find(e => { e.element == elementName });
+    
+    if (tracked != undefined) {
+      return tracked;
+    } else {
+      return false;
     }
+    
+  }
+
+  clearError(elementName: string): void {
+
+    //  FilterList
+    let list = this.list.value.filter(e => {
+      return e.element != elementName;
+    });
 
     //  Emit Updates
     this.list.next(list);
   }
 
-  startElementTracking(str: string): void {
-    //  Current List
+  setError(elementName: string, message: string): void {
+    //  Dont add an already existing
     let list = this.list.value;
+    let found = list.filter(e => {
+      return e.element == elementName;
+    });
+
+    //  console.warn ("ErrorList: ", list);
+    //  console.log ("found:  ", found);
 
     //  If Not In; Push
-    if (list.indexOf(str) == -1) {
-      list.push(str);
+    if (found.length == 0) {
+      let feed = new FeedbackErrorHandler()
+      feed.element = elementName;
+      feed.msg = message;
+
+      list.push(feed);
     }
 
     //  Emit Updates
     this.list.next(list);
   }
+
+
+
+
+  /*
+    
+      Loading Functions
+  */
+  isLoading(actionName: string): boolean {
+    let tracked = this.list.value.find(e => { e.element == actionName });
+    return tracked != undefined;
+  }
+
+  startLoading(actionName: string): void {
+    //  Dont add an already existing
+    let list = this.loading.value;
+
+    if (list == undefined) {
+      list = [actionName];
+    } else {
+      let found = list.filter(e => {
+        return e == actionName;
+      });
+
+
+      //  If Not In; Push
+      if (found != undefined) {
+        list.push(actionName);
+      }
+    }
+
+
+
+    //  Emit Updates
+    this.loading.next(list);
+  }
+
+  stopLoading(actionName: string): void {
+
+    //  FilterList
+    let list = this.loading.value.filter(e => {
+      return e != actionName;
+    });
+
+    //  Emit Updates
+    this.loading.next(list);
+  }
+
+
+
+
+
+
+
 
 
 
@@ -116,6 +158,13 @@ export class FeedbackService implements OnInit {
     });
   }
 
-  1111
+
+
+
+
+
 
 }
+
+
+

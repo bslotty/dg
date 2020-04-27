@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material';
 import { TeamSettingsComponent } from '../../dialogs/team-settings/team-settings.component';
 import { SessionBackend } from 'src/app/modules/sessions/services/backend.service';
 import { Team } from 'src/app/shared/types';
+import { ScoresBackend } from '../../services/backend.service';
 
 @Component({
   selector: 'team-list-item',
@@ -17,12 +18,13 @@ export class TeamListItemComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private sessions_:SessionBackend,
+    private _scores: ScoresBackend,
   ) { }
 
   ngOnInit() { }
 
   removeTeam(team) {
-    this.sessions_.removeTeam(team);
+    this._scores.removeTeam(team);
   }
 
 

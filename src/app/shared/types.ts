@@ -34,7 +34,7 @@ export class Score {
 	public modified_on: Date;
 	public modified_by: string; /* User? */
 	public player: Player;
-	public scores: Array<number>;
+	public throws: Array<number>;
 	public team: Team | null
 	public handicap: number;
 
